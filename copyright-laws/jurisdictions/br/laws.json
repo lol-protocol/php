@@ -15,7 +15,7 @@
     "enforcement_body": "National Library of Brazil",
     "treaties_signatory": "Berne/TRIPS",
     "treaties_not_party": "WCT/WPPT",
-    "linked_resources": "https://www.planalto.gov.br/ccivil_03/leis/l9610.htm",
+    "linked_resources": "https://legis.senado.leg.br/norma/551486/publicacao/15716667",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
@@ -27,9 +27,20 @@
         "url": "https://www.conjur.com.br/wp-content/uploads/2023/09/lei-9610.pdf",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://legis.senado.leg.br/norma/551486/publicacao/15716667",
+        "confidence": "high",
+        "checked": "2026-11-15"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-15",
+        "field": "linked_resources",
+        "from": "https://www.planalto.gov.br/ccivil_03/leis/l9610.htm",
+        "to": "https://legis.senado.leg.br/norma/551486/publicacao/15716667"
+      },
       {
         "date": "2026-11-11",
         "field": "linked_resources",

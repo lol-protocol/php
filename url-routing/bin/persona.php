@@ -129,10 +129,7 @@ try {
         echo $confirmar
             ? "Corregido {$campo} de la persona {$id}. Anotada la corrección {$r['correccion']} (sin el valor).\n"
             : "Se corregiría {$campo} de la persona {$id}.\n";
-        $ve = static fn(bool $oculta): string => $oculta ? 'oculta («Persona viva» o privada)' : 'visible';
-        echo $r['antes_oculta'] === $r['despues_oculta']
-            ? 'No cambia lo que ve un visitante: ' . ($confirmar ? 'sigue ' : 'seguiría ') . $ve($r['despues_oculta']) . ".\n"
-            : 'CAMBIA lo que ve un visitante: la ve ' . $ve($r['antes_oculta']) . ' y ' . ($confirmar ? 'ahora' : 'pasaría a verla') . ' ' . $ve($r['despues_oculta']) . ".\n";
+        echo RectificacionRepository::loQueVeUnVisitante($r) . "\n";
         if ($r['aviso_grupo'] !== null) {
             echo $r['aviso_grupo'] . "\n";
         }

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { generarPersona, generarSVG, POSE_FIRME, poseAleatoria } from '../src/index.js';
-import { medidas, piernaLado, brazoLado, trazoMano, trazoPie, trazoCuello, deformar } from '../src/cuerpo.js';
+import { medidas, piernaLado, brazoLado, trazoMano, trazoCuello, deformar } from '../src/cuerpo.js';
 import { crearAzar } from '../src/util.js';
 
 test('por defecto la pose es casual y cambia con la semilla; con la misma semilla es igual', () => {

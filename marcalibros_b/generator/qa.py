@@ -9,7 +9,7 @@ from color import luminancia_rgb, razon, rgb
 from scene import ALTO, ANCHO
 
 UMBRAL_DUPLICADO = 6.0  # diferencia media (0–255) bajo la cual dos piezas se consideran casi iguales
-MAX_SVG_BYTES = 20 * 1024  # 10 KB sin frase; con frase, los contornos de los glifos añaden unos 5 KB
+MAX_SVG_BYTES = 24 * 1024  # 10 KB sin frase; con frase, los contornos de los glifos añaden unos 5 KB (hasta 11 KB con escrituras no latinas)
 MAX_JPG_BYTES = 150 * 1024
 MAX_JPG_ALTA_BYTES = 600 * 1024  # a 400×2800 (el grano pesa)
 NS_SVG = "{http://www.w3.org/2000/svg}"
@@ -171,7 +171,9 @@ def validar_frases(datos, soporta):
                 problemas.append(f"{donde}: {q['autor']} murió en {q['muerte']}; sigue con derechos")
             if q["estado"] not in ("sin_verificar", "verificada", "original"):
                 problemas.append(f"{donde}: estado inválido {q['estado']!r}")
-            falta = sorted({c for c in q["texto"] + q["autor"] + "—" if not soporta(c)})
+            # la frase va en la fuente de su idioma; la autoría («— Autor») siempre en la latina
+            falta = sorted({c for c in q["texto"] if not soporta(c, q.get("idioma"))}
+                           | {c for c in q["autor"] + "—" if not soporta(c)})
             if falta:
                 problemas.append(f"{donde}: la fuente no tiene {falta}")
     return problemas

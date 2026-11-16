@@ -7,8 +7,9 @@
 // regiones: de dónde salen los atuendos (atuendos.js). prefijos: para separar pueblos que comparten región por el id del atuendo.
 // barba: probabilidad de que un adulto lleve barba o bigote. corpulencia: [nombre, peso].
 
-import { E, OSC, MORENO, CLARO, MED, MESTIZO } from './ayuda.js';
+import { E, OSC, CLARO, MED, MESTIZO } from './ayuda.js';
 import { ETNIAS_AMPLIADAS } from './etnias-ampliadas.js';
+import { ETNIAS_PUEBLOS } from './etnias-pueblos.js';
 
 export const ETNIAS = [
   // ----- Chile y el cono sur -----
@@ -60,6 +61,7 @@ export const ETNIAS = [
   E('zulu', 'Zulú y bantú austral', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'zulu-', pieles: 'castana ebano-claro ebano', cabellos: [['negro', 10]], peinados: 'rapado corto', barba: 0.3, altura: [157, 169] }),
   E('maasai', 'Maasái', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'maasai', pieles: 'ebano-claro ebano ebano-profundo', cabellos: [['negro', 10]], peinados: 'rapado rastas', barba: 0.05, altura: [165, 178], corpulencia: [['delgada', 3], ['media', 3]], nota: 'Estatura alta y complexión delgada son típicas de los registros de pastores de África oriental.' }),
   ...ETNIAS_AMPLIADAS,
+  ...ETNIAS_PUEBLOS,
 ];
 
 export const ETNIAS_POR_ID = Object.fromEntries(ETNIAS.map((e) => [e.id, e]));

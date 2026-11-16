@@ -6,6 +6,7 @@ Todo el azar sale de random.Random(semilla): misma entrada, misma salida.
 import math
 import random
 
+import movimientos4
 from movimientos import (ADORNOS_NUEVOS, AMBIENTALES_NUEVOS, ESCALAS_NUEVAS, FRENTE_NUEVOS, MOTIVOS_NUEVOS,
                          PALETAS_NUEVAS)
 from color import contraste, luminancia  # noqa: F401  (se reexportan: los usan marca y los tests)
@@ -93,6 +94,7 @@ PALETAS = {
 
 
 PALETAS.update(PALETAS_NUEVAS)
+PALETAS.update(movimientos4.PALETAS_NUEVAS)
 
 
 MIN_CONTRASTE_FIGURA = 3.0
@@ -754,6 +756,7 @@ MOTIVOS.update({
 })
 
 MOTIVOS.update(MOTIVOS_NUEVOS)
+MOTIVOS.update(movimientos4.MOTIVOS_NUEVOS)
 
 
 # --- Escalado de motivos ---------------------------------------------------------
@@ -778,6 +781,7 @@ ESCALAS = {
 # de modo que la capa cercana tape su base y queden apoyados en el suelo).
 FRENTE = {"olas", "narcisos", "hojas", "rio", "petalos", "lluvia"}  # el río es una franja baja: la capa cercana lo taparía
 ESCALAS.update(ESCALAS_NUEVAS)
+ESCALAS.update(movimientos4.ESCALAS_NUEVAS)
 FRENTE |= FRENTE_NUEVOS
 
 
@@ -988,6 +992,7 @@ def _adorno_magico(esc, rng, p, franja, motivo):
 
 ADORNOS = {"romanticismo": None, "gotico": _adorno_gotico, "realismo-magico": _adorno_magico}
 ADORNOS.update(ADORNOS_NUEVOS)
+ADORNOS.update(movimientos4.ADORNOS_NUEVOS)
 
 
 def _paisaje(movimiento):

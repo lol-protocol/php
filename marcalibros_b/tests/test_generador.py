@@ -193,7 +193,7 @@ def test_frases_en_dominio_publico_y_dibujables():
     assert validar_frases(datos, texto.soporta) == []
     for lista in datos["movimientos"].values():
         for q in lista:
-            _, alto = texto.componer(q["texto"], q["autor"], (16, 440, 184, 860))
+            _, alto = texto.componer(q["texto"], "" if q.get("original") else q["autor"], (16, 440, 184, 860), idioma=q.get("idioma"))
             assert alto <= 380, f"«{q['texto']}» no cabe en la franja"
 
 
@@ -227,7 +227,7 @@ def test_realismo_magico_solo_lleva_frases_originales():
 def test_las_piezas_con_frase_la_llevan_dibujada():
     manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
     con = [e for e in manifiesto["entradas"] if e.get("frase")]
-    assert 450 < len(con) < 550  # alrededor de la mitad de las 1000
+    assert 0.4 < len(con) / len(manifiesto["entradas"]) < 0.6  # alrededor de la mitad de las piezas
     for e in con[:25]:
         svg = (RAIZ / e["archivo"]).read_text(encoding="utf-8") if e["formato"] == "svg" else None
         if svg:
@@ -239,7 +239,7 @@ def test_frases_originales_van_sin_firma_y_las_demas_firmadas():
     manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
     for e in manifiesto["entradas"]:
         if e.get("frase"):
-            assert e["frase"]["firmada"] == (e["movimiento"] != "realismo-magico"), e["id"]
+            assert e["frase"]["firmada"] == (e["movimiento"] not in ("realismo-magico", "surrealismo")), e["id"]  # solo estos llevan frases originales
     solo, _ = texto.componer("Lee despacio", "", (16, 440, 184, 860))
     con, _ = texto.componer("Lee despacio", "Yo", (16, 440, 184, 860))
     assert len(solo) == 1 and len(con) == 2  # sin autoría no hay segundo bloque

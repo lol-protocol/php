@@ -2,7 +2,7 @@
 // poblaciones, no reglas sobre una persona. `conf: 'baja'` marca los pueblos de los que el catálogo solo tiene una
 // imagen genérica o de los que las cifras de estatura son más inciertas.
 
-import { E, OSC, MORENO, CLARO, MED, MESTIZO } from './ayuda.js';
+import { E, OSC, CLARO, MED, MESTIZO } from './ayuda.js';
 
 const NEG = [['negro', 9], ['castano-oscuro', 1]];
 const PIEL_OSC = 'canela bronce cobre';

@@ -29,7 +29,7 @@ final class BoletaRepository
      * sobre boletas_con_saldo, que es de donde sale b.pagado.
      */
     public const ESTADO_SQL = "CASE WHEN b.anulada THEN 'anulada'
-                                    WHEN round(b.monto - b.pagado, 2) <= " . Dinero::UN_CENTAVO . " THEN 'pagada'
+                                    WHEN round(b.monto - b.pagado, 3) <= " . Dinero::UN_CENTAVO . " THEN 'pagada'
                                     WHEN b.fecha_vencimiento < CURRENT_DATE THEN 'vencida'
                                     WHEN b.pagado > 0 THEN 'parcial'
                                     ELSE 'pendiente' END";
@@ -92,7 +92,7 @@ final class BoletaRepository
         if ($row === false) {
             return null;
         }
-        $row['saldo'] = round((float) $row['saldo'], 2);
+        $row['saldo'] = round((float) $row['saldo'], 3);
         return $row;
     }
 

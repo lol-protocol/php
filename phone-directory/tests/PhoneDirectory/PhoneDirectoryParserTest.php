@@ -193,6 +193,47 @@ class PhoneDirectoryParserTest extends TestCase
         unlink($tempFile);
     }
 
+    public function testParseFileInBatchesGivesTheSameEntriesAsParseFile(): void
+    {
+        $tempFile = tempnam(sys_get_temp_dir(), 'phone_batches_');
+        $records = [];
+        for ($i = 1; $i <= 7; $i++) {
+            $records[] = "PERSON{$i}, John\n{$i} Main Street\n555-123-" . sprintf('%04d', $i);
+        }
+        file_put_contents($tempFile, implode("\n\n", $records));
+
+        try {
+            $whole = (new PhoneDirectoryParser())->parseFile($tempFile);
+
+            $parser = new PhoneDirectoryParser();
+            $batches = iterator_to_array($parser->parseFileInBatches($tempFile, 3), false);
+        } finally {
+            unlink($tempFile);
+        }
+
+        $this->assertSame([3, 3, 1], array_map('count', $batches));
+        $this->assertEquals(
+            array_map(fn($e) => $e->getRawName(), $whole),
+            array_map(fn($e) => $e->getRawName(), array_merge(...$batches))
+        );
+        $this->assertSame([], $parser->getEntries(), 'what was handed over is not kept');
+    }
+
+    public function testParseFileInBatchesChecksItsArgumentsWhenCalled(): void
+    {
+        foreach ([
+            [fn() => $this->parser->parseFileInBatches('/nonexistent/file.txt'), \RuntimeException::class],
+            [fn() => $this->parser->parseFileInBatches(__FILE__, 0), \InvalidArgumentException::class],
+        ] as [$call, $exception]) {
+            try {
+                $call();
+                $this->fail("{$exception} expected before the first batch is read");
+            } catch (\Throwable $e) {
+                $this->assertInstanceOf($exception, $e);
+            }
+        }
+    }
+
     public function testParseFileNotFound(): void
     {
         $this->expectException(\RuntimeException::class);

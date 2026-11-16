@@ -519,5 +519,101 @@
         }
       }
     }
+  },
+  {
+    "archivo": "pose-brazos-cruzados",
+    "opciones": {
+      "semilla": 3,
+      "sexo": "m",
+      "edad": 34,
+      "saludo": "ninguno",
+      "pose": {
+        "manos": "cruzados"
+      },
+      "vestir": [
+        "camisa-manga-corta",
+        "pantalon-vestir",
+        "zapatos-vestir"
+      ]
+    }
+  },
+  {
+    "archivo": "pose-manos-juntas",
+    "opciones": {
+      "semilla": 3,
+      "sexo": "f",
+      "edad": 34,
+      "saludo": "ninguno",
+      "pose": {
+        "manos": "juntas"
+      },
+      "vestir": [
+        "camiseta-cap",
+        "falda-midi",
+        "zapatos-vestir"
+      ]
+    }
+  },
+  {
+    "archivo": "pose-mano-en-el-pecho",
+    "opciones": {
+      "semilla": 5,
+      "sexo": "m",
+      "edad": 70,
+      "pose": "mayor",
+      "saludo": "ninguno"
+    }
+  },
+  {
+    "archivo": "pose-infantil",
+    "opciones": {
+      "semilla": 8,
+      "sexo": "f",
+      "edad": 8,
+      "pose": "infantil"
+    }
+  },
+  {
+    "archivo": "familia-mapuche-espanol-vasco",
+    "tipo": "familia",
+    "opciones": {
+      "semilla": 4,
+      "generaciones": 3,
+      "anio": 1985,
+      "edad": 30,
+      "sexo": "f",
+      "saludo": "ninguno",
+      "detalle": "minimo",
+      "linaje": {
+        "etnia": "mapuche,espanol",
+        "padre": {
+          "etnia": "espanol",
+          "padre": {
+            "etnia": "vasco"
+          }
+        },
+        "madre": {
+          "etnia": "mapuche"
+        }
+      }
+    }
+  },
+  {
+    "archivo": "espalda-huaso",
+    "opciones": {
+      "semilla": 3,
+      "atuendo": "huaso",
+      "edad": 45,
+      "vista": "espalda"
+    }
+  },
+  {
+    "archivo": "espalda-mapuche-trenzas",
+    "opciones": {
+      "semilla": 5,
+      "atuendo": "mapuche-mujer",
+      "edad": 30,
+      "vista": "espalda"
+    }
   }
 ]

@@ -2,7 +2,7 @@
 """Genera la página de revisión del catálogo (catalog/revision/web/).
 
 Una hoja de miniaturas por movimiento (sprites/<movimiento>.jpg, sacadas de la caché
-del build) y un index.html con los datos de las 1000 piezas. La página se publica
+del build) y un index.html con los datos de las 2000 piezas. La página se publica
 como Artifact: quien la abre marca cada obra y cada autor como «bien» o «corregir»
 con una nota, y esas marcas se guardan en la base de datos del Artifact.
 

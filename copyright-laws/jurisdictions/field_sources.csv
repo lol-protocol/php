@@ -107,7 +107,7 @@ BZ,"Copyright Act, Cap. 252 (Revised Edition 2020)",orphan_works,7f23cda72e,low,
 BZ,"Copyright Act, Cap. 252 (Revised Edition 2020)",registration_required,7f23cda72e,medium,2026-10-25
 BZ,"Copyright Act, Cap. 252 (Revised Edition 2020)",enforcement_body,4f3ef3882d,medium,2026-10-25
 BZ,"Copyright Act, Cap. 252 (Revised Edition 2020)",treaties_signatory,6fffa22380,high,2026-10-25
-CA,,term_of_protection,f34ac52893,high,2026-10-14
+CA,,term_of_protection,50ae55eb1d,high,2026-11-15
 CA,,notes,13ffb05150,high,2026-10-14
 CD,Ordinance-Law No. 86-033 of 5 April 1986 on the Protection of Copyright and Neighbouring Rights,law_name,2a592e319b,high,2026-10-16
 CD,Ordinance-Law No. 86-033 of 5 April 1986 on the Protection of Copyright and Neighbouring Rights,protection_type,2a592e319b,high,2026-10-16
@@ -136,7 +136,7 @@ CR,,digital_protection,ba69719c96,medium,2026-10-14
 CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",law_name,cb2df80cf1,medium,2026-10-16
 CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",protection_type,cb2df80cf1,medium,2026-10-16
 CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",term_of_protection,2bf8613fc1,medium,2026-10-16
-CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",moral_rights,09ac0e4e4d,medium,2026-10-16
+CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",moral_rights,880450e18d,medium,2026-10-16
 CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",orphan_works,6cf0e77999,low,2026-10-16
 CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",fair_use_exceptions,6cf0e77999,low,2026-10-16
 CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",enforcement_body,646da490b0,high,2026-10-16
@@ -168,7 +168,7 @@ DM,"Copyright Act, 2003 (Act No. 5 of 2003)",enforcement_body,c2c2b5338d,medium,
 DM,"Copyright Act, 2003 (Act No. 5 of 2003)",treaties_signatory,f34ebc9616,high,2026-10-25
 DO,,digital_protection,fe5822dff2,low,2026-10-14
 EC,,orphan_works,a6647c96ba,medium,2026-10-15
-EC,,digital_protection,1a750f9877,medium,2026-10-18
+EC,,digital_protection,1a750f9877,medium,2026-11-15
 EG,,term_of_protection,e9f0c86f96,high,2026-10-14
 EG,,digital_protection,98ebe33ad1,high,2026-10-15
 ET,,moral_rights,6abd83948d,low,2026-10-14
@@ -714,3 +714,4 @@ MH,,enforcement_body,f622f29f5b,low,2026-11-12
 MH,,registration_required,f622f29f5b,low,2026-11-12
 MH,,linked_resources,f622f29f5b,low,2026-11-12
 MH,,notes,f622f29f5b,low,2026-11-12
+BR,,term_of_protection,2dbbcf6e94,high,2026-11-15

@@ -36,6 +36,8 @@ svg .eje { stroke: var(--borde); }
 section[hidden] { display: none; }
 .leyenda { list-style: none; display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; padding: 0; margin: .3rem 0 1rem; font-size: .85rem; }
 .leyenda li { display: flex; align-items: center; gap: .4rem; }
+.casilla { justify-content: flex-end; color: var(--texto); }
+.casilla input { margin-right: .3rem; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 </style>
 </head>
@@ -78,10 +80,11 @@ section[hidden] { display: none; }
   <div class="controles">
     <label>País <select id="esp-pais"></select></label>
     <label>Sexo <select id="esp-sexo"><option value="T">Ambos</option><option value="F">Mujeres (desde 1950)</option><option value="M">Hombres (desde 1950)</option></select></label>
+    <label class="casilla"><span><input id="esp-bandas" type="checkbox"> Mostrar bandas de incertidumbre</span></label>
   </div>
   <div id="esp-grafico" role="img" aria-label="Gráfico de la esperanza de vida por década"></div>
   <div id="esp-tabla"></div>
-  <p class="nota"><strong>Al nacer</strong> está arrastrada por la mortalidad infantil: quien sobrevivía a la infancia podía esperar vivir bastante más (las líneas de arriba son la edad media a la que llegaba quien cumplía cada edad). Antes de 1950 son estimaciones que interpolan pocos datos reales; los valores iguales en varias décadas seguidas son supuestos. <strong>De los 15 años en adelante las cifras son modeladas</strong> (modelo log-cuadrático de Wilmoth et al.), no medidas, con calidad C en todas las épocas. Cifras de período de toda la población, no de una generación ni de una persona.</p>
+  <p class="nota"><strong>Al nacer</strong> está arrastrada por la mortalidad infantil: quien sobrevivía a la infancia podía esperar vivir bastante más (las líneas de arriba son la edad media a la que llegaba quien cumplía cada edad). Antes de 1950 son estimaciones que interpolan pocos datos reales; los valores iguales en varias décadas seguidas son supuestos. Las **bandas** (casilla de arriba) desde 1950 son la discrepancia entre fuentes; **antes de 1950 son un supuesto del proyecto, no una medición**: no hay una segunda fuente independiente. Antes de 1800 solo hay la esperanza al nacer de Reino Unido, Suecia, Finlandia y Dinamarca. Mujeres y hombres usan la mortalidad infantil de ambos sexos, que no hay por sexo. <strong>De los 15 años en adelante las cifras son modeladas</strong> (modelo log-cuadrático de Wilmoth et al.), no medidas, con calidad C en todas las épocas. Cifras de período de toda la población, no de una generación ni de una persona.</p>
 </section>
 
 <section id="londres" hidden>
@@ -201,6 +204,11 @@ section[hidden] { display: none; }
       svg.appendChild(s('text', { x: X(x), y: H - 8, 'text-anchor': 'middle' }, String(x)));
     }
     series.forEach(function (serie) {
+      if (serie.banda && serie.banda.length > 1) {
+        var arriba = serie.banda.map(function (p) { return X(p[0]).toFixed(1) + ',' + Y(Math.min(p[2], ymax)).toFixed(1); });
+        var abajo = serie.banda.slice().reverse().map(function (p) { return X(p[0]).toFixed(1) + ',' + Y(Math.max(p[1], 0)).toFixed(1); });
+        svg.appendChild(s('polygon', { points: arriba.concat(abajo).join(' '), style: 'fill:' + serie.color + ';fill-opacity:.18;stroke:none' }));
+      }
       var trozos = [], actual = [];
       serie.puntos.forEach(function (p) { if (p === null) { if (actual.length) trozos.push(actual); actual = []; } else actual.push(X(p[0]).toFixed(1) + ',' + Y(p[1]).toFixed(1)); });
       if (actual.length) trozos.push(actual);
@@ -224,45 +232,54 @@ section[hidden] { display: none; }
   paises.forEach(function (p) { $('esp-pais').appendChild(opcion(p[0], p[1])); });
   $('esp-pais').value = 'SE';
   function esperanza() {
-    var codigo = $('esp-pais').value, sexo = $('esp-sexo').value;
+    var codigo = $('esp-pais').value, sexo = $('esp-sexo').value, bandas = $('esp-bandas').checked;
     var tabla = limpiar($('esp-tabla')), graf = limpiar($('esp-grafico'));
     if (!codigo) return;
     var EDADES = [5, 15, 30, 45, 60];
-    var filas = [], nacer = [], porEdad = {};
+    var filas = [], nacer = [], banda0 = [], porEdad = {};
     EDADES.forEach(function (x) { porEdad[x] = []; });
-    for (var d = 1800; d <= 2000; d += 10) {
+    for (var d = 1500; d <= 2000; d += 10) {
       var e0 = m.esperanzaRestante(codigo, d, 0, sexo);
-      nacer.push(e0 === null ? null : [d + 5, e0]);
-      var fila = { decada: d, e0: e0, e: {}, l5: null };
+      if (e0 === null) continue;
+      var b0 = m.bandaEsperanza(codigo, d, 0, sexo);
+      nacer.push([d + 5, e0]);
+      if (b0) banda0.push([d + 5, b0[0], b0[1]]);
+      var fila = { decada: d, e0: e0, b0: b0, e: {}, b: {}, l5: sexo === 'T' ? m.supervivencia(codigo, d, 5, 'T') : null };
       EDADES.forEach(function (x) {
-        var e = sexo === 'T' ? m.esperanzaRestante(codigo, d, x, 'T') : null;
+        var e = m.esperanzaRestante(codigo, d, x, sexo);
         fila.e[x] = e;
+        fila.b[x] = e === null ? null : m.bandaEsperanza(codigo, d, x, sexo);
         porEdad[x].push(e === null ? null : [d + 5, x + e]);
       });
-      fila.l5 = sexo === 'T' ? m.supervivencia(codigo, d, 5, 'T') : null;
-      if (e0 !== null) filas.push(fila);
+      filas.push(fila);
     }
     if (!filas.length) { tabla.appendChild(h('p', { 'class': 'vacio' }, 'No hay datos de este país' + (sexo === 'T' ? '.' : ' para ese sexo (hay desde 1950).'))); return; }
-    var series = [{ nombre: 'Al nacer', color: 'var(--linea1)', puntos: nacer }];
-    if (sexo === 'T') {
-      var estilos = [['var(--linea2)', '5 4'], ['var(--linea3)', '2 3'], ['var(--linea4)', '8 3 2 3'], ['var(--linea5)', '1 4']];
-      [[5, 0], [15, 1], [45, 2], [60, 3]].forEach(function (p) {
+    var xmin = Math.floor(filas[0].decada / 50) * 50;
+    var series = [{ nombre: 'Al nacer', color: 'var(--linea1)', puntos: nacer, banda: bandas ? banda0 : null }];
+    var estilos = [['var(--linea2)', '5 4'], ['var(--linea3)', '2 3'], ['var(--linea4)', '8 3 2 3'], ['var(--linea5)', '1 4']];
+    [[5, 0], [15, 1], [45, 2], [60, 3]].forEach(function (p) {
+      if (porEdad[p[0]].some(function (v) { return v !== null; })) {
         series.push({ nombre: 'Edad media de muerte de quien cumplía ' + p[0], color: estilos[p[1]][0], trazo: estilos[p[1]][1], puntos: porEdad[p[0]] });
-      });
-    }
-    graf.appendChild(grafico(series, 1800, 2010, 100));
+      }
+    });
+    graf.appendChild(grafico(series, xmin, 2010, 100));
     graf.appendChild(leyenda(series));
     var cuerpo = h('tbody');
-    var num = function (v) { return h('td', { 'class': 'num' }, v === null ? '' : v.toFixed(1)); };
+    var num = function (v, b) {
+      var texto = v === null ? '' : v.toFixed(1) + (bandas && b ? ' (' + b[0].toFixed(1) + '–' + b[1].toFixed(1) + ')' : '');
+      return h('td', { 'class': 'num' }, texto);
+    };
     filas.forEach(function (f) {
-      cuerpo.appendChild(h('tr', {}, h('td', {}, f.decada + '–' + (f.decada + 9)), num(f.e0), num(f.e[5]), num(f.e[15]), num(f.e[30]), num(f.e[45]), num(f.e[60]),
-        h('td', { 'class': 'num' }, f.l5 === null ? '' : Math.round(f.l5 * 100) + ' %'), h('td', {}, f.decada < 1950 ? 'estimación (C)' : (sexo === 'T' ? 'ONU (B); desde los 15, modelo (C)' : 'ONU (B)'))));
+      var calidad = f.decada < 1950 ? 'estimación (C)' : (sexo === 'T' ? 'ONU (B); desde los 15, modelo (C)' : 'ONU (B); desde los 5, modelo (C)');
+      cuerpo.appendChild(h('tr', {}, h('td', {}, f.decada + '–' + (f.decada + 9)), num(f.e0, f.b0), num(f.e[5], f.b[5]), num(f.e[15], f.b[15]), num(f.e[30], f.b[30]), num(f.e[45], f.b[45]), num(f.e[60], f.b[60]),
+        h('td', { 'class': 'num' }, f.l5 === null ? '' : Math.round(f.l5 * 100) + ' %'), h('td', {}, calidad)));
     });
     tabla.appendChild(h('table', {}, h('caption', { 'class': 'sr' }, 'Esperanza de vida restante por década y edad'),
       h('thead', {}, h('tr', {}, h('th', {}, 'Década'), h('th', { 'class': 'num' }, 'Al nacer'), h('th', { 'class': 'num' }, 'Restante a los 5'), h('th', { 'class': 'num' }, 'a los 15'), h('th', { 'class': 'num' }, 'a los 30'), h('th', { 'class': 'num' }, 'a los 45'), h('th', { 'class': 'num' }, 'a los 60'), h('th', { 'class': 'num' }, 'Llega a los 5'), h('th', {}, 'Calidad'))), cuerpo));
   }
   $('esp-pais').addEventListener('change', esperanza);
   $('esp-sexo').addEventListener('change', esperanza);
+  $('esp-bandas').addEventListener('change', esperanza);
 
   // ---- Londres
   var londres = [];

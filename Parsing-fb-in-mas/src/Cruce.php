@@ -18,57 +18,94 @@ use DefamatoryContentReview\Phonetic\PhoneticFolderRegistry;
  */
 final class Cruce
 {
-    private const PUNTAJE_MINIMO = 0.6;
-
     /** Partículas de nombres: no cuentan como coincidencia («de la Cruz» no hace parecidas a dos personas). */
     private const PARTICULAS = ['de', 'del', 'la', 'las', 'los', 'el', 'y', 'e', 'da', 'das', 'do', 'dos', 'di', 'du', 'le',
         'van', 'von', 'der', 'den', 'ten', 'ter', 'bin', 'ibn', 'al'];
 
     /**
-     * @param list<array<string, mixed>> $a perfiles (la salida de `aArreglo()`)
-     * @param list<array<string, mixed>> $b
+     * Cruza dos listas de perfiles. Para archivos grandes conviene {@see indexar()} la fuente B y {@see cruzar()}
+     * la A por separado: así A se lee de un generador, sin cargarla entera.
+     *
+     * @param iterable<array<string, mixed>> $a perfiles (la salida de `aArreglo()`)
+     * @param iterable<array<string, mixed>> $b
      * @param string $idioma código de tres letras del plegado fonético (`spa`, `eng`…)
      * @return array{candidatos: list<array{a: array<string, mixed>, b: array<string, mixed>, puntaje: float, evidencia: list<string>, estado: string}>, excluidos_vivos: int}
      */
-    public static function candidatos(array $a, array $b, string $idioma = 'spa'): array
+    public static function candidatos(iterable $a, iterable $b, string $idioma = 'spa', ?OpcionesCruce $opciones = null): array
     {
-        $excluidos = 0;
-        $fa = self::soloFallecidos($a, $excluidos);
-        $fb = self::soloFallecidos($b, $excluidos);
+        $indice = self::indexar($b, $idioma);
+        $vivosA = 0;
+        $candidatos = self::cruzar($a, $indice, $idioma, $opciones ?? new OpcionesCruce(), $vivosA);
 
-        // Índice invertido: palabra plegada → posiciones en $fb. Evita comparar todo con todo.
-        $indice = [];
-        $fichasB = [];
-        foreach ($fb as $i => $p) {
-            $fichasB[$i] = self::ficha($p, $idioma);
-            foreach ($fichasB[$i]['palabras'] as $palabra) {
-                $indice[$palabra][] = $i;
+        return ['candidatos' => $candidatos, 'excluidos_vivos' => $indice->omitidos + $vivosA];
+    }
+
+    /**
+     * Recuerda de la fuente B solo lo necesario para comparar (ver {@see IndiceCruce}). Los perfiles que pueden
+     * estar vivos no entran: se cuentan en `omitidos`.
+     *
+     * @param iterable<array<string, mixed>> $b
+     */
+    public static function indexar(iterable $b, string $idioma = 'spa'): IndiceCruce
+    {
+        $indice = new IndiceCruce();
+        foreach ($b as $perfil) {
+            if (!self::fallecido($perfil)) {
+                $indice->omitidos++;
+                continue;
+            }
+            $ficha = self::ficha($perfil, $idioma);
+            $posicion = count($indice->fichas);
+            $indice->fichas[] = $ficha + ['ref' => self::referencia($perfil)];
+            if ($ficha['primero'] !== null) {
+                $indice->porPrimero[$ficha['primero']][] = $posicion;
             }
         }
+        return $indice;
+    }
 
+    /**
+     * Compara cada perfil de A contra el índice de B y devuelve las parejas candidatas, de mayor a menor puntaje.
+     *
+     * @param iterable<array<string, mixed>> $a
+     * @param int $omitidosA se le suma cuántos perfiles de A se omitieron por poder estar vivos
+     * @return list<array{a: array<string, mixed>, b: array<string, mixed>, puntaje: float, evidencia: list<string>, estado: string}>
+     */
+    public static function cruzar(iterable $a, IndiceCruce $indice, string $idioma, OpcionesCruce $opciones, int &$omitidosA = 0): array
+    {
         $candidatos = [];
-        foreach ($fa as $p) {
-            $x = self::ficha($p, $idioma);
-            $compartidas = [];
+        foreach ($a as $perfil) {
+            if (!self::fallecido($perfil)) {
+                $omitidosA++;
+                continue;
+            }
+            $x = self::ficha($perfil, $idioma);
+            // Candidatas: las de B cuyo nombre de pila está en el nombre de A («María de la Cruz» no es «José
+            // de la Cruz»); además el de A debe estar en el nombre de ellas (se comprueba abajo).
+            $candidatasB = [];
             foreach ($x['palabras'] as $palabra) {
-                foreach ($indice[$palabra] ?? [] as $i) {
-                    $compartidas[$i] = ($compartidas[$i] ?? 0) + 1;
+                foreach ($indice->porPrimero[$palabra] ?? [] as $i) {
+                    $candidatasB[$i] = true;
                 }
             }
-            foreach ($compartidas as $i => $cuantas) {
-                $y = $fichasB[$i];
-                $union = count(array_unique([...$x['palabras'], ...$y['palabras']]));
-                $puntaje = $cuantas / $union;
-                $evidencia = [$cuantas . ' palabras del nombre coinciden (plegado fonético)'];
-                // El nombre de pila de cada uno debe estar en el otro: «María de la Cruz» no es «José de la Cruz».
-                if ($cuantas < 2 || !in_array($x['primero'], $y['palabras'], true) || !in_array($y['primero'], $x['palabras'], true)) {
+            foreach (array_keys($candidatasB) as $i) {
+                $y = $indice->fichas[$i];
+                if (!in_array($x['primero'], $y['palabras'], true)) {
                     continue;
                 }
+                $cuantas = count(array_intersect($x['palabras'], $y['palabras']));
+                if ($cuantas < $opciones->palabrasMinimas) {
+                    continue;
+                }
+                $union = count($x['palabras']) + count($y['palabras']) - $cuantas;
+                $puntaje = $cuantas / $union;
+                $evidencia = [$cuantas . ' palabras del nombre coinciden (plegado fonético)'];
                 if ($x['anio'] !== null && $y['anio'] !== null) {
-                    if (abs($x['anio'] - $y['anio']) > 5) {
+                    $diferencia = abs($x['anio'] - $y['anio']);
+                    if ($diferencia > $opciones->maxAnios) {
                         continue;
                     }
-                    if (abs($x['anio'] - $y['anio']) <= 1) {
+                    if ($diferencia <= 1) {
                         $puntaje += 0.2;
                         $evidencia[] = 'nacimientos con un año de diferencia o menos';
                     }
@@ -77,12 +114,16 @@ final class Cruce
                     $puntaje += 0.1;
                     $evidencia[] = 'comparten una palabra de lugar';
                 }
-                if ($puntaje < self::PUNTAJE_MINIMO) {
+                if (array_intersect($x['parientes'], $y['parientes']) !== []) {
+                    $puntaje += 0.15;
+                    $evidencia[] = 'comparten un pariente por nombre';
+                }
+                if ($puntaje < $opciones->puntajeMinimo) {
                     continue;
                 }
                 $candidatos[] = [
-                    'a' => self::referencia($p),
-                    'b' => self::referencia($fb[$i]),
+                    'a' => self::referencia($perfil),
+                    'b' => $y['ref'],
                     'puntaje' => round(min($puntaje, 1.0), 2),
                     'evidencia' => $evidencia,
                     'estado' => 'candidato: requiere revisión humana, no es una fusión',
@@ -91,29 +132,20 @@ final class Cruce
         }
         usort($candidatos, static fn (array $p, array $q): int => $q['puntaje'] <=> $p['puntaje']);
 
-        return ['candidatos' => $candidatos, 'excluidos_vivos' => $excluidos];
+        return $candidatos;
     }
 
     /**
-     * @param list<array<string, mixed>> $perfiles
-     * @return list<array<string, mixed>>
+     * @param array<string, mixed> $perfil
      */
-    private static function soloFallecidos(array $perfiles, int &$excluidos): array
+    private static function fallecido(array $perfil): bool
     {
-        $salida = [];
-        foreach ($perfiles as $p) {
-            if (($p['posiblemente_vivo'] ?? true) !== false || ($p['muerte'] ?? null) === null) {
-                $excluidos++;
-                continue;
-            }
-            $salida[] = $p;
-        }
-        return $salida;
+        return ($perfil['posiblemente_vivo'] ?? true) === false && ($perfil['muerte'] ?? null) !== null;
     }
 
     /**
      * @param array<string, mixed> $p
-     * @return array{palabras: list<string>, primero: ?string, anio: ?int, lugares: list<string>}
+     * @return array{palabras: list<string>, primero: ?string, anio: ?int, lugares: list<string>, parientes: list<string>}
      */
     private static function ficha(array $p, string $idioma): array
     {
@@ -122,11 +154,24 @@ final class Cruce
             $anio = (int) $m[1];
         }
         $palabras = self::plegar(is_string($p['nombre'] ?? null) ? $p['nombre'] : '', $idioma);
+
+        // Parientes con nombre: «padre|palabras plegadas del nombre». Sin nombre (solo un identificador) no se compara.
+        $parientes = [];
+        $lista = $p['parientes'] ?? null;
+        foreach (is_array($lista) ? $lista : [] as $pariente) {
+            $nombre = Json::texto($pariente, 'nombre');
+            $relacion = Json::texto($pariente, 'relacion');
+            if ($nombre !== null && $relacion !== null && ($plegado = self::plegar($nombre, $idioma)) !== []) {
+                $parientes[] = $relacion . '|' . implode(' ', $plegado);
+            }
+        }
+
         return [
             'palabras' => $palabras,
             'primero' => $palabras[0] ?? null,
             'anio' => $anio,
             'lugares' => self::lugarEspecifico(is_string($p['lugar_nacimiento'] ?? null) ? $p['lugar_nacimiento'] : '', $idioma),
+            'parientes' => $parientes,
         ];
     }
 

@@ -5,7 +5,6 @@
 
 import { P } from './ayuda.js';
 
-const pat = (tipo, escala = 1, rol = 'secundario') => ({ tipo, escala, rol });
 
 export const PRENDAS_MODA = [
   // ===== Vestidos =====

@@ -112,7 +112,7 @@ BG,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to 
 BG,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",retention_period,64ee07caa3,medium,2026-10-16
 BG,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",enforcement_authority,7508b6ab97,high,2026-10-16
 BG,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",penalties_range,7d2749471a,medium,2026-10-16
-BG,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",exemptions,bd49aaf753,low,2026-10-16
+BG,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",exemptions,bd49aaf753,medium,2026-11-14
 BG,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",deceased_data,b5997efc04,medium,2026-10-16
 BG,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",research_exemption,bd49aaf753,medium,2026-10-16
 BG,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",genetic_data,64ee07caa3,medium,2026-10-16
@@ -460,7 +460,7 @@ HK,,deceased_data,efe37e9018,high,2026-10-18
 HK,,research_exemption,41bd349c22,medium,2026-10-18
 HK,,genetic_data,41bd349c22,medium,2026-10-18
 HR,,deceased_data,372bbc852c,high,2026-10-18
-HR,,research_exemption,b00dec7695,low,2026-10-18
+HR,,research_exemption,b00dec7695,high,2026-11-14
 HR,,genetic_data,b00dec7695,high,2026-10-18
 HU,,enforcement_authority,895987e130,high,2026-10-14
 HU,,deceased_data,b6830198f1,high,2026-10-18
@@ -526,7 +526,7 @@ KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,enactmen
 KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,scope,180c0b669f,medium,2026-10-25
 KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,applies_to,180c0b669f,medium,2026-10-25
 KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,key_requirements,180c0b669f,medium,2026-10-25
-KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,data_categories,43417c983f,low,2026-10-25
+KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,data_categories,180c0b669f,medium,2026-11-14
 KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,enforcement_authority,180c0b669f,medium,2026-10-25
 KR,,penalties_range,5c866d8f75,medium,2026-10-14
 KR,,deceased_data,32629e856b,medium,2026-10-17
@@ -618,7 +618,7 @@ MC,Law No. 1.565 of 3 December 2024 on the Protection of Personal Data,enactment
 MC,Law No. 1.565 of 3 December 2024 on the Protection of Personal Data,effective_date,b126ec54a8,low,2026-10-22
 MC,Law No. 1.565 of 3 December 2024 on the Protection of Personal Data,scope,a76284158a,medium,2026-10-22
 MC,Law No. 1.565 of 3 December 2024 on the Protection of Personal Data,applies_to,a76284158a,medium,2026-10-22
-MC,Law No. 1.565 of 3 December 2024 on the Protection of Personal Data,data_categories,a76284158a,low,2026-10-22
+MC,Law No. 1.565 of 3 December 2024 on the Protection of Personal Data,data_categories,3297e6149b,medium,2026-11-14
 MC,Law No. 1.565 of 3 December 2024 on the Protection of Personal Data,enforcement_authority,01d0d00853,high,2026-10-22
 MC,Law No. 1.565 of 3 December 2024 on the Protection of Personal Data,penalties_range,f27592ccbb,medium,2026-10-22
 MD,,enactment_date,53fac0e3b5,medium,2026-10-15
@@ -819,7 +819,7 @@ SC,Data Protection Act 2023 (Act 24 of 2023),applies_to,3ead514d4e,medium,2026-1
 SC,Data Protection Act 2023 (Act 24 of 2023),key_requirements,2ad852c99b,medium,2026-10-22
 SC,Data Protection Act 2023 (Act 24 of 2023),data_categories,3ead514d4e,medium,2026-10-22
 SC,Data Protection Act 2023 (Act 24 of 2023),enforcement_authority,f743abf43a,high,2026-10-22
-SC,Data Protection Act 2023 (Act 24 of 2023),penalties_range,d8c492503a,low,2026-10-22
+SC,Data Protection Act 2023 (Act 24 of 2023),penalties_range,120778ad0d,medium,2026-11-14
 SC,Data Protection Act 2023 (Act 24 of 2023),exemptions,3ead514d4e,medium,2026-10-22
 SC,Data Protection Act 2023 (Act 24 of 2023),genetic_data,3ead514d4e,medium,2026-10-22
 SE,,enforcement_authority,94ae9e2eab,high,2026-10-14

@@ -32,7 +32,11 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         'source_line' => ['int'],
         'business_name_folded' => ['string'],
         'street_folded' => ['string'],
+        // Where the owner checked that a business whose name holds a given name is not a person's: not null = publishable.
+        'publishable_evidence' => ['text'],
     ];
+
+    private const MAX_EVIDENCE_LENGTH = 1000;
 
     private const INDEXED_COLUMNS = [
         'business_name', 'street', 'phone_number', 'business_type', 'country_code', 'source_directory_id',
@@ -134,27 +138,31 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
     }
 
     /** @return list<JuridicalEntity> */
-    public function findByBusinessName(string $name): array
+    public function findByBusinessName(string $name, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureConnection();
 
-        $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('business_name_folded', ':name') . ' ORDER BY business_name';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':name' => $this->dialect->containsValue($this->fold($name))]);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->queryShown(
+            $this->dialect->containsCondition('business_name_folded', ':name'),
+            [':name' => $this->dialect->containsValue($this->fold($name))],
+            'business_name',
+            $limit,
+            $offset
+        );
     }
 
     /** @return list<JuridicalEntity> */
-    public function findByStreet(string $street): array
+    public function findByStreet(string $street, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureConnection();
 
-        $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('street_folded', ':street') . ' ORDER BY street, business_name';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':street' => $this->dialect->containsValue($this->fold($street))]);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->queryShown(
+            $this->dialect->containsCondition('street_folded', ':street'),
+            [':street' => $this->dialect->containsValue($this->fold($street))],
+            'street, business_name',
+            $limit,
+            $offset
+        );
     }
 
     public function findByPhone(string $phone): ?JuridicalEntity
@@ -173,17 +181,23 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
     }
 
     /** @return list<JuridicalEntity> */
-    public function findByBusinessType(string $type): array
+    public function findByBusinessType(string $type, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureConnection();
-        $sql = $this->dialect->containsCondition('business_type', ':type');
-        return $this->privacy->filterBusinesses($this->findMany($sql, [':type' => $this->dialect->containsValue($type)], 'business_name'));
+
+        return $this->queryShown(
+            $this->dialect->containsCondition('business_type', ':type'),
+            [':type' => $this->dialect->containsValue($type)],
+            'business_name',
+            $limit,
+            $offset
+        );
     }
 
     /** @return list<JuridicalEntity> */
-    public function getAll(): array
+    public function getAll(?int $limit = null, int $offset = 0): array
     {
-        return $this->privacy->filterBusinesses($this->getAllOrdered('business_name'));
+        return $this->queryShown('1 = 1', [], 'business_name', $limit, $offset);
     }
 
     public function update(JuridicalEntity $entity): bool
@@ -212,6 +226,85 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
     }
 
     /**
+     * Says that this business may be shown to a visitor although its name holds a given name ("Farmacia Rosa",
+     * "Hotel Azucena": a flower), which Privacy would otherwise hide as a living person's. A wrong mark
+     * publishes a living person's name, address and phone number, so it asks for what a second person needs to
+     * check it: where it was checked ($evidence: the business's registration, a sign, a directory's own text).
+     *
+     * Only the owner of the database can do this: a database opened for visitors refuses. insert() and update()
+     * never touch the mark.
+     *
+     * @return bool false when there is no such business
+     * @throws \LogicException If this database was opened for visitors
+     * @throws \InvalidArgumentException If $evidence is empty or too long
+     */
+    public function markPublishable(int $id, string $evidence): bool
+    {
+        $this->requireOwner('mark a business publishable');
+
+        $evidence = trim($evidence);
+        if ($evidence === '') {
+            throw new \InvalidArgumentException('Say where it was checked that this is not a person\'s name (the registration, a sign): without it nobody can check the mark');
+        }
+        if (mb_strlen($evidence) > self::MAX_EVIDENCE_LENGTH) {
+            throw new \InvalidArgumentException('The evidence is longer than ' . self::MAX_EVIDENCE_LENGTH . ' characters: say where it is, do not copy it');
+        }
+
+        $this->validateEntityId($id);
+        if ($this->findOneById($id) === null) {
+            return false;
+        }
+
+        $stmt = $this->pdo->prepare('UPDATE juridical_entities SET publishable_evidence = :evidence, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
+        $stmt->execute([':evidence' => $evidence, ':id' => $id]);
+
+        return true;
+    }
+
+    /**
+     * Takes the mark back: the business goes back to being judged by its name.
+     *
+     * @return bool false when there is no such business
+     * @throws \LogicException If this database was opened for visitors
+     */
+    public function clearPublishable(int $id): bool
+    {
+        $this->requireOwner('take back a publishable mark');
+
+        $this->validateEntityId($id);
+        if ($this->findOneById($id) === null) {
+            return false;
+        }
+
+        $stmt = $this->pdo->prepare('UPDATE juridical_entities SET publishable_evidence = NULL, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+
+        return true;
+    }
+
+    /**
+     * Where it was checked that this business is not a person's name, or null when it is not marked. The text is
+     * not part of the entity, so it is only for the owner.
+     *
+     * @throws \LogicException If this database was opened for visitors
+     */
+    public function getPublishableEvidence(int $id): ?string
+    {
+        $this->requireOwner('read the evidence of a publishable mark');
+
+        $row = $this->findOneById($id);
+
+        return isset($row['publishable_evidence']) ? (string) $row['publishable_evidence'] : null;
+    }
+
+    private function requireOwner(string $action): void
+    {
+        if ($this->privacy->hidesLiving()) {
+            throw new \LogicException("A database opened for visitors cannot {$action}: open it with Privacy::forOwner()");
+        }
+    }
+
+    /**
      * How many businesses this reader can see: everything stored for the owner, only what may be shown for a
      * visitor (as PhoneDirectoryPDODatabase::count()).
      */
@@ -224,7 +317,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
      * @param array{businessName?: string, street?: string, phone?: string, businessType?: string} $criteria
      * @return list<JuridicalEntity>
      */
-    public function search(array $criteria): array
+    public function search(array $criteria, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureConnection();
 
@@ -236,19 +329,27 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         ]);
 
         if (empty($where)) {
-            return $this->getAll();
+            return $this->getAll($limit, $offset);
         }
 
-        $sql = 'SELECT * FROM juridical_entities WHERE ' . implode(' AND ', $where) . ' ORDER BY business_name';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->queryShown(implode(' AND ', $where), $params, 'business_name', $limit, $offset);
     }
 
     public function clear(): bool
     {
         return $this->clearTable();
+    }
+
+    /**
+     * The businesses matching $where that this reader may see; with $limit, one page of them, counted over what the
+     * reader may see (a visitor does not see the businesses that carry a living person's name).
+     *
+     * @param SqlParams $params
+     * @return list<JuridicalEntity>
+     */
+    private function queryShown(string $where, array $params, string $orderBy, ?int $limit, int $offset): array
+    {
+        return $this->fetchPage($where, $params, $orderBy, $limit, $offset, $this->privacy->hidesLiving(), fn(array $rows) => $this->shown($rows));
     }
 
     /**
@@ -263,7 +364,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
     /** @param Row $row */
     protected function rowToEntity(array $row): JuridicalEntity
     {
-        return new JuridicalEntity(
+        $entity = new JuridicalEntity(
             businessName: $row['business_name'],
             street: $row['street'],
             legalName: $row['legal_name'],
@@ -275,6 +376,8 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
             sourceDirectoryId: $row['source_directory_id'] ?? null,
             sourceLine: isset($row['source_line']) ? (int) $row['source_line'] : null
         );
+
+        return isset($row['publishable_evidence']) ? $entity->withPublishable(true) : $entity;
     }
 
     /** @return SqlParams */

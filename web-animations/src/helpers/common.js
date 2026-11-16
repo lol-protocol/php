@@ -41,15 +41,8 @@ class SequenceToggle extends AnimationToggle {
         this.timeoutId = null;
     }
 
-    toggle() {
-        super.toggle();
-        if (this.isAnimating) {
-            this.scheduleNext();
-        } else {
-            this._clearTimeout();
-        }
-    }
-
+    // toggle() es el de AnimationToggle: llama a pause() o a resume() de esta clase, que ya detienen o
+    // reanudan la secuencia. Antes también la reanudaba aquí, y el callback corría dos veces.
     pause() {
         super.pause();
         this._clearTimeout();
@@ -85,15 +78,7 @@ class ParticleEmitterToggle extends AnimationToggle {
         this.emitterIntervalId = null;
     }
 
-    toggle() {
-        super.toggle();
-        if (this.isAnimating) {
-            this.startEmitting();
-        } else {
-            this._stopEmitting();
-        }
-    }
-
+    // toggle() es el de AnimationToggle: pause() y resume() de esta clase ya detienen o arrancan el emisor.
     pause() {
         super.pause();
         this._stopEmitting();
@@ -343,29 +328,40 @@ class AnimationManager {
             return;
         }
         this.isStarted = true;
-        const loop = () => {
-            if (this.isRunning) {
-                this.objects.forEach(obj => obj.update());
-            }
-            this.animationId = requestAnimationFrame(loop);
-        };
-        loop();
+        this._loop();
+    }
+
+    // Un cuadro y el pedido del siguiente. En pausa no se pide ninguno: antes el ciclo seguía corriendo
+    // (y despertando a la página 60 veces por segundo) solo para no actualizar nada.
+    _loop = () => {
+        if (!this.isRunning) {
+            this.animationId = null;
+            return;
+        }
+        this.objects.forEach(obj => obj.update());
+        this.animationId = requestAnimationFrame(this._loop);
+    };
+
+    _cancelFrame() {
+        if (this.animationId) cancelAnimationFrame(this.animationId);
+        this.animationId = null;
     }
 
     stop() {
-        if (this.animationId) {
-            cancelAnimationFrame(this.animationId);
-            this.animationId = null;
-            this.isStarted = false;
-        }
+        this._cancelFrame();
+        this.isStarted = false;
     }
 
     pause() {
         this.isRunning = false;
+        this._cancelFrame();
     }
 
     resume() {
+        if (this.isRunning) return;
         this.isRunning = true;
+        // Si ya arrancó, retoma el ciclo; si no, start() lo hará.
+        if (this.isStarted) this._loop();
     }
 }
 
@@ -396,6 +392,15 @@ const SVGPatterns = {
                         class: 'web-line'
                     });
                     svg.appendChild(line);
+                }
+
+                if (i === pointsPerLayer - 1 && pointsPerLayer > 2) {
+                    // Cierra el anillo: del último punto al primero.
+                    const first = layerPoints[0];
+                    svg.appendChild(createSVGElement('line', {
+                        x1: x, y1: y, x2: first.x, y2: first.y,
+                        class: 'web-line'
+                    }));
                 }
 
                 if (layer > 1) {

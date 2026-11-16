@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
-import { generarSVG } from '../src/index.js';
+import { generarSVG, generarFamilia } from '../src/index.js';
 
 const DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'ejemplos');
 const lista = JSON.parse(readFileSync(join(DIR, 'lista.json'), 'utf8'));
@@ -13,7 +13,7 @@ const lista = JSON.parse(readFileSync(join(DIR, 'lista.json'), 'utf8'));
 test('cada ejemplo de lista.json coincide con el SVG commiteado (corre node bin/construir.js si cambió el código)', () => {
   for (const e of lista) {
     const guardado = readFileSync(join(DIR, `${e.archivo}.svg`), 'utf8');
-    assert.equal(`${generarSVG(e.opciones)}\n`, guardado, `${e.archivo}.svg está desactualizado`);
+    assert.equal(`${e.tipo === 'familia' ? generarFamilia(e.opciones).svg : generarSVG(e.opciones)}\n`, guardado, `${e.archivo}.svg está desactualizado`);
   }
 });
 

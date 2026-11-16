@@ -3,7 +3,7 @@ import { perfilTorso } from '../cuerpo.js';
 import { anchoEn, relleno, parte, linea, flecos } from './comun.js';
 
 export function faja(M, p, k, ctx) {
-  const { H, y, cx, w } = M;
+  const { H, y, cx } = M;
   const yy = p.y === 'cadera' ? y.cadera - H * 0.03 : p.y === 'pecho' ? y.pecho + H * 0.03 : y.cintura - H * 0.002;
   const bh = (p.ancho ?? 0.02) * H;
   const T = perfilTorso(M, 0).map(([x, q]) => [x, q]);

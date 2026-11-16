@@ -143,6 +143,15 @@ final class SingleLineEntrySplitter
             return null;
         }
 
+        // Where the house number comes first, a "street" field that opens with words before its number
+        // ("John 12 Oak Street 555-123-4567", after "SMITH,") holds the rest of the name too: the digit boundary
+        // splits it right.
+        if (!in_array($language, StreetRules::NUMBER_LAST_LANGUAGES, true)
+            && preg_match('/^([^\d]*\p{L}[^\d]*)\d/u', $street, $before) === 1
+            && !$looksLikeStreet($before[1])) {
+            return null;
+        }
+
         return ['name' => $name, 'street' => $street, 'phone' => $phone];
     }
 

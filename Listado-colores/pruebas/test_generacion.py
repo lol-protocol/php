@@ -177,6 +177,31 @@ class ArchivosGenerados(unittest.TestCase):
                 ruler.from_disk(BASE["carpeta"] / "exportes" / "spacy" / f"{codigo}.jsonl")
                 self.assertEqual([(e.text, e.ent_id_) for e in nlp(texto).ents], esperado)
 
+    def test_el_ejemplo_de_spacy_se_rechaza_sin_idioma_o_sin_spacy(self):
+        ejemplo = importlib.util.module_from_spec(importlib.util.spec_from_file_location("usar_con_spacy", AQUI / "usar_con_spacy.py"))
+        ejemplo.__spec__.loader.exec_module(ejemplo)
+        for argumentos in ([], ["es"], ["zz", "texto"], ["es", "a", "b"]):
+            with self.subTest(argumentos), contextlib.redirect_stderr(io.StringIO()):
+                self.assertEqual(ejemplo.main(argumentos), 2)
+        error = io.StringIO()
+        with mock.patch.dict(sys.modules, {"spacy": None}), contextlib.redirect_stderr(error):
+            self.assertEqual(ejemplo.main(["es", "Una bufanda verde lima."]), 2)
+        self.assertIn("pip install spacy", error.getvalue())
+
+    @unittest.skipUnless(importlib.util.find_spec("spacy"), "spaCy no está instalado")
+    def test_el_ejemplo_de_spacy_reconoce_los_colores_de_los_archivos_guardados(self):
+        ejemplo = importlib.util.module_from_spec(importlib.util.spec_from_file_location("usar_con_spacy", AQUI / "usar_con_spacy.py"))
+        ejemplo.__spec__.loader.exec_module(ejemplo)
+        for codigo, texto, esperado in (("en", "She wore a light blue dress.", [("light blue", "lightblue", 11, 21)]),
+                                        ("es", "Una bufanda verde lima.", [("verde lima", "lime;limegreen", 12, 22)]),
+                                        ("ja", "青い 空", [("青い", "blue", 0, 2)])):  # ja: sin tokenizador propio, usa el multilingüe
+            with self.subTest(codigo):
+                self.assertEqual(ejemplo.colores(codigo, texto), esperado)
+        salida = io.StringIO()
+        with contextlib.redirect_stdout(salida):
+            self.assertEqual(ejemplo.main(["en", "She wore a light blue dress."]), 0)
+        self.assertEqual(salida.getvalue(), "light blue\tlightblue\t11-21\n")
+
     def test_feats_ud(self):
         for rasgos, esperado in (("Gender=Fem;Number=Sing", "Gender=Fem|Number=Sing"),
                                  ("Number=Plur;Animacy=Anim", "Animacy=Anim|Number=Plur"),  # orden alfabético

@@ -77,7 +77,7 @@ GD,Granada,estado,América,0.117,2.34,0.791,11529,17129,,70.2,22.4,libre,,53,2,4
 GR,Grecia,estado,Europa,10.0,352.30,0.908,24626,36855,,86.3,7.8,libre,73.9,49,4,4,Registros civiles y parroquiales de buena calidad; gran diáspora en EE. UU. y Australia; griego
 GL,Groenlandia,territorio,América,0.056,0.24,,58499,,,,,,,,3,3,Territorio autónomo de Dinamarca; registros parroquiales daneses en línea; población inuit; groenlandés y danés; conectividad y logística limitadas fuera de Nuuk
 GT,Guatemala,estado,América,18.4,254.90,0.662,6151,12385,82.1,60.2,7.9,parcial,49.7,23,3,3,Registros parroquiales coloniales muy valiosos; español y lenguas mayas; inseguridad y conflictividad política
-GG,Guernsey,territorio,Europa,,1.34,,,,,,,,,,4,4,"Dependencia de la Corona británica; registros parroquiales y de la Greffe; diáspora en Canadá, EE. UU. y Australia; inglés; ley de protección de datos propia, equivalente al RGPD; mercado muy pequeño"
+GG,Guernsey,territorio,Europa,0.064,1.34,,,,,,,,,,4,4,"Dependencia de la Corona británica; registros parroquiales y de la Greffe; diáspora en Canadá, EE. UU. y Australia; inglés; ley de protección de datos propia, equivalente al RGPD; mercado muy pequeño"
 GN,Guinea,estado,África,14.8,121.17,0.500,1695,3905,39.6,33.3,3.4,no libre,30.8,26,1,2,Golpe militar en 2021; restricciones a la prensa; francés
 GQ,Guinea Ecuatorial,estado,África,1.89,14.88,0.674,7004,15688,,63.3,7.2,no libre,19.2,17,1,2,Régimen de larga duración; petróleo; español y francés; registros civiles poco accesibles
 GW,Guinea-Bisáu,estado,África,2.20,12.42,0.514,998,2619,63.9,29.8,4.7,parcial,26.3,22,1,2,Inestabilidad política recurrente; portugués; registros poco digitalizados
@@ -100,7 +100,7 @@ IL,Israel,estado,Asia,9.39,159.56,0.919,54217,47527,,88.2,3.5,libre,78.4,62,4,3,
 IT,Italia,estado,Europa,59.3,1488.42,0.915,40430,52726,99.3,89.2,5.0,libre,77.4,56,5,4,Portal Antenati con registros civiles digitalizados; diáspora gigantesca en América; italiano; burocracia lenta
 JM,Jamaica,estado,América,2.84,12.71,0.720,7754,10332,,90.1,44.0,libre,71.3,44,3,4,"Inglés; diáspora en Reino Unido, EE. UU. y Canadá; registros civiles de la época británica"
 JP,Japón,estado,Asia,123.8,1100.40,0.925,33797,45859,,85.5,0.8,libre,81.3,73,3,5,Registro familiar koseki muy estructurado; interés cultural alto pero mercado genealógico pequeño; japonés; APPI
-JE,Jersey,territorio,Europa,,1.72,,,,,,,,,,4,4,"Dependencia de la Corona británica; registros parroquiales anglicanos y archivo de Jersey Heritage en línea; diáspora en Canadá y EE. UU.; inglés; ley de protección de datos propia, equivalente al RGPD; mercado muy pequeño"
+JE,Jersey,territorio,Europa,0.104,1.72,,,,,,,,,,4,4,"Dependencia de la Corona británica; registros parroquiales anglicanos y archivo de Jersey Heritage en línea; diáspora en Canadá y EE. UU.; inglés; ley de protección de datos propia, equivalente al RGPD; mercado muy pequeño"
 JO,Jordania,estado,Asia,11.6,66.59,0.754,5074,9381,94.8,95.6,5.7,no libre,36.2,46,2,3,Registros civiles digitalizados en buena parte; árabe e inglés; población refugiada numerosa; riesgo regional por los conflictos vecinos
 KZ,Kazajistán,estado,Asia,20.6,355.91,0.837,14155,34703,,93.4,13.6,no libre,31.4,39,2,3,Diáspora alemana y rusa histórica; registros soviéticos; ruso y kazajo; control de medios
 KE,Kenia,estado,África,56.4,214.59,0.628,2133,5683,,35.0,1.0,parcial,50.5,31,2,3,Inglés y suajili; protestas recientes con restricciones puntuales; mercado digital activo
@@ -160,7 +160,7 @@ GB,Reino Unido,estado,Europa,69.1,515.42,0.946,53341,52503,,95.5,6.9,libre,85.4,
 CF,República Centroafricana,estado,África,5.33,63.55,0.414,516,1133,42.4,13.8,17.0,no libre,13.2,24,1,1,Conflicto armado y Estado frágil; embargo de armas de la ONU
 CD,República Democrática del Congo,estado,África,109.3,584.56,0.522,693,1456,65.7,19.7,1.9,no libre,11.3,20,1,1,Conflicto armado en el este; infraestructura de registros muy limitada; francés
 DO,República Dominicana,estado,América,11.4,27.81,0.776,10876,23282,94.0,91.0,16.8,parcial,63.2,35,3,3,Diáspora grande en EE. UU.; registros civiles en avance; español; corrupción percibida alta (CPI 35)
-RE,Reunión,territorio,África,,2.17,,,,,,,,,,4,4,Departamento francés de ultramar; estado civil francés en línea (Archivos nacionales de ultramar); registros de la esclavitud y de los trabajadores contratados; francés y criollo reunionés; regulación de datos (CNIL) estricta
+RE,Reunión,territorio,África,0.875,2.17,,,,,,,,,,4,4,Departamento francés de ultramar; estado civil francés en línea (Archivos nacionales de ultramar); registros de la esclavitud y de los trabajadores contratados; francés y criollo reunionés; regulación de datos (CNIL) estricta
 RW,Ruanda,estado,África,14.3,64.49,0.578,1060,3063,78.8,31.7,3.8,no libre,31,53,2,3,Estable pero con restricciones a la prensa; registros digitalizados con avance; inglés y francés
 RO,Rumania,estado,Europa,19.0,304.49,0.845,20080,40302,99.2,91.3,24.1,libre,64,46,3,4,Registros parroquiales húngaros y alemanes muy buenos; rumano; RGPD
 RU,Rusia,estado,Europa,144.8,1484.21,0.832,14962,39887,99.9,94.4,6.3,no libre,33.1,26,4,1,Sanciones amplias de EE. UU. y UE; bloqueo de pagos y de plataformas; registros soviéticos valiosos pero inoperables

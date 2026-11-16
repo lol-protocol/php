@@ -16,7 +16,7 @@ document-formats/
 ├── specs/         Standards, production and accessibility specs
 ├── app/           Interactive demo (index.html, demo.css, demo.js), JS library (document-formats.js), tabs.js, url-state.js, translations/
 ├── docs/          Tutorials, frontend guide, localization guide
-├── tests/         Node tests (library, CSV data) and the database check
+├── tests/         Node tests (library, CSV data), the database check and a Chromium test of the demo
 ├── CHANGELOG.md   What changed, newest first
 ├── database_schema.sql
 ├── import_database.php   Loads the CSV files into database_schema.sql
@@ -403,6 +403,15 @@ Two more tests keep the pieces in step:
   number of countries in `countries_200_complete.csv`.
 - `tests/docs.test.js` checks that every JavaScript example in this README and in `docs/` is valid
   JavaScript and only calls methods the library has. It doesn't run them.
+
+The Node tests have no browser, so one more test opens the demo in Chromium:
+`tests/pruebas_navegador.py` loads the page in each of the 30 languages (`lang`, `dir`, no empty or
+untranslated text, no errors in the console), tries **Copy link**, searches with translated words
+(`umschlag`, `vereinigte staaten`, `mexico`), checks the converter's arrow in Arabic and the two
+Half Letter sheets, and that no tab overflows at 320 px. It needs Python 3.13 with
+`pip install playwright==1.55.0` (no browser download) and a Chromium, given in the `CHROMIUM`
+variable or found on the path: `python3 document-formats/tests/pruebas_navegador.py`. CI runs it in
+its own job.
 
 ## Notes on the standards
 

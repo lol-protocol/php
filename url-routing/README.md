@@ -12,14 +12,29 @@ Este archivo solo orienta. La documentación vive en [`docs/`](docs/); el esquem
 
 PHP 8.1 o más, con `pdo`, `pdo_pgsql` (y `pdo_sqlite` si algún sitio usa SQLite), `mbstring` y `ctype`. Composer, solo para instalar las dependencias.
 
+## Probarlo en local
+
+Sin configurar nada, cada sitio usa un SQLite local en `var/`. Para PostgreSQL y el criterio de qué motor usar en cada sitio, ver [`docs/DATABASE.md`](docs/DATABASE.md).
+
+```bash
+composer install
+php bin/migrate.php genealogy --seed     # crea var/genealogy.sqlite con datos de demo
+php bin/migrate.php pos --seed           # crea var/pos.sqlite con datos de demo
+php -S spa.tudominio.local:8000 -t public public/index.php
+php -S spa.contrastocolor.local:8001 -t public public/index.php
+```
+
+Los hosts van a `/etc/hosts` apuntando a `127.0.0.1` (`spa.tudominio.local`, `eng.tudominio.local`, `spa.contrastocolor.local`, `eng.contrastocolor.local`). Para ponerlo en un servidor, ver [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md).
+
 ## Pruebas
 
 ```bash
 composer install
 ./vendor/bin/phpunit
+phpstan analyse --no-progress    # la CI lo corre en el job `analisis-estatico`
 ```
 
-La suite corre siempre contra SQLite en memoria y, si defines `TEST_PG_DSN`, de nuevo contra PostgreSQL (así lo hace la CI). Detalle en [`docs/DATABASE.md`](docs/DATABASE.md).
+La suite corre siempre contra SQLite en memoria y, si defines `TEST_PG_DSN`, de nuevo contra PostgreSQL (así lo hace la CI). Detalle en [`docs/DATABASE.md`](docs/DATABASE.md). PHPStan va a nivel 6 sobre PHP 8.1, el piso de `composer.json` (`phpstan.neon.dist`): pide que cada array diga de qué es en el docblock (`@param array<string, mixed> $params`, `@return list<string>`). Si no lo tienes, `composer global require phpstan/phpstan:^2.1`.
 
 ## Scripts de `bin/`
 
@@ -32,7 +47,7 @@ La suite corre siempre contra SQLite en memoria y, si defines `TEST_PG_DSN`, de 
 | `php bin/urls-informe.php [--dias=7] [--maximo=20]` | Resume qué formas de URL dieron 404 o 301 (nunca la URL: ver `docs/URL_STRUCTURES.md`), para encontrar enlaces rotos y saber cuándo quitar una redirección vieja. |
 | `php bin/orden.php <id> <estado> [--detalle="Texto"] [--guia=NUMERO]` | Avanza el estado de una orden del sitio POS (`pendiente`, `pagada`, `enviada`, `entregada`, `cancelada`, `devuelta`) y lo anota en su historial; `--guia` guarda el número de seguimiento. No devuelve el stock de una cancelada. |
 | `php bin/id.php completar <número> [<ancho>]` · `verificar <id>` | Completa un id con su dígito de verificación o comprueba que lo tiene bien (ver `IDS_DIGITO_VERIFICADOR`). |
-| `php bin/copias.php --destino=CARPETA [--sitios=…] [--dias=30] [--enviar='CMD {archivo}'] [--cifrar-para=age1…]` | La copia diaria de las bases (`pg_dump` o `VACUUM INTO`), comprobada antes de tomar su nombre, con permiso 600; borra las de más de `--dias` días, puede cifrarlas con age para que el servidor no pueda descifrarlas (`--cifrar-para`) y sacarlas del servidor con `--enviar`. Pensado para cron (no imprime nada si todo salió bien). Ver `docs/DESPLIEGUE.md`, sección 11. |
+| `php bin/copias.php --destino=CARPETA [--sitios=…] [--dias=30] [--enviar='CMD {archivo}'] [--cifrar-para=age1…]` | La copia diaria de las bases (`pg_dump` o `VACUUM INTO`), comprobada antes de tomar su nombre, con permiso 600; borra las de más de `--dias` días, puede cifrarlas con age para que el servidor no pueda descifrarlas (`--cifrar-para`) y sacarlas del servidor con `--enviar`. Pensado para cron (no imprime nada si todo salió bien). Ver `docs/DESPLIEGUE.md`, sección 11. Con `--vigilar` avisa si falta una copia reciente (otro cron, mejor en la máquina que las recibe) y con `--verificar` restaura una de verdad y cuenta las filas de cada tabla. |
 | `php bin/solicitudes.php [--ver=N \| --atender=N \| --rechazar=N \| --depurar \| --solo-nuevas]` | Las solicitudes de ver, corregir o borrar los datos de una persona que llegan por `/s/{id}/`: lista las que esperan (sin quién pidió ni qué escribió: pensado para cron), avisa solo de las que llegaron desde la última vez (`--solo-nuevas`), muestra una en tu terminal, la cierra o borra el correo y el texto de las viejas (y las entregas con clave vencidas hace mucho). Ver `docs/DESPLIEGUE.md`, sección 8. |
 | `php bin/pedidos-retiro.php [--ocultar [--solo-ocultados]] [--horas=N]` | Lista los pedidos de retiro que esperan al propietario; pensado para cron (no imprime nada si no hay). Con `--ocultar` oculta los que pasaron del plazo; con `--solo-ocultados`, solo imprime en la corrida que ocultó algo. |
 
@@ -42,7 +57,7 @@ La base de datos sale de `DB_DSN_<SITIO>` (o de `.env`), igual que en la aplicac
 
 | Documento | Contenido |
 |---|---|
-| [`docs/README_URLS.md`](docs/README_URLS.md) | El esquema de URLs y la estructura de archivos |
+| [`docs/README_URLS.md`](docs/README_URLS.md) | Los principios del esquema de URLs, cómo agregar un tipo de recurso, seguridad y convenciones |
 | [`docs/URL_STRUCTURES.md`](docs/URL_STRUCTURES.md) | La gramática de formatos, con ejemplos |
 | [`docs/RUTAS.md`](docs/RUTAS.md) | Todas las rutas (generado) |
 | [`docs/ACCESO.md`](docs/ACCESO.md) | Qué es privado y quién puede verlo (`OWNER_TOKEN`; no hay cuentas de usuario) |

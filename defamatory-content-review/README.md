@@ -708,6 +708,26 @@ diccionario de insultos del idioma se marca igual como `difamatorio`; en
 `chat-topics/` sólo hace falta si además debe llevar la etiqueta `sexual` o
 `belico`.
 
+### Temas de biografía (lo que alguien dice de sí mismo)
+
+El modo normal está escrito para frases sobre **otra persona** («Fulano tiene cáncer», «la familia era judía»):
+a propósito no marca lo que alguien cuenta de sí mismo («tengo cáncer», «soy evangélica»), porque en un chat o
+una nota eso no difama a nadie. Para revisar un texto que la persona escribió sobre sí misma (la biografía de un
+perfil) y saber si cuenta un dato sensible (Ley 21.719), hay un modo aparte, opcional, que no cambia el normal:
+`config/bio-topics/<código>.php` (hoy `spa` y `eng`), con el formato de los `patterns` de `chat-topics/` y las
+mismas etiquetas («dato sensible (salud)», «(religión)», «(opinión política)», «(origen étnico)», «(orientación
+sexual)»). Nunca bloquea: severidad `medium`, va a revisión.
+
+```php
+$r = TextMarks::of('Soy evangélica y madre de tres', $config, ['spa', 'eng'], 'bio-topics');
+// ['decision' => 'review', 'marks' => ['dato sensible (religión)']]
+$linea = ChatLineReviewer::create($config, 'spa', 'bio-topics')->review('Tengo cáncer');
+```
+
+Son listas cortas: que no marquen nada no quiere decir que no haya un dato sensible. Un idioma sin
+`bio-topics/` simplemente no marca nada en este modo. `BioTopicsTest` y `BioTopicsUsageTest` lo cubren, incluido
+que el modo normal siga aprobando las mismas frases.
+
 ### Medir falsos positivos
 
 Un insulto rara vez está entre las palabras más usadas de un idioma; una palabra
@@ -1181,6 +1201,7 @@ docs/
 
 config/
 ├── chat-topics/                    Temas del chat (sexual, belico, ambiguous, patterns, acusaciones), uno por idioma
+├── bio-topics/                     Opcional: lo que alguien dice de sí mismo (datos sensibles), para revisar biografías
 ├── supported-languages.php         Catálogo ISO 639-3 + alias 639-1
 ├── language-families.php           Familias y afinidades
 ├── risk-categories.php             Los 11 tipos de riesgo

@@ -46,12 +46,12 @@ def test_el_script_de_la_pagina_tiene_sintaxis_valida(tmp_path):
     assert r.returncode == 0, r.stderr
 
 
-def test_el_catalogo_de_la_pagina_son_las_1000_piezas_del_manifest():
+def test_el_catalogo_de_la_pagina_son_las_piezas_del_manifest():
     import json
     cat = editor_datos.catalogo()
     manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))["entradas"]
-    assert [p[0] for p in cat["piezas"]] == [e["id"] for e in manifiesto] and len(cat["piezas"]) == 1000
-    assert len(cat["movs"]) == 10
+    assert [p[0] for p in cat["piezas"]] == [e["id"] for e in manifiesto] and len(cat["piezas"]) == 2000
+    assert len(cat["movs"]) == 15
     for p in cat["piezas"]:
         autor = cat["autores"][p[1]]
         assert p[0].startswith(autor["m"] + "-" + autor["id"] + "-")
@@ -65,7 +65,7 @@ def test_los_sprites_de_un_movimiento_tienen_el_tamano_de_la_rejilla(tmp_path, m
     assert editor_datos.sprites(["romanticismo"]) == ["romanticismo"]
     ancho, alto = editor_datos.CELDA_REVISION
     hoja = Image.open(tmp_path / "plantillas" / "romanticismo.jpg")
-    assert hoja.size == (editor_datos.COLUMNAS * ancho, 5 * alto)  # 100 piezas en filas de 20
+    assert hoja.size == (editor_datos.COLUMNAS * ancho, 8 * alto)  # 150 piezas en filas de 20
     assert not (tmp_path / "plantillas" / "gotico.jpg").exists()
 
 
@@ -105,7 +105,7 @@ def test_las_escenas_compactas_dibujan_lo_mismo_que_la_receta():
         b = muestreo.colores(_escena_desde_compacta(compacta), x.ravel(), y.ravel())
         d = np.abs(a - b).max(axis=1)
         assert d.mean() < 1 and (d < 30).mean() > 0.995, (e["id"], d.mean())
-    assert len(vistos) == 10
+    assert len(vistos) == 15
 
 
 def test_los_sprites_traen_tambien_las_escenas_en_json(tmp_path, monkeypatch):
@@ -113,7 +113,7 @@ def test_los_sprites_traen_tambien_las_escenas_en_json(tmp_path, monkeypatch):
     monkeypatch.setattr(editor_datos, "SPRITES", tmp_path / "plantillas")
     editor_datos.sprites(["romanticismo"])
     escenas = _json.loads((tmp_path / "plantillas" / "romanticismo.json").read_text(encoding="utf-8"))
-    assert len(escenas) == 100 and all(e[0][0] == "g" for e in escenas)
+    assert len(escenas) == 150 and all(e[0][0] == "g" for e in escenas)
 
 
 def test_cada_plantilla_lleva_su_genero():

@@ -142,7 +142,6 @@ export function perfilVestido(M, o) {
   if (corte[corte.length - 1][1] < yHem) corte.push([corte[corte.length - 1][0], yHem]);
   const fin = corte[corte.length - 1];
   const sinBajo = corte.slice();
-  const perfil = corte.slice(0, -1).concat([[fin[0], fin[1]]]);
   const completo = corte.slice(0, -1).concat(puntosBajo(bajo, fin[0], fin[1], H));
   return { completo, perfil: sinBajo, xBajo: fin[0], yBajo: fin[1], escote: E };
 }

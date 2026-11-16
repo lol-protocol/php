@@ -115,9 +115,9 @@ $entries = $parser->parseContent($textContent);
   ```
   Sin coma, el nombre se interpreta apellido-primero ("SMITH John" → "Smith, John"), la misma convención que usa el resto del proyecto.
 
-**Teléfonos reconocidos:** formatos numéricos estándar (`555-123-4567`, `5551234567`, `555.123.4567`, `555 123 4567`) y el formato de central telefónica con nombre, común en Estados Unidos y el Reino Unido hasta mediados del siglo XX (`BUtterfield 8-4521`). `MultiLanguagePhoneDirectoryParser` reconoce además los formatos de los países de cada idioma: francés `01 42 68 53 00` y `+33 1 42 68 53 00`; alemán `030 123456`, `(089) 654321` y `0711/12345`; italiano `06 1234567`; portugués `21 342 0000`; español `91 234 56 78`, `912 345 678`, `2-345-678` y `(2) 345 6789`. Van por idioma, y no juntos, porque los más sueltos tomarían el número de la calle como parte del teléfono en la guía de otro idioma. Los dos parsers corrigen además las confusiones típicas del OCR dentro de un teléfono («l» o «I» por 1, «O» u «o» por 0: `555-l23-4567` → `555-123-4567`), solo en una tira de dígitos con al menos 6 dígitos de verdad y no más de 2 letras dudosas, y aceptan el teléfono en la misma línea que el nombre (`SMITH, John ........ 555-123-4567`).
+**Teléfonos reconocidos:** formatos numéricos estándar (`555-123-4567`, `5551234567`, `555.123.4567`, `555 123 4567`, además con el código entre paréntesis, `(555) 123-4567`, o con guiones separados por espacios como los deja un escáner, `555 - 123 - 4567`) y el formato de central telefónica con nombre, común en Estados Unidos y el Reino Unido hasta mediados del siglo XX (`BUtterfield 8-4521`). `MultiLanguagePhoneDirectoryParser` reconoce además los formatos de los países de cada idioma: francés `01 42 68 53 00` y `+33 1 42 68 53 00`; alemán `030 123456`, `(089) 654321` y `0711/12345`; italiano `06 1234567`; portugués `21 342 0000`; español `91 234 56 78`, `912 345 678`, `2-345-678` y `(2) 345 6789`. Van por idioma, y no juntos, porque los más sueltos tomarían el número de la calle como parte del teléfono en la guía de otro idioma. Los dos parsers corrigen además las confusiones típicas del OCR dentro de un teléfono («l» o «I» por 1, «O» u «o» por 0: `555-l23-4567` → `555-123-4567`), solo en una tira de dígitos con al menos 6 dígitos de verdad y no más de 2 letras dudosas, y aceptan el teléfono en la misma línea que el nombre (`SMITH, John ........ 555-123-4567`).
 
-**Calles:** las reglas de los dos parsers están en un solo lugar, `StreetRules`. Se detectan por palabra clave (Street, Avenue, Road, Drive, Lane...; «Dr» y «St» solo si la línea tiene un número o no empiezan por ellas, para que «Dr. SMITH, John» y «St. Mary Bakery» sigan siendo nombres) o, si no hay ninguna reconocida, cuando toda la línea es un número seguido solo de palabras (`9 Wexford Close`, `8 Clos Saint-Éloi`). En español, portugués, italiano y alemán, que escriben el número al final, `MultiLanguagePhoneDirectoryParser` acepta además una línea de solo palabras y luego el número (`Los Aromos 123`, `Travessa do Carmo 5`), pero solo después de leer el nombre del registro, porque «Restaurante Siglo 21» tiene la misma forma. Con la misma condición, en inglés una línea que empieza con la vivienda y su número (`Apt 4 Building 7`, `Unit #3`, `Flat 2B Rose Court`) se guarda entera como calle. En una sola línea sin separadores («GARCÍA LÓPEZ Juan Calle Mayor 12 555-123-4567»), en esos idiomas la calle empieza en la palabra de calle, no en el número; las dos primeras palabras se dejan siempre al nombre, para que un apellido como «Plaza» no se tome por calle. Una línea que es solo un número de teléfono nunca se toma como calle. En español se reconoce también la abreviatura `C/` («C/ Mayor 12»). Una palabra que el escaneo cortó con guion al final de la línea («WASHING- / TON, George») se vuelve a unir, sin el guion; un apellido compuesto cortado justo en su guion («SMITH- / JONES») lo pierde.
+**Calles:** las reglas de los dos parsers están en un solo lugar, `StreetRules`. Se detectan por palabra clave (Street, Avenue, Road, Drive, Lane...; «Dr» y «St» solo si la línea tiene un número o no empiezan por ellas, para que «Dr. SMITH, John» y «St. Mary Bakery» sigan siendo nombres) o, si no hay ninguna reconocida, cuando toda la línea es un número seguido solo de palabras (`9 Wexford Close`, `8 Clos Saint-Éloi`). En español, portugués, italiano y alemán, que escriben el número al final, `MultiLanguagePhoneDirectoryParser` acepta además una línea de solo palabras y luego el número (`Los Aromos 123`, `Travessa do Carmo 5`), pero solo después de leer el nombre del registro, porque «Restaurante Siglo 21» tiene la misma forma. Con la misma condición, en inglés una línea que empieza con la vivienda y su número (`Apt 4 Building 7`, `Unit #3`, `Flat 2B Rose Court`) se guarda entera como calle. Un título entre paréntesis tras el nombre («SMITH, John (Dr.)») no se toma por calle, y una calle con coma y código postal («Hauptstr. 5, 10115 Berlin») sigue siendo una sola calle. En una sola línea con coma tras el apellido («SMITH, John 12 Oak Street 555-123-4567») el nombre de pila se queda en el nombre, no en la calle. En una sola línea sin separadores («GARCÍA LÓPEZ Juan Calle Mayor 12 555-123-4567»), en esos idiomas la calle empieza en la palabra de calle, no en el número; las dos primeras palabras se dejan siempre al nombre, para que un apellido como «Plaza» no se tome por calle. Una línea que es solo un número de teléfono nunca se toma como calle. En español se reconoce también la abreviatura `C/` («C/ Mayor 12»). Una palabra que el escaneo cortó con guion al final de la línea («WASHING- / TON, George») se vuelve a unir, sin el guion; un apellido compuesto cortado justo en su guion («SMITH- / JONES») lo pierde.
 
 ### MultiLanguagePhoneDirectoryParser
 Detecta el idioma del contenido (o lo recibe explícito) y separa personas naturales de empresas.
@@ -199,6 +199,8 @@ Las búsquedas por nombre y calle son insensibles a mayúsculas y a acentos, de 
 
 `search()` acepta `name`, `street` y `phone` en la base de personas, y `businessName`, `street`, `phone` y `businessType` en la de empresas. Una clave que no conoce lanza `InvalidArgumentException` (con la lista de las válidas) en vez de ignorarla y devolver toda la tabla; un valor vacío (`''` o `null`) cuenta como «sin criterio», y `'0'` como un valor más.
 
+**Paginación.** Los buscadores que devuelven listas (`findByName`, `findByStreet`, `findBySurnameSound`, `findBySourceDirectory`, `findByBusinessName`, `findByBusinessType`, `search` y `getAll`, en las dos bases y en `PhoneDirectoryManagerV2`) aceptan `?int $limit = null, int $offset = 0` al final: `$limit` es el máximo de resultados (sin él, todos) y `$offset` cuántos saltar antes. El orden es el de siempre y los empates se desempatan por `id`, así que dos páginas seguidas nunca se pisan ni se saltan una fila. Una página se cuenta sobre **lo que el lector puede ver**: para el visitante, una página nunca sale corta porque la vista de privacidad descartó filas (para el propietario es un solo `LIMIT`/`OFFSET` en SQL; para el visitante se cuenta desde el principio, por trozos, hasta llenar la página). Un `$limit` menor que 1 o un `$offset` negativo lanzan `InvalidArgumentException`. En la línea de comandos, `phonedir search --limite=N --desde=N` (por tipo: con `--type=all` salen hasta N personas y hasta N empresas).
+
 ### Privacidad: personas que podrían estar vivas
 
 Una entrada de guía no trae fecha de nacimiento, pero sí la fecha de la guía, y quien figura en una guía de un año *Y* era adulto entonces: nació, como mucho, en *Y* − 18. Se presume viva a una persona durante 110 años desde su nacimiento (la misma línea que `url-routing/`), así que una entrada solo se puede mostrar cuando *Y* − 18 + 110 ya pasó. En 2026 eso es todo hasta la guía de 1933: **las guías de 1934 a 1975, la mitad reciente del catálogo, quedan ocultas.**
@@ -221,6 +223,28 @@ Dónde se aplica:
 - **`PhoneDirectoryManagerV2`**: contesta con lo que sus bases pueden mostrar.
 - **`RecordLinker`**: `new RecordLinker(privacy: …)`. Descarta antes de enlazar toda entrada que pueda ser de una persona viva, porque unir a una persona de dos ediciones arma un perfil (dónde vivía, y cuándo) que ninguna guía tenía por sí sola.
 - **`bin/phonedir`** usa la vista del propietario: quien corre el comando tiene la base. `--publico` muestra lo que vería un visitante (y lo dice al final), y `--hoy=AAAA-MM-DD` fija la fecha de referencia.
+
+#### Una empresa que no es el nombre de una persona
+
+Cuando el filtro oculta una empresa por error («Farmacia Rosa»: la flor, no una persona), el propietario puede marcarla como publicable, con el mismo criterio que la defunción: **una marca equivocada publica el nombre, la dirección y el teléfono de alguien vivo**, así que pide el comprobante.
+
+```php
+$propietario = new JuridicalEntityPDODatabase($dsn, privacy: Privacy::forOwner());
+
+$propietario->markPublishable($id, 'Razón social: Farmacia Rosa, S.L. (Registro Mercantil de Madrid)');
+$propietario->getPublishableEvidence($id);   // solo el propietario lo lee
+$propietario->clearPublishable($id);         // la empresa vuelve a juzgarse por su nombre
+```
+
+- **Solo con la vista del propietario**; una base abierta para visitantes lanza `LogicException`. El comprobante es obligatorio (hasta 1000 caracteres: dónde se comprobó, no el documento) y no sale con la empresa.
+- **`insert()` y `update()` no tocan la marca**, y `withPublishable()` solo sirve para razonar en memoria: la única forma de registrarla es `markPublishable()`.
+- Las bases creadas antes reciben la columna (`publishable_evidence`) la próxima vez que se llama a `createTable()`.
+
+```bash
+php bin/phonedir search --name=farmacia --dsn=sqlite:madrid.sqlite        # [empresa #7] Farmacia Rosa | …
+php bin/phonedir publishable 7 --evidence="Registro Mercantil de Madrid" --dsn=sqlite:madrid.sqlite
+php bin/phonedir publishable 7 --clear --dsn=sqlite:madrid.sqlite
+```
 
 #### Una persona que murió
 
@@ -247,13 +271,13 @@ php bin/phonedir deceased 42 --year=1988 --evidence="Esquela, La Vanguardia, 12/
 php bin/phonedir deceased 42 --clear --dsn=sqlite:madrid.sqlite
 ```
 
-Qué ve entonces un visitante: nombre, dirección y teléfono de esa persona, con `† 1988`. **Lo que esta marca no resuelve:** los parientes que siguen viviendo en esa dirección o con ese teléfono. La guía de una persona recién fallecida puede ser, hoy, la de una familia viva; el criterio de cuándo mostrarla es de quien publica.
+Qué ve entonces un visitante: nombre, dirección y teléfono de esa persona, con `† 1988`. **Lo que la marca no hace:** no muestra la entrada mientras otra que pueda estar viva (un pariente) tenga el mismo teléfono o la misma dirección, porque la guía de una persona recién fallecida puede ser la de una familia viva. Se muestra cuando esa otra también está marcada o cuando su guía es lo bastante antigua. Cuenta como «puede estar viva» cualquier entrada sin marca que no esté en una guía del catálogo lo bastante antigua (incluidas las de un id fuera del catálogo): se oculta de más, nunca de menos. No mira si comparten apellido, solo teléfono o dirección exacta; una entrada de una guía antigua nunca depende de esto. El propietario lo ve todo.
 
 Límites, a propósito:
 
 - **Una guía sin año conocido se oculta.** Sin fuente, o con un id fuera del catálogo que no trae un año de cuatro cifras (como `custom_1990_x`): no se sabe cuántos años tiene esa gente, y un error publica el teléfono de alguien que vive. Si el id trae dos años (`scan_1925_reimpresion_1985`), vale el más reciente. `url-routing/` hace lo contrario con las personas sin fechas, porque ahí los datos son de antepasados.
 - **La edad mínima de 18 años es un supuesto.** Un abonado más joven (raro) quedaría fuera de lo que esta regla cubre.
-- **Una empresa con solo el apellido no se oculta** («Panadería Pérez»), ni una con un nombre de pila que no está en la lista. Y se oculta de más la que tiene una palabra que también es nombre («Farmacia San José», «Florería Rosa»). No hay marca para publicar una de esas: el propietario las ve todas.
+- **Una empresa con un nombre de pila no se oculta si el nombre no está en la lista** («Panadería Torres»), y se oculta de más la que tiene una palabra que también es nombre sin título de santo («Farmacia Rosa», «Hotel Azucena»). Para esas, el propietario puede marcar la empresa como publicable (más abajo).
 - **Qué es una empresa lo decide una lista corta de palabras** (`hotel`, `banco`, `Ltd`, `GmbH`…, por idioma) que solo se busca en el nombre, no en la calle ni en el teléfono. Un apellido que es una de esas palabras, escrito «APELLIDO, Nombre» (`BANK, Henry`), es una persona. La lista incluye también palabras de negocios de familia y de oficios que casi nadie tiene de apellido (`Smith & Sons`, `Hermanos García`, `Hnos.`, `Plumbing`, `Taller`, `Frères`, `Söhne`, `Fratelli`…). Lo que la lista no conoce se guarda como persona, con un apellido que no lo es: es el lado seguro para la privacidad (se oculta de más), pero ensucia la búsqueda fonética y el enlace de registros. Una palabra que muchos llevan de apellido (`Baker`, `Miller`) no entra en la lista, por el mismo motivo. Lo ya importado conserva su clasificación hasta que se vuelva a importar.
 
 ### PersonName / SurnameKeys — búsqueda fonética
@@ -482,6 +506,18 @@ PHPStan no es una dependencia del proyecto: se instala aparte (por ejemplo `comp
 
 Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`. Leen las guías con las mismas reglas que el parser de PHP: las de calle por idioma (incluida `C/`, y «Dr.» y «St.» al abrir un nombre), la lectura de un bloque de líneas (palabras partidas con guion, varios registros sin línea en blanco, la calle sin palabra que cede ante una con palabra), las entradas de una sola línea, los teléfonos (los formatos de cada idioma, la central con nombre, la corrección de dígitos del OCR, el teléfono en la línea del nombre) y la detección de negocios. Corren además el mismo conjunto de evaluación que el parser de PHP (`tests/fixtures/parser-evaluation.json`): todo caso tiene que salir bien, salvo los que lista `ports/fallas-conocidas.txt`, que tienen que seguir fallando (hoy ninguno: la lista está vacía). Si agregas un caso al conjunto y los puertos no lo resuelven, va a esa lista; si un cambio en un puerto arregla uno, sale de ella.
 
+### Listas de palabras
+
+Las palabras de calle, los sufijos alemanes, las abreviaturas que abren un nombre («Dr.», «St.»), las palabras que detectan un idioma y las que nombran un negocio están en **un solo archivo**, `data/palabras.json`, y de ahí se escriben en el parser de PHP (`StreetRules`, `MultiLanguagePhoneDirectoryParser`) y en los puertos a Python y Java, entre líneas `BEGIN generated: palabras/…` y `END generated: palabras/…`. No se editan a mano en esos archivos:
+
+```bash
+# cambia data/palabras.json, y luego:
+php bin/generar-palabras.php              # reescribe las regiones desactualizadas
+php bin/generar-palabras.php --comprobar  # solo dice cuáles lo están (sale con 1); como --comprobar de Listado-colores/
+```
+
+`WordListSyncTest` (que corre la CI con el resto de las pruebas) falla si una región no coincide con el JSON, o si el JSON es incoherente (un idioma que no está en `idiomas`, una palabra repetida o en mayúsculas, una abreviatura que no es palabra de calle). Las reglas que no son listas de palabras (las expresiones regulares, como la de «Via Roma 10» o las de teléfono) siguen escritas a mano en cada lenguaje, y el conjunto de evaluación avisa si se desfasan.
+
 ### Cuánto acierta el parser
 
 `tests/fixtures/parser-evaluation.json` es un conjunto fijo de guías cortas en los seis idiomas, cada una con lo que una persona leería en ella (nombre, calle, teléfono, persona o empresa). `bin/evaluate-parser.php` pasa `MultiLanguagePhoneDirectoryParser` por esos casos y dice cuántos salen bien, cuántas entradas encuentra y cuántas de ellas son correctas, y qué sigue fallando, agrupado por causa:
@@ -500,6 +536,7 @@ Los casos que el parser todavía resuelve mal están marcados con `falla_conocid
 - `__construct(string $countryCode = 'US', ?string $sourceDirectoryId = null)`
 - `static forCatalogDirectory(string $directoryId): self` — toma el país del catálogo
 - `parseFile(string $filePath): array`
+- `parseFileInBatches(string $filePath, int $batchSize = 1000): \Generator` (`MultiLanguagePhoneDirectoryParser` recibe además `?string $language`): entrega las entradas de a `$batchSize` sin guardarlas, así que la memoria no crece con el archivo; ver «Consideraciones de Rendimiento»
 - `parseContent(string $content): array` (`MultiLanguagePhoneDirectoryParser` recibe además `?string $language`)
 - `getEntries(): array`, `getErrors(): array`
 - `getEntriesCount(): int`, `getErrorsCount(): int` (solo `PhoneDirectoryParser`)
@@ -527,7 +564,7 @@ Los casos que el parser todavía resuelve mal están marcados con `falla_conocid
 `php bin/benchmark.php [entradas]` mide parseo, inserción y búsquedas; los resultados y proyecciones están en `docs/ESTIMATES_AND_SCALABILITY.md`.
 
 Para directorios telefónicos grandes:
-- `parseFile()` lee el archivo línea a línea, pero devuelve todas las entradas juntas (~1,8 KB de memoria por entrada): partir los archivos de millones de entradas antes de importarlos
+- `parseFile()` lee el archivo línea a línea, pero devuelve todas las entradas juntas (~1,8 KB de memoria por entrada). Para archivos grandes, `parseFileInBatches()` las entrega de a lotes y la memoria queda plana (con 400 000 entradas: pico de 6 MB, frente a 716 MB de `parseFile()`, con la misma velocidad). `PhoneDirectoryManagerV2::processFile()` y `phonedir import` ya lo usan: guardan de a `$batchSize` entradas (`--lote=N`, por defecto 5000), cada lote en su propia transacción, así que si la importación se corta a la mitad los lotes anteriores quedan guardados (se repite con `--clear`)
 - Usar base de datos en archivo (o MySQL/PostgreSQL) en lugar de SQLite en memoria
 - Usar `insertBatch()` para inserciones masivas (una transacción y una sentencia preparada para todo el lote)
 - `RecordLinker` agrupa internamente por apellido, país e inicial del nombre antes de comparar pares, para que enlazar apellidos muy comunes siga siendo rápido
