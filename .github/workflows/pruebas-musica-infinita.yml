@@ -1,0 +1,74 @@
+name: Pruebas musica-infinita
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "musica-infinita/**"
+      - ".github/workflows/pruebas-musica-infinita.yml"
+  pull_request:
+    paths:
+      - "musica-infinita/**"
+      - ".github/workflows/pruebas-musica-infinita.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  pruebas:
+    name: Música infinita (Node)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: musica-infinita
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      # La prueba de FLAC contra ffmpeg se salta si no esta: se instala para que corra.
+      - name: Instalar ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Pruebas
+        run: node --test 'pruebas/*.test.js'
+
+  navegador:
+    name: Música infinita (Chromium)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: musica-infinita
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      # El proyecto no tiene dependencias: Playwright solo hace falta para esta prueba.
+      - name: Instalar Playwright y Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.65.0
+          npx playwright install --with-deps chromium
+
+      - name: La aplicación en el navegador
+        run: node pruebas/navegador.js
