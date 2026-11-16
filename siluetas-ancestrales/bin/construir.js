@@ -7,7 +7,7 @@
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { generarSVG } from '../src/index.js';
+import { generarSVG, generarFamilia } from '../src/index.js';
 
 const RAIZ = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(RAIZ, 'src');
@@ -67,7 +67,7 @@ export function empaquetar() {
 
 function ejemplos() {
   const lista = JSON.parse(readFileSync(join(RAIZ, 'ejemplos', 'lista.json'), 'utf8'));
-  return lista.map((e) => [`${e.archivo}.svg`, `${generarSVG(e.opciones)}\n`]);
+  return lista.map((e) => [`${e.archivo}.svg`, `${e.tipo === 'familia' ? generarFamilia(e.opciones).svg : generarSVG(e.opciones)}\n`]);
 }
 
 const salidas = [[join('dist', 'siluetas-ancestrales.js'), empaquetar()], ...ejemplos().map(([n, s]) => [join('ejemplos', n), s])];

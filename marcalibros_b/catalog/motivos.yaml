@@ -304,6 +304,57 @@ motivos:
 - id: escalera
   nombre: Escalera
   implementado: true
+- id: cupula
+  nombre: Cúpula con linterna
+  implementado: true
+- id: compas
+  nombre: Compás
+  implementado: true
+- id: hombre_vitruvio
+  nombre: Hombre de Vitruvio
+  implementado: true
+- id: globo
+  nombre: Globo aerostático
+  implementado: true
+- id: balanza
+  nombre: Balanza
+  implementado: true
+- id: telescopio
+  nombre: Telescopio
+  implementado: true
+- id: grito
+  nombre: Figura que grita
+  implementado: true
+- id: casas_torcidas
+  nombre: Casas torcidas
+  implementado: true
+- id: reloj_blando
+  nombre: Reloj blando
+  implementado: true
+- id: puerta
+  nombre: Puerta suelta
+  implementado: true
+- id: bombin
+  nombre: Sombrero hongo
+  implementado: true
+- id: pagoda
+  nombre: Pagoda
+  implementado: true
+- id: grulla
+  nombre: Grulla en vuelo
+  implementado: true
+- id: farolillo
+  nombre: Farolillo de papel
+  implementado: true
+- id: bambu
+  nombre: Bambú
+  implementado: true
+- id: minarete
+  nombre: Minarete
+  implementado: true
+- id: torii
+  nombre: Torii
+  implementado: true
 - id: ninguno
   nombre: Sin motivo (solo paisaje)
   implementado: true

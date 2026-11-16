@@ -10,7 +10,7 @@
     "scope": "Data subjects in Comoros (extraterritorial: offering goods/services to or monitoring people in Comoros)",
     "applies_to": "Controllers and processors in Comoros and abroad targeting Comoros residents",
     "key_requirements": "Transparency notice at collection; data subject rights of access, rectification and deletion; breach notification to the Authority within 72 hours",
-    "data_categories": "Personal data (sensitive categories unverified) (unconfirmed)",
+    "data_categories": "Personal data; the law also refers to sensitive data (its categories are not listed in the source)",
     "retention_period": "Not specified",
     "enforcement_authority": "National Authority for the Protection of Personal Data (not formally constituted as of 2024-2025)",
     "penalties_range": "Not specified",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law",
@@ -60,9 +60,9 @@
         "checked": "2026-10-25"
       },
       "data_categories": {
-        "url": "https://consentstack.io/regulations/km-dpl",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "enforcement_authority": {
         "url": "https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law",
@@ -71,6 +71,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "data_categories",
+        "from": "Personal data (sensitive categories unverified) (unconfirmed)",
+        "to": "Personal data; the law also refers to sensitive data (its categories are not listed in the source)"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

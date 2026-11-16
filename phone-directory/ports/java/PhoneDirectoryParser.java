@@ -227,7 +227,8 @@ final class PhonePattern {
     }
 
     private static final String BASE =
-        "\\b[A-Za-z]{3,}[ .-]\\d[ -]\\d{4}\\b|\\b\\d{3}[-.\\s]?\\d{3}[-.\\s]?\\d{4}\\b|\\b\\d{10}\\b";
+        "\\b[A-Za-z]{3,}[ .-]\\d[ -]\\d{4}\\b|\\b\\d{3}(?:[-.\\s]|\\s[-.]\\s)?\\d{3}(?:[-.\\s]|\\s[-.]\\s)?\\d{4}\\b"
+        + "|(?<![\\d+])\\(\\d{3}\\)\\s?\\d{3}[-.\\s]?\\d{4}\\b|\\b\\d{10}\\b";
 
     // The looser formats are kept per language because they would read a house number as part of a phone
     // in another language's directory.
@@ -367,25 +368,29 @@ final class StreetRules {
     private StreetRules() {
     }
 
+    // BEGIN generated: palabras/calles (de data/palabras.json: no se edita aquí, ver bin/generar-palabras.php)
     static final List<String> SUPPORTED_LANGUAGES = List.of("es", "en", "fr", "pt", "de", "it");
     // Languages that write the house number after the street ("Calle Mayor 12", "Via Roma 10").
     static final Set<String> NUMBER_LAST_LANGUAGES = Set.of("es", "pt", "it", "de");
 
     private static final Map<String, List<String>> MARKERS = Map.of(
-        "es", List.of("calle", "c/", "avenida", "av", "plaza", "pasaje", "camino", "ruta", "carrera"),
-        "en", List.of("street", "st", "avenue", "ave", "road", "rd", "drive", "dr", "lane", "ln",
-                      "boulevard", "blvd", "circle", "cir"),
+        "es", List.of("calle", "c/", "avenida", "av", "avda", "plaza", "pza", "pasaje", "camino", "ruta", "carrera"),
+        "en", List.of("street", "st", "avenue", "ave", "road", "rd", "drive", "dr", "lane", "ln", "boulevard", "blvd", "circle", "cir"),
         "fr", List.of("rue", "avenue", "allée", "place", "boulevard", "bd", "cours", "square"),
         "pt", List.of("rua", "avenida", "av", "praça", "alameda", "estrada", "largo"),
         "de", List.of("ring", "hof"),
         "it", List.of("via", "viale", "corso", "piazza", "largo", "strada")
     );
     // German compounds glue the street type onto the name ("Hauptstraße"), so these match as word endings.
-    static final Map<String, List<String>> SUFFIXES =
-        Map.of("de", List.of("straße", "strasse", "allee", "weg", "platz"));
+    static final Map<String, List<String>> SUFFIXES = Map.of(
+        "de", List.of("straße", "strasse", "allee", "weg", "platz", "str")
+    );
     // Street words that are also the usual abbreviation opening a name ("Dr." doctor, "St." saint): they only
     // make a street when the line has a digit or they are not its first word.
-    private static final Map<String, List<String>> NAME_ABBREVIATIONS = Map.of("en", List.of("dr", "st"));
+    private static final Map<String, List<String>> NAME_ABBREVIATIONS = Map.of(
+        "en", List.of("dr", "st")
+    );
+    // END generated: palabras/calles
 
     private static final int FLAGS = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
     private static final String BEFORE = "(?<![\\p{L}\\d])";
@@ -456,7 +461,9 @@ final class StreetRules {
             return true;
         }
         for (int start : starts) {
-            if (!line.substring(0, start).trim().isEmpty()) {
+            String before = line.substring(0, start);
+            // Not first, and not inside a bracket either: "John (Dr.)" is a title after a name, not a street.
+            if (!before.trim().isEmpty() && !before.endsWith("(") && !before.endsWith("[")) {
                 return true;
             }
         }
@@ -743,6 +750,15 @@ final class SingleLineEntrySplitter {
         if (!PhonePattern.LETTER.matcher(name).find() || street.isEmpty()) {
             return null;
         }
+
+        // Where the house number comes first, a "street" field that opens with words before its number
+        // ("John 12 Oak Street 555-123-4567", after "SMITH,") holds the rest of the name too.
+        if (language == null || !StreetRules.NUMBER_LAST_LANGUAGES.contains(language)) {
+            Matcher before = Pattern.compile("^([^\\d]*\\p{L}[^\\d]*)\\d").matcher(street);
+            if (before.find() && !looksLikeStreet.test(before.group(1))) {
+                return null;
+            }
+        }
         return new Split(name, street, phone);
     }
 
@@ -796,20 +812,22 @@ class MultiLanguagePhoneDirectoryParser {
 
     // Only vocabulary distinctive enough to override English, the baseline language; words that are also
     // English ("plaza", "avenue", "via") would otherwise misdetect an English directory.
-    private static final Map<String, List<String>> DETECTION_MARKERS =
-        Map.of(
-            "es", List.of("calle", "avenida", "pasaje", "camino", "ruta", "carrera"),
-            "fr", List.of("rue", "allée", "cours"),
-            "pt", List.of("rua", "avenida", "praça", "alameda", "estrada", "largo"),
-            "de", List.of(),
-            "it", List.of("viale", "corso", "piazza", "largo", "strada")
-        );
+    // BEGIN generated: palabras/deteccion (de data/palabras.json: no se edita aquí, ver bin/generar-palabras.php)
+    private static final Map<String, List<String>> DETECTION_MARKERS = Map.of(
+        "es", List.of("calle", "avenida", "pasaje", "camino", "ruta", "carrera"),
+        "fr", List.of("rue", "allée", "cours"),
+        "pt", List.of("rua", "avenida", "praça", "alameda", "estrada", "largo"),
+        "de", List.of(), // no words of its own: detected by the street suffixes only
+        "it", List.of("viale", "corso", "piazza", "largo", "strada")
+    );
+    // END generated: palabras/deteccion
 
     // Fixed order so ties resolve the same way on every run (Map.of has no defined iteration order).
     private static final List<String> DETECTION_ORDER = List.of("es", "fr", "pt", "de", "it");
 
     // Words that name a kind of business, or a family firm ("Smith & Sons", "Hnos."), and that almost nobody has
     // for a surname. A word many people carry as a surname (Baker, Miller, Bank...) does not belong here.
+    // BEGIN generated: palabras/empresas (de data/palabras.json: no se edita aquí, ver bin/generar-palabras.php)
     private static final Map<String, List<String>> ENTITY_TYPE_MARKERS = Map.of(
         "es", List.of("spa", "srl", "sa", "ltda", "inc", "comercial", "empresa", "negocio", "tienda", "restaurante", "hotel", "banco", "farmacia", "hospital", "hnos", "hermanos", "hijos", "sucesores", "taller", "ferretería", "clínica", "panadería", "carnicería", "librería", "zapatería"),
         "en", List.of("corp", "inc", "ltd", "llc", "company", "store", "shop", "restaurant", "hotel", "bank", "pharmacy", "hospital", "sons", "bros", "associates", "enterprises", "industries", "services", "plumbing", "garage", "bakery", "hardware", "clinic", "pub", "motel"),
@@ -818,6 +836,7 @@ class MultiLanguagePhoneDirectoryParser {
         "de", List.of("gmbh", "ag", "kg", "ohg", "apotheke", "bäckerei", "gasthaus", "restaurant", "hotel", "bank", "krankenhaus", "gebrüder", "söhne", "werkstatt", "metzgerei", "tischlerei", "klinik"),
         "it", List.of("srl", "spa", "snc", "sas", "negozio", "panificio", "trattoria", "ristorante", "albergo", "hotel", "banca", "farmacia", "ospedale", "fratelli", "figli", "officina", "macelleria", "ferramenta", "pasticceria", "pizzeria", "clinica")
     );
+    // END generated: palabras/empresas
 
     private static final Pattern SEPARATOR = Pattern.compile("^(?:[-=_*]\\s*){2,}$");
     private static final Pattern GIVEN_NAME = Pattern.compile("^\\p{L}[\\p{L}'. -]*$");

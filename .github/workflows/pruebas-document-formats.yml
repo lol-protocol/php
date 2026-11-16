@@ -93,3 +93,33 @@ jobs:
 
       - name: Check the database against the CSV files
         run: php document-formats/tests/database_check.php
+
+  # Abre la demo (document-formats/app/index.html) en Chromium: los 30 idiomas, el botón «Copiar enlace», la
+  # búsqueda con palabras traducidas, el conversor y que ninguna pestaña desborde en 320 px. Lo que `node --test`
+  # no ve porque no hay navegador.
+  document-formats-navegador:
+    name: document-formats (demo en Chromium)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      # Solo la biblioteca de Python: el navegador lo pone setup-chrome.
+      - name: Instalar Playwright
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        run: pip install playwright==1.55.0
+
+      - uses: browser-actions/setup-chrome@v2
+        id: chrome
+
+      - name: Demo en Chromium
+        env:
+          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
+        run: python document-formats/tests/pruebas_navegador.py

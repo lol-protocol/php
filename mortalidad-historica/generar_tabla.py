@@ -28,7 +28,7 @@ COLUMNAS = {
     "hereditarias": ["id", "nombre_spa", "nombre_eng", "herencia", "omim", "frecuencia_mayor_en",
                      "inicio_tipico", "nota", "estado", "fuente"],
     "hitos_registro": ["codigo", "tipo", "desde", "nota", "estado", "fuente"],
-    "modelo_logcuadratico": ["edad", "ax", "bx", "cx", "vx"],
+    "modelo_logcuadratico": ["sexo", "edad", "ax", "bx", "cx", "vx"],
     "londres_muertes": ["anio", "muertes_totales", "muertes_viruela", "estado", "fuente"],
     "esperanza_vida": ["codigo", "desde", "hasta", "sexo", "edad", "esperanza_restante",
                        "supervivencia_hasta_edad", "incertidumbre_baja", "incertidumbre_alta", "calidad",
@@ -248,8 +248,9 @@ def validar_modelo(error):
     filas = _leer("modelo_logcuadratico", error)
     if filas is None:
         return []
-    if [f["edad"] for f in filas] != [str(e) for e in modelo.EDADES]:
-        error("modelo_logcuadratico", None, f"las edades deben ser {modelo.EDADES}")
+    esperadas = [(sexo, str(edad)) for sexo in modelo.SEXOS for edad in modelo.EDADES]
+    if [(f["sexo"], f["edad"]) for f in filas] != esperadas:
+        error("modelo_logcuadratico", None, f"debe haber una fila por sexo {modelo.SEXOS} y grupo de edad {modelo.EDADES}, en ese orden")
     for i, f in enumerate(filas, start=2):
         for columna in ("ax", "bx", "cx", "vx"):
             valor = _numero(f[columna])
@@ -449,12 +450,14 @@ def vectores(datos):
                 epidemias.append([anio, region, pais, ids])
     paises = sorted(p["codigo"] for p in datos["paises"])
     esperanza = []
-    for codigo in ("CL", "SE", "ES", "GB", "JP", "NG", "AD", "XK", "ZZ"):
-        for anio in (1799, 1800, 1855, 1900, 1949, 1950, 1985, 2009, 2010):
+    for codigo in ("CL", "SE", "ES", "GB", "JP", "NG", "AD", "XK", "FI", "ZZ"):
+        for anio in (1545, 1760, 1799, 1800, 1855, 1900, 1949, 1950, 1985, 2009, 2010):
             for edad in (0, 5, 15):
                 for sexo in ("T", "F", "M"):
+                    banda = consultas.banda_esperanza(codigo, anio, edad, sexo)
                     esperanza.append([codigo, anio, edad, sexo, consultas.esperanza_restante(codigo, anio, edad, sexo),
-                                      consultas.supervivencia(codigo, anio, edad, sexo)])
+                                      consultas.supervivencia(codigo, anio, edad, sexo),
+                                      None if banda is None else list(banda)])
     londres = []
     for anio in range(1620, 1911):
         m = consultas.muertes_londres(anio)
@@ -477,10 +480,13 @@ def tablas_para_la_vista(datos):
         columnas = COLUMNAS[nombre]
         tablas[nombre] = {"columnas": columnas, "filas": [[f[c] for c in columnas] for f in datos[nombre]]}
     # La esperanza de vida es la tabla grande: solo las columnas que usan las consultas, y con números.
-    columnas = ["codigo", "desde", "hasta", "sexo", "edad", "esperanza_restante", "supervivencia_hasta_edad"]
+    columnas = ["codigo", "desde", "hasta", "sexo", "edad", "esperanza_restante", "supervivencia_hasta_edad",
+                "incertidumbre_baja", "incertidumbre_alta"]
     tablas["esperanza_vida"] = {"columnas": columnas, "filas": [
         [f["codigo"], int(f["desde"]), int(f["hasta"]), f["sexo"], int(f["edad"]), float(f["esperanza_restante"]),
-         float(f["supervivencia_hasta_edad"]) if f["supervivencia_hasta_edad"] else None]
+         float(f["supervivencia_hasta_edad"]) if f["supervivencia_hasta_edad"] else None,
+         float(f["incertidumbre_baja"]) if f["incertidumbre_baja"] else None,
+         float(f["incertidumbre_alta"]) if f["incertidumbre_alta"] else None]
         for f in datos["esperanza_vida"]]}
     return tablas
 

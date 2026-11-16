@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Siluetas ancestrales</title>
 <style>
-  :root { --fondo:#f4f0e6; --panel:#fffdf8; --tinta:#2b2620; --suave:#6e655a; --linea:#d9d1c0; --acento:#8a4b2a; }
-  @media (prefers-color-scheme: dark) { :root { --fondo:#1c1916; --panel:#26221e; --tinta:#efe8da; --suave:#a89f90; --linea:#3d3731; --acento:#e0a070; } }
+  :root { --fondo:#f4f0e6; --panel:#fffdf8; --tinta:#2b2620; --suave:#6e655a; --linea:#d9d1c0; --acento:#8a4b2a; --sobre-acento:#ffffff; }
+  @media (prefers-color-scheme: dark) { :root { --fondo:#1c1916; --panel:#26221e; --tinta:#efe8da; --suave:#a89f90; --linea:#3d3731; --acento:#e0a070; --sobre-acento:#1c1916; } }
   * { box-sizing: border-box; }
   body { margin:0; background:var(--fondo); color:var(--tinta); font:15px/1.45 system-ui, sans-serif; }
   header { padding:20px 16px 8px; max-width:1200px; margin:0 auto; }
@@ -20,7 +20,10 @@
   select, input[type=number], input[type=text], input[type=range] { width:100%; font:inherit; padding:6px 8px; border:1px solid var(--linea); border-radius:6px; background:var(--fondo); color:var(--tinta); }
   input[type=range] { padding:0; }
   .fila { display:flex; gap:8px; } .fila > * { flex:1; }
-  button { font:inherit; padding:8px 12px; border-radius:8px; border:1px solid var(--acento); background:var(--acento); color:#fff; cursor:pointer; }
+  button { font:inherit; padding:8px 12px; border-radius:8px; border:1px solid var(--acento); background:var(--acento); color:var(--sobre-acento); cursor:pointer; }
+  .saltar { position:absolute; left:8px; top:-48px; z-index:10; padding:8px 12px; border-radius:8px; background:var(--panel); color:var(--tinta); border:2px solid var(--acento); }
+  .saltar:focus { top:8px; }
+  #escena:focus { outline:3px solid var(--acento); outline-offset:2px; }
   button.sec { background:transparent; color:var(--acento); }
   button:focus-visible, select:focus-visible, input:focus-visible { outline:3px solid var(--acento); outline-offset:1px; }
   .escena { background:var(--panel); border:1px solid var(--linea); border-radius:12px; padding:12px; text-align:center; }
@@ -45,12 +48,13 @@
 </style>
 </head>
 <body>
+<a class="saltar" href="#escena">Saltar a la figura</a>
 <header>
   <h1>Siluetas ancestrales</h1>
   <p>Personas de frente, como ilustración y no como fotografía, con un catálogo de ropa por región y época y un generador de ropa y colores nuevos. Misma semilla, misma persona.</p>
 </header>
 <main>
-  <div>
+  <section aria-label="Opciones de la persona">
     <fieldset><legend>Origen</legend>
       <label for="etnia">Etnia o cultura</label><select id="etnia"></select>
       <label for="etnia2">Mezclada con</label><select id="etnia2"></select>
@@ -84,6 +88,8 @@
       <select id="pose"><option value="casual" selected>Casual (cambia con la semilla)</option><option value="firme">Firme (simétrica)</option></select>
       <label for="postura">Brazos caídos (solo en pose firme)</label>
       <select id="postura"><option value="firme">Firme</option><option value="relajada">Relajada</option><option value="abierta">Abierta (muestra la ropa)</option></select>
+      <label for="vista">Vista</label>
+      <select id="vista"><option value="frente" selected>De frente</option><option value="espalda">De espalda</option></select>
       <label for="saludo">Saludo</label>
       <select id="saludo"><option value="derecha" selected>Mano derecha</option><option value="izquierda">Mano izquierda</option><option value="ninguno">Sin saludo</option></select>
       <label for="piel">Piel</label><select id="piel"><option value="">Según el origen o el atuendo</option></select>
@@ -104,10 +110,10 @@
     </fieldset>
     <div class="fila"><button id="otra" type="button">Otra semilla</button><button id="descargar" type="button" class="sec">Descargar SVG</button></div>
     <p class="nota">Semilla: <output id="semilla">1</output>. Las prendas y los tintes son una aproximación histórica pensada para ilustrar, no un estudio de indumentaria.</p>
-  </div>
-  <div>
-    <div class="escena" id="escena" aria-live="polite"></div>
-    <p class="info" id="info"></p>
+  </section>
+  <section aria-label="Resultado">
+    <div class="escena" id="escena" tabindex="-1"></div>
+    <p class="info" id="info" role="status"></p>
     <ul class="info" id="estimaciones" style="text-align:left;max-width:70ch;margin:8px auto 0"></ul>
     <div class="paleta" id="paleta"></div>
     <h2 style="font-size:1rem;margin:20px 0 6px">Colores de la ropa de esta persona</h2>
@@ -118,7 +124,7 @@
     <div id="barras" class="barras"></div>
     <h2 style="font-size:1rem;margin:20px 0 0">Más variantes con las mismas opciones</h2>
     <div class="mosaico" id="mosaico"></div>
-  </div>
+  </section>
 </main>
 <script src="dist/siluetas-ancestrales.js"></script>
 <script>
@@ -143,7 +149,7 @@
   }
   function opciones(extra = {}) {
     const o = { semilla, saludo: $('saludo').value, contorno: $('contorno').value, sexo: $('sexo').value, edad: Number($('edad').value) || 30, corpulencia: $('corpulencia').value, postura: $('postura').value,
-      detalle: $('detalle').value, rasgos: $('rasgos').checked, fondo: $('fondo').value, ...extra };
+      detalle: $('detalle').value, rasgos: $('rasgos').checked, fondo: $('fondo').value, vista: $('vista').value, ...extra };
     if ($('pose').value === 'firme') o.pose = 'firme';
     if ($('piel').value) o.piel = $('piel').value;
     if ($('anio').value !== '') o.anio = Number($('anio').value);
@@ -190,7 +196,7 @@
       mos.appendChild(b);
     }
   }
-  for (const id of ['peinado', 'tocado', 'barba', 'etnia', 'etnia2', 'anio', 'saludo', 'pose', 'contorno', 'modo', 'estilo', 'esquema', 'atuendo', 'edad', 'corpulencia', 'postura', 'piel', 'detalle', 'rasgos', 'fondo']) $(id).addEventListener('change', dibujar);
+  for (const id of ['peinado', 'tocado', 'barba', 'etnia', 'etnia2', 'anio', 'saludo', 'vista', 'pose', 'contorno', 'modo', 'estilo', 'esquema', 'atuendo', 'edad', 'corpulencia', 'postura', 'piel', 'detalle', 'rasgos', 'fondo']) $(id).addEventListener('change', dibujar);
   $('modo').addEventListener('change', () => { $('grupo-catalogo').hidden = $('modo').value !== 'catalogo'; $('grupo-nueva').hidden = $('modo').value !== 'nueva'; $('grupo-medida').hidden = $('modo').value !== 'medida'; });
   $('region').addEventListener('change', () => { llenarAtuendos(); dibujar(); });
   $('sexo').addEventListener('change', () => { llenarAtuendos(); dibujar(); });

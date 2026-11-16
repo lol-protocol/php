@@ -221,7 +221,7 @@ def test_cada_movimiento_tiene_plantillas_que_se_dibujan():
     vistos = {}
     for e in MANIFIESTO["entradas"]:
         vistos.setdefault(e["movimiento"], e["id"])  # la primera de cada movimiento
-    assert len(vistos) == 10
+    assert len(vistos) == 15
     for ident in vistos.values():
         d = {"id": "usr:" + "cd" * 16, "origen": "usuario", "version": 1, "propietario": "u1", "creado": "2026-10-18T09:30:00Z",
              "receta": {"fondo": {"tipo": "plantilla", "pieza": ident}}}

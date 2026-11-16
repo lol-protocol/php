@@ -31,24 +31,27 @@ from comun import DATOS
 EDADES = [0, 1] + list(range(5, 115, 5))
 AMPLITUD = [1, 4] + [5] * 21
 RAIZ_K = (-10.0, 10.0)  # intervalo en el que se busca k; e0 baja al subir k
+SEXOS = ("T", "F", "M")  # ambos sexos, mujeres y hombres: cada uno con sus propios coeficientes
 
 
-@lru_cache(maxsize=1)
-def coeficientes():
-    """Los coeficientes a, b, c y v del modelo (ambos sexos), de datos/modelo_logcuadratico.csv."""
+@lru_cache(maxsize=None)
+def coeficientes(sexo="T"):
+    """Los coeficientes a, b, c y v del modelo para un sexo (T, F o M), de datos/modelo_logcuadratico.csv."""
+    if sexo not in SEXOS:
+        raise ValueError(f"sexo «{sexo}»: debe ser uno de {SEXOS}")
     with (DATOS / "modelo_logcuadratico.csv").open(encoding="utf-8", newline="") as f:
-        filas = list(csv.DictReader(f))
+        filas = [fila for fila in csv.DictReader(f) if fila["sexo"] == sexo]
     if [int(fila["edad"]) for fila in filas] != EDADES:
-        raise ValueError("modelo_logcuadratico.csv no tiene los 24 grupos de edad esperados")
+        raise ValueError(f"modelo_logcuadratico.csv no tiene los 24 grupos de edad para el sexo {sexo}")
     return tuple(tuple(float(fila[c]) for fila in filas) for c in ("ax", "bx", "cx", "vx"))
 
 
-def tabla(q5, k):
+def tabla(q5, k, sexo="T"):
     """Tabla de vida del modelo para una mortalidad 5q0 (0 < q5 < 1) y un k. Devuelve (l, e): la proporción de
     sobrevivientes y la esperanza de vida restante en cada uno de los 24 grupos de edad (l(0) = 1)."""
     if not 0 < q5 < 1:
         raise ValueError(f"5q0 fuera de rango: {q5}")
-    ax, bx, cx, vx = coeficientes()
+    ax, bx, cx, vx = coeficientes(sexo)
     h = math.log(q5)
     m = [math.exp(a + b * h + c * h * h + v * k) for a, b, c, v in zip(ax, bx, cx, vx)]
     # Edad media de muerte de quien muere antes de cumplir 1 año: fórmula simple de Andreev y Kingkade.
@@ -68,16 +71,16 @@ def tabla(q5, k):
     return l, e
 
 
-def resolver_k(q5, e0):
+def resolver_k(q5, e0, sexo="T"):
     """El k para el que la tabla del modelo tiene esperanza de vida al nacer `e0`, o None si no existe en
     (-10, 10): una e0 y una 5q0 que el modelo no puede cuadrar a la vez."""
     def f(k):
-        return tabla(q5, k)[1][0] - e0
+        return tabla(q5, k, sexo)[1][0] - e0
 
     bajo, alto = RAIZ_K
     if not f(bajo) > 0 > f(alto):
         return None
-    for _ in range(80):
+    for _ in range(50):
         medio = (bajo + alto) / 2
         if f(medio) > 0:
             bajo = medio
@@ -86,15 +89,15 @@ def resolver_k(q5, e0):
     return (bajo + alto) / 2
 
 
-def esperanzas_por_edad(q5_por_mil, e0, edades):
+def esperanzas_por_edad(q5_por_mil, e0, edades, sexo="T"):
     """{edad: (esperanza restante, probabilidad de llegar a esa edad)} del modelo para esa mortalidad de 0 a 5
     años (por mil) y esa esperanza al nacer; None si el modelo no las puede cuadrar. `edades` son grupos de edad
-    del modelo (5, 10, 15 … 105)."""
+    del modelo (5, 10, 15 … 105). `sexo` elige los coeficientes (T, F o M)."""
     q5 = q5_por_mil / 1000.0
     if not 0 < q5 < 1:
         return None
-    k = resolver_k(q5, e0)
+    k = resolver_k(q5, e0, sexo)
     if k is None:
         return None
-    l, e = tabla(q5, k)
+    l, e = tabla(q5, k, sexo)
     return {edad: (e[EDADES.index(edad)], l[EDADES.index(edad)]) for edad in edades}

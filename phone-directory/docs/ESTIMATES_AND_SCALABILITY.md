@@ -32,9 +32,11 @@ Consultas sobre 100 000 filas:
 - Las búsquedas por ID y teléfono usan índices y no dependen del tamaño de la tabla. Las búsquedas por subcadena
   (`LIKE '%texto%'`) recorren la tabla, así que su tiempo crece linealmente con el número de filas; en estas
   mediciones, además, devuelven miles de filas, y construir esos objetos es parte del costo.
-- **La memoria crece ~1,8 KB por entrada**, porque `parseFile()` lee el archivo línea a línea pero devuelve todas las
-  entradas en un array. Un directorio nacional del catálogo (3–5 millones de entradas) necesitaría 5–9 GB para
-  parsearse de una vez. Para archivos así hay que partirlos antes de importarlos (ver sección 4).
+- **Con `parseFile()` la memoria crece ~1,8 KB por entrada**, porque lee el archivo línea a línea pero devuelve todas
+  las entradas en un array. Un directorio nacional del catálogo (3–5 millones de entradas) necesitaría 5–9 GB para
+  parsearse de una vez. `parseFileInBatches()` (que usan `processFile()` y `phonedir import`) entrega las entradas de a
+  lotes y no las guarda: medido con 100 000 y con 400 000 entradas, el pico es de ~6 MB en los dos casos (frente a
+  182 MB y 716 MB con `parseFile()`), con la misma velocidad de parseo.
 - Datos reales (OCR, formatos mixtos, más errores) serán más lentos que este directorio sintético y regular.
 
 ---
@@ -62,15 +64,17 @@ inserción). RAM = memoria para parsear el archivo más grande del escenario de 
 | Grande: 10 países, 100 años | 600 M | ~30 GB | ~200 GB | ~10 h | ~5,5 GB por edición* |
 | Máximo: todos los directorios conocidos | ~10 000 M | ~0,5 TB | ~3,5 TB | ~7 días | ~5,5 GB por edición* |
 
-\* Solo si se parsea cada edición completa de una vez. Partiendo los archivos en trozos de ~100 000 entradas, la
-memoria queda en ~200 MB por proceso.
+\* Solo si se parsea cada edición completa de una vez con `parseFile()`. Con `parseFileInBatches()` (el camino de
+`phonedir import`) la memoria queda en unos pocos MB, sea cual sea el tamaño del archivo.
 
 ---
 
 ## 4. Cómo escalar
 
-- **Partir los archivos grandes** en trozos antes de importarlos (`split -l`, cortando entre registros, en una
-  línea vacía). Es la forma de mantener acotada la memoria mientras `parseFile()` devuelva todas las entradas juntas.
+- **Importar por lotes.** `phonedir import` y `PhoneDirectoryManagerV2::processFile()` leen y guardan de a
+  `--lote` entradas (5000 por omisión), así que no hace falta partir los archivos para acotar la memoria. Cada lote es
+  su propia transacción: si el proceso se corta, los lotes anteriores quedan guardados. Quien use `parseFile()`
+  directamente sí tendría que partir el archivo en trozos (`split -l`, cortando en una línea vacía).
 - **Paralelizar por archivo.** El parseo no comparte estado entre archivos, así que N procesos parsean ~N veces más
   rápido. La inserción no escala igual: SQLite admite un solo escritor a la vez. Para cargas en paralelo conviene
   PostgreSQL o MySQL, ambos soportados.

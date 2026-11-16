@@ -356,6 +356,28 @@ test("--field-sources also downloads the per-field URLs of field_sources.csv, on
   }
 });
 
+const hasPdftotext = spawnSync("pdftotext", ["-v"]).error === undefined;
+
+test("a PDF is converted to text with pdftotext; a broken one is skipped", { skip: skip || (hasPdftotext ? false : "pdftotext is not installed") }, () => {
+  const isolated = mkdtempSync(join(tmpdir(), "laws-pdf-"));
+  try {
+    const bundle = { countries: [{ code: "XP", tld: "xp", name: "P", region: "europe", lawCount: 2, laws: [
+      { law_name: "Law PDF real", website_url: `${server.url}/law.pdf` },
+      { law_name: "Law PDF broken", website_url: `${server.url}/doc.pdf` },
+    ] }] };
+    writeFileSync(join(isolated, "index.json"), JSON.stringify(bundle));
+    const { stdout, status } = php(["--delay=0", "--timeout=5", "--allow-private-hosts"], { env: { LAWS_DATA_DIR: isolated } });
+    assert.equal(status, 0);
+    assert.match(stdout, /\[ok\] xp\/law-pdf-real/);
+    assert.match(stdout, /\[skip\] xp\/law-pdf-broken {2}PDF documents are not converted/);
+    const md = readFileSync(join(isolated, "xp", "texts", "law-pdf-real.md"), "utf-8");
+    assert.match(md, /Article 6\. The term of protection is the life of the author plus seventy years after death\./);
+    assert.ok(!md.includes("%PDF"), "no raw PDF bytes are stored");
+  } finally {
+    rmSync(isolated, { recursive: true, force: true });
+  }
+});
+
 test("--field-sources: a row without law_name belongs to the only law of its country, and to none when there are several", { skip }, () => {
   const isolated = mkdtempSync(join(tmpdir(), "laws-fields-single-"));
   try {

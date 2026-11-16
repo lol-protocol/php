@@ -115,7 +115,7 @@ final class IngresosYCobrosRepository
                                GROUP BY boleta_id) p ON p.boleta_id = b.id
                     WHERE NOT b.anulada
                 ) x
-                WHERE round(x.saldo, 2) > ' . Dinero::UN_CENTAVO;
+                WHERE round(x.saldo, 3) > ' . Dinero::UN_CENTAVO;
     }
 
     /**

@@ -7,7 +7,8 @@ atributos y data.frame); un tipo que no conoce lo hace fallar en vez de adivinar
 import bz2, gzip, lzma, struct, sys
 
 def abrir(ruta):
-    datos = open(ruta, "rb").read()
+    with open(ruta, "rb") as f:
+        datos = f.read()
     for f in (gzip.decompress, bz2.decompress, lzma.decompress):
         try:
             return f(datos)

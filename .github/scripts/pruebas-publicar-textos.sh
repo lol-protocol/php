@@ -35,6 +35,20 @@ bash "$s" privacy-laws "$tmp/remoto.git" datos/leyes-textos-privacy-laws >/dev/n
 [ "$(archivos datos/leyes-textos-privacy-laws)" = "LEEME.md countries/zz/texts/index.json countries/zz/texts/otra.md " ] \
   && ok "una corrida nueva reemplaza la anterior" || mal "no se reescribió: $(archivos datos/leyes-textos-privacy-laws)"
 
+# Tercera corrida con otro país: conserva el anterior (zz) y suma el nuevo (yy)
+mkdir -p "$tmp/raiz/privacy-laws/countries/yy/texts"
+echo 'otro país' >"$tmp/raiz/privacy-laws/countries/yy/texts/ley.md"
+mv "$tmp/raiz/privacy-laws/countries/zz" "$tmp/zz-guardado"
+bash "$s" privacy-laws "$tmp/remoto.git" datos/leyes-textos-privacy-laws >/dev/null 2>&1
+[ "$(archivos datos/leyes-textos-privacy-laws)" = "LEEME.md countries/yy/texts/ley.md countries/zz/texts/index.json countries/zz/texts/otra.md " ] \
+  && ok "una corrida de otro país conserva las carpetas que no tocó" || mal "no conservó zz: $(archivos datos/leyes-textos-privacy-laws)"
+# Cuarta: zz vuelve con otros archivos y se reemplaza entero (no se mezcla con el anterior)
+mv "$tmp/zz-guardado" "$tmp/raiz/privacy-laws/countries/zz"; rm "$tmp/raiz/privacy-laws/countries/zz/texts/otra.md"; echo 'tercera' >"$tmp/raiz/privacy-laws/countries/zz/texts/tercera.md"
+bash "$s" privacy-laws "$tmp/remoto.git" datos/leyes-textos-privacy-laws >/dev/null 2>&1
+[ "$(archivos datos/leyes-textos-privacy-laws)" = "LEEME.md countries/yy/texts/ley.md countries/zz/texts/index.json countries/zz/texts/tercera.md " ] \
+  && ok "una carpeta que vuelve en la corrida se reemplaza entera" || mal "zz no se reemplazó: $(archivos datos/leyes-textos-privacy-laws)"
+git --git-dir="$tmp/remoto.git" show datos/leyes-textos-privacy-laws:LEEME.md | grep -q "Los archivos son 3" && ok "el LEEME cuenta también los conservados (3)" || mal "LEEME con la cuenta equivocada"
+
 if bash "$s" privacy-laws "$tmp/remoto.git" master >/dev/null 2>&1; then mal "debía rechazar una rama que no es datos/…"; else ok "rechaza una rama que no es datos/…"; fi
 mkdir -p "$tmp/raiz/otro-modulo/countries/zz/texts" && echo "texto" >"$tmp/raiz/otro-modulo/countries/zz/texts/x.md"  # con textos: solo la validación puede rechazarlo
 if bash "$s" otro-modulo "$tmp/remoto.git" datos/x >/dev/null 2>&1; then mal "debía rechazar un módulo raro"; else ok "rechaza un módulo raro"; fi

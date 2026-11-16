@@ -5,5 +5,5 @@ ob_start(); ?>
 <?php if ($detalleHtml !== ''): ?>
 <p><?= $detalleHtml ?></p>
 <?php endif; ?>
-<p><a href="/">Volver al inicio</a> · <a href="/b/8/">Ver el catálogo</a></p>
+<p><a href="/"><?= esc(t('error.volver_inicio')) ?></a> · <a href="/b/8/"><?= esc(t('error.ver_catalogo')) ?></a></p>
 <?php $content = ob_get_clean(); $title = $titulo; $noindex = true; $sinCanonica = true; include __DIR__ . '/_layout.php';

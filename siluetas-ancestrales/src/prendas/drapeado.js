@@ -1,5 +1,5 @@
 import { suavizar, lerp } from '../util.js';
-import { yLargo, relleno, parte, linea, sombraDe, pliegues } from './comun.js';
+import { yLargo, relleno, parte, linea, sombraDe } from './comun.js';
 
 /** Manto diagonal: toga, sari, plaid, arisaid, tilma cruzada. */
 export function drapeado(M, p, k, ctx) {

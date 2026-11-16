@@ -24,6 +24,7 @@ from collections import Counter
 from pathlib import Path
 
 from comun import filas_csv, leer_csv
+import exportes
 from sugerencias import desvios_por_pais, sugerencias_md
 
 AQUI = Path(__file__).resolve().parent
@@ -36,6 +37,8 @@ SALIDA_FINAL = AQUI / "priorizacion.csv"
 SALIDA_VISTA = AQUI / "vista.html"
 SALIDA_ESCENARIOS = AQUI / "escenarios.md"
 SALIDA_SUGERENCIAS = AQUI / "sugerencias_indices.md"
+SALIDA_JSON = AQUI / "exportes" / "paises.json"
+SALIDA_SQL = AQUI / "exportes" / "paises.sql"
 # Escenarios de ranking: (nombre, puntaje, excluido). El primero de cada grupo es la regla vigente.
 ESCENARIOS_GEN = [
     ("Vigente: IG × IO, excluye IO ≤ 1", lambda d: d["ig"] * d["io"], lambda d: d["io"] <= 1),
@@ -53,6 +56,9 @@ ESCENARIOS_POS = [
 ]
 PUESTOS_MOSTRADOS = 25
 PLANTILLA_VISTA = AQUI / "vista_plantilla.html"
+# Donde vista_html() pone los datos, y donde empieza el cuerpo de la página en la plantilla.
+MARCAS_PLANTILLA = ("/*DATOS*/null", "/*MAPA*/null", "/*ANIOS*/null", "/*ESCENARIOS*/null")
+MARCA_PAGINA = '\n<div class="pagina">'
 MAPA = AQUI / "mapa_paises.csv"
 DETALLE = AQUI / "datos_detalle.csv"
 BANDA = AQUI / "poblacion_historica_detalle.csv"
@@ -200,13 +206,17 @@ def vista_html(registros, anios, documento=True):
         return json.dumps(valor, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 
     texto = PLANTILLA_VISTA.read_text(encoding="utf-8")
+    # Una marca que falta no daría error al reemplazar: la vista saldría con «null» donde van los datos.
+    faltan = [marca for marca in (*MARCAS_PLANTILLA, MARCA_PAGINA) if marca not in texto]
+    if faltan:
+        sys.exit(f"{PLANTILLA_VISTA.name} no tiene las marcas {faltan}: vista.html saldría sin datos")
     texto = (texto.replace("/*DATOS*/null", a_json(registros)).replace("/*MAPA*/null", a_json(mapa))
              .replace("/*ANIOS*/null", a_json(anios))
              .replace("/*ESCENARIOS*/null", a_json({"gen": [n for n, _, _ in ESCENARIOS_GEN],
                                                     "pos": [n for n, _, _ in ESCENARIOS_POS]})))
     if not documento:
         return texto
-    cabeza, cuerpo = texto.split('\n<div class="pagina">', 1)
+    cabeza, cuerpo = texto.split(MARCA_PAGINA, 1)
     return ('<!doctype html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
             + cabeza + "\n</head>\n<body>\n<div class=\"pagina\">" + cuerpo + "</body>\n</html>\n")
@@ -318,6 +328,7 @@ def comprobar_o_escribir(archivos, comprobar):
                     desactualizadas.append(ruta.name)
         return desactualizadas
     for ruta, texto in archivos:
+        ruta.parent.mkdir(exist_ok=True)
         with ruta.open("w", encoding="utf-8", newline="") as f:
             f.write(texto)
     return []
@@ -503,10 +514,13 @@ def main(comprobar=False):
          "Texto web (% páginas, lengua local)", "Prioridad (IL × IP local)", "Excluido", "Comentarios"],
         pos_ordenado)
 
+    exportadas = exportes.filas([f for _, f in paises], pos_por_codigo,
+                                {f["codigo"]: f for f in filas_final}, banda)
     salidas = [(SALIDA_GENEALOGIA, texto_gen), (SALIDA_POS, texto_pos),
                (SALIDA_FINAL, texto_csv(COLUMNAS_FINAL, filas_final)), (SALIDA_VISTA, vista_html(vista, anios_vista)),
                (SALIDA_ESCENARIOS, escenarios_md(registros)),
                (SALIDA_SUGERENCIAS, sugerencias_md(registros)),
+               (SALIDA_JSON, exportes.json_texto(exportadas)), (SALIDA_SQL, exportes.sql_texto(exportadas)),
                (README, readme_con_resumen(resumen_md(registros, niveles)))]
     desactualizadas = comprobar_o_escribir(salidas, comprobar)
     if comprobar and desactualizadas:
@@ -516,7 +530,7 @@ def main(comprobar=False):
     accion = "al día" if comprobar else "escritas"
     print(f"{len(paises)} países. Genealogía: {excluidos_gen} excluidos ({SALIDA_GENEALOGIA.name}). "
           f"POS: {excluidos_pos} excluidos ({SALIDA_POS.name}). Tablas, {SALIDA_FINAL.name}, "
-          f"{SALIDA_VISTA.name}, {SALIDA_ESCENARIOS.name} y {SALIDA_SUGERENCIAS.name} {accion}.")
+          f"{SALIDA_VISTA.name}, {SALIDA_ESCENARIOS.name}, {SALIDA_SUGERENCIAS.name} y exportes/ {accion}.")
 
 
 if __name__ == "__main__":

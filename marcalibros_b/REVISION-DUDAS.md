@@ -68,3 +68,14 @@ Cinco autores más por movimiento, de literaturas poco presentes (rusa, italiana
 - **Simbolismo**: Aleksandr Blok, Stefan George, Gabriele D'Annunzio, Henrik Ibsen, Georges Rodenbach
 
 Frases nuevas (33, `catalog/frases.yaml`, todas `sin_verificar`): Pushkin, Leopardi, Heine, Mickiewicz, Lamartine, Wilde, Lovecraft, Gógol, Stendhal, Fontane, Crane, Machado, Éluard, Stein, La Fontaine, Marino, Gryphius, Esquilo, Plauto, Schiller, Blok, George, D'Annunzio e Ibsen. La más dudosa de atribución exacta: la de Stein («Sacred Emily») y la de Marino (¿«La Murtoleide»?).
+
+## 7. Fase 4 de la ampliación: 5 movimientos nuevos, 50 autores y 500 obras (de memoria, solo canon)
+Diez autores por movimiento; todas las obras y temas son borrador, escritos de memoria y sin verificar (títulos, tipo, orden y atribución de los temas que salen de una obra).
+- **Renacimiento**: Petrarca, Ariosto, Tasso, Maquiavelo, Erasmo, Rabelais, Montaigne, Camões, Shakespeare, Fray Luis de León
+- **Ilustración**: Voltaire, Rousseau, Diderot, Montesquieu, Swift, Defoe, Lessing, Jovellanos, Moratín, Beaumarchais
+- **Expresionismo**: Trakl, Heym, Benn, Kafka, Döblin, Lasker-Schüler, Werfel, Stramm, Toller, Kaiser
+- **Surrealismo**: Aragon, Desnos, Artaud, Cocteau, Cernuda, Aleixandre, Neruda, Paz, Roussel, Max Jacob. Casi todos tienen derechos vigentes: sus frases son originales y sin firma.
+- **Literaturas de Oriente**: Bashō, Murasaki Shikibu, Li Bai, Du Fu, Lu Xun, Omar Khayyam, Rumi, Al-Mutanabbi, Kabir, Tagore
+
+Cosas concretas a revisar: la fecha de muerte de Murasaki Shikibu en la frase (se puso 1031, la fecha es incierta); los capítulos de *Genji* (tipo `capítulo`); las obras de Al-Mutanabbi y de Kabir, que salen en parte como temas genéricos de su obra principal; las frases en árabe, persa, hindi, chino y japonés (texto exacto, de memoria) y la de Tagore.
+

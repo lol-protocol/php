@@ -14,7 +14,7 @@
     "retention_period": "No longer than necessary for the purposes (GDPR art. 5(1)(e)); PDPA adds national retention rules for some data",
     "enforcement_authority": "Commission for Personal Data Protection (CPDP)",
     "penalties_range": "Up to EUR 20M or 4% of turnover under GDPR art. 83; residual PDPA violations up to BGN 5,000 (doubled on repetition); largest fine to date about EUR 2.55M (National Revenue Agency 2019)",
-    "exemptions": "Journalism, academic and artistic expression, and archiving in the public interest (national rules under GDPR art. 85); household use; security and criminal-justice processing under separate regime (unconfirmed)",
+    "exemptions": "Journalism and academic, artistic or literary expression (art. 25h(1); ten-criteria test struck down 2019); household use (GDPR art. 2(2)(c)); National Archive Fund archiving (GDPR arts 15, 16, 18-21 disapplied)",
     "deceased_data": "Not covered by main rules, but art. 25f PDPA allows processing of deceased persons' data only on a legal basis with safeguards",
     "research_exemption": "Further use for scientific or historical research and statistics allowed if permitted by EU or Bulgarian law, necessary and proportionate, with safeguards (GDPR art. 89)",
     "genetic_data": "Special category under GDPR art. 9; explicit consent or another art. 9(2) ground required",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://cms.law/en/bgr/legal-updates/Bulgaria-implements-GDPR-into-Personal-Data-Protection-Act",
@@ -86,8 +86,8 @@
       },
       "exemptions": {
         "url": "https://www.cipil.law.cam.ac.uk/node/294472",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "deceased_data": {
         "url": "https://www.DataGuidance.com/notes/bulgaria-data-protection-overview",
@@ -111,6 +111,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "exemptions",
+        "from": "Journalism, academic and artistic expression, and archiving in the public interest (national rules under GDPR art. 85); household use; security and criminal-justice processing under separate regime (unconfirmed)",
+        "to": "Journalism and academic, artistic or literary expression (art. 25h(1); ten-criteria test struck down 2019); household use (GDPR art. 2(2)(c)); National Archive Fund archiving (GDPR arts 15, 16, 18-21 disapplied)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",
