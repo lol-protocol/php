@@ -377,3 +377,32 @@ test("a PDF is converted to text with pdftotext; a broken one is skipped", { ski
     rmSync(isolated, { recursive: true, force: true });
   }
 });
+
+test("--field-sources: a row without law_name belongs to the only law of its country, and to none when there are several", { skip }, () => {
+  const isolated = mkdtempSync(join(tmpdir(), "laws-fields-single-"));
+  try {
+    const other = `${server.url}/plain.txt`;
+    const bundle = { countries: [
+      { code: "XS", tld: "xs", name: "S", region: "europe", lawCount: 1, laws: [{ law_name: "Ley única", website_url: `${server.url}/law.html` }] },
+      { code: "XM", tld: "xm", name: "M", region: "europe", lawCount: 2, laws: [
+        { law_name: "Ley uno", website_url: `${server.url}/law.html` },
+        { law_name: "Ley dos", website_url: "" },
+      ] },
+    ] };
+    writeFileSync(join(isolated, "index.json"), JSON.stringify(bundle));
+    const rows = [["XS", "", "term"], ["XS", "", "penalties"], ["XM", "", "term"], ["XM", "Ley dos", "term"]];
+    const id = createHash("sha1").update(other).digest("hex").slice(0, 10);
+    writeFileSync(join(isolated, "field_sources.csv"), [
+      "country_code,law_name,field,source_id,confidence,checked",
+      ...rows.map(([code, law, field]) => [code, law, field, id, "high", "2026-10-22"].join(",")),
+    ].join("\n") + "\n");
+    writeFileSync(join(isolated, "source_urls.csv"), `source_id,url\n${id},${other}\n`);
+    const plan = php(["--delay=0", "--dry-run", "--field-sources"], { env: { LAWS_DATA_DIR: isolated } }).stdout;
+    assert.match(plan, /\[plan\] xs\/ley-unica--[0-9a-f]{8}\.md/); // the nameless row reaches the only law of XS
+    assert.equal((plan.match(/\[plan\] xs\//g) ?? []).length, 2); // main page + plain.txt once (two fields, one URL)
+    assert.match(plan, /\[plan\] xm\/ley-dos--[0-9a-f]{8}\.md/); // the named row is matched by name
+    assert.equal((plan.match(/\[plan\] xm\//g) ?? []).length, 2); // main page of "Ley uno" + "Ley dos"; the nameless row is ambiguous, so skipped
+  } finally {
+    rmSync(isolated, { recursive: true, force: true });
+  }
+});
