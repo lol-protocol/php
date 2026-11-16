@@ -72,6 +72,12 @@
     },
     "changes": [
       {
+        "date": "2026-11-16",
+        "field": "data_categories",
+        "from": "Personal data (sensitive categories unverified) (unconfirmed)",
+        "to": "Personal data; the law also refers to sensitive data (its categories are not listed in the source)"
+      },
+      {
         "date": "2026-11-14",
         "field": "data_categories",
         "from": "Personal data (sensitive categories unverified) (unconfirmed)",
