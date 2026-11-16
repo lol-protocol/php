@@ -1,0 +1,44 @@
+[
+    {
+        "slug": "law-no-06-l-082-on-protection-of-personal-data",
+        "law": "Law No. 06/L-082 on Protection of Personal Data",
+        "source": "https://aip.rks-gov.net/en/personal-data-protection-as-a-priority/",
+        "file": "law-no-06-l-082-on-protection-of-personal-data.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:53:19Z",
+        "checkedAt": "2026-11-14T19:53:19Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "457c9b9b1b46f624883714d785ffbed3fda5e55b3492e20d86f6664a0ebb879d",
+        "chars": 2494
+    },
+    {
+        "slug": "law-no-06-l-082-on-protection-of-personal-data--5bcf1bd5",
+        "law": "Law No. 06/L-082 on Protection of Personal Data (enactment_date)",
+        "source": "https://www.dataguidance.com/sites/default/files/law_no._06_l_-082_on_protection_of_personal_data_0.pdf",
+        "status": "skipped",
+        "error": "PDF documents are not converted",
+        "checkedAt": "2026-11-14T19:53:30Z"
+    },
+    {
+        "slug": "law-no-06-l-082-on-protection-of-personal-data--77945deb",
+        "law": "Law No. 06/L-082 on Protection of Personal Data (scope, penalties_range)",
+        "source": "https://www.dataguidance.com/jurisdiction/kosovo",
+        "status": "skipped",
+        "error": "no readable text (the page probably needs JavaScript)",
+        "checkedAt": "2026-11-14T19:53:40Z"
+    },
+    {
+        "slug": "law-no-06-l-082-on-protection-of-personal-data--d6436c89",
+        "law": "Law No. 06/L-082 on Protection of Personal Data (law_name, effective_date, applies_to, key_requirements)",
+        "source": "https://www.dlapiperdataprotection.com/?c=XK&t=law",
+        "file": "law-no-06-l-082-on-protection-of-personal-data--d6436c89.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:53:20Z",
+        "checkedAt": "2026-11-14T19:53:20Z",
+        "etag": null,
+        "lastModified": "Sat, 14 Nov 2026 19:53:20 GMT",
+        "sha256": "af02908c023a14fe4cc84676d601936637929ce67398370fd13f4f5d31e34fca",
+        "chars": 1863
+    }
+]

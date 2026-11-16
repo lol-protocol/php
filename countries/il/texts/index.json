@@ -1,0 +1,10 @@
+[
+    {
+        "slug": "privacy-protection-law",
+        "law": "Privacy Protection Law",
+        "source": "https://www.justice.gov.il/",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-14T19:53:14Z"
+    }
+]
