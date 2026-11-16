@@ -212,6 +212,29 @@ class DatosPreparados(unittest.TestCase):
         self.assertEqual(serie[fin], 30.0)  # sin fecundidad ese año: la última tasa
         self.assertNotIn(fin + 1, pd.natalidad_pais({fin + 1: 30.0}, {}))
 
+    def test_la_api_del_banco_mundial_en_varias_paginas_se_rechaza(self):
+        import json
+        import tempfile
+        import preparar_datos as pd
+        carpeta = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, carpeta)
+        ruta = Path(carpeta) / "bm.json"
+        ruta.write_text(json.dumps([{"pages": 2}, []]), encoding="utf-8")
+        with self.assertRaises(SystemExit):
+            pd.leer_bm_api(ruta)
+        ruta.write_text(json.dumps([{"pages": 1}, [{"countryiso3code": "AAA", "date": "2020", "value": 1.5}]]),
+                        encoding="utf-8")
+        self.assertEqual(pd.leer_bm_api(ruta), {"AAA": {2020: 1.5}})
+
+    def test_natalidad_del_banco_mundial_solo_despues_de_gapminder_o_completa_sin_el(self):
+        import preparar_datos as pd
+        bm = {2000: 20.0, 2015: 18.0, 2016: 10.0}
+        con_gapminder = pd.natalidad_pais({2000: 30.0, 2015: 25.0}, {}, bm)
+        self.assertEqual((con_gapminder[2000], con_gapminder[2015], con_gapminder[2016]), (30.0, 25.0, 10.0))
+        sin_gapminder = pd.natalidad_pais({}, {1990: 2.0}, bm)
+        self.assertEqual((sin_gapminder[1990], sin_gapminder[2000], sin_gapminder[2015]), (14.0, 20.0, 18.0))
+        self.assertEqual(sin_gapminder[2008], 20.0 + (18.0 - 20.0) * 8 / 15)  # hueco: interpolación
+
     def test_natalidad_sin_tasa_usa_la_fecundidad_y_sin_nada_queda_vacia(self):
         import preparar_datos as pd
         self.assertEqual(pd.natalidad_pais({}, {1900: 6.0}), {1900: pd.FACTOR_NATALIDAD * 6.0})

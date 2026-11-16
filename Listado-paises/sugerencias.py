@@ -73,6 +73,11 @@ def con_datos(registros, variables):
     return [d for d in registros if sum(f(d) is None for _, f in variables) <= FALTANTES_MAXIMOS]
 
 
+def alcanzan(usados, variables):
+    """True si hay más países que coeficientes del modelo: con menos no se puede ajustar."""
+    return len(usados) > len(variables) + 1
+
+
 def ajustar(registros, clave, variables):
     """(coeficientes, R², {codigo: predicción}, medias). Un dato faltante vale la media de esa
     variable entre los países que la tienen."""
@@ -108,7 +113,7 @@ def desvios_por_pais(registros):
     marcas = {}
     for _, clave, variables in MODELOS:
         usados = con_datos(registros, variables)
-        if len(usados) <= len(variables) + 1:
+        if not alcanzan(usados, variables):
             continue
         _, _, pred, _ = ajustar(usados, clave, variables)
         for d, sugerido in desvios(usados, clave, pred):
@@ -131,7 +136,7 @@ def sugerencias_md(registros):
               f"de {FALTANTES_MAXIMOS} dato del modelo quedan fuera.", ""]
     for nombre, clave, variables in MODELOS:
         usados = con_datos(registros, variables)
-        if len(usados) <= len(variables) + 1:
+        if not alcanzan(usados, variables):
             partes += [f"## {nombre}", "", "No hay países con datos suficientes para ajustar el modelo.", ""]
             continue
         coef, r2, pred, _ = ajustar(usados, clave, variables)

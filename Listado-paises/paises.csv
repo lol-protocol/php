@@ -16,7 +16,7 @@ BS,Bahamas,estado,América,0.401,1.10,0.820,39455,35221,,92.5,0.5,libre,,64,3,4,
 BH,Baréin,estado,Asia,1.61,3.86,0.899,29717,57820,97.8,100.0,3.6,no libre,24.9,42,1,3,Reino pequeño; árabe e inglés; registros poco públicos; control estatal de internet (no libre según Freedom House)
 BD,Bangladés,estado,Asia,173.6,1689.02,0.685,2593,8242,79.0,53.4,5.0,parcial,59.9,24,1,3,Mercado enorme; registros civiles en papel; control de redes sociales en episodios de crisis; bengalí
 BB,Barbados,estado,América,0.282,1.85,0.811,26897,19224,,70.4,6.9,libre,,69,3,4,Inglés; mercado pequeño; registros coloniales británicos de buena calidad
-BM,Bermudas,territorio,América,0.065,0.27,,142250,,,,,,,,3,4,Territorio británico de ultramar; archivos de Bermudas con registros coloniales y parroquiales; diáspora en EE. UU. y Canadá; inglés; mercado pequeño; sector financiero muy regulado
+BM,Bermudas,territorio,América,0.065,0.19,,142250,,,,,,,,3,4,Territorio británico de ultramar; archivos de Bermudas con registros coloniales y parroquiales; diáspora en EE. UU. y Canadá; inglés; mercado pequeño; sector financiero muy regulado
 BY,Bielorrusia,estado,Europa,9.06,110.95,0.824,8606,27782,99.9,94.3,8.7,no libre,25.9,37,2,1,Sanciones de EE. UU. y UE; control político y de medios; ruso y bielorruso
 BE,Bélgica,estado,Europa,11.7,130.26,0.951,56582,62921,,95.8,4.4,libre,75.1,73,4,4,"Registros civiles muy completos; regulación compleja entre regiones; RGPD; francés, neerlandés y alemán"
 BZ,Belice,estado,América,0.417,2.65,0.721,7681,12455,87.9,80.0,1.8,libre,,,3,4,Inglés; mercado pequeño; registros de la época colonial británica; diáspora en EE. UU. y Canadá
@@ -49,7 +49,7 @@ CI,Costa de Marfil,estado,África,31.9,142.50,0.582,2728,6512,50.0,41.4,3.8,parc
 CR,Costa Rica,estado,América,5.13,96.08,0.833,18853,25980,97.4,87.2,1.0,libre,81.6,55,3,4,Estable; español; pagos internacionales sin fricción; registros civiles digitalizados
 HR,Croacia,estado,Europa,3.88,115.24,0.889,24050,41135,,83.6,21.3,libre,65,50,3,4,"Diáspora grande en Canadá, Chile, Australia y EE. UU.; registros parroquiales; croata; RGPD"
 CU,Cuba,estado,América,11.0,27.86,0.762,,15313,97.7,70.5,17.1,no libre,28.4,42,4,1,Embargo de EE. UU.; control estatal de internet y de medios; pagos casi imposibles; registros coloniales valiosos pero de acceso restringido
-CW,Curazao,territorio,América,0.185,2.85,,22833,,,,,,,,4,4,País del Reino de los Países Bajos; registros civiles neerlandeses y de la comunidad sefardí más antigua de América; registros de la esclavitud; diáspora en Países Bajos; papiamento y neerlandés; mercado pequeño
+CW,Curazao,territorio,América,0.185,2.68,,22833,,,,,,,,4,4,País del Reino de los Países Bajos; registros civiles neerlandeses y de la comunidad sefardí más antigua de América; registros de la esclavitud; diáspora en Países Bajos; papiamento y neerlandés; mercado pequeño
 DK,Dinamarca,estado,Europa,5.98,66.77,0.962,71026,71455,,99.8,2.1,libre,91.5,90,5,5,Registros de la iglesia y censos muy completos; danés e inglés muy extendido; RGPD
 DM,Dominica,estado,América,0.066,0.36,0.761,10405,18278,,82.0,32.3,libre,,56,2,4,Muy pequeño; inglés; economía de servicios y agricultura
 EC,Ecuador,estado,América,18.1,240.99,0.777,6827,14343,96.3,77.2,6.9,libre,61.3,34,2,3,Dolarizado desde 2000; inseguridad creciente; registros civiles en digitalización; español
@@ -72,7 +72,7 @@ GA,Gabón,estado,África,2.54,17.24,0.733,8230,18703,88.9,68.7,2.4,no libre,35.4
 GM,Gambia,estado,África,2.76,5.08,0.524,871,2932,51.6,49.5,2.6,parcial,44.9,37,2,3,Inglés; mercado pequeño; registros civiles limitados; infraestructura de pagos limitada
 GE,Georgia,estado,Europa,3.81,101.33,0.844,8968,22591,99.7,83.8,13.0,parcial,53.1,53,3,3,Registros eclesiásticos y soviéticos; diáspora en Rusia y EE. UU.; leyes recientes restrictivas para ONG y medios
 GH,Ghana,estado,África,34.4,206.36,0.628,2419,6809,76.5,72.2,3.1,libre,65,43,2,3,Inglés; deuda reestructurada tras 2022-2023; registros civiles en proceso de digitalización
-GI,Gibraltar,territorio,Europa,0.039,0.67,,,,,,,,,,3,4,"Territorio británico de ultramar; registros civiles y parroquiales en el archivo nacional de Gibraltar; población de origen genovés, maltés, español y británico; inglés y español; mercado muy pequeño"
+GI,Gibraltar,territorio,Europa,0.039,0.63,,,,,,,,,,3,4,"Territorio británico de ultramar; registros civiles y parroquiales en el archivo nacional de Gibraltar; población de origen genovés, maltés, español y británico; inglés y español; mercado muy pequeño"
 GD,Granada,estado,América,0.117,2.34,0.791,11529,17129,,70.2,22.4,libre,,53,2,4,Muy pequeño; inglés; economía de servicios y turismo
 GR,Grecia,estado,Europa,10.0,352.30,0.908,24626,36855,,86.3,7.8,libre,73.9,49,4,4,Registros civiles y parroquiales de buena calidad; gran diáspora en EE. UU. y Australia; griego
 GL,Groenlandia,territorio,América,0.056,0.24,,58499,,,,,,,,3,3,Territorio autónomo de Dinamarca; registros parroquiales daneses en línea; población inuit; groenlandés y danés; conectividad y logística limitadas fuera de Nuuk
@@ -91,10 +91,10 @@ ID,Indonesia,estado,Asia,283.5,1289.34,0.728,4925,13890,96.0,72.8,1.3,parcial,63
 IQ,Irak,estado,Asia,46.0,506.02,0.695,6074,13202,84.1,81.5,5.0,no libre,36.2,23,1,2,Conflictos recientes; control cambiario; registros civiles dispersos; árabe y kurdo
 IR,Irán,estado,Asia,91.6,1331.65,0.799,5190,15912,88.9,85.3,1.9,no libre,23.8,24,2,1,Sanciones amplias de EE. UU. y UE; cortes frecuentes de internet; pagos internacionales casi imposibles; persa
 IE,Irlanda,estado,Europa,5.26,128.37,0.949,112895,115505,,97.2,13.6,libre,90.5,77,5,5,Gran diáspora irlandesa; inglés; sede europea de muchas tecnológicas y de su autoridad de datos
-IM,Isla de Man,territorio,Europa,0.084,1.59,,90015,,,,,,,,4,4,"Dependencia de la Corona británica; registros parroquiales y civiles digitalizados (iMuseum); diáspora en EE. UU., Canadá y Australia; inglés; mercado muy pequeño"
+IM,Isla de Man,territorio,Europa,0.084,1.49,,90015,,,,,,,,4,4,"Dependencia de la Corona británica; registros parroquiales y civiles digitalizados (iMuseum); diáspora en EE. UU., Canadá y Australia; inglés; mercado muy pequeño"
 IS,Islandia,estado,Europa,0.393,5.21,0.972,85863,67177,,98.2,5.9,libre,93.7,72,4,4,Base genealógica nacional (Íslendingabók); muy pequeño; islandés e inglés
-FO,Islas Feroe,territorio,Europa,0.055,0.24,,74175,,,,,,,,4,4,Territorio autónomo de Dinamarca; registros parroquiales daneses en línea; feroés y danés; fuera de la UE; mercado muy pequeño
-MH,Islas Marshall,estado,Oceanía,0.038,2.40,0.733,7590,6787,95.8,65.9,1.1,libre,,,1,3,Estado asociado a EE. UU.; muy pequeño; inglés y marshalés; conectividad y pagos limitados por su aislamiento
+FO,Islas Feroe,territorio,Europa,0.055,0.19,,74175,,,,,,,,4,4,Territorio autónomo de Dinamarca; registros parroquiales daneses en línea; feroés y danés; fuera de la UE; mercado muy pequeño
+MH,Islas Marshall,estado,Oceanía,0.038,2.41,0.733,7590,6787,95.8,65.9,1.1,libre,,,1,3,Estado asociado a EE. UU.; muy pequeño; inglés y marshalés; conectividad y pagos limitados por su aislamiento
 SB,Islas Salomón,estado,Oceanía,0.819,1.69,0.584,1934,2524,,29.0,1.0,libre,,43,1,3,Pequeño y aislado; inglés; registros civiles escasos
 IL,Israel,estado,Asia,9.39,159.56,0.919,54217,47527,,88.2,3.5,libre,78.4,62,4,3,Interés muy alto de la diáspora judía; archivos y registros accesibles; conflicto armado recurrente; hebreo e inglés
 IT,Italia,estado,Europa,59.3,1488.42,0.915,40430,52726,99.3,89.2,5.0,libre,77.4,56,5,4,Portal Antenati con registros civiles digitalizados; diáspora gigantesca en América; italiano; burocracia lenta
@@ -106,7 +106,7 @@ KZ,Kazajistán,estado,Asia,20.6,355.91,0.837,14155,34703,,93.4,13.6,no libre,31.
 KE,Kenia,estado,África,56.4,214.59,0.628,2133,5683,,35.0,1.0,parcial,50.5,31,2,3,Inglés y suajili; protestas recientes con restricciones puntuales; mercado digital activo
 KG,Kirguistán,estado,Asia,7.19,96.41,0.720,2515,6576,,92.0,7.5,no libre,42.1,26,1,2,Leyes recientes restrictivas para medios y ONG; ruso y kirguís
 KI,Kiribati,estado,Oceanía,0.135,6.76,0.644,2551,3141,98.6,89.4,4.7,libre,,,1,3,Muy aislado; conexión y pagos limitados; inglés y gilbertés
-XK,Kosovo,entidad disputada,Europa,1.68,27.08,,7027,,,,,,,,2,3,No reconocido por todos los países y fuera de la ONU; albanés y serbio; usa el euro
+XK,Kosovo,entidad disputada,Europa,1.68,25.93,,7027,,,,,,,,2,3,No reconocido por todos los países y fuera de la ONU; albanés y serbio; usa el euro
 KW,Kuwait,estado,Asia,4.93,21.73,0.852,32856,47777,96.5,100.0,3.4,parcial,38,46,1,4,Estable y solvente; sin registros civiles públicos de acceso abierto; árabe e inglés
 LA,Laos,estado,Asia,7.77,75.76,0.617,2124,8372,75.6,65.6,8.5,no libre,17.7,28,1,2,Partido único; control de internet y de medios; registros poco accesibles; lao
 LS,Lesoto,estado,África,2.34,10.92,0.550,1023,2596,90.5,51.8,10.6,libre,63,39,2,3,Enclave dentro de Sudáfrica; inglés y sesoto; economía dependiente del rand
