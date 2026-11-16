@@ -7,7 +7,9 @@ namespace DefamatoryContentReview\Chat\Inflection;
  * -er, -je) y el adjetivo con -e, con la ortografía de las dos: vocal corta
  * dobla la consonante («kut» → «kutten», «dom» → «domme»), vocal larga doble
  * pierde una letra («aap» → «apen») y entonces f/s pasan a v/z («teef» →
- * «teven», «vies» no: «ie» no es doble → «vieze»). Los verbos quedan literales.
+ * «teven», «vies» no: «ie» no es doble → «vieze»). El adjetivo trae además el comparativo y el
+ * superlativo («dom» → «dommer», «dommere», «domste»; «zwaar» → «zwaarder»; «vies» → «viest»), que
+ * UniMorph registra y se miden con bin/inflection-check.php. Los verbos quedan literales.
  */
 final class DutchInflection implements TopicInflection
 {
@@ -15,9 +17,18 @@ final class DutchInflection implements TopicInflection
     {
         return match ($kind) {
             'noun' => [$lemma, preg_match('/[^aeiou](el|em|en|er|je)$|[aiouy]$/u', $lemma) === 1 ? $lemma . (preg_match('/[aiouy]$/u', $lemma) ? "'s" : 's') : $this->withE($lemma) . 'n'],
-            'adj' => [$lemma, $this->withE($lemma)],
+            'adj' => $this->adjective($lemma),
             default => [$lemma],
         };
+    }
+
+    /** @return array<int,string> la forma base, con -e, comparativo (con y sin -e) y superlativo */
+    private function adjective(string $word): array
+    {
+        $withE = $this->withE($word);
+        $comparative = str_ends_with($word, 'r') ? [$word . 'der', $word . 'dere'] : [$withE . 'r', $withE . 're'];
+
+        return [$word, $withE, ...$comparative, $word . (str_ends_with($word, 's') ? 'te' : 'ste')];
     }
 
     /** La palabra con -e y su ajuste ortográfico: «dom» → «domme», «aap» → «ape», «vies» → «vieze». */

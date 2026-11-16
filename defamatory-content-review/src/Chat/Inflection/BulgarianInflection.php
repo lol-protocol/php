@@ -26,6 +26,7 @@ final class BulgarianInflection extends SuffixInflection
 
         return [
             '/^(.+)ен$/u' => [...array_map(fn(string $e): string => 'ен' . $e, $forms), ...array_map(fn(string $e): string => 'н' . $e, $forms)], // тъжен → тъжна; ален → алена
+            '/^(.+ск)и$/u' => $forms, // американски → американска, американско, американския
             '/^(.+[^аеиоуъяю])$/u' => $forms,
         ];
     }
