@@ -1,0 +1,62 @@
+name: Pruebas chat-con-libros
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "chat-con-libros/**"
+      - ".github/workflows/pruebas-chat-con-libros.yml"
+  pull_request:
+    paths:
+      - "chat-con-libros/**"
+      - ".github/workflows/pruebas-chat-con-libros.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  php:
+    name: "chat-con-libros: núcleo en PHP"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # Las pruebas del núcleo (normalización, lectura del libro, índice, conversador y los
+      # vectores de pruebas/vectores.tsv) y que ese archivo coincida con lo que genera bin/vectores.php.
+      - name: Pruebas
+        working-directory: chat-con-libros
+        run: php pruebas/ejecutar.php
+
+      - name: Comprobar que pruebas/vectores.tsv está al día
+        working-directory: chat-con-libros
+        run: php bin/vectores.php --comprobar
+
+  java:
+    name: "chat-con-libros: port a Java"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # El mismo conjunto de pruebas que en PHP, contra el mismo pruebas/vectores.tsv.
+      # Solo usa la biblioteca estándar de Java.
+      - name: Compilar y pruebas
+        working-directory: chat-con-libros
+        run: |
+          out="$RUNNER_TEMP/chat-libros"
+          mkdir -p "$out"
+          javac -encoding UTF-8 -d "$out" $(find java -name '*.java')
+          java -cp "$out" chatlibros.EjecutarPruebas
