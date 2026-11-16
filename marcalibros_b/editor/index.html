@@ -130,6 +130,8 @@
         <div class="filtros">
           <div class="campo"><label for="f-mov">Movimiento</label><select id="f-mov"><option value="">Todos</option></select></div>
           <div class="campo"><label for="f-gen">Género</label><select id="f-gen"><option value="">Todos</option></select></div>
+          <div class="campo"><label for="f-zona">Región</label><select id="f-zona"><option value="">Todas</option></select></div>
+          <div class="campo"><label for="f-len">Lengua</label><select id="f-len"><option value="">Todas</option></select></div>
           <div class="campo"><label for="f-autor">Autor</label><select id="f-autor"><option value="">Todos</option></select></div>
           <div class="campo"><label for="f-buscar">Buscar obra</label><input id="f-buscar" type="text" autocomplete="off" placeholder="El cuervo, Germinal…"></div>
         </div>
@@ -19874,8 +19876,8 @@
   }
   var MOSTRAR = 60, visibles = MOSTRAR;
   function filtradas() {
-    var m = $("f-mov").value, a = $("f-autor").value, g = $("f-gen").value, q = $("f-buscar").value.trim().toLowerCase();
-    return CAT.piezas.filter(function (p) { var au = CAT.autores[p[1]]; return (!m || au.m === m) && (!a || au.m + "/" + au.id === a) && (g === "" || String(p[6]) === g) && (!q || p[2].toLowerCase().indexOf(q) >= 0); });
+    var m = $("f-mov").value, a = $("f-autor").value, g = $("f-gen").value, z = $("f-zona").value, l = $("f-len").value, q = $("f-buscar").value.trim().toLowerCase();
+    return CAT.piezas.filter(function (p) { var au = CAT.autores[p[1]]; return (!m || au.m === m) && (!a || au.m + "/" + au.id === a) && (g === "" || String(p[6]) === g) && (z === "" || String(au.z) === z) && (l === "" || String(au.l) === l) && (!q || p[2].toLowerCase().indexOf(q) >= 0); });
   }
   function listarPiezas() {
     var todas = filtradas(), cont = $("piezas"), k = D.sprites.columnas;
@@ -19911,6 +19913,10 @@
   $("f-mov").onchange = function () { llenarAutores(); visibles = MOSTRAR; listarPiezas(); };
   CAT.generos.forEach(function (g, i) { var o = document.createElement("option"); o.value = String(i); o.textContent = g.nombre; $("f-gen").appendChild(o); });
   $("f-gen").onchange = function () { visibles = MOSTRAR; listarPiezas(); };
+  CAT.zonas.forEach(function (z, i) { var o = document.createElement("option"); o.value = String(i); o.textContent = z.nombre; $("f-zona").appendChild(o); });
+  CAT.lenguas.forEach(function (l, i) { var o = document.createElement("option"); o.value = String(i); o.textContent = l.nombre; $("f-len").appendChild(o); });
+  $("f-zona").onchange = function () { visibles = MOSTRAR; listarPiezas(); };
+  $("f-len").onchange = function () { visibles = MOSTRAR; listarPiezas(); };
   $("f-autor").onchange = function () { visibles = MOSTRAR; listarPiezas(); };
   $("f-buscar").oninput = function () { visibles = MOSTRAR; listarPiezas(); };
   $("mas").onclick = function () { visibles += MOSTRAR; listarPiezas(); };
