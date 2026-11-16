@@ -1,0 +1,43 @@
+%% Modelo de clases del núcleo (igual en PHP y en Java).
+classDiagram
+    class Libro {
+        +string titulo
+        +string autor
+        +list~Pasaje~ pasajes
+        +desdeTexto(texto) Libro
+        +desdeArchivo(ruta) Libro
+    }
+    class Pasaje {
+        +string capitulo
+        +string texto
+    }
+    class Normaliza {
+        +texto(s) string
+        +palabras(s) list~string~
+        +terminos(s) list~string~
+        +raiz(palabra) string
+    }
+    class Indice {
+        -map idf
+        -list vectores
+        +Indice(pasajes)
+        +buscar(terminos, k) list~Resultado~
+    }
+    class Resultado {
+        +int pasaje
+        +float puntaje
+    }
+    class Conversador {
+        +UMBRAL = 0.10
+        +MAX_CITAS = 2
+        -list temas
+        +responder(pregunta) string
+        +extracto(texto, max) string
+    }
+
+    Libro "1" *-- "many" Pasaje
+    Conversador --> Libro : lee
+    Conversador --> Indice : consulta
+    Conversador ..> Normaliza : usa
+    Libro ..> Normaliza : usa
+    Indice "1" --> "many" Resultado : devuelve

@@ -1,0 +1,25 @@
+%% Cómo se prueba que PHP y Java dan lo mismo.
+flowchart LR
+    cambio(["Cambio en chat-con-libros/<br/>o en su workflow"]) --> ci["GitHub Actions<br/>pruebas-chat-con-libros.yml"]
+
+    subgraph jphp["Job php"]
+        t1["php pruebas/ejecutar.php<br/>36 pruebas"]
+        t2["php bin/vectores.php --comprobar<br/>vectores.tsv al día"]
+    end
+    subgraph jjava["Job java"]
+        t3["javac + EjecutarPruebas<br/>las mismas 36 pruebas"]
+    end
+
+    ci --> jphp
+    ci --> jjava
+
+    vec[("pruebas/vectores.tsv")]
+    vec --> t1
+    vec --> t3
+    t2 -. "regenera y compara" .-> vec
+
+    t1 --> ok{"¿Todo pasa?"}
+    t2 --> ok
+    t3 --> ok
+    ok -- "sí" --> verde(["CI en verde"])
+    ok -- "no" --> rojo(["PR bloqueado hasta corregir"])

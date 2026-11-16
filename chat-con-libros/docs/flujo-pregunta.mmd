@@ -1,0 +1,34 @@
+%% Qué pasa cuando la persona hace una pregunta.
+sequenceDiagram
+    actor P as Persona
+    participant C as Chat (terminal)
+    participant V as Conversador
+    participant N as Normaliza
+    participant I as Indice
+    participant L as Libro
+
+    P->>C: "¿qué pasa con el reloj de la plaza?"
+    C->>V: responder(pregunta)
+    V->>N: texto(pregunta) sin signos de apertura
+    N-->>V: "que pasa con el reloj de la plaza?"
+
+    alt vacía
+        V-->>C: "Escribe una pregunta sobre el libro."
+    else saludo, ayuda, autor, título o resumen
+        V->>L: titulo, autor, primer pasaje
+        L-->>V: datos del libro
+        V-->>C: respuesta por reglas
+    else pregunta sobre el contenido
+        V->>N: terminos(pregunta)
+        N-->>V: ["pasa", "reloj", "plaza"]
+        V->>I: buscar(terminos, MAX_CITAS)
+        I-->>V: pasajes ordenados por puntaje coseno
+        alt algún puntaje >= UMBRAL (0,10)
+            V->>L: pasajes[i]
+            L-->>V: capítulo y texto
+            V-->>C: "Esto dice el libro:" + citas con capítulo
+        else ninguno pasa el umbral
+            V-->>C: "No encuentro eso en el libro…"
+        end
+    end
+    C-->>P: respuesta

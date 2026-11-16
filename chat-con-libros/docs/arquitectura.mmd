@@ -1,0 +1,46 @@
+%% Arquitectura por capas. Las dos implementaciones son equivalentes y se comprueban
+%% entre sí con pruebas/vectores.tsv.
+flowchart TB
+    subgraph interfaz["Capa de interfaz"]
+        chatphp["bin/chat.php<br/>REPL en la terminal"]
+        chatjava["Chat.java<br/>REPL en la terminal"]
+    end
+
+    subgraph php["Núcleo PHP (src/, sin dependencias)"]
+        direction TB
+        conv_php["Conversador<br/>intenciones + citas"]
+        ind_php["Indice<br/>TF-IDF + coseno"]
+        libro_php["Libro<br/>título, autor, capítulos, pasajes"]
+        norm_php["Normaliza<br/>minúsculas, sin acentos,<br/>palabras vacías, raíz"]
+        conv_php --> ind_php
+        conv_php --> libro_php
+        conv_php --> norm_php
+        ind_php -.-> norm_php
+        libro_php --> norm_php
+    end
+
+    subgraph java["Núcleo Java (java/src/chatlibros/)"]
+        direction TB
+        conv_java["Conversador"]
+        ind_java["Indice"]
+        libro_java["Libro + Pasaje"]
+        norm_java["Normaliza"]
+        conv_java --> ind_java
+        conv_java --> libro_java
+        conv_java --> norm_java
+        ind_java -.-> norm_java
+        libro_java --> norm_java
+    end
+
+    chatphp --> conv_php
+    chatjava --> conv_java
+
+    vectores[("pruebas/vectores.tsv<br/>consulta, pasaje, puntaje")]
+    consultas[("pruebas/consultas.txt")]
+    genvec["bin/vectores.php<br/>(genera o --comprobar)"]
+
+    consultas --> genvec
+    conv_php -. "puntajes" .-> genvec
+    genvec --> vectores
+    vectores -. "debe coincidir" .-> ind_php
+    vectores -. "debe coincidir" .-> ind_java

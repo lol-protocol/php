@@ -96,6 +96,20 @@ java -cp /tmp/chat-libros chatlibros.EjecutarPruebas   # las mismas 36 pruebas
 
 El workflow `pruebas-chat-con-libros.yml` corre las dos y comprueba que `vectores.tsv` coincida.
 
+## Documentación de arquitectura
+
+Diagramas en [Mermaid](https://mermaid.js.org/) (`.mmd`) en `docs/`; GitHub y la mayoría de los
+editores los dibujan, y `mmdc` (mermaid-cli) los convierte a SVG o PNG.
+
+| Diagrama | Qué muestra |
+|---|---|
+| [`docs/contexto.mmd`](docs/contexto.mmd) | El sistema visto desde fuera: quién lo usa y qué datos lee. |
+| [`docs/arquitectura.mmd`](docs/arquitectura.mmd) | Capas y componentes de PHP y de Java, y cómo `vectores.tsv` los mantiene iguales. |
+| [`docs/clases.mmd`](docs/clases.mmd) | Clases del núcleo y sus relaciones. |
+| [`docs/flujo-carga-e-indexado.mmd`](docs/flujo-carga-e-indexado.mmd) | Del `.txt` al índice TF-IDF al arrancar. |
+| [`docs/flujo-pregunta.mmd`](docs/flujo-pregunta.mmd) | Qué pasa desde que preguntas hasta que recibes la respuesta. |
+| [`docs/pruebas-y-ci.mmd`](docs/pruebas-y-ci.mmd) | Las pruebas, la CI y la paridad entre PHP y Java. |
+
 ## Estructura
 
 ```text
@@ -105,4 +119,5 @@ java/src/     port a Java de src/, con Chat.java para la terminal
 java/pruebas/ pruebas del port a Java
 pruebas/      pruebas en PHP, consultas.txt y vectores.tsv
 ejemplos/     muestra.txt, un cuento inventado para probar
+docs/         diagramas de arquitectura en Mermaid (.mmd)
 ```

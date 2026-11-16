@@ -1,0 +1,28 @@
+%% Contexto del sistema: quién lo usa y con qué datos trabaja.
+flowchart LR
+    persona(["Persona<br/>(lectora o lector)"])
+
+    subgraph sistema["chat-con-libros"]
+        direction TB
+        php["Chat en PHP<br/>bin/chat.php"]
+        java["Chat en Java<br/>chatlibros.Chat"]
+        nucleo["Núcleo de búsqueda y respuesta<br/>(mismo algoritmo en PHP y en Java)"]
+        php --> nucleo
+        java --> nucleo
+    end
+
+    libro[("Libro en texto plano<br/>.txt, UTF-8")]
+    muestra[("ejemplos/muestra.txt<br/>cuento inventado")]
+    personales[("mis-libros/<br/>fuera del repositorio")]
+
+    persona -- "pregunta en la terminal" --> php
+    persona -- "pregunta en la terminal" --> java
+    nucleo -- "respuesta: pasajes citados<br/>con su capítulo" --> persona
+    libro -. "se lee al arrancar" .-> nucleo
+    muestra -. "libro por defecto" .-> libro
+    personales -. "libros propios" .-> libro
+
+    sin["Sin internet, sin modelo de lenguaje,<br/>sin base de datos"]:::nota
+    sistema --- sin
+
+    classDef nota fill:#fff8dc,stroke:#c9a400,color:#333;
