@@ -18,7 +18,7 @@ class GermanicTurkishInflectionTest extends TestCase
             'alemán femenino -in' => ['deu', 'äffin', 'noun', ['äffin' => 'sg', 'äffinnen' => 'pl']],
             'alemán: Schwein no es femenino' => ['deu', 'schwein', 'noun', ['schwein' => 'sg']],
             'alemán débil' => ['deu', 'idiot', 'noun', ['idiot' => 'sg', 'idioten' => 'pl']],
-            'alemán: cambia la vocal, va a mano' => ['deu', 'arsch', 'noun', ['arsch' => 'sg']],
+            'alemán: cambia la vocal («Ärsche»), va a mano; el genitivo y el plural regular sí salen' => ['deu', 'arsch', 'noun', ['arsch' => 'sg', 'arsche' => 'pl', 'arsches' => 'pl']],
             'alemán adjetivo' => ['deu', 'dumm', 'adj', ['dumm' => 'sg', 'dumme' => 'infl', 'dummer' => 'infl', 'dummen' => 'infl', 'dummes' => 'infl', 'dummem' => 'infl']],
             'neerlandés vocal corta' => ['nld', 'kut', 'noun', ['kut' => 'sg', 'kutten' => 'pl']],
             'neerlandés vocal larga' => ['nld', 'aap', 'noun', ['aap' => 'sg', 'apen' => 'pl']],
@@ -26,9 +26,9 @@ class GermanicTurkishInflectionTest extends TestCase
             'neerlandés -er → -s' => ['nld', 'flikker', 'noun', ['flikker' => 'sg', 'flikkers' => 'pl']],
             'neerlandés vocal final' => ['nld', 'homo', 'noun', ['homo' => 'sg', "homo's" => 'pl']],
             'neerlandés io' => ['nld', 'idioot', 'noun', ['idioot' => 'sg', 'idioten' => 'pl']],
-            'neerlandés adjetivo' => ['nld', 'dom', 'adj', ['dom' => 'sg', 'domme' => 'infl']],
-            'neerlandés adjetivo átono' => ['nld', 'mager', 'adj', ['mager' => 'sg', 'magere' => 'infl']],
-            'neerlandés s → z' => ['nld', 'vies', 'adj', ['vies' => 'sg', 'vieze' => 'infl']],
+            'neerlandés adjetivo' => ['nld', 'dom', 'adj', ['dom' => 'sg', 'domme' => 'infl', 'dommer' => 'infl', 'dommere' => 'infl', 'domste' => 'infl']],
+            'neerlandés adjetivo átono' => ['nld', 'mager', 'adj', ['mager' => 'sg', 'magere' => 'infl', 'magerder' => 'infl', 'magerdere' => 'infl', 'magerste' => 'infl']],
+            'neerlandés s → z' => ['nld', 'vies', 'adj', ['vies' => 'sg', 'vieze' => 'infl', 'viezer' => 'infl', 'viezere' => 'infl', 'vieste' => 'infl']],
         ];
     }
 

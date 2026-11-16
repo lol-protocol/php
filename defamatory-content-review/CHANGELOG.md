@@ -4,6 +4,21 @@
 
 ### Cambiado
 
+- **Alemán, sustantivos por terminación** (`GermanInflection`): plural y genitivo según la terminación
+  («Hund» → «Hunds», «Hunde», «Hundes»; «Beziehung» → «Beziehungen»; «Wagen» → «Wagens»; «Arsch» →
+  «Arsches», «Arsche»). Contra UniMorph, la cobertura pasa de 17 % a 67 % (precisión de 90 % a 81 %) y los
+  lemas sin reglas, de 64 % a 7 %. Con `bin/false-positives.php`: +22 formas marcadas en las 50.000 palabras más
+  frecuentes, todas de insultos del diccionario (`Diebe`, `Kühe`, `Bastarde`…), ninguna palabra corriente.
+- **Neerlandés, comparativo y superlativo del adjetivo** (`DutchInflection`): «dom» → «dommer», «dommere»,
+  «domste»; «zwaar» → «zwaarder». Cobertura de 28 % a 96 % (precisión de 92 % a 78 %); +8 formas marcadas, todas de
+  adjetivos que ya eran insultos (`stommer`, `smerigste`, `wreedste`…).
+- **Búlgaro, adjetivos en «-ски»** (`BulgarianInflection`): «американски» → «американска», «американския»…
+  Cobertura de 22 % a 26 %; los adjetivos sin reglas, de 18 % a 6 %.
+- Las pruebas que usaban el alemán como ejemplo de «idioma sin reglas» usan ahora el japonés.
+
+
+### Cambiado
+
 - **Cantonés, no chino**: `yue` ya no declara el código `zh` (ISO 639-1 no tiene cantonés), así que
   `Accept-Language: zh…` ya no recibe mensajes en cantonés: cae al español; solo la etiqueta `yue` los sirve.
   Los mensajes de `yue` se ajustaron para que sean cantonés escrito y no chino estándar.
