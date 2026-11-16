@@ -19,6 +19,10 @@ print_header() {
 service_enable_restart() {
     local service=$1
     sudo systemctl enable "$service"
+    # Un reinicio hecho por un script cuenta para StartLimitBurst de la unidad (3 por minuto en las apps): re-correr
+    # 06_B varias veces seguidas (cambiar puerto, workers...) la dejaba en "failed" y la app caida. reset-failed borra
+    # ese contador; un bucle de caidas por la app misma sigue frenado por la unidad.
+    sudo systemctl reset-failed "$service" 2> /dev/null || true
     sudo systemctl restart "$service"
 }
 

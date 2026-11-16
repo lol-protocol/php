@@ -183,9 +183,12 @@ meminfo() { printf 'MemTotal:       %s kB\nMemFree: 1 kB\n' "$(( $1 * 1024 ))" >
 }
 
 # ---- helpers compartidos (PR 5) ----
-@test "service_enable_restart habilita y reinicia, en ese orden" {
+@test "service_enable_restart habilita, limpia el contador de arranques (reset-failed) y reinicia, en ese orden" {
     run_lib 'service_enable_restart miapp'
-    [ "$(grep -n 'systemctl enable miapp' "$SUDO_LOG" | cut -d: -f1)" -lt "$(grep -n 'systemctl restart miapp' "$SUDO_LOG" | cut -d: -f1)" ]
+    e=$(grep -n 'systemctl enable miapp' "$SUDO_LOG" | cut -d: -f1)
+    r=$(grep -n 'systemctl reset-failed miapp' "$SUDO_LOG" | cut -d: -f1)
+    s=$(grep -n 'systemctl restart miapp' "$SUDO_LOG" | cut -d: -f1)
+    [ -n "$r" ] && [ "$e" -lt "$r" ] && [ "$r" -lt "$s" ]
 }
 
 @test "set_conf_line reemplaza, agrega y es idempotente; unset_conf_line la quita" {
