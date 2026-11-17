@@ -53,7 +53,8 @@ function dinero_en_moneda(float $monto, string $codigoMoneda): string
 
 /**
  * El <input> del monto de los formularios de boleta y de pago, con los mismos limites que aplica el
- * servidor (Validacion::montoEnRango): de un centavo a Validacion::MONTO_MAXIMO, de a centavos. Asi el
+ * servidor (Validacion::montoEnRango): de la unidad menor de la moneda (un centavo, una milesima) a
+ * Validacion::MONTO_MAXIMO, de a una unidad menor. Asi el
  * navegador rechaza un monto fuera de rango antes de enviarlo, igual que maxlength lo hace con los
  * textos. $valor es lo que se muestra de entrada (lo ya escrito, o el monto guardado) y se escapa aca.
  * $codigoMoneda, cuando la moneda ya esta fija (la edicion de una boleta o de un pago), hace que una moneda sin

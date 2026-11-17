@@ -46,10 +46,10 @@ final class ReglasDePago
     }
 
     /**
-     * Un pago no puede pasarse del saldo, ni por un centavo. Se compara en
-     * centavos enteros (ver Dinero): el margen de un centavo que tenia antes
-     * evitaba que el ruido de la coma flotante rechazara pagar justo el saldo,
-     * pero dejaba cobrar un centavo de mas.
+     * Un pago no puede pasarse del saldo, ni por la unidad menor de su moneda. Se
+     * compara en milesimas enteras (ver Dinero): el margen de un centavo que tenia
+     * antes evitaba que el ruido de la coma flotante rechazara pagar justo el
+     * saldo, pero dejaba cobrar un centavo de mas.
      */
     public static function montoNoSuperaElSaldo(float $monto, array $boleta): bool
     {
