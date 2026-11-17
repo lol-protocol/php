@@ -1,41 +1,67 @@
-%% Arquitectura por capas. Las dos implementaciones son equivalentes y se comprueban
-%% entre sí con pruebas/vectores.tsv.
+%% Arquitectura por capas. La búsqueda es equivalente en PHP y Java y se comprueba con
+%% pruebas/vectores.tsv. La web y el modo con IA son solo PHP.
 flowchart TB
     subgraph interfaz["Capa de interfaz"]
+        paginaweb["web/index.html + app.js<br/>(sin scripts en línea, CSP estricta)"]
+        apiphp["web/api.php"]
         chatphp["bin/chat.php<br/>REPL en la terminal"]
         chatjava["Chat.java<br/>REPL en la terminal"]
+        paginaweb -- "fetch JSON" --> apiphp
     end
 
-    subgraph php["Núcleo PHP (src/, sin dependencias)"]
+    subgraph php["Núcleo PHP (src/)"]
         direction TB
-        conv_php["Conversador<br/>intenciones + citas"]
+        api["Api<br/>Host/Origin, JSON, límites,<br/>libros de una lista fija"]
+        dialogo["Dialogo<br/>reglas, búsqueda o IA"]
+        conv_php["Conversador<br/>intención + pasajesPara"]
         ind_php["Indice<br/>TF-IDF + coseno"]
+        sin_php["Sinonimos"]
         libro_php["Libro<br/>título, autor, capítulos, pasajes"]
         norm_php["Normaliza<br/>minúsculas, sin acentos,<br/>palabras vacías, raíz"]
+        gen["Generador (interfaz)"]
+        claude["GeneradorClaude<br/>SDK de Anthropic (opcional)"]
+        api --> dialogo
+        dialogo --> conv_php
+        dialogo -. "solo con IA" .-> gen
+        gen --> claude
         conv_php --> ind_php
         conv_php --> libro_php
+        conv_php --> sin_php
         conv_php --> norm_php
         ind_php -.-> norm_php
         libro_php --> norm_php
+        sin_php --> norm_php
     end
 
     subgraph java["Núcleo Java (java/src/chatlibros/)"]
         direction TB
         conv_java["Conversador"]
         ind_java["Indice"]
+        sin_java["Sinonimos"]
         libro_java["Libro + Pasaje"]
         norm_java["Normaliza"]
         conv_java --> ind_java
         conv_java --> libro_java
+        conv_java --> sin_java
         conv_java --> norm_java
         ind_java -.-> norm_java
         libro_java --> norm_java
+        sin_java --> norm_java
     end
 
-    chatphp --> conv_php
+    apiphp --> api
+    chatphp --> dialogo
     chatjava --> conv_java
 
+    anthropic{{"API de Anthropic"}}
+    claude -- "HTTPS" --> anthropic
+
+    sinonimos[("datos/sinonimos.tsv")]
+    sinonimos -.-> sin_php
+    sinonimos -.-> sin_java
+
     vectores[("pruebas/vectores.tsv<br/>consulta, pasaje, puntaje")]
+    evaluacion[("pruebas/evaluacion.tsv")]
     consultas[("pruebas/consultas.txt")]
     genvec["bin/vectores.php<br/>(genera o --comprobar)"]
 
@@ -44,3 +70,4 @@ flowchart TB
     genvec --> vectores
     vectores -. "debe coincidir" .-> ind_php
     vectores -. "debe coincidir" .-> ind_java
+    evaluacion -. "aciertos con y sin sinónimos" .-> ind_php

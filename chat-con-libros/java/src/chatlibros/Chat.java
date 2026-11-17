@@ -34,7 +34,11 @@ public final class Chat {
             System.err.println("El archivo no tiene texto que leer: " + ruta);
             System.exit(1);
         }
-        Conversador conversador = new Conversador(libro);
+        // Los sinónimos generales (se buscan desde la carpeta del proyecto) y los del libro (<libro>.sinonimos.tsv).
+        Sinonimos sinonimos = Sinonimos.desdeArchivos(
+                Path.of("datos/sinonimos.tsv"),
+                Path.of(ruta.toString().replaceFirst("(?i)\\.txt$", "") + ".sinonimos.tsv"));
+        Conversador conversador = new Conversador(libro, sinonimos);
 
         System.out.println("«" + libro.titulo() + "», de " + libro.autor() + " — " + libro.pasajes().size() + " pasajes.");
         System.out.println("Escribe tu pregunta (o «salir»).");

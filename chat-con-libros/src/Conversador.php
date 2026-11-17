@@ -7,8 +7,8 @@ namespace ChatLibros;
  * Responde preguntas sobre un libro citando sus pasajes.
  *
  * No genera texto nuevo: o saluda, o da el autor, el título o un resumen armado con las
- * palabras más repetidas, o busca en el libro los pasajes más parecidos a la pregunta y
- * los cita con su capítulo. Si nada pasa el umbral, lo dice.
+ * palabras más repetidas (intencion), o busca en el libro los pasajes más parecidos a la
+ * pregunta y los cita con su capítulo (pasajesPara). Si nada pasa el umbral, lo dice.
  */
 final class Conversador
 {
@@ -23,8 +23,10 @@ final class Conversador
     /** @var list<string> las palabras más repetidas del libro */
     private array $temas;
 
-    public function __construct(private readonly Libro $libro)
-    {
+    public function __construct(
+        private readonly Libro $libro,
+        private readonly ?Sinonimos $sinonimos = null,
+    ) {
         $terminosPorPasaje = [];
         $cuenta = [];
         foreach ($libro->pasajes as $pasaje) {
@@ -55,6 +57,15 @@ final class Conversador
 
     public function responder(string $pregunta): string
     {
+        return $this->intencion($pregunta) ?? $this->citar($pregunta);
+    }
+
+    /**
+     * La respuesta si la pregunta es de las que se contestan con reglas (vacía, saludo, ayuda,
+     * autor, título o resumen); null si hay que buscar en el contenido del libro.
+     */
+    public function intencion(string $pregunta): ?string
+    {
         // Sin los signos de apertura («¿», «¡») para que los patrones de abajo anclados al inicio sigan valiendo.
         $p = (string) preg_replace('/^[¿¡\s]+/u', '', Normaliza::texto(trim($pregunta)));
         $titulo = $this->libro->titulo;
@@ -82,8 +93,41 @@ final class Conversador
             || preg_match('/\bde que (trata|va) el libro\b/', $p)) {
             return $this->resumen();
         }
+        return null;
+    }
 
-        return $this->citar($pregunta);
+    /**
+     * Los pasajes del libro que más se parecen a la pregunta (con sus sinónimos), del más
+     * parecido al menos, y solo los que pasan el umbral.
+     *
+     * @return list<array{capitulo:string, texto:string, puntaje:float}>
+     */
+    public function pasajesPara(string $pregunta, int $max = self::MAX_CITAS): array
+    {
+        $terminos = Normaliza::terminos($pregunta);
+        if ($this->sinonimos !== null) {
+            $terminos = $this->sinonimos->expandir($terminos);
+        }
+        $pasajes = [];
+        foreach ($this->indice->buscar($terminos, $max) as $r) {
+            if ($r['puntaje'] < self::UMBRAL) {
+                continue;
+            }
+            $pasaje = $this->libro->pasajes[$r['pasaje']];
+            $pasajes[] = [
+                'capitulo' => $pasaje['capitulo'],
+                'texto' => $pasaje['texto'],
+                'puntaje' => $r['puntaje'],
+            ];
+        }
+        return $pasajes;
+    }
+
+    /** El mensaje de «no encuentro eso», que también usan el modo con IA y la web. */
+    public function noEncuentro(): string
+    {
+        return "No encuentro eso en «{$this->libro->titulo}». Prueba con otras palabras "
+            . 'o pregunta por algún tema del libro.';
     }
 
     private function resumen(): string
@@ -96,18 +140,13 @@ final class Conversador
 
     private function citar(string $pregunta): string
     {
-        $mejores = array_filter(
-            $this->indice->buscar(Normaliza::terminos($pregunta), self::MAX_CITAS),
-            static fn (array $r): bool => $r['puntaje'] >= self::UMBRAL,
-        );
-        if ($mejores === []) {
-            return "No encuentro eso en «{$this->libro->titulo}». Prueba con otras palabras "
-                . 'o pregunta por algún tema del libro.';
+        $pasajes = $this->pasajesPara($pregunta);
+        if ($pasajes === []) {
+            return $this->noEncuentro();
         }
 
         $lineas = ['Esto dice el libro:'];
-        foreach ($mejores as $r) {
-            $pasaje = $this->libro->pasajes[$r['pasaje']];
+        foreach ($pasajes as $pasaje) {
             $lineas[] = '— [' . $pasaje['capitulo'] . '] «' . self::extracto($pasaje['texto']) . '»';
         }
         return implode("\n\n", $lineas);

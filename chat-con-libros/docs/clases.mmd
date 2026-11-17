@@ -1,4 +1,4 @@
-%% Modelo de clases del núcleo (igual en PHP y en Java).
+%% Modelo de clases (PHP). Java tiene Normaliza, Sinonimos, Libro, Pasaje, Indice y Conversador.
 classDiagram
     class Libro {
         +string titulo
@@ -17,10 +17,14 @@ classDiagram
         +terminos(s) list~string~
         +raiz(palabra) string
     }
+    class Sinonimos {
+        +desdeTexto(texto) Sinonimos
+        +desdeArchivos(rutas) Sinonimos
+        +expandir(terminos) list~string~
+    }
     class Indice {
         -map idf
         -list vectores
-        +Indice(pasajes)
         +buscar(terminos, k) list~Resultado~
     }
     class Resultado {
@@ -30,14 +34,41 @@ classDiagram
     class Conversador {
         +UMBRAL = 0.10
         +MAX_CITAS = 2
-        -list temas
+        +intencion(pregunta) string?
+        +pasajesPara(pregunta, max) list~Cita~
         +responder(pregunta) string
-        +extracto(texto, max) string
+        +noEncuentro() string
+    }
+    class Dialogo {
+        +MAX_PASAJES_IA = 4
+        +MAX_HISTORIAL = 3
+        +responder(pregunta, historial) array
+    }
+    class Generador {
+        <<interface>>
+        +generar(titulo, autor, pregunta, pasajes, historial) string
+    }
+    class GeneradorClaude {
+        +disponible() bool
+        +construirSolicitud(...) array
+    }
+    class GeneradorError
+    class Api {
+        +MAX_PREGUNTA = 500
+        +manejar(metodo, accion, cabeceras, cuerpo) array
     }
 
     Libro "1" *-- "many" Pasaje
     Conversador --> Libro : lee
     Conversador --> Indice : consulta
+    Conversador --> Sinonimos : amplía la pregunta
     Conversador ..> Normaliza : usa
     Libro ..> Normaliza : usa
+    Sinonimos ..> Normaliza : usa
     Indice "1" --> "many" Resultado : devuelve
+    Dialogo --> Conversador
+    Dialogo --> Generador : opcional
+    Generador <|.. GeneradorClaude
+    GeneradorClaude ..> GeneradorError : lanza
+    Dialogo ..> GeneradorError : atrapa
+    Api --> Dialogo : arma uno por pedido

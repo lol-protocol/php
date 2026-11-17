@@ -67,15 +67,26 @@ public final class Normaliza {
         return terminos;
     }
 
-    /** Quita «-es» (más de 4 letras) o «-s» (más de 3) del final. */
+    /** Terminaciones que se quitan después del plural, de la más larga a la más corta (ver src/Normaliza.php). */
+    private static final String[] SUFIJOS = {"mente", "aban", "iendo", "ando", "aba", "ado", "ido", "ar", "er", "ir"};
+
+    /**
+     * Raíz muy simple: quita «-es» (más de 4 letras) o «-s» (más de 3) del plural y, después,
+     * una terminación de SUFIJOS, solo si queda una raíz de 4 letras o más.
+     */
     public static String raiz(String palabra) {
-        int largo = palabra.length();
-        if (largo > 4 && palabra.endsWith("es")) {
-            return palabra.substring(0, largo - 2);
+        String p = palabra;
+        int largo = p.length();
+        if (largo > 4 && p.endsWith("es")) {
+            p = p.substring(0, largo - 2);
+        } else if (largo > 3 && p.endsWith("s")) {
+            p = p.substring(0, largo - 1);
         }
-        if (largo > 3 && palabra.endsWith("s")) {
-            return palabra.substring(0, largo - 1);
+        for (String sufijo : SUFIJOS) {
+            if (p.endsWith(sufijo) && p.length() - sufijo.length() >= 4) {
+                return p.substring(0, p.length() - sufijo.length());
+            }
         }
-        return palabra;
+        return p;
     }
 }

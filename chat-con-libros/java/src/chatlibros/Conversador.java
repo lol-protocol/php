@@ -22,12 +22,22 @@ public final class Conversador {
     private static final Pattern RESUMEN_EN_FRASE = Pattern.compile("\\bde que (trata|va) el libro\\b");
     private static final Pattern SIGNOS_DE_APERTURA = Pattern.compile("^[¿¡\\s]+");
 
+    /** Un pasaje citado: capítulo, texto y puntaje coseno. */
+    public record Cita(String capitulo, String texto, double puntaje) {
+    }
+
     private final Libro libro;
+    private final Sinonimos sinonimos;
     private final Indice indice;
     private final List<String> temas;
 
     public Conversador(Libro libro) {
+        this(libro, null);
+    }
+
+    public Conversador(Libro libro, Sinonimos sinonimos) {
         this.libro = libro;
+        this.sinonimos = sinonimos;
         List<List<String>> terminosPorPasaje = new ArrayList<>();
         Map<String, Integer> cuenta = new HashMap<>();
         for (Pasaje pasaje : libro.pasajes()) {
@@ -54,6 +64,15 @@ public final class Conversador {
     }
 
     public String responder(String pregunta) {
+        String respuesta = intencion(pregunta);
+        return respuesta != null ? respuesta : citar(pregunta);
+    }
+
+    /**
+     * La respuesta si la pregunta es de las que se contestan con reglas (vacía, saludo, ayuda,
+     * autor, título o resumen); null si hay que buscar en el contenido del libro.
+     */
+    public String intencion(String pregunta) {
         String p = SIGNOS_DE_APERTURA.matcher(Normaliza.texto(pregunta.trim())).replaceFirst("");
         String titulo = libro.titulo();
         String autor = libro.autor();
@@ -79,7 +98,33 @@ public final class Conversador {
         if (RESUMEN.matcher(p).find() || RESUMEN_EN_FRASE.matcher(p).find()) {
             return resumen();
         }
-        return citar(pregunta);
+        return null;
+    }
+
+    /**
+     * Los pasajes del libro que más se parecen a la pregunta (con sus sinónimos), del más
+     * parecido al menos, y solo los que pasan el umbral.
+     */
+    public List<Cita> pasajesPara(String pregunta, int max) {
+        List<String> terminos = Normaliza.terminos(pregunta);
+        if (sinonimos != null) {
+            terminos = sinonimos.expandir(terminos);
+        }
+        List<Cita> citas = new ArrayList<>();
+        for (Indice.Resultado r : indice.buscar(terminos, max)) {
+            if (r.puntaje() < UMBRAL) {
+                continue;
+            }
+            Pasaje pasaje = libro.pasajes().get(r.pasaje());
+            citas.add(new Cita(pasaje.capitulo(), pasaje.texto(), r.puntaje()));
+        }
+        return citas;
+    }
+
+    /** El mensaje de «no encuentro eso». */
+    public String noEncuentro() {
+        return "No encuentro eso en «" + libro.titulo() + "». Prueba con otras palabras "
+                + "o pregunta por algún tema del libro.";
     }
 
     private String resumen() {
@@ -90,19 +135,15 @@ public final class Conversador {
     }
 
     private String citar(String pregunta) {
+        List<Cita> citas = pasajesPara(pregunta, MAX_CITAS);
+        if (citas.isEmpty()) {
+            return noEncuentro();
+        }
         List<String> lineas = new ArrayList<>();
-        for (Indice.Resultado r : indice.buscar(Normaliza.terminos(pregunta), MAX_CITAS)) {
-            if (r.puntaje() < UMBRAL) {
-                continue;
-            }
-            Pasaje pasaje = libro.pasajes().get(r.pasaje());
-            lineas.add("— [" + pasaje.capitulo() + "] «" + extracto(pasaje.texto(), 350) + "»");
+        lineas.add("Esto dice el libro:");
+        for (Cita cita : citas) {
+            lineas.add("— [" + cita.capitulo() + "] «" + extracto(cita.texto(), 350) + "»");
         }
-        if (lineas.isEmpty()) {
-            return "No encuentro eso en «" + libro.titulo() + "». Prueba con otras palabras "
-                    + "o pregunta por algún tema del libro.";
-        }
-        lineas.add(0, "Esto dice el libro:");
         return String.join("\n\n", lineas);
     }
 

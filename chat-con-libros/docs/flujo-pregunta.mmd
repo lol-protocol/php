@@ -1,34 +1,49 @@
-%% Qué pasa cuando la persona hace una pregunta.
+%% Qué pasa cuando la persona hace una pregunta (terminal o web).
 sequenceDiagram
     actor P as Persona
-    participant C as Chat (terminal)
+    participant U as Interfaz (terminal o web)
+    participant D as Dialogo
     participant V as Conversador
-    participant N as Normaliza
     participant I as Indice
-    participant L as Libro
+    participant G as GeneradorClaude (opcional)
+    participant A as API de Anthropic
 
-    P->>C: "¿qué pasa con el reloj de la plaza?"
-    C->>V: responder(pregunta)
-    V->>N: texto(pregunta) sin signos de apertura
-    N-->>V: "que pasa con el reloj de la plaza?"
+    P->>U: "¿qué decía el mensaje?"
+    U->>D: responder(pregunta, historial)
+    D->>V: intencion(pregunta)
 
-    alt vacía
-        V-->>C: "Escribe una pregunta sobre el libro."
-    else saludo, ayuda, autor, título o resumen
-        V->>L: titulo, autor, primer pasaje
-        L-->>V: datos del libro
-        V-->>C: respuesta por reglas
-    else pregunta sobre el contenido
-        V->>N: terminos(pregunta)
-        N-->>V: ["pasa", "reloj", "plaza"]
-        V->>I: buscar(terminos, MAX_CITAS)
-        I-->>V: pasajes ordenados por puntaje coseno
+    alt vacía, saludo, ayuda, autor, título o resumen
+        V-->>D: respuesta por reglas
+        D-->>U: modo «reglas» (sin llamadas)
+    else pregunta sobre el contenido, sin IA
+        V->>V: términos + sinónimos (mensaje → carta)
+        V->>I: buscar(términos, 2)
+        I-->>V: pasajes por puntaje coseno
         alt algún puntaje >= UMBRAL (0,10)
-            V->>L: pasajes[i]
-            L-->>V: capítulo y texto
-            V-->>C: "Esto dice el libro:" + citas con capítulo
-        else ninguno pasa el umbral
-            V-->>C: "No encuentro eso en el libro…"
+            V-->>D: "Esto dice el libro:" + citas con capítulo
+        else ninguno
+            V-->>D: "No encuentro eso en el libro…"
+        end
+        D-->>U: modo «busqueda»
+    else pregunta sobre el contenido, con IA
+        D->>V: pasajesPara(consulta, 4)
+        Note over D: una pregunta corta se completa<br/>con la anterior para buscar
+        V->>I: buscar(términos + sinónimos)
+        I-->>V: pasajes sobre el umbral
+        alt no hay pasajes
+            D-->>U: "No encuentro eso…" (sin llamar a la API)
+        else hay pasajes
+            D->>G: generar(pregunta, pasajes, últimos 3 turnos)
+            G->>A: messages.create (pasajes escapados en <pasajes>)
+            alt responde
+                A-->>G: texto
+                G-->>D: respuesta redactada
+                D-->>U: modo «ia» + pasajes usados
+            else clave mala, sin red, límite o negativa
+                A--xG: error
+                G-->>D: GeneradorError
+                D-->>U: búsqueda normal + aviso
+            end
         end
     end
-    C-->>P: respuesta
+    U-->>P: respuesta

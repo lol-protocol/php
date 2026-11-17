@@ -4,8 +4,9 @@ declare(strict_types=1);
 /*
  * Chat en la terminal con un libro:
  *
- *   php bin/chat.php                       # usa ejemplos/muestra.txt
- *   php bin/chat.php ruta/al/libro.txt     # cualquier .txt con el formato del README
+ *   php bin/chat.php                          # usa ejemplos/muestra.txt, sin IA
+ *   php bin/chat.php ruta/al/libro.txt        # cualquier .txt con el formato del README
+ *   php bin/chat.php --ia ruta/al/libro.txt   # además redacta con Claude (ver README: modo con IA)
  *
  * Escribe una pregunta y Enter; «salir» (o Ctrl+D) termina.
  */
@@ -13,11 +14,28 @@ declare(strict_types=1);
 require __DIR__ . '/../src/cargar.php';
 
 use ChatLibros\Conversador;
+use ChatLibros\Dialogo;
+use ChatLibros\GeneradorClaude;
 use ChatLibros\Libro;
+use ChatLibros\Sinonimos;
 
-$ruta = $argv[1] ?? __DIR__ . '/../ejemplos/muestra.txt';
+$usarIa = false;
+$ruta = null;
+foreach (array_slice($argv, 1) as $argumento) {
+    if ($argumento === '--ia') {
+        $usarIa = true;
+    } elseif ($ruta === null) {
+        $ruta = $argumento;
+    }
+}
+$ruta ??= __DIR__ . '/../ejemplos/muestra.txt';
+
 if (!is_file($ruta)) {
     fwrite(STDERR, "No encuentro el libro: $ruta\n");
+    exit(1);
+}
+if ($usarIa && ($motivo = GeneradorClaude::motivoNoDisponible()) !== null) {
+    fwrite(STDERR, "No se puede usar --ia. $motivo\n");
     exit(1);
 }
 
@@ -26,11 +44,22 @@ if ($libro->pasajes === []) {
     fwrite(STDERR, "El archivo no tiene texto que leer: $ruta\n");
     exit(1);
 }
-$conversador = new Conversador($libro);
+
+// Los sinónimos generales y, si existe, los del libro (<libro>.sinonimos.tsv junto al .txt).
+$sinonimos = Sinonimos::desdeArchivos([
+    __DIR__ . '/../datos/sinonimos.tsv',
+    preg_replace('/\.txt$/i', '', $ruta) . '.sinonimos.tsv',
+]);
+$dialogo = new Dialogo(new Conversador($libro, $sinonimos), $usarIa ? new GeneradorClaude() : null);
 
 echo "«{$libro->titulo}», de {$libro->autor} — " . count($libro->pasajes) . " pasajes.\n";
+if ($usarIa) {
+    echo 'Modo con IA: a la API de Anthropic se envían tu pregunta, los últimos turnos y los pasajes encontrados, '
+        . "no el libro entero.\n";
+}
 echo "Escribe tu pregunta (o «salir»).\n";
 
+$historial = [];
 while (true) {
     echo "\n> ";
     $linea = fgets(STDIN);
@@ -42,5 +71,13 @@ while (true) {
     if (in_array(mb_strtolower($pregunta), ['salir', 'exit', 'chao'], true)) {
         break;
     }
-    echo $conversador->responder($pregunta), "\n";
+    $respuesta = $dialogo->responder($pregunta, $historial);
+    if (isset($respuesta['aviso'])) {
+        echo '(', $respuesta['aviso'], ")\n";
+    }
+    echo $respuesta['texto'], "\n";
+    if ($respuesta['modo'] !== 'reglas' && $pregunta !== '') {
+        $historial[] = ['pregunta' => $pregunta, 'respuesta' => $respuesta['texto']];
+        $historial = array_slice($historial, -Dialogo::MAX_HISTORIAL);
+    }
 }

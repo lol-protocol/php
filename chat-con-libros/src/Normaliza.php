@@ -72,16 +72,31 @@ final class Normaliza
         return array_map([self::class, 'raiz'], self::palabras($s));
     }
 
-    /** Quita «-es» (más de 4 letras) o «-s» (más de 3) del final. */
+    /**
+     * Terminaciones que se quitan después del plural, de la más larga a la más corta. Solo si
+     * queda una raíz de 4 letras o más: «esperaban» → «esper», pero «mar» y «mujer» no cambian.
+     */
+    private const SUFIJOS = ['mente', 'aban', 'iendo', 'ando', 'aba', 'ado', 'ido', 'ar', 'er', 'ir'];
+
+    /**
+     * Raíz muy simple: quita «-es» (más de 4 letras) o «-s» (más de 3) del plural y, después,
+     * una terminación de SUFIJOS (adverbios en «-mente», gerundios, participios, imperfecto
+     * e infinitivos). No es un lematizador: junta formas comunes, no todas.
+     */
     public static function raiz(string $palabra): string
     {
-        $largo = strlen($palabra);
-        if ($largo > 4 && str_ends_with($palabra, 'es')) {
-            return substr($palabra, 0, -2);
+        $p = $palabra;
+        $largo = strlen($p);
+        if ($largo > 4 && str_ends_with($p, 'es')) {
+            $p = substr($p, 0, -2);
+        } elseif ($largo > 3 && str_ends_with($p, 's')) {
+            $p = substr($p, 0, -1);
         }
-        if ($largo > 3 && str_ends_with($palabra, 's')) {
-            return substr($palabra, 0, -1);
+        foreach (self::SUFIJOS as $sufijo) {
+            if (str_ends_with($p, $sufijo) && strlen($p) - strlen($sufijo) >= 4) {
+                return substr($p, 0, -strlen($sufijo));
+            }
         }
-        return $palabra;
+        return $p;
     }
 }

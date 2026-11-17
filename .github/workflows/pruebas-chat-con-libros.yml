@@ -32,8 +32,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # Las pruebas del núcleo (normalización, lectura del libro, índice, conversador y los
-      # vectores de pruebas/vectores.tsv) y que ese archivo coincida con lo que genera bin/vectores.php.
+      # Las pruebas del núcleo (normalización, sinónimos, lectura del libro, índice, conversador, la API
+      # de la página web, el modo con IA con un cliente falso, los vectores de pruebas/vectores.tsv y la
+      # evaluación de pruebas/evaluacion.tsv). No necesitan el SDK de Anthropic ni red.
       - name: Pruebas
         working-directory: chat-con-libros
         run: php pruebas/ejecutar.php
@@ -51,8 +52,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # El mismo conjunto de pruebas que en PHP, contra el mismo pruebas/vectores.tsv.
-      # Solo usa la biblioteca estándar de Java.
+      # Las pruebas de la búsqueda (sin la web ni el modo con IA, que son solo PHP), contra el mismo
+      # pruebas/vectores.tsv y la misma evaluación. Solo usa la biblioteca estándar de Java.
       - name: Compilar y pruebas
         working-directory: chat-con-libros
         run: |
