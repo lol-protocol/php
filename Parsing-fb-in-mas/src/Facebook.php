@@ -21,6 +21,11 @@ final class Facebook extends Analizador
         return ['people', 'pages', 'p', 'groups', 'events', 'watch', 'marketplace', 'photo', 'photos', 'reel', 'reels', 'share', 'sharer', 'login', 'hashtag', 'story.php', 'permalink.php', 'stories', 'gaming', 'public'];
     }
 
+    protected function patronesDePublicacion(): array
+    {
+        return ['/(posts|videos|photos|reel|reels|watch|permalink|story)(/|$)', '/(permalink|photo|story)\\.php$'];
+    }
+
     protected function extraer(array $d, ?string $url): array
     {
         $nombre = $d['meta']['og:title'] ?? ($d['persona']['nombre'] ?? null);

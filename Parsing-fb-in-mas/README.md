@@ -38,10 +38,17 @@ como `phone-directory/`).
 
   **Es una ayuda, no una garantía:** las listas son cortas y de palabras sueltas, así que pueden marcar de más y,
   sobre todo, no marcar de menos. Que no salga ninguna marca no quiere decir que el texto esté limpio.
-  `--sin-revision` la desactiva.
+  **Cuesta:** unos 5 ms por texto (20.000 páginas con descripción: 90 s con revisión y 2,7 s con `--sin-revision`). Un
+  perfil sin titular ni descripción no se revisa. Para lotes grandes, `--sin-revision` y revisar después solo lo que
+  importe (por ejemplo, los candidatos del cruce).
+- **Una publicación no es un perfil.** Si la dirección es de una publicación (`…/status/123`, `…/posts/…`, `/p/…`,
+  `…/video/…`, `/pin/…`, `/watch`), su texto no se guarda como descripción (no es la biografía de nadie) y sale un
+  aviso. El nombre y el usuario del autor sí se conservan.
 - **Lista de exclusión (`--excluir=lista.txt`)** en `analizar.php`, `wikidata.php`, `wikidata-nombres.php` y
   `cruzar.php`: una entrada por línea, una URL o `red:usuario` (`twitter:ana`, `wikidata:Q42`, `wikitree:Ejemplo-1`);
-  `#` es comentario. Sirve para que alguien que pidió retirarse no vuelva a salir al reprocesar
+  `#` es comentario. Una URL vale también para su versión móvil (`m.`), con barra final, con parámetros de rastreo
+  (`utm_*`, `fbclid`, `ref`…) o con fragmento, y `twitter:@ana` es lo mismo que `twitter:ana`; un archivo con BOM de
+  Windows se lee bien, y una lista sin ninguna entrada avisa. Sirve para que alguien que pidió retirarse no vuelva a salir al reprocesar
   (ver `RECLAMOS.md`). **No está conectada a la cola de pedidos de retiro del sitio** (`url-routing/`): se
   mantiene a mano, y quien decide un retiro tiene que agregar la entrada. `--excluir` solo evita que alguien
   vuelva a salir al reprocesar; para quitarlo de un JSONL ya generado está `bin/purgar.php` (línea por línea; las
@@ -69,7 +76,8 @@ como `phone-directory/`).
 php bin/analizar.php --capturado=2026-11-04 --jsonl carpeta-con-paginas/ otra.html > perfiles.jsonl
 
 # un volcado de Wikidata, solo personas fallecidas, de Chile (Q298); lee en streaming
-php bin/wikidata.php latest-all.json.gz --pais=Q298 --capturado=2026-11-04 > wikidata.jsonl
+# (--max=N se detiene tras N personas; --progreso avisa por stderr cada millón de líneas)
+php bin/wikidata.php latest-all.json.gz --pais=Q298 --capturado=2026-11-04 --progreso > wikidata.jsonl
 
 # lo mismo, con una lista de personas excluidas y sin la revisión de texto
 php bin/analizar.php --jsonl --excluir=retiros.txt --sin-revision carpeta-con-paginas/ > perfiles.jsonl
@@ -100,7 +108,8 @@ segundo recorrido del volcado, lee solo las líneas que se pidieron y se detiene
 lugares ganan `lugar_nacimiento_nombre` y `lugar_muerte_nombre`. **El nombre de un pariente solo se resuelve si
 el propio volcado lo da por fallecido**: un hijo o una hija de alguien que murió puede estar vivo, y de una
 persona viva no se saca el nombre; esos parientes quedan con su identificador, `nombre` en null y un aviso. Los
-parientes que están en la lista de exclusión se quitan del perfil.
+parientes que están en la lista de exclusión se quitan del perfil. **Límite:** carga en memoria todos los perfiles de
+`wikidata.jsonl` (necesita recorrerlos dos veces), a diferencia del resto de los programas, que leen línea por línea.
 
 ## La API de WikiTree
 

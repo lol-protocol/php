@@ -42,6 +42,32 @@ abstract class Analizador
         return [];
     }
 
+    /**
+     * Expresiones (sin delimitadores) que, contra la RUTA de la dirección, dicen que la página es una publicación
+     * (un tuit, un video, un `/p/…`) y no un perfil. Por defecto, ninguna.
+     *
+     * @return list<string>
+     */
+    protected function patronesDePublicacion(): array
+    {
+        return [];
+    }
+
+    /** Si la dirección es de una publicación: su texto no es la biografía de nadie, así que no se guarda como descripción. */
+    private function esPublicacion(?string $url): bool
+    {
+        $ruta = $url === null ? null : parse_url($url, PHP_URL_PATH);
+        if (!is_string($ruta)) {
+            return false;
+        }
+        foreach ($this->patronesDePublicacion() as $patron) {
+            if (preg_match('~' . $patron . '~i', $ruta) === 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** El usuario que dice la ruta de la dirección, o null si ese segmento está reservado. */
     protected function usuarioDeRuta(?string $url): ?string
     {
@@ -80,7 +106,8 @@ abstract class Analizador
         $c = $this->extraer($d, $url);
 
         $nombre = self::texto($c['nombre'] ?? null);
-        $descripcion = self::texto($c['descripcion'] ?? null);
+        $publicacion = $this->esPublicacion($url);
+        $descripcion = $publicacion ? null : self::texto($c['descripcion'] ?? null);
         if ($descripcion !== null && mb_strlen($descripcion) > self::LARGO_MAXIMO_DESCRIPCION) {
             $descripcion = rtrim(mb_substr($descripcion, 0, self::LARGO_MAXIMO_DESCRIPCION - 1)) . '…';
         }
@@ -95,6 +122,9 @@ abstract class Analizador
         if ($capturado === null) {
             $avisos[] = 'sin fecha de captura: anótala al citar la fuente';
         }
+        if ($publicacion) {
+            $avisos[] = 'la dirección es de una publicación, no de un perfil: su texto no se guarda como descripción';
+        }
         $segmento = self::primerSegmento($url);
         if ($segmento !== null && in_array(strtolower($segmento), $this->reservados(), true)) {
             $avisos[] = 'la dirección parece una publicación u otra página, no un perfil: sin usuario';
@@ -102,8 +132,10 @@ abstract class Analizador
 
         $titular = self::texto($c['titular'] ?? null);
         $marcas = [];
-        if ($revisar) {
-            $marcas = Revision::marcas(implode("\n", array_filter([$titular, $descripcion])));
+        // Sin texto no hay nada que revisar: ni se llama al filtro (que cuesta unos 5 ms por texto) ni se avisa de su falta.
+        $texto = implode("\n", array_filter([$titular, $descripcion]));
+        if ($revisar && $texto !== '') {
+            $marcas = Revision::marcas($texto);
             if (!Revision::hayFiltro()) {
                 $avisos[] = 'sin filtro de difamación (falta ../defamatory-content-review/): solo se marcan términos sensibles';
             }

@@ -16,6 +16,11 @@ final class LinkedIn extends Analizador
         return ['linkedin.com'];
     }
 
+    protected function patronesDePublicacion(): array
+    {
+        return ['^/(posts|feed/update|pulse)/'];
+    }
+
     protected function extraer(array $d, ?string $url): array
     {
         // «Ana Ejemplo - Ingeniera - Acme | LinkedIn»

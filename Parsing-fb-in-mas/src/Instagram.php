@@ -21,6 +21,11 @@ final class Instagram extends Analizador
         return ['p', 'reel', 'reels', 'tv', 'explore', 'stories', 'accounts', 'direct', 'about', 'web'];
     }
 
+    protected function patronesDePublicacion(): array
+    {
+        return ['^/(p|reel|reels|tv|stories)/'];
+    }
+
     protected function extraer(array $d, ?string $url): array
     {
         // «Ana Ejemplo (@ana.ejemplo) • Fotos y videos de Instagram»
