@@ -18,7 +18,7 @@ final class ReglasDeBoleta
      * Al editar una boleta, el monto no puede bajar de lo que ya se cobro
      * (dejaria un saldo negativo y la boleta se seguiria mostrando como
      * "pagada" sin avisar que en realidad se sobrecobro). Ni por un centavo:
-     * se compara en centavos enteros (ver Dinero), sin el margen de un centavo
+     * se compara en milesimas enteras (ver Dinero), sin el margen de un centavo
      * que antes hacia pasar un monto de 0.01 menos que lo cobrado.
      */
     public static function montoCubreLoYaCobrado(float $monto, array $boleta): bool

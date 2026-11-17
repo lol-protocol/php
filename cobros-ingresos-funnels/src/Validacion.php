@@ -44,7 +44,7 @@ final class Validacion
     /**
      * true si el monto no trae mas decimales de los que tiene la moneda ($decimales, de
      * MonedaRepository::decimales()): en yenes, wones o pesos chilenos no existe la fraccion. Se compara
-     * en centavos enteros, como el resto de las reglas de dinero. Es un bool, igual que montoEnRango() y
+     * en milesimas enteras, como el resto de las reglas de dinero. Es un bool, igual que montoEnRango() y
      * fechaEsValida(), que son sus vecinas y con las que se compone en faltanCampos(). El monto ya paso
      * por montoEnRango(): es finito y positivo.
      */
