@@ -18,11 +18,11 @@ La decisión de no guardar categorías está en
 [`PRIVACIDAD-Y-HONRA.md`](../PRIVACIDAD-Y-HONRA.md) y en el plan que se acordó
 para este módulo.
 
-## Estado: Fase 1 (modelo) y Fase 2 (política de visibilidad, sin apellidos)
+## Estado: Fase 1 (modelo) y Fase 2 (política de visibilidad y revisión por apellido)
 
 **La política ya restringe**: una persona con una exclusión activa no se conecta,
-no se muestra en listas y no sale en una exportación. Lo que sigue pendiente es la
-coincidencia por apellido o homónimo (ver «Pendiente» abajo).
+no se muestra en listas y no sale en una exportación. La coincidencia por apellido
+existe pero solo marca para revisión (ver más abajo).
 
 | Pieza | Qué hace |
 |---|---|
@@ -30,6 +30,7 @@ coincidencia por apellido o homónimo (ver «Pendiente» abajo).
 | `src/Estado.php` | `pendiente`, `activa`, `rechazada`, `revocada`. |
 | `src/Solicitante.php` | `persona`, `familiar_fallecido`, `apoderado`. |
 | `src/Visibilidad.php` | La política: `esVisible`, `puedeConectar`, `puedeExportar` y `filtrar` (quita excluidas de una lista, sin cambiar el orden). Solo dice sí o no, sin decir por qué. |
+| `src/Coincidencias.php` | Compara apellidos normalizados para revisión humana. No oculta a nadie. |
 | `src/RegistroExclusiones.php` | Interfaz del registro: `activasDe` y `guardar`. |
 | `src/RegistroPdo.php` | Implementación sobre la tabla `exclusion` (PostgreSQL). |
 | `src/RegistroEnMemoria.php` | Implementación sin base de datos, para pruebas. |
@@ -47,11 +48,27 @@ motivo, para que la respuesta no revele que existe un registro.
   con sus vínculos queda para decidirlo aparte.
 - Una exclusión pendiente o rechazada no excluye. Una revocada vuelve a verse.
 
+### Coincidencia por apellido: solo para revisión
+
+`src/Coincidencias.php` marca posibles homónimos o familiares. **No oculta a nadie**:
+ocultar por apellido tendría falsos positivos (una familia entera), así que la
+decisión queda en una persona.
+
+- Dos apellidos coinciden si, normalizados, son iguales y tienen al menos 3 letras.
+  La normalización pasa a minúsculas, quita tildes y eñes, borra el apóstrofo
+  («O'Brien» = «OBrien») y separa con espacio el guion y lo demás.
+- Conserva las letras de otros alfabetos (un apellido en cirílico no se vacía).
+- **Límites conocidos**: no hay coincidencia fonética ni difusa, y «Müller» no es
+  «Mueller». Cada una agrega falsos positivos; se decide aparte.
+- No usa la librería de `defamatory-content-review` a propósito: depender de otra
+  carpeta por composer acopla dos proyectos. Si se decide la fonética, se reusa entonces.
+
 ### Pendiente
 
-- Coincidencia por apellido y homónimos. Requiere la normalización de
-  `defamatory-content-review` y decidir cuántos falsos positivos se aceptan
-  antes de ocultar una familia entera.
+- Conectar la coincidencia con el registro: hoy `Exclusion` guarda el id de la
+  persona, no su apellido, y el apellido lo tiene la plataforma. Quien consulte pasa
+  los apellidos de las excluidas.
+- Qué hacer con los parientes de una persona excluida (fuera de esta fase).
 
 ## Pruebas
 
