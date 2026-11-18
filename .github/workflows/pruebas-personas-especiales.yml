@@ -1,0 +1,96 @@
+name: Pruebas personas-especiales
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "personas-especiales/**"
+      - ".github/workflows/pruebas-personas-especiales.yml"
+  pull_request:
+    paths:
+      - "personas-especiales/**"
+      - ".github/workflows/pruebas-personas-especiales.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  personas-especiales:
+    name: personas-especiales / PHP ${{ matrix.php-version }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: personas-especiales
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.1', '8.2', '8.3', '8.4']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run tests
+        run: ./vendor/bin/phpunit
+
+  # El esquema de database/esquema.sql se carga en PostgreSQL de verdad, dos veces (la segunda
+  # comprueba que es idempotente), y una exclusion activa sin prueba tiene que ser rechazada por la base.
+  esquema:
+    name: personas-especiales / esquema PostgreSQL
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: pe_test
+          POSTGRES_PASSWORD: pe_test
+          POSTGRES_DB: pe_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U pe_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Cargar el esquema dos veces
+        env:
+          PGPASSWORD: pe_test
+        run: |
+          psql -h 127.0.0.1 -U pe_test -d pe_test -v ON_ERROR_STOP=1 -q -f personas-especiales/database/esquema.sql
+          psql -h 127.0.0.1 -U pe_test -d pe_test -v ON_ERROR_STOP=1 -q -f personas-especiales/database/esquema.sql
+
+      - name: Una exclusion activa sin prueba se rechaza
+        env:
+          PGPASSWORD: pe_test
+        run: |
+          if psql -h 127.0.0.1 -U pe_test -d pe_test -q -c "INSERT INTO exclusion VALUES ('x', 'p', 'persona', 'm', NULL, 'activa', now(), now())" 2>/dev/null; then
+            echo "::error::La base aceptó una exclusión activa sin prueba"
+            exit 1
+          fi
+          echo "Rechazada, como debe ser."
