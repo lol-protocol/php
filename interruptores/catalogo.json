@@ -1,0 +1,605 @@
+{
+  "version": 1,
+  "plataformas": {
+    "genealogia": "A) Genealogía (sitio de genealogía y herramientas de su operación)",
+    "pos": "B) Librería y etiquetado POS (Contrastocolor, Plataforma POS y Marcalibros)",
+    "transversal": "Transversal (por confirmar a cuál plataforma sirve)"
+  },
+  "tipos": {
+    "producto": "Lo ve o lo usa una persona fuera del equipo",
+    "interno": "Herramienta del equipo u operación",
+    "datos": "Datos o base de referencia",
+    "visual": "Recursos visuales (iconos, siluetas, portadas)",
+    "contenido": "Textos y contenido",
+    "por-confirmar": "No está claro si es del producto o interno"
+  },
+  "funciones": [
+    {
+      "id": "gen.urls",
+      "plataforma": "genealogia",
+      "nombre": "Enrutamiento de URLs",
+      "carpeta": "url-routing",
+      "tipo": "producto",
+      "descripcion": "El dominio (Host) decide el sitio; la forma del primer segmento de la URL decide el tipo de recurso (cantidad de dígitos, letras). Español e inglés.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.retiros",
+      "plataforma": "genealogia",
+      "nombre": "Pedidos de retiro de información",
+      "carpeta": "url-routing",
+      "tipo": "producto",
+      "descripcion": "Recibe y gestiona los pedidos de retiro; cada texto pasa por el filtro de textos libres.",
+      "depende_de": [
+        "gen.filtro-textos"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.filtro-nombres",
+      "plataforma": "genealogia",
+      "nombre": "Filtro de nombres y apellidos",
+      "carpeta": "defamatory-content-review",
+      "tipo": "producto",
+      "descripcion": "Detecta insultos, ridiculización y fusión fonética entre nombre y apellido («Elba Gina» → «el vagina»). Protege apellidos legítimos. 11 tipos de riesgo, 33 idiomas.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.filtro-chat",
+      "plataforma": "genealogia",
+      "nombre": "Filtro de mensajes de chat",
+      "carpeta": "defamatory-content-review",
+      "tipo": "producto",
+      "descripcion": "Revisa línea a línea los mensajes de chat (ChatLineReviewer). En el navegador, un tope de letras repetidas antes de enviar.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.filtro-textos",
+      "plataforma": "genealogia",
+      "nombre": "Filtro de textos libres",
+      "carpeta": "defamatory-content-review",
+      "tipo": "producto",
+      "descripcion": "Marca acusaciones contra personas, datos sensibles de terceros (salud, religión, deudas…) y datos personales (RUT, teléfono, correo, dirección) para revisión humana.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.directorio",
+      "plataforma": "genealogia",
+      "nombre": "Lector de directorios telefónicos históricos",
+      "carpeta": "phone-directory",
+      "tipo": "interno",
+      "descripcion": "Convierte directorios telefónicos históricos (6 idiomas) en registros, con búsqueda fonética de apellidos, base de datos y línea de comandos. Aplica reglas de privacidad a personas que podrían estar vivas.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.lector-perfiles",
+      "plataforma": "genealogia",
+      "nombre": "Lectores de perfiles guardados y cruce de fallecidos",
+      "carpeta": "Parsing-fb-in-mas",
+      "tipo": "interno",
+      "descripcion": "Lee páginas de perfil ya guardadas (redes sociales, WikiTree, Find a Grave, schema.org), volcados de Wikidata y respuestas de la API de WikiTree; propone cruces solo entre fallecidos. De una persona viva guarda solo nombre, titular, lugar y descripción. Todo queda para revisión humana.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.siluetas",
+      "plataforma": "genealogia",
+      "nombre": "Siluetas de ancestros y árbol de ascendencia",
+      "carpeta": "siluetas-ancestrales",
+      "tipo": "visual",
+      "descripcion": "Siluetas por edad, sexo, complexión y época, con catálogo de atuendos y colores por región, y un árbol de hasta cuatro generaciones. Es una aproximación histórica para ilustrar, no un estudio de indumentaria.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.iconos",
+      "plataforma": "genealogia",
+      "nombre": "Iconos del árbol genealógico",
+      "carpeta": "iconos-genealogia",
+      "tipo": "visual",
+      "descripcion": "207 iconos SVG 2.5D sin texto, en 3 variantes.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.mortalidad",
+      "plataforma": "genealogia",
+      "nombre": "Mortalidad histórica",
+      "carpeta": "mortalidad-historica",
+      "tipo": "datos",
+      "descripcion": "Esperanza de vida por país y década (1800–2009), epidemias, glosario de causas de defunción en 20 idiomas y consultas en Python, PHP y JavaScript. Salvo la esperanza de vida, es borrador sin verificar.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.marketing",
+      "plataforma": "genealogia",
+      "nombre": "Textos de marketing",
+      "carpeta": "marketing",
+      "tipo": "contenido",
+      "descripcion": "Lemas, eslóganes, textos para redes sociales y correo, con dos scripts PHP sueltos para renderizar.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.bak-acceso",
+      "plataforma": "genealogia",
+      "nombre": "Backoffice: inicio de sesión",
+      "carpeta": "sistema-nuevo",
+      "tipo": "interno",
+      "descripcion": "Requiere iniciar sesión para entrar al panel de actividad de usuarios.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.bak-flujo",
+      "plataforma": "genealogia",
+      "nombre": "Backoffice: flujo cronológico de un usuario",
+      "carpeta": "sistema-nuevo",
+      "tipo": "interno",
+      "descripcion": "Cada acción de un usuario en orden, con su duración, su monto pagado, la ruta o archivo del backend que la atendió, y la IP de la sesión (país, hora local y proveedor).",
+      "depende_de": [
+        "gen.bak-acceso"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.bak-comparacion",
+      "plataforma": "genealogia",
+      "nombre": "Backoffice: comparación con el universo",
+      "carpeta": "sistema-nuevo",
+      "tipo": "interno",
+      "descripcion": "Compara cada acción con el promedio de un universo filtrable (grupos de países, edad, género, tipo de acción) y muestra percentiles.",
+      "depende_de": [
+        "gen.bak-acceso"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.bak-kpis",
+      "plataforma": "genealogia",
+      "nombre": "Backoffice: KPIs y gráfico de evolución",
+      "carpeta": "sistema-nuevo",
+      "tipo": "interno",
+      "descripcion": "Dashboard de indicadores y gráfico de evolución temporal de la actividad.",
+      "depende_de": [
+        "gen.bak-acceso"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.bak-alertas",
+      "plataforma": "genealogia",
+      "nombre": "Backoffice: alertas proactivas",
+      "carpeta": "sistema-nuevo",
+      "tipo": "interno",
+      "descripcion": "Avisa, por ejemplo, de IPs que no coinciden con el país declarado, y permite configurar las alertas.",
+      "depende_de": [
+        "gen.bak-acceso"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.bak-notas",
+      "plataforma": "genealogia",
+      "nombre": "Backoffice: notas por acción",
+      "carpeta": "sistema-nuevo",
+      "tipo": "interno",
+      "descripcion": "Notas sobre cada acción, con su filtro y su registro. Pasan por el filtro de textos libres.",
+      "depende_de": [
+        "gen.bak-acceso",
+        "gen.filtro-textos"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.bak-filtros",
+      "plataforma": "genealogia",
+      "nombre": "Backoffice: filtros guardados y paginación",
+      "carpeta": "sistema-nuevo",
+      "tipo": "interno",
+      "descripcion": "Paginación, filtro por tipo de acción y filtros guardados para reutilizar.",
+      "depende_de": [
+        "gen.bak-acceso"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "gen.bak-idioma",
+      "plataforma": "genealogia",
+      "nombre": "Backoffice: idioma de la interfaz",
+      "carpeta": "sistema-nuevo",
+      "tipo": "interno",
+      "descripcion": "Interfaz en español e inglés. Los nombres de usuario se leen bien en latino, japonés, árabe, hebreo, chino, coreano y cirílico.",
+      "depende_de": [
+        "gen.bak-acceso"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "cob.ingresos-cartera",
+      "plataforma": "transversal",
+      "nombre": "Cobros: ingresos y cartera",
+      "carpeta": "cobros-ingresos-funnels",
+      "tipo": "interno",
+      "descripcion": "Ingresos devengados frente a cobros reales, y cartera pendiente con antigüedad de saldo (al día, 1–30, 31–60, 61+ días).",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "cob.cobranza",
+      "plataforma": "transversal",
+      "nombre": "Cobros: cobranza cliente por cliente",
+      "carpeta": "cobros-ingresos-funnels",
+      "tipo": "interno",
+      "descripcion": "Quién debe, cuánto (total y vencido, en USD a la tasa de hoy), desde cuándo, con su correo y acceso directo a registrar el pago.",
+      "depende_de": [
+        "cob.ingresos-cartera"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "cob.flujo",
+      "plataforma": "transversal",
+      "nombre": "Cobros: flujo de caja esperado",
+      "carpeta": "cobros-ingresos-funnels",
+      "tipo": "interno",
+      "descripcion": "Lo que falta cobrar, por mes de vencimiento, a 3, 6 o 12 meses.",
+      "depende_de": [
+        "cob.ingresos-cartera"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "cob.tasas",
+      "plataforma": "transversal",
+      "nombre": "Cobros: tasas de cambio",
+      "carpeta": "cobros-ingresos-funnels",
+      "tipo": "interno",
+      "descripcion": "Tasa de hoy por moneda, cambio en 30 días e historial paginado. Las tasas las carga un comando aparte.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "cob.pagos",
+      "plataforma": "transversal",
+      "nombre": "Cobros: pagos por mes y método",
+      "carpeta": "cobros-ingresos-funnels",
+      "tipo": "interno",
+      "descripcion": "Pagos por mes y por método (transferencia, tarjeta, efectivo).",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "cob.funnel",
+      "plataforma": "transversal",
+      "nombre": "Funnel de conversión",
+      "carpeta": "cobros-ingresos-funnels",
+      "tipo": "interno",
+      "descripcion": "Visitante → registrado → lead → cliente, con tasas por etapa, por canal de adquisición, país, género y rango de edad.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "cob.cohortes",
+      "plataforma": "transversal",
+      "nombre": "Cohortes de conversión",
+      "carpeta": "cobros-ingresos-funnels",
+      "tipo": "interno",
+      "descripcion": "Qué porcentaje de cada cohorte (mes de primera visita) llegó a cliente en 0, 1, 2 o 3 meses.",
+      "depende_de": [
+        "cob.funnel"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "cob.segmentacion",
+      "plataforma": "transversal",
+      "nombre": "Segmentación de clientes",
+      "carpeta": "cobros-ingresos-funnels",
+      "tipo": "interno",
+      "descripcion": "Top de país, ciudad, idioma, género y rango de edad por facturación.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "cob.exportar",
+      "plataforma": "transversal",
+      "nombre": "Cobros: exportar a CSV",
+      "carpeta": "cobros-ingresos-funnels",
+      "tipo": "interno",
+      "descripcion": "Exporta a CSV algunas de sus pantallas (las tasas, entre ellas).",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "lg.paises",
+      "plataforma": "transversal",
+      "nombre": "Listado de países",
+      "carpeta": "Listado-paises",
+      "tipo": "datos",
+      "descripcion": "208 países con población, IDH, PIB, alfabetización, internet y emigración; índices de interés para genealogía y de viabilidad para el etiquetador POS; estimación de nacimientos históricos; vista web con mapa.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "lg.leyes-privacidad",
+      "plataforma": "transversal",
+      "nombre": "Base de leyes de privacidad",
+      "carpeta": "privacy-laws",
+      "tipo": "por-confirmar",
+      "descripcion": "Leyes de privacidad por país con buscador web, API PHP y esquema MySQL. Informativa, no es asesoría legal.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "lg.leyes-derechos",
+      "plataforma": "transversal",
+      "nombre": "Base de leyes de derechos de autor",
+      "carpeta": "copyright-laws",
+      "tipo": "por-confirmar",
+      "descripcion": "Leyes de derechos de autor por jurisdicción con buscador web, API PHP y esquema MySQL. Informativa, no es asesoría legal.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "lg.formatos-papel",
+      "plataforma": "transversal",
+      "nombre": "Formatos de documento y papel por país",
+      "carpeta": "document-formats",
+      "tipo": "datos",
+      "descripcion": "Base de formatos de papel y documento por país, con equivalencias, CSV y una demo web.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.urls",
+      "plataforma": "pos",
+      "nombre": "Enrutamiento del sitio POS (Contrastocolor)",
+      "carpeta": "url-routing",
+      "tipo": "producto",
+      "descripcion": "El mismo enrutador que el de genealogía, con su propio Host y su propia base de datos.",
+      "depende_de": [],
+      "por_defecto": true,
+      "nota": "Comparte código con gen.urls: apagarlo por separado exige que el enrutador lea este interruptor."
+    },
+    {
+      "id": "pos.mb-v-generador",
+      "plataforma": "pos",
+      "nombre": "Marcalibros verticales: generador",
+      "carpeta": "marcalibros_b",
+      "tipo": "visual",
+      "descripcion": "Genera 2000 marcalibros verticales 1:7 (200×1400 px), de forma determinista e incremental, y los revisa en Chromium.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.mb-v-linea-marca",
+      "plataforma": "pos",
+      "nombre": "Marcalibros verticales: línea de marca",
+      "carpeta": "marcalibros_b",
+      "tipo": "visual",
+      "descripcion": "Logos, iconos y cabeceras de la línea de marca.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.mb-v-lector",
+      "plataforma": "pos",
+      "nombre": "Marcalibros verticales: modelo de datos del lector",
+      "carpeta": "marcalibros_b",
+      "tipo": "producto",
+      "descripcion": "Modelo de datos del lector de textos que usa los marcalibros.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.mb-v-editor",
+      "plataforma": "pos",
+      "nombre": "Marcalibros verticales: editor de usuario",
+      "carpeta": "marcalibros_b",
+      "tipo": "producto",
+      "descripcion": "Editor donde cada persona crea su marcalibro, con subidas de imagen seguras.",
+      "depende_de": [
+        "gen.filtro-textos"
+      ],
+      "por_defecto": true,
+      "nota": "El texto que escribe la persona pasa por el filtro (CLAUDE.md de la carpeta lo exige)."
+    },
+    {
+      "id": "pos.mb-h-propios",
+      "plataforma": "pos",
+      "nombre": "Marcalibros horizontales: marcalibros propios (PHP)",
+      "carpeta": "marcalibros-plataforma-pos-brand-identity",
+      "tipo": "producto",
+      "descripcion": "Módulo PHP para crear marcalibros horizontales 7:1 (1400×200) a partir de imágenes subidas.",
+      "depende_de": [
+        "gen.filtro-textos"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.mb-h-app",
+      "plataforma": "pos",
+      "nombre": "Marcalibros horizontales: aplicación web sin cuentas",
+      "carpeta": "marcalibros-plataforma-pos-brand-identity",
+      "tipo": "producto",
+      "descripcion": "Aplicación independiente para explorar los 1350 marcalibros (11 movimientos y 16 tipos de texto) y crear los propios. Sin login; no está conectada a Plataforma POS.",
+      "depende_de": [
+        "pos.mb-h-propios"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.mb-h-catalogo",
+      "plataforma": "pos",
+      "nombre": "Marcalibros horizontales: catálogo y paisajes",
+      "carpeta": "marcalibros-plataforma-pos-brand-identity",
+      "tipo": "visual",
+      "descripcion": "Tokens de marca, iconos SVG, vista previa JPG del catálogo y paisajes JPG.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.chat-libros",
+      "plataforma": "pos",
+      "nombre": "Chat con un libro",
+      "carpeta": "chat-con-libros",
+      "tipo": "producto",
+      "descripcion": "Chat con un libro en PHP y en Java, con sinónimos y un modo opcional con IA. Pendiente de fusionar (PR abierto).",
+      "depende_de": [],
+      "por_defecto": false,
+      "fuera_de_master": true,
+      "nota": "Vive en un PR abierto, no está en master. Por defecto apagado."
+    },
+    {
+      "id": "pos.colores-lista",
+      "plataforma": "pos",
+      "nombre": "Léxico de colores: lista completa",
+      "carpeta": "Listado-colores",
+      "tipo": "datos",
+      "descripcion": "31.935 nombres de color con su hex, y una marca de buenos nombres con su color CSS más cercano.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.colores-css",
+      "plataforma": "pos",
+      "nombre": "Léxico de colores: 148 colores CSS anotados",
+      "carpeta": "Listado-colores",
+      "tipo": "datos",
+      "descripcion": "Tabla de los 148 colores CSS con dos significados (psicológico y místico) en 30 idiomas, y su evidencia y matices culturales.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.colores-categorias",
+      "plataforma": "pos",
+      "nombre": "Léxico de colores: categorías gramaticales",
+      "carpeta": "Listado-colores",
+      "tipo": "datos",
+      "descripcion": "Categoría gramatical (adjetivo, sustantivo, nombre propio, verbo) de las palabras de color de una sola palabra en inglés y español, con frase de ejemplo. Es la base del etiquetado.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.colores-exportes",
+      "plataforma": "pos",
+      "nombre": "Léxico de colores: exportes para PLN",
+      "carpeta": "Listado-colores",
+      "tipo": "datos",
+      "descripcion": "JSONL, TSV y SQLite; patrones de spaCy; léxico y ejemplos en Universal Dependencies; forma normalizada para texto ruidoso; manifiesto con la versión de los datos.",
+      "depende_de": [
+        "pos.colores-lista"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.colores-informes",
+      "plataforma": "pos",
+      "nombre": "Léxico de colores: informes de calidad",
+      "carpeta": "Listado-colores",
+      "tipo": "datos",
+      "descripcion": "Informes de ambigüedad (formas con más de un color), de nombres sospechosos, de cobertura y de auditoría de nombres completos.",
+      "depende_de": [
+        "pos.colores-lista"
+      ],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.colores-revision",
+      "plataforma": "pos",
+      "nombre": "Léxico de colores: revisión por hablantes nativos",
+      "carpeta": "Listado-colores",
+      "tipo": "interno",
+      "descripcion": "Registro de revisión por hablantes nativos, con su informe y su visor HTML. Todavía vacío.",
+      "depende_de": [
+        "pos.colores-lista"
+      ],
+      "por_defecto": false,
+      "nota": "El PR #595 (abierto) la marca @deprecated. Por defecto apagado."
+    },
+    {
+      "id": "pos.citas",
+      "plataforma": "pos",
+      "nombre": "Citas coloreadas por categoría gramatical",
+      "carpeta": "citas-pos",
+      "tipo": "contenido",
+      "descripcion": "Citas de autores de dominio público con cada palabra en el color de su categoría, para el sitio y el correo, y el juego «Adivina la categoría». Todavía no hay citas publicadas.",
+      "depende_de": [
+        "pos.colores-categorias"
+      ],
+      "por_defecto": false,
+      "nota": "Sin citas publicadas: por defecto apagado."
+    },
+    {
+      "id": "pos.iconos-pos",
+      "plataforma": "pos",
+      "nombre": "Iconos del punto de venta",
+      "carpeta": "iconos-pos",
+      "tipo": "visual",
+      "descripcion": "23 iconos SVG 2.5D: catálogo, pedidos, cuenta del cliente, carrito y pago.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.iconos-biblioteca",
+      "plataforma": "pos",
+      "nombre": "Iconos de biblioteca virtual",
+      "carpeta": "iconos-biblioteca",
+      "tipo": "visual",
+      "descripcion": "151 iconos SVG 2.5D para biblioteca virtual, en 3 variantes.",
+      "depende_de": [],
+      "por_defecto": true
+    },
+    {
+      "id": "pos.portadas",
+      "plataforma": "pos",
+      "nombre": "Portadas de libro en SVG",
+      "carpeta": "portadas-svg",
+      "tipo": "visual",
+      "descripcion": "Portada, contratapa, lomo y cubierta completa a partir de un JSON o de una lista CSV; fuentes libres incrustadas; medidas de corte para imprenta.",
+      "depende_de": [],
+      "por_defecto": true
+    }
+  ],
+  "fuera_del_interruptor": [
+    {
+      "carpeta": "web-animations",
+      "motivo": "Galería de demostración de animaciones; no es de ninguna plataforma."
+    },
+    {
+      "carpeta": "astros-3d",
+      "motivo": "Visor WebGL de astros; no es de ninguna plataforma."
+    },
+    {
+      "carpeta": "signos-zodiacales",
+      "motivo": "Referencia cultural de signos; no es de ninguna plataforma."
+    },
+    {
+      "carpeta": "psychology-and-marketing",
+      "motivo": "Solo documentos, sin código."
+    },
+    {
+      "carpeta": "iconos-tools",
+      "motivo": "Generador de los sets de iconos; herramienta de construcción."
+    },
+    {
+      "carpeta": "leyes-comunes",
+      "motivo": "Código compartido de las dos bases de leyes; no es una función."
+    },
+    {
+      "carpeta": "vps-setup",
+      "motivo": "Infraestructura: instala el servidor."
+    },
+    {
+      "carpeta": "landing-page",
+      "motivo": "Página estática que despliega vps-setup."
+    }
+  ]
+}
