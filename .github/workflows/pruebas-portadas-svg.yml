@@ -5,10 +5,12 @@ on:
     branches: [master]
     paths:
       - "portadas-svg/**"
+      - "interruptores/**"
       - ".github/workflows/pruebas-portadas-svg.yml"
   pull_request:
     paths:
       - "portadas-svg/**"
+      - "interruptores/**"
       - ".github/workflows/pruebas-portadas-svg.yml"
   workflow_dispatch:
 
