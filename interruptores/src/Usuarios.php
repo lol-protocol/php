@@ -10,9 +10,13 @@ namespace LolProtocol\Interruptores;
  *  - lector: ve el panel y el registro de cambios, no cambia nada.
  *  - editor: además enciende y apaga.
  *
- * Tras MAX_FALLOS claves incorrectas seguidas, el usuario queda bloqueado
- * BLOQUEO_SEGUNDOS. Un usuario que no existe responde igual que uno que existe
- * (mismo tiempo, mismo mensaje), para no revelar qué nombres hay.
+ * Bloqueo por usuario y origen: tras MAX_FALLOS claves incorrectas seguidas desde un
+ * mismo origen (la IP guardada), ese origen queda bloqueado BLOQUEO_SEGUNDOS. Otro origen
+ * sigue pudiendo entrar: así, quien falla desde su propia red no bloquea a la persona real.
+ * Los fallos cuentan solo dentro de esa misma ventana de BLOQUEO_SEGUNDOS.
+ *
+ * Un usuario que no existe responde igual que uno que sí existe (mismo tiempo, mismo
+ * mensaje), para no revelar qué nombres hay.
  *
  * Archivo: var/usuarios.json, fuera de git. Nunca se imprime un hash.
  */
@@ -43,7 +47,7 @@ final class Usuarios
         return $this->leer() !== [];
     }
 
-    /** @return array<string, array{rol: string, creado: string}> sin hashes */
+    /** @return array<string, array{rol: string, creado: string}> sin hashes ni intentos */
     public function listar(): array
     {
         $salida = [];
@@ -51,6 +55,13 @@ final class Usuarios
             $salida[$nombre] = ['rol' => $u['rol'], 'creado' => $u['creado']];
         }
         return $salida;
+    }
+
+    /** Rol actual de un usuario, o null si ya no existe. Sirve para refrescar una sesión abierta. */
+    public function buscar(string $nombre): ?array
+    {
+        $u = $this->leer()[$nombre] ?? null;
+        return $u === null ? null : ['nombre' => $nombre, 'rol' => (string) $u['rol']];
     }
 
     public function crear(string $nombre, string $rol, string $clave): void
@@ -66,7 +77,7 @@ final class Usuarios
                 'hash' => password_hash($clave, PASSWORD_DEFAULT),
                 'rol' => $rol,
                 'creado' => gmdate('Y-m-d\TH:i:s\Z', $this->ahora()),
-                'fallos' => 0,
+                'intentos' => [],
             ];
             return $datos;
         });
@@ -78,8 +89,7 @@ final class Usuarios
         $this->modificar(function (array $datos) use ($nombre, $clave): array {
             $this->exigirExiste($datos, $nombre);
             $datos[$nombre]['hash'] = password_hash($clave, PASSWORD_DEFAULT);
-            $datos[$nombre]['fallos'] = 0;
-            unset($datos[$nombre]['bloqueado_hasta']);
+            $datos[$nombre]['intentos'] = [];
             return $datos;
         });
     }
@@ -109,42 +119,47 @@ final class Usuarios
         });
     }
 
-    public function bloqueado(string $nombre): bool
+    public function bloqueado(string $nombre, string $origen = 'local'): bool
     {
         $u = $this->leer()[$nombre] ?? null;
-        return $u !== null && $this->estaBloqueado($u);
+        return $u !== null && $this->bloqueadoEn($u, $origen, $this->ahora());
     }
 
     /**
      * Comprueba la clave. Devuelve nombre y rol si es correcta, o null.
-     * Cuenta los fallos y bloquea al llegar al máximo.
+     * Cuenta los fallos del origen y bloquea ese origen al llegar al máximo.
      *
      * @return array{nombre: string, rol: string}|null
      */
-    public function verificar(string $nombre, string $clave): ?array
+    public function verificar(string $nombre, string $clave, string $origen = 'local'): ?array
     {
         $resultado = null;
-        $this->modificar(function (array $datos) use ($nombre, $clave, &$resultado): array {
+        $this->modificar(function (array $datos) use ($nombre, $clave, $origen, &$resultado): array {
             $u = $datos[$nombre] ?? null;
             if ($u === null) {
                 // Mismo trabajo que con un usuario real: no se nota si el nombre existe.
                 password_verify($clave, self::hashFicticio());
                 return $datos;
             }
-            if ($this->estaBloqueado($u)) {
-                return $datos;
-            }
-            if (!password_verify($clave, $u['hash'])) {
-                $u['fallos'] = ((int) ($u['fallos'] ?? 0)) + 1;
-                if ($u['fallos'] >= self::MAX_FALLOS) {
-                    $u['bloqueado_hasta'] = $this->ahora() + self::BLOQUEO_SEGUNDOS;
-                    $u['fallos'] = 0;
-                }
+            $ahora = $this->ahora();
+            $u['intentos'] = $this->podar($u['intentos'] ?? [], $ahora);
+            if ($this->bloqueadoEn($u, $origen, $ahora)) {
                 $datos[$nombre] = $u;
                 return $datos;
             }
-            $u['fallos'] = 0;
-            unset($u['bloqueado_hasta']);
+            if (!password_verify($clave, $u['hash'])) {
+                $i = $u['intentos'][$origen] ?? ['fallos' => 0];
+                $i['fallos'] = (int) $i['fallos'] + 1;
+                $i['ultimo'] = $ahora;
+                if ($i['fallos'] >= self::MAX_FALLOS) {
+                    $i['bloqueado_hasta'] = $ahora + self::BLOQUEO_SEGUNDOS;
+                    $i['fallos'] = 0;
+                }
+                $u['intentos'][$origen] = $i;
+                $datos[$nombre] = $u;
+                return $datos;
+            }
+            unset($u['intentos'][$origen]);
             $datos[$nombre] = $u;
             $resultado = ['nombre' => $nombre, 'rol' => (string) $u['rol']];
             return $datos;
@@ -160,9 +175,28 @@ final class Usuarios
     }
 
     /** @param array<string, mixed> $u */
-    private function estaBloqueado(array $u): bool
+    private function bloqueadoEn(array $u, string $origen, int $ahora): bool
     {
-        return isset($u['bloqueado_hasta']) && (int) $u['bloqueado_hasta'] > $this->ahora();
+        return isset($u['intentos'][$origen]['bloqueado_hasta'])
+            && (int) $u['intentos'][$origen]['bloqueado_hasta'] > $ahora;
+    }
+
+    /**
+     * Quita los orígenes sin bloqueo cuyos últimos fallos ya salieron de la ventana.
+     *
+     * @param array<string, array<string, mixed>> $intentos
+     * @return array<string, array<string, mixed>>
+     */
+    private function podar(array $intentos, int $ahora): array
+    {
+        foreach ($intentos as $origen => $i) {
+            $bloqueado = isset($i['bloqueado_hasta']) && (int) $i['bloqueado_hasta'] > $ahora;
+            $reciente = isset($i['ultimo']) && (int) $i['ultimo'] + self::BLOQUEO_SEGUNDOS > $ahora;
+            if (!$bloqueado && !$reciente) {
+                unset($intentos[$origen]);
+            }
+        }
+        return $intentos;
     }
 
     private static function hashFicticio(): string

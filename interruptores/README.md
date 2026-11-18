@@ -33,8 +33,8 @@ Estado que usa el sitio:
 ## Probar
 
 ```bash
-php pruebas/ejecutar.php            # 69 pruebas: catálogo, dependencias, mínimos, estado, registro y usuarios
-php pruebas/panel.php               # 23 pruebas: el panel en vivo, con php -S
+php pruebas/ejecutar.php            # 88 pruebas: catálogo, dependencias, mínimos, estado, registros, usuarios y bloqueo
+php pruebas/panel.php               # 37 pruebas: el panel en vivo, con php -S
 php bin/generar.php --comprobar     # FUNCIONES.md al día
 ```
 
@@ -71,12 +71,25 @@ $int = new Interruptores(__DIR__ . '/../interruptores/catalogo.json',
 
 if ($int->activo('gen.vistas:abanico')) {
     // mostrar el modo abanico
+} elseif ($int->alApagar('gen.vistas:abanico') === 'no_disponible') {
+    // mostrar «no disponible» en vez de ocultarlo
 }
 ```
 
-El estado se lee del archivo en cada llamada. Es sencillo, y para un sitio con mucho tráfico conviene cachearlo.
+- `activo(ref)`: lo que el sitio debe usar. Una opción solo está activa si su función también lo está.
+- `alApagar(ref)`: qué hacer cuando está apagada. `ocultar` (por defecto) o `no_disponible`. Una opción usa la política de su función. Cada función la define en `catalogo.json` con el campo `al_apagar`.
+- Crea una instancia por petición: el estado es un archivo pequeño y se lee al crearla y en cada `activo()`.
 
-**Todavía nadie lo usa.** Apagar un canal en el panel no apaga nada en el sitio. Enchufar cada proyecto es el siguiente paso, un PR por carpeta.
+**Ejemplo real: `portadas-svg/`.** Con `--interruptores=../interruptores`, el generador no escribe las piezas que el interruptor `pos.portadas` tiene apagadas (`portada`, `contratapa`, `lomo`, `cubierta-completa`). Sin la opción, no lee nada de fuera. Ver `portadas-svg/docs/linea-de-comandos.md`.
+
+**Todavía no lo usan** las aplicaciones de genealogía ni el resto de los proyectos del repositorio: cada integración es su propio PR, carpeta por carpeta.
+
+## Registros
+
+- `var/cambios.jsonl`: cada cambio de un interruptor (`ts`, `quien`, `ref`, `antes`, `despues`).
+- `var/accesos.jsonl`: cada acceso al panel (`ts`, `evento`, `usuario`, `origen`). Eventos: `entrar`, `entrar_fallido`, `bloqueado`, `salir`, `caducada`, `usuario_borrado`. Nunca lleva claves. La IP va enmascarada: IPv4 sin el último octeto, IPv6 con el prefijo /64.
+- `php bin/registro.php cambios|accesos [n]` los muestra sin abrir el panel.
+- `RegistroJsonl` los escribe: cuando el archivo pasa de 5 MB se aparta con la fecha (`cambios-20261118T201500Z-1a2b.jsonl`) y empieza uno nuevo. `ultimas(n)` lee desde el final, así que su coste no depende del tamaño.
 
 ## Panel
 
@@ -88,7 +101,7 @@ php bin/usuarios.php crear luis lector
 php -S 127.0.0.1:8080 -t panel
 ```
 
-Sin usuarios, el panel no entra y lo dice. Hay dos roles:
+Sin usuarios, el panel no entra y lo dice. Dos roles:
 
 - **editor**: ve todo y enciende o apaga.
 - **lector**: ve todo, pero no cambia nada. Los botones aparecen bloqueados, y si alguien fuerza el envío, el servidor lo rechaza igual.
@@ -96,13 +109,17 @@ Sin usuarios, el panel no entra y lo dice. Hay dos roles:
 Seguridad del acceso:
 
 - La clave se guarda con `password_hash`; el archivo no contiene la clave en claro.
-- Tras 5 claves incorrectas seguidas, el usuario queda bloqueado 15 minutos. Un nombre que no existe responde igual que uno que sí existe.
-- Cada acción lleva un token CSRF; las cookies son `HttpOnly` y `SameSite=Strict`; la página envía `Content-Security-Policy` sin scripts.
+- **Bloqueo por usuario y origen.** Tras 5 claves incorrectas seguidas desde una misma IP, esa IP queda bloqueada 15 minutos para ese usuario. Otra red sigue pudiendo entrar, así que quien falla desde su propia red no bloquea a la persona real. Los fallos cuentan solo dentro de una ventana de 15 minutos.
+- Un usuario que no existe responde igual que uno que sí existe (mismo tiempo, mismo mensaje).
+- **Sesión vigente en cada petición.** La sesión caduca tras `INTERRUPTORES_CADUCIDAD` segundos sin actividad (1800 por defecto). Si borras a alguien, su sesión abierta se cierra en su siguiente acción; si le bajas el rol, el cambio se aplica en la siguiente acción, sin volver a entrar.
+- Cada acción lleva un token CSRF, también cerrar sesión. Las cookies son `HttpOnly` y `SameSite=Strict`; la página envía `Content-Security-Policy` sin scripts.
 - El rol se comprueba en el servidor, no solo en el formulario.
+- Si el panel está detrás de un proxy, la IP que ve es la del proxy: todos los que entran por él comparten el mismo bloqueo. Habrá que leer la IP real del proxy de confianza.
 
 Otros comandos de `bin/usuarios.php`: `listar`, `rol <nombre> <rol>`, `clave <nombre>` y `borrar <nombre>`. No se puede dejar el sistema sin ningún editor. Para usar tubería (por ejemplo, desde un gestor de secretos): `printf '%s' "$CLAVE" | php bin/usuarios.php crear ana editor`.
 
-**Registro de cambios.** Cada cambio queda en `var/cambios.jsonl` con la hora (UTC), quién lo hizo, el interruptor y el valor antes y después. El panel muestra los últimos 20. Los cambios se hacen con un bloqueo exclusivo sobre el estado: dos personas que cambian a la vez no se pisan ni se saltan una dependencia.
+Los cambios se hacen con un bloqueo exclusivo sobre el estado: dos personas que cambian a la vez no se pisan ni se saltan una dependencia. El panel muestra los últimos 20 cambios.
+
 ## Añadir una función o una opción
 
 1. Edita `catalogo.json`. Una función lleva `id` (`plataforma.nombre`), `plataforma`, `nombre`, `tipo`, `origen`, `carpetas`, `descripcion`, `depende_de`, `por_defecto`, y opcionalmente `min_opciones` y `opciones`.
@@ -116,12 +133,14 @@ Las pruebas rechazan un catálogo con ids repetidos, con `:` en un id, con una d
 
 ## Lo que falta
 
+Lo que no depende de una decisión tuya ya está hecho: integración opcional en `portadas-svg/`, caducidad de sesión, auditoría de accesos, bloqueo por origen y registro que rota. Queda:
+
 - **Listado final.** El listado actual sale de lo que hay en el repositorio. Genealogía tiene aquí 32 funciones y no las ~40 que se mencionaron, y Biblioteca POS tiene 20. Hay que contrastarlo con la lista real de funciones y añadir las que falten.
 - **Qué hace «Perritos y gatitos».** Está como dos interruptores, pero su efecto en el sitio no está definido.
 - **Decisión de privacidad.** ¿Qué pasa con la protección de personas que podrían estar vivas al importar fuentes externas o directorios? El catálogo no las ata a ninguna función; eso es una decisión de la persona (ver `PRIVACIDAD-Y-HONRA.md`).
-- **Quién lee el estado.** Un punto de integración en cada proyecto y una regla para lo que ve el usuario cuando algo está apagado: ocultarlo, mostrar «no disponible» o redirigir.
-- **Caducidad de sesión y auditoría de accesos.** El panel anota los cambios, pero no los inicios de sesión ni los intentos fallidos fuera de los contadores de cada usuario.
-- **Escala del registro.** `historial()` lee el archivo entero. Con millones de cambios habrá que rotarlo o pasarlo a una base de datos.
+- **Política al apagar.** Todas las funciones están en `ocultar`. Cuál debe ser `no_disponible` lo decide el producto.
+- **Siguientes integraciones.** `sistema-nuevo/` (el backoffice, sin PR abierto) y `citas-pos/` son los siguientes candidatos. `url-routing/` tiene un PR abierto (#611) y no se toca hasta que se fusione.
+- **Límites conocidos.** El bloqueo de archivo sirve con un solo servidor; con varios hace falta una base de datos. Un proxy comparte la IP entre sus usuarios. El panel no tiene registro de cada página vista, solo de accesos y cambios.
 - **A confirmar de plataforma:** `document-formats` está fuera del interruptor; no se sabe si va en A o en B.
 - **Candidatos desde PR abiertos:** `newsletter-plugin` (#613, documentación de diseño) y `personas-especiales` (#614, registro de exclusiones) podrían ser funciones nuevas cuando se fusionen. `chat-con-libros` (#603) no está en `master`, y `pos.colores-revision` depende de la decisión del PR #595.
 

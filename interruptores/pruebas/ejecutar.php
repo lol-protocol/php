@@ -6,9 +6,13 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../src/Interruptores.php';
 require_once __DIR__ . '/../src/Usuarios.php';
+require_once __DIR__ . '/../src/RegistroJsonl.php';
+require_once __DIR__ . '/../src/Ip.php';
 
 use LolProtocol\Interruptores\DependenciaRota;
 use LolProtocol\Interruptores\Interruptores;
+use LolProtocol\Interruptores\Ip;
+use LolProtocol\Interruptores\RegistroJsonl;
 use LolProtocol\Interruptores\Usuarios;
 use LolProtocol\Interruptores\UnknownInterruptor;
 
@@ -292,6 +296,72 @@ comprobar('con dos editores sí se puede borrar uno', !isset($usr->listar()['eva
 $usr->cambiarClave('luis', 'nueva-clave-luis-000');
 comprobar('cambiar la clave: la nueva entra y la vieja no',
     $usr->verificar('luis', 'nueva-clave-luis-000') !== null && $usr->verificar('luis', 'clave-de-luis-456') === null);
+
+// --- Registro JSON Lines: rotación y lectura desde el final -------------------
+
+$reg = new RegistroJsonl($tmp . '/rj.jsonl', 300); // límite pequeño para probar la rotación
+for ($k = 1; $k <= 40; $k++) {
+    $reg->anotar(['n' => $k, 'relleno' => str_repeat('x', 40)]);
+}
+$ult = $reg->ultimas(3);
+comprobar('ultimas devuelve los últimos eventos, el más nuevo primero', ($ult[0]['n'] ?? 0) === 40 && ($ult[2]['n'] ?? 0) === 38);
+comprobar('al pasar el límite el archivo se aparta', count(glob($tmp . '/rj-*.jsonl') ?: []) >= 1);
+comprobar('el archivo actual no crece sin límite', filesize($tmp . '/rj.jsonl') < 300 + 200);
+
+$pequeno = new RegistroJsonl($tmp . '/pequeno.jsonl');
+$pequeno->anotar(['n' => 1]);
+$pequeno->anotar(['n' => 2]);
+comprobar('dos anotar seguidos en el mismo proceso se ven los dos', count($pequeno->ultimas(10)) === 2);
+
+$grande = new RegistroJsonl($tmp . '/grande.jsonl', PHP_INT_MAX);
+for ($k = 1; $k <= 3000; $k++) {
+    $grande->anotar(['n' => $k, 'relleno' => str_repeat('y', 60)]);
+}
+$ult = $grande->ultimas(500);
+comprobar('ultimas(500) sobre 3000 eventos (varios bloques) da 3000..2501 en orden',
+    count($ult) === 500 && $ult[0]['n'] === 3000 && $ult[499]['n'] === 2501);
+comprobar('ultimas(n) con n mayor que el archivo devuelve todo', count($grande->ultimas(10000)) === 3000);
+comprobar('ultimas(0) no devuelve nada', $grande->ultimas(0) === []);
+
+// --- Ip: lo que se guarda en el registro ------------------------------------
+
+comprobar('IPv4 pierde el último octeto', Ip::enmascarar('203.0.113.87') === '203.0.113.0');
+comprobar('IPv6 se queda con el prefijo /64', Ip::enmascarar('2001:db8:1:2:3:4:5:6') === '2001:db8:1:2::');
+comprobar('lo que no es una IP se guarda como «desconocida»', Ip::enmascarar('no es ip') === 'desconocida');
+
+// --- Bloqueo por usuario y origen, con ventana -------------------------------
+
+$ahora2 = 2000000;
+$reloj2 = function () use (&$ahora2): int {
+    return $ahora2;
+};
+$uo = new Usuarios($tmp . '/uo.json', $reloj2);
+$uo->crear('mara', 'editor', 'clave-de-mara-111');
+$uo->crear('nora', 'editor', 'clave-de-nora-222');
+for ($k = 0; $k < Usuarios::MAX_FALLOS; $k++) {
+    $uo->verificar('mara', 'mala-clave-larga', '10.0.0.1');
+}
+comprobar('bloqueado desde el origen que falló', $uo->bloqueado('mara', '10.0.0.1'));
+comprobar('otro origen sigue pudiendo entrar (no lo bloquea otro)', $uo->verificar('mara', 'clave-de-mara-111', '10.0.0.2') !== null);
+comprobar('el origen bloqueado no entra ni con la clave buena', $uo->verificar('mara', 'clave-de-mara-111', '10.0.0.1') === null);
+
+for ($k = 0; $k < Usuarios::MAX_FALLOS - 1; $k++) {
+    $uo->verificar('nora', 'mala-clave-larga', '10.0.0.3');
+}
+$ahora2 += Usuarios::BLOQUEO_SEGUNDOS + 1;
+$uo->verificar('nora', 'mala-clave-larga', '10.0.0.3');
+comprobar('fallos fuera de la ventana no suman para el bloqueo', !$uo->bloqueado('nora', '10.0.0.3'));
+
+comprobar('buscar devuelve el rol actual de un usuario', $uo->buscar('mara') === ['nombre' => 'mara', 'rol' => 'editor']);
+comprobar('buscar de un usuario que ya no existe devuelve null', $uo->buscar('nadie') === null);
+
+// --- Política al apagar -----------------------------------------------------
+
+comprobar('una función sin política usa «ocultar»', $i->alApagar('gen.vistas') === 'ocultar');
+comprobar('una opción usa la política de su función', $i->alApagar('gen.vistas:abanico') === 'ocultar');
+file_put_contents($malo, json_encode(array_merge($base, ['funciones' => [$fn('a', ['al_apagar' => 'mal'])]])));
+comprobar('una política al apagar desconocida impide cargar el catálogo',
+    lanza(fn () => new Interruptores($malo, $estado), \RuntimeException::class));
 
 // Limpieza de la carpeta temporal.
 foreach (glob($tmp . '/*') ?: [] as $archivo) {

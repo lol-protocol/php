@@ -7,9 +7,13 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../src/Interruptores.php';
 require_once __DIR__ . '/../src/Usuarios.php';
+require_once __DIR__ . '/../src/RegistroJsonl.php';
+require_once __DIR__ . '/../src/Ip.php';
 
 use LolProtocol\Interruptores\DependenciaRota;
 use LolProtocol\Interruptores\Interruptores;
+use LolProtocol\Interruptores\Ip;
+use LolProtocol\Interruptores\RegistroJsonl;
 use LolProtocol\Interruptores\UnknownInterruptor;
 use LolProtocol\Interruptores\Usuarios;
 
@@ -19,11 +23,14 @@ header('Content-Type: text/html; charset=utf-8');
 header('X-Frame-Options: DENY');
 header("Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'");
 
-// Carpeta con estado y usuarios. Por defecto, var/ del proyecto; las pruebas la cambian.
+// Carpeta con estado, usuarios y registros. Por defecto, var/ del proyecto; las pruebas la cambian.
 $var = rtrim((string) (getenv('INTERRUPTORES_VAR') ?: __DIR__ . '/../var'), '/');
 $rutaCat = __DIR__ . '/../catalogo.json';
 $rutaEst = $var . '/estado.json';
 $usuarios = new Usuarios($var . '/usuarios.json');
+$accesos = new RegistroJsonl($var . '/accesos.jsonl');
+$caducidad = max(1, (int) (getenv('INTERRUPTORES_CADUCIDAD') ?: 1800));
+$origen = Ip::enmascarar((string) ($_SERVER['REMOTE_ADDR'] ?? ''));
 
 if (!$usuarios->hay()) {
     http_response_code(503);
@@ -44,11 +51,39 @@ function escapar(string $s): string
     return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+/** Nombre de usuario seguro para el registro: solo lo que de verdad es un nombre válido. */
+function nombreParaRegistro(string $nombre): string
+{
+    return preg_match('/^[a-z0-9][a-z0-9._-]{2,31}$/', $nombre) === 1 ? $nombre : '(no válido)';
+}
+
+/** Un evento de acceso: nunca lleva claves; la IP ya viene enmascarada. */
+function registrarAcceso(RegistroJsonl $accesos, string $origen, string $evento, string $usuario = ''): void
+{
+    $accesos->anotar([
+        'ts' => gmdate('Y-m-d\TH:i:s\Z'),
+        'evento' => $evento,
+        'usuario' => nombreParaRegistro($usuario),
+        'origen' => $origen,
+    ]);
+}
+
 function volver(string $mensaje = ''): never
 {
     if ($mensaje !== '') {
         $_SESSION['aviso'] = $mensaje;
     }
+    header('Location: index.php');
+    exit;
+}
+
+/** Cierra la sesión y deja un aviso para la página de entrada. */
+function cerrarSesion(string $aviso): never
+{
+    $_SESSION = [];
+    session_destroy();
+    session_start();
+    $_SESSION['aviso'] = $aviso;
     header('Location: index.php');
     exit;
 }
@@ -61,6 +96,25 @@ function tokenCsrf(): string
     return $_SESSION['csrf'];
 }
 
+// --- Sesión vigente ---------------------------------------------------------
+// Se revisa en cada petición: una sesión caducada o de un usuario borrado se cierra aquí,
+// y un cambio de rol se aplica en la siguiente acción, no al volver a entrar.
+
+if (!empty($_SESSION['usuario'])) {
+    $usuario = (string) $_SESSION['usuario'];
+    if (time() - (int) ($_SESSION['ultimo'] ?? 0) > $caducidad) {
+        registrarAcceso($accesos, $origen, 'caducada', $usuario);
+        cerrarSesion('Sesión caducada por inactividad. Entra de nuevo.');
+    }
+    $vigente = $usuarios->buscar($usuario);
+    if ($vigente === null) {
+        registrarAcceso($accesos, $origen, 'usuario_borrado', $usuario);
+        cerrarSesion('Tu usuario ya no existe.');
+    }
+    $_SESSION['rol'] = $vigente['rol'];
+    $_SESSION['ultimo'] = time();
+}
+
 // --- Acciones ---------------------------------------------------------------
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -69,22 +123,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($accion === 'entrar') {
         $nombre = strtolower(trim((string) ($_POST['usuario'] ?? '')));
         $clave = (string) ($_POST['clave'] ?? '');
-        if ($usuarios->bloqueado($nombre)) {
-            volver('Demasiados intentos fallidos. Espera 15 minutos.');
+        if ($usuarios->bloqueado($nombre, $origen)) {
+            registrarAcceso($accesos, $origen, 'bloqueado', $nombre);
+            volver('Demasiados intentos fallidos desde esta red. Espera 15 minutos.');
         }
-        $ok = $usuarios->verificar($nombre, $clave);
+        $ok = $usuarios->verificar($nombre, $clave, $origen);
         if ($ok !== null) {
             session_regenerate_id(true);
-            $_SESSION = ['usuario' => $ok['nombre'], 'rol' => $ok['rol'], 'csrf' => bin2hex(random_bytes(16))];
+            $_SESSION = [
+                'usuario' => $ok['nombre'],
+                'rol' => $ok['rol'],
+                'csrf' => bin2hex(random_bytes(16)),
+                'ultimo' => time(),
+            ];
+            registrarAcceso($accesos, $origen, 'entrar', $ok['nombre']);
             volver();
         }
-        usleep(400000); // frena la fuerza bruta además del bloqueo por usuario
+        registrarAcceso($accesos, $origen, 'entrar_fallido', $nombre);
+        usleep(400000); // frena la fuerza bruta además del bloqueo
         volver('Usuario o clave incorrectos.');
     }
 
     if ($accion === 'salir') {
         // Con token: una página ajena no puede cerrarle la sesión a nadie.
         if (!empty($_SESSION['usuario']) && hash_equals(tokenCsrf(), (string) ($_POST['csrf'] ?? ''))) {
+            registrarAcceso($accesos, $origen, 'salir', (string) $_SESSION['usuario']);
             $_SESSION = [];
             session_destroy();
         }

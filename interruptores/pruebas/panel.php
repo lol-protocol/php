@@ -90,6 +90,7 @@ function csrf(string $html): string
 $usr = new Usuarios($var . '/usuarios.json');
 $usr->crear('ana', 'editor', 'clave-de-ana-123');
 $usr->crear('luis', 'lector', 'clave-de-luis-456');
+$usr->crear('mario', 'editor', 'clave-de-mario-321');
 
 // --- Arranque del servidor --------------------------------------------------
 
@@ -102,7 +103,7 @@ $proc = proc_open(
     [0 => ['pipe', 'r'], 1 => ['file', $var . '/servidor.log', 'w'], 2 => ['file', $var . '/servidor.log', 'w']],
     $pipes,
     null,
-    ['INTERRUPTORES_VAR' => $var, 'PATH' => getenv('PATH') ?: '/usr/bin:/bin'],
+    ['INTERRUPTORES_VAR' => $var, 'INTERRUPTORES_CADUCIDAD' => '6', 'PATH' => getenv('PATH') ?: '/usr/bin:/bin'],
 );
 $base = "http://127.0.0.1:{$puerto}/index.php";
 $listo = false;
@@ -194,7 +195,46 @@ if ($listo) {
     $p = pedir($base, 'GET', $ana);
     comprobar('cerrar sesión con token devuelve al formulario', str_contains($p['cuerpo'], 'name="usuario"') && !str_contains($p['cuerpo'], 'Últimos cambios'));
 
-    // 10. Sin usuarios, el panel no entra.
+    // 9b. Un cambio de rol surte efecto en la siguiente acción, sin volver a entrar.
+    $r = pedir($base, 'POST', [], ['accion' => 'entrar', 'usuario' => 'mario', 'clave' => 'clave-de-mario-321']);
+    $mario = $r['cookies'];
+    $p = pedir($base, 'GET', $mario);
+    $tokenMario = csrf($p['cuerpo']);
+    comprobar('mario entra como editor', str_contains($p['cuerpo'], 'mario · editor'));
+    $usr->cambiarRol('mario', 'lector');
+    pedir($base, 'POST', $mario, ['accion' => 'cambiar', 'csrf' => $tokenMario, 'ref' => 'gen.mascotas:perritos', 'valor' => '0']);
+    $p = pedir($base, 'GET', $mario);
+    comprobar('bajar el rol surte efecto en la siguiente acción',
+        str_contains($p['cuerpo'], 'mario · lector') && aviso($p['cuerpo']) === 'Tu rol (lector) no permite cambiar nada.');
+
+    // 9c. Un usuario borrado queda fuera en su siguiente petición.
+    $usr->borrar('mario');
+    $p = pedir($base, 'GET', $mario);
+    $p = pedir($base, 'GET', $p['cookies'] !== [] ? $p['cookies'] : $mario);
+    comprobar('un usuario borrado queda fuera y se le avisa',
+        aviso($p['cuerpo']) === 'Tu usuario ya no existe.' && str_contains($p['cuerpo'], 'name="usuario"'));
+
+    // 10. Inactividad: pasado el tiempo, la sesión caduca. (INTERRUPTORES_CADUCIDAD=6 en el servidor.)
+    $r = pedir($base, 'POST', [], ['accion' => 'entrar', 'usuario' => 'ana', 'clave' => 'clave-de-ana-123']);
+    $ana2 = $r['cookies'];
+    $p = pedir($base, 'GET', $ana2);
+    comprobar('ana vuelve a entrar para probar la caducidad', str_contains($p['cuerpo'], 'ana · editor'));
+    sleep(8);
+    $p = pedir($base, 'GET', $ana2);
+    $p = pedir($base, 'GET', $p['cookies'] !== [] ? $p['cookies'] : $ana2);
+    comprobar('pasada la inactividad la sesión caduca y se avisa',
+        aviso($p['cuerpo']) === 'Sesión caducada por inactividad. Entra de nuevo.');
+
+    // 10b. El registro de accesos: IP enmascarada, cada evento, y ninguna clave.
+    $log = (string) @file_get_contents($var . '/accesos.jsonl');
+    comprobar('el registro guarda la IP enmascarada y no la completa',
+        str_contains($log, '"origen":"127.0.0.0"') && !str_contains($log, '127.0.0.1'));
+    foreach (['entrar', 'entrar_fallido', 'bloqueado', 'salir', 'caducada', 'usuario_borrado'] as $evento) {
+        comprobar("el registro recoge «{$evento}»", str_contains($log, "\"evento\":\"{$evento}\""));
+    }
+    comprobar('el registro nunca guarda claves', !str_contains($log, 'clave-de-') && !str_contains($log, 'mala-clave-larga'));
+
+    // 11. Sin usuarios, el panel no entra.
     rename($var . '/usuarios.json', $var . '/usuarios.json.aparte');
     $p = pedir($base);
     comprobar('sin usuarios, el panel responde 503 con la instrucción', $p['estado'] === 503 && str_contains($p['cuerpo'], 'bin/usuarios.php'));

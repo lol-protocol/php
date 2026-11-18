@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LolProtocol\Interruptores;
 
 require_once __DIR__ . '/Excepciones.php';
+require_once __DIR__ . '/RegistroJsonl.php';
 
 /**
  * Interruptores de funciones y de sus opciones.
@@ -28,6 +29,9 @@ require_once __DIR__ . '/Excepciones.php';
  */
 final class Interruptores
 {
+    /** Qué hace el sitio con una función apagada. */
+    public const POLITICAS_AL_APAGAR = ['ocultar', 'no_disponible'];
+
     /** @var array<string, array<string, mixed>> id de función => definición */
     private array $funciones = [];
 
@@ -166,18 +170,23 @@ final class Interruptores
      */
     public function historial(int $max = 50): array
     {
-        if (!is_file($this->rutaCambios())) {
-            return [];
-        }
-        $lineas = file($this->rutaCambios(), FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
         $salida = [];
-        for ($k = count($lineas) - 1; $k >= 0 && count($salida) < $max; $k--) {
-            $e = json_decode($lineas[$k], true);
-            if (is_array($e) && isset($e['ts'], $e['quien'], $e['ref'], $e['antes'], $e['despues'])) {
+        foreach ($this->registroCambios()->ultimas($max) as $e) {
+            if (isset($e['ts'], $e['quien'], $e['ref'], $e['antes'], $e['despues'])) {
                 $salida[] = $e;
             }
         }
         return $salida;
+    }
+
+    /**
+     * Qué hace el sitio con esta ref cuando está apagada: 'ocultar' o 'no_disponible'.
+     * Una opción usa la política de su función.
+     */
+    public function alApagar(string $ref): string
+    {
+        [$id] = $this->partir($ref);
+        return $this->funciones[$id]['al_apagar'];
     }
 
     /** @throws DependenciaRota si el cambio dejaría algo roto (con el estado bloqueado). */
@@ -240,25 +249,22 @@ final class Interruptores
         fclose($fh);
     }
 
-    private function rutaCambios(): string
-    {
-        return dirname($this->rutaEstado) . '/cambios.jsonl';
-    }
-
-    /** Añade una línea al registro de cambios (con el estado ya bloqueado). */
+    /** Añade un cambio al registro (el estado ya está bloqueado por cambiar()). */
     private function anotar(string $ref, bool $antes, bool $despues, string $quien): void
     {
         $quien = substr((string) preg_replace('/[[:cntrl:]]/', '', $quien), 0, 64);
-        $linea = json_encode([
+        $this->registroCambios()->anotar([
             'ts' => gmdate('Y-m-d\TH:i:s\Z'),
             'quien' => $quien,
             'ref' => $ref,
             'antes' => $antes,
             'despues' => $despues,
-        ], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR) . "\n";
-        if (file_put_contents($this->rutaCambios(), $linea, FILE_APPEND | LOCK_EX) === false) {
-            throw new \RuntimeException('No se pudo anotar el cambio en el registro.');
-        }
+        ]);
+    }
+
+    private function registroCambios(): RegistroJsonl
+    {
+        return new RegistroJsonl(dirname($this->rutaEstado) . '/cambios.jsonl');
     }
 
     /** Interruptor propio de una ref (lo que dice el estado o el catálogo). */
@@ -396,6 +402,10 @@ final class Interruptores
             $f['min_opciones'] = (int) ($f['min_opciones'] ?? 0);
             if ($f['min_opciones'] > count($f['opciones'])) {
                 throw new \RuntimeException("«{$id}» pide {$f['min_opciones']} opciones pero tiene " . count($f['opciones']) . '.');
+            }
+            $f['al_apagar'] = (string) ($f['al_apagar'] ?? 'ocultar');
+            if (!in_array($f['al_apagar'], self::POLITICAS_AL_APAGAR, true)) {
+                throw new \RuntimeException("«{$id}» tiene una política al apagar desconocida: «{$f['al_apagar']}».");
             }
             $f['origen'] = (string) ($f['origen'] ?? 'repo');
             $f['carpetas'] = array_values($f['carpetas'] ?? []);
