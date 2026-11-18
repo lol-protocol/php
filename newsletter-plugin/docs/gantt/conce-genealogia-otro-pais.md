@@ -25,4 +25,5 @@ gantt
 
 ## Notas
 - El cambio de zona horaria recalcula las ventanas en la nueva zona. Ver docs/01-politicas.md, sección 7.
-- Los intervalos de perfil son supuestos a calibrar.
+- Los intervalos de perfil son valores iniciales a calibrar.
+- Ilustrativo: no es el calendario de implementación; ver docs/gantt/conce-implementacion.md.

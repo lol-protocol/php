@@ -27,7 +27,7 @@ El umbral N es política de plataforma. No se configura por usuario.
 
 ### 2.1 Conce (frecuencia)
 
-**[SUPUESTO]** Umbrales a calibrar con datos reales.
+**[SUPUESTO]** Valores iniciales: se implementan así (decidido el 18-nov-2026) y se calibran con datos de uso.
 
 | Perfil | Regla (último login) | Intervalo |
 |---|---|---|
@@ -39,9 +39,9 @@ Señales de contenido que **no** cambian la frecuencia: cantidad de apellidos di
 
 ### 2.2 POS (contenido)
 
-**[SUPUESTO]** El perfil no cambia la fecha de envío. Solo segmenta el contenido.
+El perfil no cambia la fecha de envío: solo segmenta el contenido (decidido el 18-nov-2026).
 
-- **Coleccionista:** tiene colección propia con al menos N títulos guardados (N a definir). Recibe bloque de estadísticas de su colección.
+- **Coleccionista:** tiene colección propia con al menos M títulos guardados (M a definir). Recibe bloque de estadísticas de su colección.
 - **Explorador:** sin colección propia, con etiquetados o lecturas. Recibe recomendaciones de autores similares.
 
 ---
@@ -59,7 +59,7 @@ Señales de contenido que **no** cambian la frecuencia: cantidad de apellidos di
 
 ## 4. Suscripción
 
-- Alta por opt-in explícito. **[SUPUESTO]** Doble confirmación por correo.
+- Alta por opt-in explícito con doble confirmación por correo (decidido el 18-nov-2026).
 - Baja en un clic desde cualquier correo, con efecto inmediato. Se eliminan los ítems pendientes de ese usuario en esa plataforma.
 - Sin suscripción activa no hay newsletter, aunque existan novedades.
 - La desuscripción es siempre por plataforma. No hay conflicto, porque no hay integración simultánea.
@@ -69,9 +69,9 @@ Señales de contenido que **no** cambian la frecuencia: cantidad de apellidos di
 ## 5. Carril de notificaciones (solo Conce)
 
 - **Alcance:** cambios en campos sensibles de una persona del árbol.
-  **[SUPUESTO]** Lista de campos: nombre legal, fechas de nacimiento y defunción, filiación, adopción, notas biográficas y cualquier campo marcado como sensible.
+  **[SUPUESTO]** Lista de campos: nombre legal, fechas de nacimiento y defunción, filiación, adopción, notas biográficas, cualquier campo marcado como sensible, y las categorías salud, origen étnico o racial, creencias o religión, y vida sexual u orientación (ampliada el 18-nov-2026 a partir de PRIVACIDAD-Y-HONRA.md). Falta validarla.
 - **Clasificación:** el submódulo de difamación entrega datos (registros marcados, disputas). El plugin decide si notifica.
-- **Destinatarios:** **[PROPUESTA]** titular del árbol siempre, y persona afectada si tiene cuenta.
+- **Destinatarios:** titular del árbol siempre, y persona afectada si tiene cuenta (decidido el 18-nov-2026).
 - **Fail-closed:** si el submódulo no responde o entrega datos incompletos, el evento se trata como sensible.
 - **Tiempo real:** no pasa por cola, ventana, umbral ni agrupación.
 - **Contenido neutral:** el aviso indica que hubo un cambio y enlaza a la ficha. No reproduce el valor del dato.
@@ -90,7 +90,7 @@ Señales de contenido que **no** cambian la frecuencia: cantidad de apellidos di
 
 - Las ventanas se calculan en la zona horaria del perfil del usuario.
 - El cron corre cada hora en UTC y evalúa qué ventanas vencieron.
-- POS: envío el día 15 a las 09:00, hora de Santiago. **[SUPUESTO]**
+- POS: envío el día 15 a las 09:00, hora de Santiago. **[SUPUESTO]** No hay fecha firme para el primer envío (decidido el 18-nov-2026).
 
 ---
 

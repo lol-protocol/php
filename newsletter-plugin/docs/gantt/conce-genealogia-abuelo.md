@@ -27,4 +27,5 @@ gantt
 
 ## Notas
 - El aviso de cambio sensible va por el carril de notificaciones, en tiempo real, al titular del árbol.
-- Que el abuelo avise a hijos y nietos no está en el alcance del plugin. Ver docs/00-inconsistencias.md, fila 5.
+- Que el abuelo avise a hijos y nietos está diferido: se decide al implementar. Ver docs/00-inconsistencias.md, fila 5.
+- Ilustrativo: no es el calendario de implementación; ver docs/gantt/conce-implementacion.md.

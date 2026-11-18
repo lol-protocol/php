@@ -8,7 +8,7 @@ gantt
   dateFormat YYYY-MM-DD
   axisFormat %b %y
   section Diseño
-  Diseño y políticas               :done, g3a, 2026-12-01, 30d
+  Diseño y políticas               :g3a, 2026-12-01, 30d
   section Core
   Suscripción y perfiles           :g3b, 2027-01-04, 30d
   Cola y agrupación                :g3c, 2027-02-01, 21d
@@ -27,4 +27,5 @@ gantt
 
 ## Notas
 - El hito del contrato del carril de notificaciones es bloqueante para el adaptador. Sin él no se puede avanzar en esa parte.
-- Las pruebas con datos reales dependen de validar los umbrales de perfil.
+- Las pruebas con datos reales usan los umbrales de perfil con valores iniciales; su calibración va en «Ajustes de umbral y perfiles».
+- Los escenarios de docs/gantt/ son ilustrativos y no comprometen estas fechas.

@@ -22,5 +22,6 @@ gantt
 ```
 
 ## Notas
-- El perfil coleccionista aparece cuando la colección supera el umbral N (a definir). El hito de 40 títulos es un supuesto.
+- El perfil coleccionista aparece cuando la colección supera el umbral M (a definir). El hito de 40 títulos es un supuesto.
 - El boletín llega el día 15 de cada mes con independencia del ritmo de etiquetado.
+- Ilustrativo: POS no tiene calendario de implementación; la fecha del 15-dic-2026 no está comprometida.

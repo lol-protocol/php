@@ -25,3 +25,4 @@ gantt
 ## Notas
 - En POS el perfil no cambia la frecuencia. El boletín sigue llegando el día 15 aunque el lector deje de actuar.
 - Lo que cambia es el contenido: recomendaciones de autores similares según lo que etiquetó.
+- Ilustrativo: POS no tiene calendario de implementación; la fecha del 15-dic-2026 no está comprometida.

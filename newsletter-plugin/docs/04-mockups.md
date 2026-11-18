@@ -67,7 +67,7 @@ TU FAMILIA
 
 [ Ver novedades en Conce ]
 
-Recibes este resumen cada 7 días según tu actividad.
+Recibes este resumen cada [INTERVALO] días, según tu actividad.
 Desuscribirme · Preferencias de frecuencia
 ```
 
@@ -76,3 +76,4 @@ Desuscribirme · Preferencias de frecuencia
 ## Notas
 - El correo de Conce no incluye valores de datos sensibles. Los avisos de cambio sensible viajan por el carril de notificaciones, no por esta plantilla.
 - El fragmento de POS debe verificarse contra el estado de dominio público de cada obra según la ley chilena antes de publicar. Ver docs/05-riesgos-y-pendientes.md.
+- `[INTERVALO]` es 7, 14 o 30 días según el perfil de frecuencia (docs/01, sección 2.1).

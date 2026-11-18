@@ -28,11 +28,12 @@ Están marcados en docs/. No implementarlos como definitivos sin validación.
 
 ## Pendientes [PENDIENTE]
 No implementar hasta resolverse:
-- Destinatarios del carril de notificaciones (titular, persona afectada o ambos).
-- Contrato del carril de notificaciones (nombres de funciones y firmas).
-- Ubicación del cron (VPS del host o del plugin).
-- Alcance del caso "abuelo avisa a familiares".
-- Validación de umbrales de perfil y lista de campos sensibles.
+- Contrato del carril de notificaciones (propuesta en docs/02; la valida Conce).
+- Cómo llega al plugin la clasificación de un cambio sensible (docs/05, pendiente 3).
+- Alcance del caso "abuelo avisa a familiares" (se decide al implementar el carril).
+- Validación de la lista de campos sensibles (docs/05, pendiente 4).
+
+Decididos el 18-nov-2026 (ver docs/05): destinatarios, cron en el VPS del host, stack PHP, doble confirmación y umbrales con valores iniciales.
 
 ## Stack
-Por definir.
+PHP, igual que el resto del repo (decidido el 18-nov-2026).

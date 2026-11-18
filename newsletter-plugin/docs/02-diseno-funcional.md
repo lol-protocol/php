@@ -31,6 +31,18 @@ NotificationAdapter.emit(evento_sensible) -> ack | error
 DefamationReader.consultar(ref_registro) -> datos | error   (solo lectura)
 ```
 
+**Nota (18-nov-2026):** el submódulo es `defamatory-content-review/`. Su API pública revisa nombres y texto libre (`DefamatoryContentReviewer::validateName`, `ChatLineReviewer::review`). No consulta registros, así que `consultar(ref_registro)` no existe tal cual. Cómo llega la clasificación al plugin queda pendiente en docs/05.
+
+**Propuesta de contrato del carril de notificaciones** [PROPUESTA, la valida Conce]:
+
+```
+NotificationAdapter.emit(evento: EventoSensible) -> ack | error
+NotificationAdapter.estado(evento_id) -> pendiente | entregado | error
+EventoSensible = { id, arbol_id, ref_registro, tipo_cambio, titular_id, afectada_id | null, detectado_at }
+```
+
+`id` es la clave de idempotencia: un reintento del cron no duplica el aviso. El evento no lleva valores del dato (docs/01, sección 5).
+
 ---
 
 ## 3. Modelo de datos
