@@ -2,9 +2,10 @@
 
 > Generado desde [`catalogo.json`](catalogo.json) con `php interruptores/bin/generar.php`. **No lo edites a mano**: cambia el catálogo y vuelve a generar.
 
-Cada fila es un interruptor del panel. «Por defecto» dice si arranca encendida; «Depende de» son las funciones que tienen que estar encendidas para que esta funcione.
+- **52 funciones** (32 de genealogía y 20 de POS).
+- **203 opciones** (sub-interruptores), y **255 interruptores** en total.
 
-Total: **51 funciones** en 3 plataformas.
+Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: una opción está encendida solo si su función también lo está. «Mínimo de opciones» dice cuántas tienen que quedar encendidas mientras la función esté encendida.
 
 ## Tipos
 
@@ -15,85 +16,704 @@ Total: **51 funciones** en 3 plataformas.
 | `datos` | Datos o base de referencia |
 | `visual` | Recursos visuales (iconos, siluetas, portadas) |
 | `contenido` | Textos y contenido |
-| `por-confirmar` | No está claro si es del producto o interno |
 
-## A) Genealogía (sitio de genealogía y herramientas de su operación)
+## Orígenes
 
-| Id | Función | Carpeta | Tipo | Por defecto | Depende de | Qué hace |
+| Origen | Significado |
+|---|---|
+| `repo` | El código está en una carpeta de este repositorio (se comprueba que exista) |
+| `fuera_del_repo` | La función vive en la aplicación principal, que no está en este repositorio |
+| `pr_abierto` | Su carpeta todavía está en un PR abierto, no en master |
+
+## A) Genealogía
+
+| Id | Función | Opciones | Tipo | Origen | Por defecto | Depende de |
 |---|---|---|---|---|---|---|
-| `gen.urls` | Enrutamiento de URLs | `url-routing` | producto | encendida | — | El dominio (Host) decide el sitio; la forma del primer segmento de la URL decide el tipo de recurso (cantidad de dígitos, letras). Español e inglés. |
-| `gen.retiros` | Pedidos de retiro de información | `url-routing` | producto | encendida | `gen.filtro-textos` | Recibe y gestiona los pedidos de retiro; cada texto pasa por el filtro de textos libres. |
-| `gen.filtro-nombres` | Filtro de nombres y apellidos | `defamatory-content-review` | producto | encendida | — | Detecta insultos, ridiculización y fusión fonética entre nombre y apellido («Elba Gina» → «el vagina»). Protege apellidos legítimos. 11 tipos de riesgo, 33 idiomas. |
-| `gen.filtro-chat` | Filtro de mensajes de chat | `defamatory-content-review` | producto | encendida | — | Revisa línea a línea los mensajes de chat (ChatLineReviewer). En el navegador, un tope de letras repetidas antes de enviar. |
-| `gen.filtro-textos` | Filtro de textos libres | `defamatory-content-review` | producto | encendida | — | Marca acusaciones contra personas, datos sensibles de terceros (salud, religión, deudas…) y datos personales (RUT, teléfono, correo, dirección) para revisión humana. |
-| `gen.directorio` | Lector de directorios telefónicos históricos | `phone-directory` | interno | encendida | — | Convierte directorios telefónicos históricos (6 idiomas) en registros, con búsqueda fonética de apellidos, base de datos y línea de comandos. Aplica reglas de privacidad a personas que podrían estar vivas. |
-| `gen.lector-perfiles` | Lectores de perfiles guardados y cruce de fallecidos | `Parsing-fb-in-mas` | interno | encendida | — | Lee páginas de perfil ya guardadas (redes sociales, WikiTree, Find a Grave, schema.org), volcados de Wikidata y respuestas de la API de WikiTree; propone cruces solo entre fallecidos. De una persona viva guarda solo nombre, titular, lugar y descripción. Todo queda para revisión humana. |
-| `gen.siluetas` | Siluetas de ancestros y árbol de ascendencia | `siluetas-ancestrales` | visual | encendida | — | Siluetas por edad, sexo, complexión y época, con catálogo de atuendos y colores por región, y un árbol de hasta cuatro generaciones. Es una aproximación histórica para ilustrar, no un estudio de indumentaria. |
-| `gen.iconos` | Iconos del árbol genealógico | `iconos-genealogia` | visual | encendida | — | 207 iconos SVG 2.5D sin texto, en 3 variantes. |
-| `gen.mortalidad` | Mortalidad histórica | `mortalidad-historica` | datos | encendida | — | Esperanza de vida por país y década (1800–2009), epidemias, glosario de causas de defunción en 20 idiomas y consultas en Python, PHP y JavaScript. Salvo la esperanza de vida, es borrador sin verificar. |
-| `gen.marketing` | Textos de marketing | `marketing` | contenido | encendida | — | Lemas, eslóganes, textos para redes sociales y correo, con dos scripts PHP sueltos para renderizar. |
-| `gen.bak-acceso` | Backoffice: inicio de sesión | `sistema-nuevo` | interno | encendida | — | Requiere iniciar sesión para entrar al panel de actividad de usuarios. |
-| `gen.bak-flujo` | Backoffice: flujo cronológico de un usuario | `sistema-nuevo` | interno | encendida | `gen.bak-acceso` | Cada acción de un usuario en orden, con su duración, su monto pagado, la ruta o archivo del backend que la atendió, y la IP de la sesión (país, hora local y proveedor). |
-| `gen.bak-comparacion` | Backoffice: comparación con el universo | `sistema-nuevo` | interno | encendida | `gen.bak-acceso` | Compara cada acción con el promedio de un universo filtrable (grupos de países, edad, género, tipo de acción) y muestra percentiles. |
-| `gen.bak-kpis` | Backoffice: KPIs y gráfico de evolución | `sistema-nuevo` | interno | encendida | `gen.bak-acceso` | Dashboard de indicadores y gráfico de evolución temporal de la actividad. |
-| `gen.bak-alertas` | Backoffice: alertas proactivas | `sistema-nuevo` | interno | encendida | `gen.bak-acceso` | Avisa, por ejemplo, de IPs que no coinciden con el país declarado, y permite configurar las alertas. |
-| `gen.bak-notas` | Backoffice: notas por acción | `sistema-nuevo` | interno | encendida | `gen.bak-acceso`, `gen.filtro-textos` | Notas sobre cada acción, con su filtro y su registro. Pasan por el filtro de textos libres. |
-| `gen.bak-filtros` | Backoffice: filtros guardados y paginación | `sistema-nuevo` | interno | encendida | `gen.bak-acceso` | Paginación, filtro por tipo de acción y filtros guardados para reutilizar. |
-| `gen.bak-idioma` | Backoffice: idioma de la interfaz | `sistema-nuevo` | interno | encendida | `gen.bak-acceso` | Interfaz en español e inglés. Los nombres de usuario se leen bien en latino, japonés, árabe, hebreo, chino, coreano y cirílico. |
+| `gen.vistas` | Modos de visualización del árbol | 14 (mín. 1) | producto | `fuera_del_repo` | encendida | — |
+| `gen.pagos` | Medios de pago | 3 (mín. 1) | producto | `fuera_del_repo` | encendida | — |
+| `gen.mascotas` | Perritos y gatitos | 2 | contenido | `fuera_del_repo` | encendida | — |
+| `gen.exportar` | Exportar el árbol | 3 | producto | `fuera_del_repo` | encendida | — |
+| `gen.idiomas` | Idioma de la interfaz | 2 (mín. 1) | producto | `repo` | encendida | — |
+| `gen.estado-civil` | Estados de una persona | 8 | producto | `fuera_del_repo` | encendida | — |
+| `gen.vinculos` | Tipos de vínculo | 12 | producto | `fuera_del_repo` | encendida | — |
+| `gen.ficha` | Secciones de la ficha | 12 | producto | `fuera_del_repo` | encendida | — |
+| `gen.verificacion` | Indicador de verificación | — | producto | `fuera_del_repo` | encendida | — |
+| `gen.privacidad` | Protección de personas que podrían estar vivas | — | producto | `repo` | encendida | — |
+| `gen.estilo-iconos` | Estilo de iconos | 3 (mín. 1) | visual | `repo` | encendida | — |
+| `gen.acc-agregar` | Agregar familiares | 4 | producto | `fuera_del_repo` | encendida | — |
+| `gen.acc-editar` | Editar y deshacer | 6 | producto | `fuera_del_repo` | encendida | — |
+| `gen.acc-conectar` | Conectar personas | 5 | producto | `fuera_del_repo` | encendida | — |
+| `gen.acc-fusion` | Fusionar, dividir y copiar fichas | 3 | producto | `fuera_del_repo` | encendida | — |
+| `gen.acc-plegar` | Plegar y acercar el árbol | 4 | producto | `fuera_del_repo` | encendida | — |
+| `gen.acc-compartir` | Compartir | 3 | producto | `fuera_del_repo` | encendida | — |
+| `gen.acc-buscar` | Buscar y filtrar | 2 | producto | `fuera_del_repo` | encendida | — |
+| `gen.acc-archivos` | Importar, subir e imprimir | 4 | producto | `fuera_del_repo` | encendida | — |
+| `gen.fuentes-externas` | Importar desde fuentes externas | 16 | interno | `repo` | encendida | — |
+| `gen.directorios` | Importar directorios telefónicos históricos | — | interno | `repo` | encendida | — |
+| `gen.siluetas` | Siluetas de ancestros | 3 | visual | `repo` | encendida | — |
+| `gen.mortalidad` | Datos de mortalidad histórica | 5 | datos | `repo` | encendida | — |
+| `gen.paises` | Mapa y tabla de países | 3 | datos | `repo` | encendida | — |
+| `gen.marketing` | Textos de marketing | 4 | contenido | `repo` | encendida | — |
+| `gen.legal` | Consulta de leyes | 2 | datos | `repo` | encendida | — |
+| `gen.filtro` | Filtro de contenido | 3 | producto | `repo` | encendida | — |
+| `gen.retiros` | Pedidos de retiro de información | — | producto | `repo` | encendida | `gen.filtro:textos` |
+| `gen.backoffice` | Backoffice de actividad | 5 | interno | `repo` | encendida | — |
+| `gen.bak-notas` | Backoffice: notas por acción | — | interno | `repo` | encendida | `gen.backoffice`, `gen.filtro:textos` |
+| `gen.cobros` | Cobros y cartera | 6 | interno | `repo` | encendida | — |
+| `gen.funnel` | Funnel y cohortes | 3 | interno | `repo` | encendida | — |
 
-## B) Librería y etiquetado POS (Contrastocolor, Plataforma POS y Marcalibros)
+### `gen.vistas` · Modos de visualización del árbol
 
-| Id | Función | Carpeta | Tipo | Por defecto | Depende de | Qué hace |
+Cómo se dibuja el árbol. Cada modo es una opción; sus iconos están en iconos-genealogia/ (prefijo view_).
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.vistas:circular` | Circular | encendida |
+| `gen.vistas:abanico` | Abanico | encendida |
+| `gen.vistas:arbol` | Árbol | encendida |
+| `gen.vistas:pedigri` | Pedigrí | encendida |
+| `gen.vistas:ancestros` | Ancestros | encendida |
+| `gen.vistas:descendientes` | Descendientes | encendida |
+| `gen.vistas:familia` | Grupo familiar | encendida |
+| `gen.vistas:generaciones` | Generaciones | encendida |
+| `gen.vistas:reloj-de-arena` | Reloj de arena | encendida |
+| `gen.vistas:linea-de-tiempo` | Línea de tiempo | encendida |
+| `gen.vistas:lista` | Lista | encendida |
+| `gen.vistas:tarjetas` | Tarjetas | encendida |
+| `gen.vistas:red` | Red | encendida |
+| `gen.vistas:dispersion` | Dispersión | encendida |
+
+### `gen.pagos` · Medios de pago
+
+Qué formas de pago ofrece el sitio. La lista sale de los métodos que registra el panel de cobros (transferencia, tarjeta, efectivo); si hay más, se agregan aquí.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.pagos:transferencia` | Transferencia | encendida |
+| `gen.pagos:tarjeta` | Tarjeta | encendida |
+| `gen.pagos:efectivo` | Efectivo | encendida |
+
+### `gen.mascotas` · Perritos y gatitos
+
+Dos interruptores independientes: perritos y gatitos. Lo que muestran y dónde, por confirmar.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.mascotas:perritos` | Perritos | encendida |
+| `gen.mascotas:gatitos` | Gatitos | encendida |
+
+### `gen.exportar` · Exportar el árbol
+
+Formatos en los que se puede descargar un árbol o una ficha (iconos ui_export_*).
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.exportar:csv` | CSV | encendida |
+| `gen.exportar:gedcom` | GEDCOM | encendida |
+| `gen.exportar:pdf` | PDF | encendida |
+
+### `gen.idiomas` · Idioma de la interfaz
+
+Idiomas en que se sirve el sitio. El enrutador los separa por dominio (spa/eng).
+
+Carpetas: `url-routing/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.idiomas:es` | Español | encendida |
+| `gen.idiomas:en` | Inglés | encendida |
+
+### `gen.estado-civil` · Estados de una persona
+
+Estados que se pueden marcar en una persona (iconos state_*).
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.estado-civil:vivo` | Vivo | encendida |
+| `gen.estado-civil:fallecido` | Fallecido | encendida |
+| `gen.estado-civil:casado` | Casado | encendida |
+| `gen.estado-civil:divorciado` | Divorciado | encendida |
+| `gen.estado-civil:viudo` | Viudo | encendida |
+| `gen.estado-civil:separado` | Separado | encendida |
+| `gen.estado-civil:soltero` | Soltero | encendida |
+| `gen.estado-civil:comprometido` | Comprometido | encendida |
+
+### `gen.vinculos` · Tipos de vínculo
+
+Tipos de relación que se pueden registrar entre dos personas (iconos relationship_*).
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.vinculos:sangre` | Sangre | encendida |
+| `gen.vinculos:medio` | Medio parentesco | encendida |
+| `gen.vinculos:politico` | Parentesco político | encendida |
+| `gen.vinculos:adopcion` | Adopción | encendida |
+| `gen.vinculos:acogida` | Acogida | encendida |
+| `gen.vinculos:familia-nuclear` | Familia nuclear | encendida |
+| `gen.vinculos:familia-extensa` | Familia extensa | encendida |
+| `gen.vinculos:monoparental` | Familia monoparental | encendida |
+| `gen.vinculos:reconstituida` | Familia reconstituida | encendida |
+| `gen.vinculos:herencia` | Herencia | encendida |
+| `gen.vinculos:linaje` | Linaje | encendida |
+| `gen.vinculos:generacional` | Generacional | encendida |
+
+### `gen.ficha` · Secciones de la ficha
+
+Qué bloques aparecen en la ficha de una persona o de un registro.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.ficha:calendario` | Calendario | encendida |
+| `gen.ficha:eventos` | Eventos | encendida |
+| `gen.ficha:lugares` | Lugares | encendida |
+| `gen.ficha:fuentes` | Fuentes | encendida |
+| `gen.ficha:notas` | Notas | encendida |
+| `gen.ficha:fotos` | Fotos | encendida |
+| `gen.ficha:adn` | ADN | encendida |
+| `gen.ficha:colecciones` | Colecciones | encendida |
+| `gen.ficha:miembros` | Miembros | encendida |
+| `gen.ficha:organizaciones` | Organizaciones | encendida |
+| `gen.ficha:aportes` | Aportes | encendida |
+| `gen.ficha:enlaces` | Enlaces | encendida |
+
+### `gen.verificacion` · Indicador de verificación
+
+Marca cada dato como verificado o sin verificar (iconos ui_verified y ui_unverified).
+
+### `gen.privacidad` · Protección de personas que podrían estar vivas
+
+Oculta o no guarda datos de quien podría estar vivo. Las reglas están en los lectores de directorios y de perfiles.
+
+Carpetas: `phone-directory/`, `Parsing-fb-in-mas/`.
+
+### `gen.estilo-iconos` · Estilo de iconos
+
+Qué variante del set de iconos se muestra.
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.estilo-iconos:color` | Color | encendida |
+| `gen.estilo-iconos:lineas` | Líneas | encendida |
+| `gen.estilo-iconos:gris` | Gris | encendida |
+
+### `gen.acc-agregar` · Agregar familiares
+
+Botones para añadir un familiar desde una persona (iconos action_add_*).
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.acc-agregar:padre-madre` | Padre o madre | encendida |
+| `gen.acc-agregar:hijo` | Hijo o hija | encendida |
+| `gen.acc-agregar:hermano` | Hermano o hermana | encendida |
+| `gen.acc-agregar:conyuge` | Cónyuge | encendida |
+
+### `gen.acc-editar` · Editar y deshacer
+
+Acciones sobre el contenido de una ficha.
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.acc-editar:editar` | Editar | encendida |
+| `gen.acc-editar:duplicar` | Duplicar | encendida |
+| `gen.acc-editar:eliminar` | Eliminar | encendida |
+| `gen.acc-editar:guardar` | Guardar | encendida |
+| `gen.acc-editar:deshacer` | Deshacer | encendida |
+| `gen.acc-editar:rehacer` | Rehacer | encendida |
+
+### `gen.acc-conectar` · Conectar personas
+
+Enlazar o desenlazar dos personas, y sincronizar datos entre árboles.
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.acc-conectar:conectar` | Conectar | encendida |
+| `gen.acc-conectar:desconectar` | Desconectar | encendida |
+| `gen.acc-conectar:enlazar` | Enlazar | encendida |
+| `gen.acc-conectar:desenlazar` | Desenlazar | encendida |
+| `gen.acc-conectar:sincronizar` | Sincronizar | encendida |
+
+### `gen.acc-fusion` · Fusionar, dividir y copiar fichas
+
+Juntar dos fichas que son la misma persona, separar una, o copiarla.
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.acc-fusion:fusionar` | Fusionar | encendida |
+| `gen.acc-fusion:dividir` | Dividir | encendida |
+| `gen.acc-fusion:copiar` | Copiar | encendida |
+
+### `gen.acc-plegar` · Plegar y acercar el árbol
+
+Abrir o cerrar ramas, y acercar o alejar la vista.
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.acc-plegar:plegar` | Plegar | encendida |
+| `gen.acc-plegar:expandir` | Expandir | encendida |
+| `gen.acc-plegar:acercar` | Acercar | encendida |
+| `gen.acc-plegar:alejar` | Alejar | encendida |
+
+### `gen.acc-compartir` · Compartir
+
+Compartir una ficha o un árbol, y retirar un aporte propio.
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.acc-compartir:compartir` | Compartir ficha | encendida |
+| `gen.acc-compartir:compartir-arbol` | Compartir árbol | encendida |
+| `gen.acc-compartir:retirar-aporte` | Retirar aporte | encendida |
+
+### `gen.acc-buscar` · Buscar y filtrar
+
+Buscar personas y filtrar la lista.
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.acc-buscar:buscar` | Buscar | encendida |
+| `gen.acc-buscar:filtrar` | Filtrar | encendida |
+
+### `gen.acc-archivos` · Importar, subir e imprimir
+
+Traer datos desde un archivo, subir archivos, descargarlos o imprimir.
+
+Carpetas: `iconos-genealogia/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.acc-archivos:importar` | Importar | encendida |
+| `gen.acc-archivos:subir` | Subir | encendida |
+| `gen.acc-archivos:descargar` | Descargar | encendida |
+| `gen.acc-archivos:imprimir` | Imprimir | encendida |
+
+### `gen.fuentes-externas` · Importar desde fuentes externas
+
+Qué fuentes externas se leen para proponer datos. Cada una pasa por revisión humana antes de guardarse.
+
+Carpetas: `Parsing-fb-in-mas/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.fuentes-externas:facebook` | Facebook | encendida |
+| `gen.fuentes-externas:linkedin` | LinkedIn | encendida |
+| `gen.fuentes-externas:twitter-x` | Twitter / X | encendida |
+| `gen.fuentes-externas:instagram` | Instagram | encendida |
+| `gen.fuentes-externas:tiktok` | TikTok | encendida |
+| `gen.fuentes-externas:youtube` | YouTube | encendida |
+| `gen.fuentes-externas:github` | GitHub | encendida |
+| `gen.fuentes-externas:pinterest` | Pinterest | encendida |
+| `gen.fuentes-externas:bluesky` | Bluesky | encendida |
+| `gen.fuentes-externas:threads` | Threads | encendida |
+| `gen.fuentes-externas:mastodon` | Mastodon | encendida |
+| `gen.fuentes-externas:wikitree` | WikiTree | encendida |
+| `gen.fuentes-externas:find-a-grave` | Find a Grave | encendida |
+| `gen.fuentes-externas:billiongraves` | BillionGraves | encendida |
+| `gen.fuentes-externas:schema-org` | schema.org | encendida |
+| `gen.fuentes-externas:wikidata` | Wikidata | encendida |
+
+### `gen.directorios` · Importar directorios telefónicos históricos
+
+Convierte directorios telefónicos históricos (6 idiomas) en registros, con búsqueda fonética.
+
+Carpetas: `phone-directory/`.
+
+### `gen.siluetas` · Siluetas de ancestros
+
+Partes de la silueta que se muestran: atuendo, colores y árbol de ascendencia de hasta cuatro generaciones.
+
+Carpetas: `siluetas-ancestrales/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.siluetas:atuendo` | Atuendo | encendida |
+| `gen.siluetas:colores` | Colores | encendida |
+| `gen.siluetas:arbol` | Árbol de ascendencia | encendida |
+
+### `gen.mortalidad` · Datos de mortalidad histórica
+
+Qué datos de contexto se muestran al leer edades y causas de muerte de un antepasado.
+
+Carpetas: `mortalidad-historica/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.mortalidad:esperanza-de-vida` | Esperanza de vida | encendida |
+| `gen.mortalidad:epidemias` | Epidemias | encendida |
+| `gen.mortalidad:causas` | Glosario de causas | encendida |
+| `gen.mortalidad:hereditarias` | Enfermedades hereditarias | encendida |
+| `gen.mortalidad:registro-civil` | Registro civil | encendida |
+
+### `gen.paises` · Mapa y tabla de países
+
+Cómo se muestran los 208 países.
+
+Carpetas: `Listado-paises/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.paises:mapa` | Mapa | encendida |
+| `gen.paises:tabla` | Tabla | encendida |
+| `gen.paises:nacimientos-historicos` | Estimación de nacimientos históricos | encendida |
+
+### `gen.marketing` · Textos de marketing
+
+Qué piezas de texto se usan en el sitio y en los canales.
+
+Carpetas: `marketing/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.marketing:lemas` | Lemas | encendida |
+| `gen.marketing:esloganes` | Eslóganes | encendida |
+| `gen.marketing:redes` | Redes sociales | encendida |
+| `gen.marketing:correo` | Correo | encendida |
+
+### `gen.legal` · Consulta de leyes
+
+Bases de leyes que se pueden consultar. Informativas, no son asesoría legal.
+
+Carpetas: `privacy-laws/`, `copyright-laws/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.legal:privacidad` | Privacidad | encendida |
+| `gen.legal:derechos-de-autor` | Derechos de autor | encendida |
+
+### `gen.filtro` · Filtro de contenido
+
+Revisa insultos, ridiculización, acusaciones y datos personales en lo que escribe la gente. Cada opción es una superficie.
+
+Carpetas: `defamatory-content-review/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.filtro:nombres` | Nombres y apellidos | encendida |
+| `gen.filtro:chat` | Mensajes de chat | encendida |
+| `gen.filtro:textos` | Textos libres | encendida |
+
+### `gen.retiros` · Pedidos de retiro de información
+
+Recibe los pedidos de retiro. Cada texto pasa por el filtro de textos libres.
+
+Carpetas: `url-routing/`.
+
+### `gen.backoffice` · Backoffice de actividad
+
+Panel del equipo para revisar la actividad de un usuario. Requiere iniciar sesión.
+
+Carpetas: `sistema-nuevo/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.backoffice:flujo` | Flujo cronológico | encendida |
+| `gen.backoffice:comparacion` | Comparación con el universo | encendida |
+| `gen.backoffice:kpis` | KPIs y evolución | encendida |
+| `gen.backoffice:alertas` | Alertas proactivas | encendida |
+| `gen.backoffice:filtros` | Filtros guardados | encendida |
+
+### `gen.bak-notas` · Backoffice: notas por acción
+
+Notas sobre cada acción. Pasan por el filtro de textos libres.
+
+Carpetas: `sistema-nuevo/`.
+
+### `gen.cobros` · Cobros y cartera
+
+Panel de cobros: ingresos, cartera, cobranza, flujo, tasas y pagos.
+
+Carpetas: `cobros-ingresos-funnels/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.cobros:ingresos-cartera` | Ingresos y cartera | encendida |
+| `gen.cobros:cobranza` | Cobranza | encendida |
+| `gen.cobros:flujo-caja` | Flujo de caja esperado | encendida |
+| `gen.cobros:tasas` | Tasas de cambio | encendida |
+| `gen.cobros:pagos-mes` | Pagos por mes y método | encendida |
+| `gen.cobros:exportar` | Exportar a CSV | encendida |
+
+### `gen.funnel` · Funnel y cohortes
+
+Análisis de conversión de visitante a cliente.
+
+Carpetas: `cobros-ingresos-funnels/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.funnel:embudo` | Embudo de conversión | encendida |
+| `gen.funnel:cohortes` | Cohortes | encendida |
+| `gen.funnel:segmentacion` | Segmentación de clientes | encendida |
+
+## B) Librería y etiquetado POS
+
+| Id | Función | Opciones | Tipo | Origen | Por defecto | Depende de |
 |---|---|---|---|---|---|---|
-| `pos.urls` | Enrutamiento del sitio POS (Contrastocolor) | `url-routing` | producto | encendida | — | El mismo enrutador que el de genealogía, con su propio Host y su propia base de datos. *Nota:* Comparte código con gen.urls: apagarlo por separado exige que el enrutador lea este interruptor. |
-| `pos.mb-v-generador` | Marcalibros verticales: generador | `marcalibros_b` | visual | encendida | — | Genera 2000 marcalibros verticales 1:7 (200×1400 px), de forma determinista e incremental, y los revisa en Chromium. |
-| `pos.mb-v-linea-marca` | Marcalibros verticales: línea de marca | `marcalibros_b` | visual | encendida | — | Logos, iconos y cabeceras de la línea de marca. |
-| `pos.mb-v-lector` | Marcalibros verticales: modelo de datos del lector | `marcalibros_b` | producto | encendida | — | Modelo de datos del lector de textos que usa los marcalibros. |
-| `pos.mb-v-editor` | Marcalibros verticales: editor de usuario | `marcalibros_b` | producto | encendida | `gen.filtro-textos` | Editor donde cada persona crea su marcalibro, con subidas de imagen seguras. *Nota:* El texto que escribe la persona pasa por el filtro (CLAUDE.md de la carpeta lo exige). |
-| `pos.mb-h-propios` | Marcalibros horizontales: marcalibros propios (PHP) | `marcalibros-plataforma-pos-brand-identity` | producto | encendida | `gen.filtro-textos` | Módulo PHP para crear marcalibros horizontales 7:1 (1400×200) a partir de imágenes subidas. |
-| `pos.mb-h-app` | Marcalibros horizontales: aplicación web sin cuentas | `marcalibros-plataforma-pos-brand-identity` | producto | encendida | `pos.mb-h-propios` | Aplicación independiente para explorar los 1350 marcalibros (11 movimientos y 16 tipos de texto) y crear los propios. Sin login; no está conectada a Plataforma POS. |
-| `pos.mb-h-catalogo` | Marcalibros horizontales: catálogo y paisajes | `marcalibros-plataforma-pos-brand-identity` | visual | encendida | — | Tokens de marca, iconos SVG, vista previa JPG del catálogo y paisajes JPG. |
-| `pos.chat-libros` | Chat con un libro | `chat-con-libros` | producto | apagada | — | Chat con un libro en PHP y en Java, con sinónimos y un modo opcional con IA. Pendiente de fusionar (PR abierto). *Nota:* Vive en un PR abierto, no está en master. Por defecto apagado. |
-| `pos.colores-lista` | Léxico de colores: lista completa | `Listado-colores` | datos | encendida | — | 31.935 nombres de color con su hex, y una marca de buenos nombres con su color CSS más cercano. |
-| `pos.colores-css` | Léxico de colores: 148 colores CSS anotados | `Listado-colores` | datos | encendida | — | Tabla de los 148 colores CSS con dos significados (psicológico y místico) en 30 idiomas, y su evidencia y matices culturales. |
-| `pos.colores-categorias` | Léxico de colores: categorías gramaticales | `Listado-colores` | datos | encendida | — | Categoría gramatical (adjetivo, sustantivo, nombre propio, verbo) de las palabras de color de una sola palabra en inglés y español, con frase de ejemplo. Es la base del etiquetado. |
-| `pos.colores-exportes` | Léxico de colores: exportes para PLN | `Listado-colores` | datos | encendida | `pos.colores-lista` | JSONL, TSV y SQLite; patrones de spaCy; léxico y ejemplos en Universal Dependencies; forma normalizada para texto ruidoso; manifiesto con la versión de los datos. |
-| `pos.colores-informes` | Léxico de colores: informes de calidad | `Listado-colores` | datos | encendida | `pos.colores-lista` | Informes de ambigüedad (formas con más de un color), de nombres sospechosos, de cobertura y de auditoría de nombres completos. |
-| `pos.colores-revision` | Léxico de colores: revisión por hablantes nativos | `Listado-colores` | interno | apagada | `pos.colores-lista` | Registro de revisión por hablantes nativos, con su informe y su visor HTML. Todavía vacío. *Nota:* El PR #595 (abierto) la marca @deprecated. Por defecto apagado. |
-| `pos.citas` | Citas coloreadas por categoría gramatical | `citas-pos` | contenido | apagada | `pos.colores-categorias` | Citas de autores de dominio público con cada palabra en el color de su categoría, para el sitio y el correo, y el juego «Adivina la categoría». Todavía no hay citas publicadas. *Nota:* Sin citas publicadas: por defecto apagado. |
-| `pos.iconos-pos` | Iconos del punto de venta | `iconos-pos` | visual | encendida | — | 23 iconos SVG 2.5D: catálogo, pedidos, cuenta del cliente, carrito y pago. |
-| `pos.iconos-biblioteca` | Iconos de biblioteca virtual | `iconos-biblioteca` | visual | encendida | — | 151 iconos SVG 2.5D para biblioteca virtual, en 3 variantes. |
-| `pos.portadas` | Portadas de libro en SVG | `portadas-svg` | visual | encendida | — | Portada, contratapa, lomo y cubierta completa a partir de un JSON o de una lista CSV; fuentes libres incrustadas; medidas de corte para imprenta. |
+| `pos.mb-v-movimientos` | Marcalibros verticales: movimientos literarios | 15 (mín. 1) | visual | `repo` | encendida | — |
+| `pos.mb-v-linea-marca` | Marcalibros verticales: línea de marca | 3 | visual | `repo` | encendida | — |
+| `pos.mb-v-editor` | Editor de marcalibro propio (vertical) | — | producto | `repo` | encendida | `gen.filtro:textos` |
+| `pos.mb-v-lector` | Modelo de datos del lector | — | producto | `repo` | encendida | — |
+| `pos.mb-h-movimientos` | Marcalibros horizontales: movimientos literarios | 11 (mín. 1) | visual | `repo` | encendida | — |
+| `pos.mb-h-tipos-texto` | Marcalibros horizontales: tipos de texto | 16 | visual | `repo` | encendida | — |
+| `pos.mb-h-propios` | Marcalibros horizontales: marcalibros propios (PHP) | — | producto | `repo` | encendida | `gen.filtro:textos` |
+| `pos.mb-h-app` | Aplicación web de marcalibros (sin cuentas) | — | producto | `repo` | encendida | `pos.mb-h-propios` |
+| `pos.mb-h-paisajes` | Paisajes y vista previa del catálogo horizontal | — | visual | `repo` | encendida | — |
+| `pos.chat-libros` | Chat con un libro | 2 | producto | `pr_abierto` | apagada | — |
+| `pos.colores-lista` | Léxico de colores: lista completa | — | datos | `repo` | encendida | — |
+| `pos.colores-css` | Léxico de colores: 148 colores CSS anotados | — | datos | `repo` | encendida | — |
+| `pos.colores-categorias` | Categorías gramaticales de los colores | — | datos | `repo` | encendida | — |
+| `pos.colores-exportes` | Exportes para PLN | 5 | datos | `repo` | encendida | `pos.colores-lista` |
+| `pos.colores-informes` | Informes de calidad del léxico | 4 | datos | `repo` | encendida | `pos.colores-lista` |
+| `pos.colores-revision` | Revisión por hablantes nativos | — | interno | `repo` | apagada | `pos.colores-lista` |
+| `pos.citas` | Citas coloreadas por categoría | 3 | contenido | `repo` | apagada | `pos.colores-categorias` |
+| `pos.iconos-pos` | Iconos del punto de venta | — | visual | `repo` | encendida | — |
+| `pos.iconos-biblioteca` | Iconos de biblioteca virtual | — | visual | `repo` | encendida | — |
+| `pos.portadas` | Portadas de libro en SVG | 4 | visual | `repo` | encendida | — |
 
-## Transversal (por confirmar a cuál plataforma sirve)
+### `pos.mb-v-movimientos` · Marcalibros verticales: movimientos literarios
 
-| Id | Función | Carpeta | Tipo | Por defecto | Depende de | Qué hace |
-|---|---|---|---|---|---|---|
-| `cob.ingresos-cartera` | Cobros: ingresos y cartera | `cobros-ingresos-funnels` | interno | encendida | — | Ingresos devengados frente a cobros reales, y cartera pendiente con antigüedad de saldo (al día, 1–30, 31–60, 61+ días). |
-| `cob.cobranza` | Cobros: cobranza cliente por cliente | `cobros-ingresos-funnels` | interno | encendida | `cob.ingresos-cartera` | Quién debe, cuánto (total y vencido, en USD a la tasa de hoy), desde cuándo, con su correo y acceso directo a registrar el pago. |
-| `cob.flujo` | Cobros: flujo de caja esperado | `cobros-ingresos-funnels` | interno | encendida | `cob.ingresos-cartera` | Lo que falta cobrar, por mes de vencimiento, a 3, 6 o 12 meses. |
-| `cob.tasas` | Cobros: tasas de cambio | `cobros-ingresos-funnels` | interno | encendida | — | Tasa de hoy por moneda, cambio en 30 días e historial paginado. Las tasas las carga un comando aparte. |
-| `cob.pagos` | Cobros: pagos por mes y método | `cobros-ingresos-funnels` | interno | encendida | — | Pagos por mes y por método (transferencia, tarjeta, efectivo). |
-| `cob.funnel` | Funnel de conversión | `cobros-ingresos-funnels` | interno | encendida | — | Visitante → registrado → lead → cliente, con tasas por etapa, por canal de adquisición, país, género y rango de edad. |
-| `cob.cohortes` | Cohortes de conversión | `cobros-ingresos-funnels` | interno | encendida | `cob.funnel` | Qué porcentaje de cada cohorte (mes de primera visita) llegó a cliente en 0, 1, 2 o 3 meses. |
-| `cob.segmentacion` | Segmentación de clientes | `cobros-ingresos-funnels` | interno | encendida | — | Top de país, ciudad, idioma, género y rango de edad por facturación. |
-| `cob.exportar` | Cobros: exportar a CSV | `cobros-ingresos-funnels` | interno | encendida | — | Exporta a CSV algunas de sus pantallas (las tasas, entre ellas). |
-| `lg.paises` | Listado de países | `Listado-paises` | datos | encendida | — | 208 países con población, IDH, PIB, alfabetización, internet y emigración; índices de interés para genealogía y de viabilidad para el etiquetador POS; estimación de nacimientos históricos; vista web con mapa. |
-| `lg.leyes-privacidad` | Base de leyes de privacidad | `privacy-laws` | por-confirmar | encendida | — | Leyes de privacidad por país con buscador web, API PHP y esquema MySQL. Informativa, no es asesoría legal. |
-| `lg.leyes-derechos` | Base de leyes de derechos de autor | `copyright-laws` | por-confirmar | encendida | — | Leyes de derechos de autor por jurisdicción con buscador web, API PHP y esquema MySQL. Informativa, no es asesoría legal. |
-| `lg.formatos-papel` | Formatos de documento y papel por país | `document-formats` | datos | encendida | — | Base de formatos de papel y documento por país, con equivalencias, CSV y una demo web. |
+Movimientos del catálogo vertical 1:7 (200×1400 px). Cada uno sale con 10 o 15 autores.
+
+Carpetas: `marcalibros_b/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `pos.mb-v-movimientos:romanticismo` | Romanticismo | encendida |
+| `pos.mb-v-movimientos:gotico` | Gótico | encendida |
+| `pos.mb-v-movimientos:realismo-magico` | Realismo mágico | encendida |
+| `pos.mb-v-movimientos:realismo` | Realismo | encendida |
+| `pos.mb-v-movimientos:naturalismo` | Naturalismo | encendida |
+| `pos.mb-v-movimientos:modernismo` | Modernismo | encendida |
+| `pos.mb-v-movimientos:vanguardias` | Vanguardias | encendida |
+| `pos.mb-v-movimientos:barroco` | Barroco | encendida |
+| `pos.mb-v-movimientos:clasicismo` | Clasicismo | encendida |
+| `pos.mb-v-movimientos:simbolismo` | Simbolismo | encendida |
+| `pos.mb-v-movimientos:renacimiento` | Renacimiento | encendida |
+| `pos.mb-v-movimientos:ilustracion` | Ilustración | encendida |
+| `pos.mb-v-movimientos:expresionismo` | Expresionismo | encendida |
+| `pos.mb-v-movimientos:surrealismo` | Surrealismo | encendida |
+| `pos.mb-v-movimientos:oriente` | Literaturas de Oriente | encendida |
+
+### `pos.mb-v-linea-marca` · Marcalibros verticales: línea de marca
+
+Logos, iconos y cabeceras de la línea de marca.
+
+Carpetas: `marcalibros_b/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `pos.mb-v-linea-marca:logos` | Logos | encendida |
+| `pos.mb-v-linea-marca:iconos` | Iconos | encendida |
+| `pos.mb-v-linea-marca:cabeceras` | Cabeceras | encendida |
+
+### `pos.mb-v-editor` · Editor de marcalibro propio (vertical)
+
+Cada persona crea su marcalibro, con subidas de imagen seguras. El texto pasa por el filtro de textos libres.
+
+Carpetas: `marcalibros_b/`.
+
+### `pos.mb-v-lector` · Modelo de datos del lector
+
+Modelo de datos del lector de textos que usa los marcalibros verticales.
+
+Carpetas: `marcalibros_b/`.
+
+### `pos.mb-h-movimientos` · Marcalibros horizontales: movimientos literarios
+
+Once movimientos del catálogo horizontal 7:1 (1400×200 px).
+
+Carpetas: `marcalibros-plataforma-pos-brand-identity/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `pos.mb-h-movimientos:romanticismo` | Romanticismo | encendida |
+| `pos.mb-h-movimientos:realismo` | Realismo | encendida |
+| `pos.mb-h-movimientos:naturalismo` | Naturalismo | encendida |
+| `pos.mb-h-movimientos:modernismo-hispano` | Modernismo hispanoamericano | encendida |
+| `pos.mb-h-movimientos:modernismo-anglo` | Modernismo anglosajón | encendida |
+| `pos.mb-h-movimientos:vanguardias` | Vanguardias | encendida |
+| `pos.mb-h-movimientos:gotico` | Gótico | encendida |
+| `pos.mb-h-movimientos:barroco` | Barroco | encendida |
+| `pos.mb-h-movimientos:clasicismo` | Clasicismo | encendida |
+| `pos.mb-h-movimientos:simbolismo` | Simbolismo | encendida |
+| `pos.mb-h-movimientos:realismo-magico` | Realismo mágico | encendida |
+
+### `pos.mb-h-tipos-texto` · Marcalibros horizontales: tipos de texto
+
+Dieciséis tipos de texto del catálogo horizontal.
+
+Carpetas: `marcalibros-plataforma-pos-brand-identity/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `pos.mb-h-tipos-texto:manuales` | Manuales | encendida |
+| `pos.mb-h-tipos-texto:libros-sagrados` | Libros sagrados | encendida |
+| `pos.mb-h-tipos-texto:leyes` | Leyes | encendida |
+| `pos.mb-h-tipos-texto:cartas` | Cartas | encendida |
+| `pos.mb-h-tipos-texto:diarios` | Diarios | encendida |
+| `pos.mb-h-tipos-texto:tratados-cientificos` | Tratados científicos | encendida |
+| `pos.mb-h-tipos-texto:recetas` | Recetas | encendida |
+| `pos.mb-h-tipos-texto:filosofia` | Filosofía | encendida |
+| `pos.mb-h-tipos-texto:teatro` | Teatro | encendida |
+| `pos.mb-h-tipos-texto:viajes` | Viajes | encendida |
+| `pos.mb-h-tipos-texto:cuentos-leyendas` | Cuentos y leyendas | encendida |
+| `pos.mb-h-tipos-texto:poesia` | Poesía | encendida |
+| `pos.mb-h-tipos-texto:historia` | Historia | encendida |
+| `pos.mb-h-tipos-texto:periodismo` | Periodismo | encendida |
+| `pos.mb-h-tipos-texto:diccionarios` | Diccionarios y enciclopedias | encendida |
+| `pos.mb-h-tipos-texto:discursos` | Discursos | encendida |
+
+### `pos.mb-h-propios` · Marcalibros horizontales: marcalibros propios (PHP)
+
+Módulo PHP para crear marcalibros a partir de imágenes subidas. Revisa el texto con el filtro de textos libres.
+
+Carpetas: `marcalibros-plataforma-pos-brand-identity/`.
+
+### `pos.mb-h-app` · Aplicación web de marcalibros (sin cuentas)
+
+Explorar los 1350 marcalibros y crear los propios. Independiente, sin login, sin conexión a Plataforma POS.
+
+Carpetas: `marcalibros-plataforma-pos-brand-identity/`.
+
+### `pos.mb-h-paisajes` · Paisajes y vista previa del catálogo horizontal
+
+Paisajes JPG y la vista previa JPG del catálogo.
+
+Carpetas: `marcalibros-plataforma-pos-brand-identity/`.
+
+### `pos.chat-libros` · Chat con un libro
+
+Chat con un libro, en PHP y en Java. Sus opciones son sinónimos y un modo opcional con IA. Vive en el PR #603, sin fusionar.
+
+Carpetas: `chat-con-libros/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `pos.chat-libros:sinonimos` | Sinónimos | apagada |
+| `pos.chat-libros:ia` | Modo con IA | apagada |
+
+### `pos.colores-lista` · Léxico de colores: lista completa
+
+31.935 nombres de color con su hex y su color CSS más cercano.
+
+Carpetas: `Listado-colores/`.
+
+### `pos.colores-css` · Léxico de colores: 148 colores CSS anotados
+
+Significados psicológico y místico en 30 idiomas, con su evidencia.
+
+Carpetas: `Listado-colores/`.
+
+### `pos.colores-categorias` · Categorías gramaticales de los colores
+
+Adjetivo, sustantivo, nombre propio o verbo, para las palabras de color de una sola palabra en inglés y español. Es la base del etiquetado.
+
+Carpetas: `Listado-colores/`.
+
+### `pos.colores-exportes` · Exportes para PLN
+
+Formatos de exporte del léxico para procesamiento de lenguaje natural.
+
+Carpetas: `Listado-colores/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `pos.colores-exportes:jsonl` | JSONL | encendida |
+| `pos.colores-exportes:tsv` | TSV | encendida |
+| `pos.colores-exportes:sqlite` | SQLite | encendida |
+| `pos.colores-exportes:spacy` | Patrones de spaCy | encendida |
+| `pos.colores-exportes:universal-dependencies` | Universal Dependencies | encendida |
+
+### `pos.colores-informes` · Informes de calidad del léxico
+
+Informes generados sobre el léxico.
+
+Carpetas: `Listado-colores/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `pos.colores-informes:ambiguedad` | Ambigüedad | encendida |
+| `pos.colores-informes:nombres-sospechosos` | Nombres sospechosos | encendida |
+| `pos.colores-informes:cobertura` | Cobertura | encendida |
+| `pos.colores-informes:auditoria` | Auditoría de nombres completos | encendida |
+
+### `pos.colores-revision` · Revisión por hablantes nativos
+
+Registro y visor de revisión. Todavía vacío. El PR #595 lo marca @deprecated.
+
+Carpetas: `Listado-colores/`.
+
+### `pos.citas` · Citas coloreadas por categoría
+
+Dónde se muestran las citas coloreadas. Todavía no hay citas publicadas.
+
+Carpetas: `citas-pos/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `pos.citas:sitio` | Sitio | apagada |
+| `pos.citas:correo` | Correo | apagada |
+| `pos.citas:juego` | Juego «Adivina la categoría» | apagada |
+
+### `pos.iconos-pos` · Iconos del punto de venta
+
+23 iconos: catálogo, pedidos, cuenta, carrito y pago.
+
+Carpetas: `iconos-pos/`.
+
+### `pos.iconos-biblioteca` · Iconos de biblioteca virtual
+
+151 iconos de biblioteca virtual.
+
+Carpetas: `iconos-biblioteca/`.
+
+### `pos.portadas` · Portadas de libro en SVG
+
+Piezas de la cubierta de un libro, con medidas de corte para imprenta.
+
+Carpetas: `portadas-svg/`.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `pos.portadas:portada` | Portada | encendida |
+| `pos.portadas:contratapa` | Contratapa | encendida |
+| `pos.portadas:lomo` | Lomo | encendida |
+| `pos.portadas:cubierta-completa` | Cubierta completa | encendida |
 
 ## Fuera del interruptor
 
-Carpetas del repo que no son una función de ninguna de las dos plataformas, o que el interruptor no debe tocar.
+Carpetas del repo que no son una función de ninguna plataforma, o que el interruptor no debe tocar.
 
 | Carpeta | Motivo |
 |---|---|
-| `web-animations` | Galería de demostración de animaciones; no es de ninguna plataforma. |
-| `astros-3d` | Visor WebGL de astros; no es de ninguna plataforma. |
-| `signos-zodiacales` | Referencia cultural de signos; no es de ninguna plataforma. |
-| `psychology-and-marketing` | Solo documentos, sin código. |
-| `iconos-tools` | Generador de los sets de iconos; herramienta de construcción. |
-| `leyes-comunes` | Código compartido de las dos bases de leyes; no es una función. |
-| `vps-setup` | Infraestructura: instala el servidor. |
-| `landing-page` | Página estática que despliega vps-setup. |
+| `web-animations/` | Galería de demostración de animaciones; no es de ninguna plataforma. |
+| `astros-3d/` | Visor WebGL de astros; no es de ninguna plataforma. |
+| `signos-zodiacales/` | Referencia cultural de signos; no es de ninguna plataforma. |
+| `psychology-and-marketing/` | Solo documentos, sin código. |
+| `iconos-tools/` | Generador de los sets de iconos; herramienta de construcción. |
+| `leyes-comunes/` | Código compartido de las dos bases de leyes; no es una función. |
+| `document-formats/` | Formatos de papel por país. Sin plataforma asignada: a confirmar si va en B (impresión de libros) o en A. |
+| `vps-setup/` | Infraestructura: instala el servidor. |
+| `landing-page/` | Página estática que despliega vps-setup. |

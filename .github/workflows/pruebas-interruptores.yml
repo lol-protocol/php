@@ -1,0 +1,43 @@
+name: Pruebas interruptores
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "interruptores/**"
+      - ".github/workflows/pruebas-interruptores.yml"
+  pull_request:
+    paths:
+      - "interruptores/**"
+      - ".github/workflows/pruebas-interruptores.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          coverage: none
+
+      - name: Los scripts compilan
+        run: |
+          for f in interruptores/src/*.php interruptores/bin/*.php interruptores/panel/*.php interruptores/pruebas/*.php; do php -l "$f"; done
+
+      - name: Pruebas del catálogo, de las dependencias y del estado
+        run: php interruptores/pruebas/ejecutar.php
+
+      - name: FUNCIONES.md al día con catalogo.json
+        run: php interruptores/bin/generar.php --comprobar

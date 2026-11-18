@@ -36,13 +36,13 @@ function lanza(callable $f, string $clase): bool
     return false;
 }
 
-/** Apaga $id después de apagar, primero, todo lo que la necesita (de hoja a raíz). */
-function apagarEnCascada(Interruptores $i, string $id): void
+/** Apaga $ref después de apagar, primero, todo lo que depende de ella. */
+function apagarEnCascada(Interruptores $i, string $ref): void
 {
-    foreach ($i->dependientesActivos($id) as $dep) {
+    foreach ($i->dependientesActivos($ref) as $dep) {
         apagarEnCascada($i, $dep);
     }
-    $i->cambiar($id, false);
+    $i->cambiar($ref, false);
 }
 
 // Estado en una carpeta temporal, para no tocar var/ del repo.
@@ -56,19 +56,24 @@ $nuevo = fn (): Interruptores => new Interruptores($cat, $estado);
 
 $i = $nuevo();
 $funciones = $i->catalogo();
-comprobar('el catálogo trae funciones', count($funciones) > 0);
-comprobar('hay funciones en las tres plataformas', count(array_unique(array_column($funciones, 'plataforma'))) === 3);
+comprobar('hay 32 funciones de genealogía', count(array_filter($funciones, fn ($f) => $f['plataforma'] === 'genealogia')) === 32);
+comprobar('hay 20 funciones de POS', count(array_filter($funciones, fn ($f) => $f['plataforma'] === 'pos')) === 20);
+comprobar('hay 255 interruptores en total (52 funciones + 203 opciones)', $i->totalInterruptores() === 255);
 
 $carpetasInexistentes = [];
 foreach ($funciones as $id => $f) {
-    // Las funciones «fuera_de_master» viven en un PR abierto: su carpeta aún no está en el repo.
-    if (empty($f['fuera_de_master']) && !is_dir($repo . '/' . $f['carpeta'])) {
-        $carpetasInexistentes[] = "$id → {$f['carpeta']}";
+    if ($f['origen'] !== 'repo') {
+        continue; // fuera_del_repo y pr_abierto no se comprueban aquí
+    }
+    foreach ($f['carpetas'] as $c) {
+        if (!is_dir($repo . '/' . $c)) {
+            $carpetasInexistentes[] = "$id → $c";
+        }
     }
 }
-comprobar('cada carpeta del catálogo existe en el repo', $carpetasInexistentes === [], implode('; ', $carpetasInexistentes));
+comprobar('cada carpeta de una función de origen «repo» existe', $carpetasInexistentes === [], implode('; ', $carpetasInexistentes));
 
-// Sin ciclos de dependencia: si los hay, nunca se podrían encender.
+// Sin ciclos de dependencia entre funciones.
 $ciclo = false;
 $visto = [];
 $buscar = function (string $id, array $pila) use (&$buscar, &$visto, &$ciclo, $funciones): void {
@@ -81,7 +86,7 @@ $buscar = function (string $id, array $pila) use (&$buscar, &$visto, &$ciclo, $f
     }
     $visto[$id] = true;
     foreach ($funciones[$id]['depende_de'] as $dep) {
-        $buscar($dep, [...$pila, $id]);
+        $buscar(explode(':', $dep, 2)[0], [...$pila, $id]);
     }
 };
 foreach (array_keys($funciones) as $id) {
@@ -90,101 +95,131 @@ foreach (array_keys($funciones) as $id) {
 comprobar('no hay ciclos de dependencia', !$ciclo);
 
 // Valores por defecto.
-comprobar('gen.urls arranca encendida', $i->activo('gen.urls') === true);
+comprobar('gen.vistas arranca encendida', $i->activo('gen.vistas') === true);
+comprobar('gen.vistas:circular arranca encendida', $i->activo('gen.vistas:circular') === true);
 comprobar('pos.chat-libros arranca apagada', $i->activo('pos.chat-libros') === false);
+comprobar('pos.chat-libros:ia arranca apagada', $i->activo('pos.chat-libros:ia') === false);
 
-// Id desconocido.
-comprobar('activo() con id inexistente lanza UnknownInterruptor', lanza(fn () => $i->activo('no.existe'), UnknownInterruptor::class));
+// Refs que no existen.
+comprobar('activo() con función inexistente lanza UnknownInterruptor', lanza(fn () => $i->activo('no.existe'), UnknownInterruptor::class));
+comprobar('activo() con opción inexistente lanza UnknownInterruptor', lanza(fn () => $i->activo('gen.vistas:nope'), UnknownInterruptor::class));
+
+// --- Opciones ---------------------------------------------------------------
+
+$i = $nuevo();
+$i->cambiar('gen.mascotas', false);
+comprobar('una opción no se ve si su función está apagada', $i->activo('gen.mascotas:perritos') === false);
+comprobar('pero conserva su propio interruptor encendido', $i->interruptores()['gen.mascotas:perritos'] === true);
+$i->cambiar('gen.mascotas', true);
+$i->cambiar('gen.mascotas:gatitos', false);
+comprobar('apagar gatitos no apaga perritos', $i->activo('gen.mascotas:perritos') === true && $i->activo('gen.mascotas:gatitos') === false);
+
+// Mínimo de opciones: medios de pago necesita al menos 1 encendido mientras la función esté encendida.
+$i = $nuevo();
+$i->cambiar('gen.pagos:transferencia', false);
+$i->cambiar('gen.pagos:tarjeta', false);
+comprobar('se puede dejar una sola forma de pago', $i->activo('gen.pagos:efectivo') === true);
+comprobar('no se puede apagar la última forma de pago',
+    lanza(fn () => $i->cambiar('gen.pagos:efectivo', false), DependenciaRota::class));
+$i->cambiar('gen.pagos', false);
+comprobar('con la función apagada, el mínimo deja de aplicar',
+    lanza(fn () => $i->cambiar('gen.pagos:efectivo', false), DependenciaRota::class) === false);
+$i->cambiar('gen.pagos:efectivo', false);
+comprobar('no se puede encender la función sin ninguna opción encendida',
+    lanza(fn () => $i->cambiar('gen.pagos', true), DependenciaRota::class));
+$i->cambiar('gen.pagos:tarjeta', true);
+$i->cambiar('gen.pagos', true);
+comprobar('con una opción encendida, la función vuelve a encenderse', $i->activo('gen.pagos') === true);
+$i->cambiar('gen.pagos:transferencia', true);
+$i->cambiar('gen.pagos:efectivo', true);
+$i->cambiar('gen.pagos:tarjeta', true);
 
 // --- Dependencias -----------------------------------------------------------
 
 $i = $nuevo();
-comprobar('no se apaga el filtro de textos mientras retiros lo necesita',
-    lanza(fn () => $i->cambiar('gen.filtro-textos', false), DependenciaRota::class));
-comprobar('tras el fallo el filtro sigue encendido', $i->activo('gen.filtro-textos') === true);
-comprobar('dependientesActivos lista gen.retiros',
-    in_array('gen.retiros', $i->dependientesActivos('gen.filtro-textos'), true));
+comprobar('no se apaga el filtro de textos (opción) mientras retiros lo necesita',
+    lanza(fn () => $i->cambiar('gen.filtro:textos', false), DependenciaRota::class));
+comprobar('no se apaga la función gen.filtro entera mientras retiros la necesita',
+    lanza(fn () => $i->cambiar('gen.filtro', false), DependenciaRota::class));
+comprobar('dependientesActivos de la opción incluye gen.retiros',
+    in_array('gen.retiros', $i->dependientesActivos('gen.filtro:textos'), true));
 
-// El filtro de textos tiene varios dependientes: hay que apagarlos todos antes.
-comprobar('dependientesActivos lista también notas y el editor de Marcalibros',
-    count($i->dependientesActivos('gen.filtro-textos')) === 4);
-apagarEnCascada($i, 'gen.filtro-textos');
-comprobar('con sus dependientes apagados, el filtro de textos sí se apaga', $i->activo('gen.filtro-textos') === false);
+apagarEnCascada($i, 'gen.filtro:textos');
+comprobar('en cascada se apaga el filtro de textos y sus dependientes',
+    $i->activo('gen.retiros') === false && $i->activo('gen.bak-notas') === false
+    && $i->activo('pos.mb-v-editor') === false && $i->activo('pos.mb-h-propios') === false);
+comprobar('no se enciende gen.retiros con su filtro apagado',
+    lanza(fn () => $i->cambiar('gen.retiros', true), DependenciaRota::class));
+comprobar('faltanParaEncender señala la opción del filtro',
+    in_array('gen.filtro:textos', $i->faltanParaEncender('gen.retiros'), true));
 
-comprobar('no se enciende gen.bak-notas si el filtro de textos está apagado',
-    lanza(fn () => $i->cambiar('gen.bak-notas', true), DependenciaRota::class));
-comprobar('faltanParaEncender señala el filtro',
-    in_array('gen.filtro-textos', $i->faltanParaEncender('gen.bak-notas'), true));
+// Restaurar: encender en orden de dependencias.
+$i->cambiar('gen.filtro:textos', true);
+$i->cambiar('gen.retiros', true);
+$i->cambiar('gen.backoffice', true);
+$i->cambiar('gen.bak-notas', true);
+$i->cambiar('pos.mb-h-propios', true);
+$i->cambiar('pos.mb-h-app', true);
+$i->cambiar('pos.mb-v-editor', true);
+comprobar('restaurar en orden deja todo encendido', $i->activo('gen.bak-notas') && $i->activo('pos.mb-h-app') && $i->activo('gen.retiros'));
 
-$i->cambiar('gen.filtro-textos', true);
-comprobar('con el filtro encendido, notas vuelve a encenderse sin error',
-    lanza(fn () => $i->cambiar('gen.bak-notas', true), DependenciaRota::class) === false);
-// La cascada apagó también el editor, los propios y la app de Marcalibros: se vuelven a encender en orden.
-foreach (['gen.retiros', 'pos.mb-v-editor', 'pos.mb-h-propios', 'pos.mb-h-app'] as $volver) {
-    $i->cambiar($volver, true);
-}
-
-// Cadena: apagar el acceso al backoffice exige apagar antes todo lo que cuelga de él.
-$i = $nuevo();
-comprobar('no se apaga gen.bak-acceso con el flujo encendido',
-    lanza(fn () => $i->cambiar('gen.bak-acceso', false), DependenciaRota::class));
-$i->cambiar('gen.bak-flujo', false);
-$i->cambiar('gen.bak-comparacion', false);
-$i->cambiar('gen.bak-kpis', false);
-$i->cambiar('gen.bak-alertas', false);
-$i->cambiar('gen.bak-notas', false);
-$i->cambiar('gen.bak-filtros', false);
-$i->cambiar('gen.bak-idioma', false);
-$i->cambiar('gen.bak-acceso', false);
-comprobar('con todo el backoffice apagado, el acceso también se apaga', $i->activo('gen.bak-acceso') === false);
-
-// Las dos apps de Marcalibros: la de la web necesita el módulo propio.
-$i = $nuevo();
+// Cadena de Marcalibros: la app necesita el módulo propio.
 comprobar('no se apaga el módulo propio mientras la app lo necesita',
     lanza(fn () => $i->cambiar('pos.mb-h-propios', false), DependenciaRota::class));
 apagarEnCascada($i, 'pos.mb-h-propios');
-comprobar('en cascada se apagan la app y luego el módulo', $i->activo('pos.mb-h-app') === false && $i->activo('pos.mb-h-propios') === false);
+comprobar('en cascada se apagan la app y luego el módulo',
+    $i->activo('pos.mb-h-app') === false && $i->activo('pos.mb-h-propios') === false);
 $i->cambiar('pos.mb-h-propios', true);
 $i->cambiar('pos.mb-h-app', true);
+
+// Notas del backoffice: depende de la función y de una opción de otra.
+comprobar('no se apaga gen.backoffice mientras las notas lo necesitan',
+    lanza(fn () => $i->cambiar('gen.backoffice', false), DependenciaRota::class));
 
 // --- Persistencia -----------------------------------------------------------
 
 $i = $nuevo();
-$i->cambiar('lg.paises', false);
+$i->cambiar('gen.estilo-iconos:gris', false);
 $otro = $nuevo();
-comprobar('el estado se guarda y otra instancia lo lee', $otro->activo('lg.paises') === false);
+comprobar('el estado se guarda y otra instancia lo lee', $otro->activo('gen.estilo-iconos:gris') === false);
 comprobar('el archivo de estado es JSON con booleanos',
-    json_decode((string) file_get_contents($estado), true)['lg.paises'] === false);
+    json_decode((string) file_get_contents($estado), true)['gen.estilo-iconos:gris'] === false);
 
-// Un id que ya no existe en el catálogo se ignora al leer.
-file_put_contents($estado, json_encode(['fantasma.id' => false, 'lg.paises' => true]));
+// Refs que ya no existen se ignoran al leer.
+file_put_contents($estado, json_encode(['fantasma' => false, 'gen.vistas:fantasma' => false, 'gen.estilo-iconos:gris' => true]));
 $otro = $nuevo();
-comprobar('ids que no están en el catálogo se ignoran', !array_key_exists('fantasma.id', $otro->estados()));
-comprobar('el valor guardado gana sobre el de por defecto', $otro->activo('lg.paises') === true);
+comprobar('refs que no están en el catálogo se ignoran', !array_key_exists('fantasma', $otro->interruptores()));
+comprobar('el valor guardado gana sobre el de por defecto', $otro->activo('gen.estilo-iconos:gris') === true);
 
 file_put_contents($estado, '{no es json');
 comprobar('un estado dañado lanza error y no se pisa en silencio',
-    lanza(fn () => $nuevo()->activo('gen.urls'), \RuntimeException::class));
+    lanza(fn () => $nuevo()->activo('gen.vistas'), \RuntimeException::class));
 
 // --- Catálogo roto ----------------------------------------------------------
 
 $malo = $tmp . '/malo.json';
 $base = ['plataformas' => ['genealogia' => 'A']];
 $fn = function (string $id, array $extra = []): array {
-    return array_merge(['id' => $id, 'plataforma' => 'genealogia', 'nombre' => $id, 'carpeta' => 'x', 'tipo' => 'producto', 'descripcion' => '', 'depende_de' => [], 'por_defecto' => true], $extra);
+    return array_merge([
+        'id' => $id, 'plataforma' => 'genealogia', 'nombre' => $id, 'tipo' => 'producto',
+        'origen' => 'repo', 'carpetas' => [], 'descripcion' => '', 'depende_de' => [],
+        'por_defecto' => true, 'opciones' => [],
+    ], $extra);
 };
+$cargar = fn (array $funciones): bool => lanza(function () use ($malo, $estado, $base, $funciones) {
+    file_put_contents($malo, json_encode(array_merge($base, ['funciones' => $funciones])));
+    new Interruptores($malo, $estado);
+}, \RuntimeException::class);
 
-file_put_contents($malo, json_encode(array_merge($base, ['funciones' => [$fn('a'), $fn('a')]])));
-comprobar('un id repetido impide cargar el catálogo',
-    lanza(fn () => new Interruptores($malo, $estado), \RuntimeException::class));
-
-file_put_contents($malo, json_encode(array_merge($base, ['funciones' => [$fn('a', ['depende_de' => ['b']])]])));
-comprobar('una dependencia que no existe impide cargar el catálogo',
-    lanza(fn () => new Interruptores($malo, $estado), \RuntimeException::class));
-
-file_put_contents($malo, json_encode(array_merge($base, ['funciones' => [$fn('a', ['plataforma' => 'nope'])]])));
-comprobar('una plataforma que no existe impide cargar el catálogo',
-    lanza(fn () => new Interruptores($malo, $estado), \RuntimeException::class));
+comprobar('un id de función repetido impide cargar', $cargar([$fn('a'), $fn('a')]));
+comprobar('un id de función con «:» impide cargar', $cargar([$fn('a:b')]));
+comprobar('una opción repetida impide cargar', $cargar([$fn('a', ['opciones' => [['id' => 'x'], ['id' => 'x']]])]));
+comprobar('un mínimo mayor que el número de opciones impide cargar', $cargar([$fn('a', ['min_opciones' => 2, 'opciones' => [['id' => 'x']]])]));
+comprobar('una dependencia a una función inexistente impide cargar', $cargar([$fn('a', ['depende_de' => ['b']])]));
+comprobar('una dependencia a una opción inexistente impide cargar', $cargar([$fn('a', ['opciones' => [['id' => 'x']]]), $fn('b', ['depende_de' => ['a:y']])]));
+comprobar('una dependencia a sí misma impide cargar', $cargar([$fn('a', ['depende_de' => ['a']])]));
+comprobar('una plataforma inexistente impide cargar', $cargar([$fn('a', ['plataforma' => 'nope'])]));
+comprobar('un catálogo bueno sí carga', !$cargar([$fn('a', ['opciones' => [['id' => 'x']], 'min_opciones' => 1]), $fn('b', ['depende_de' => ['a:x']])]));
 
 // --- FUNCIONES.md -----------------------------------------------------------
 

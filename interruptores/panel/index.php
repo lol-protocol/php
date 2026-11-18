@@ -86,11 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($accion === 'cambiar') {
-        $id = (string) ($_POST['id'] ?? '');
+        $ref = (string) ($_POST['ref'] ?? '');
         $encender = ($_POST['valor'] ?? '') === '1';
         try {
-            (new Interruptores($rutaCat, $rutaEst))->cambiar($id, $encender);
-            volver(($encender ? 'Encendida: ' : 'Apagada: ') . $id . '.');
+            (new Interruptores($rutaCat, $rutaEst))->cambiar($ref, $encender);
+            volver(($encender ? 'Encendido: ' : 'Apagado: ') . $ref . '.');
         } catch (DependenciaRota | UnknownInterruptor $e) {
             volver($e->getMessage());
         } catch (\Throwable $e) {
@@ -138,7 +138,7 @@ button{background:#d9a441;color:#15110e;font-weight:600;cursor:pointer}
 }
 
 $cat = new Interruptores($rutaCat, $rutaEst);
-$estados = $cat->estados();
+$propios = $cat->interruptores();
 $aviso = $_SESSION['aviso'] ?? '';
 unset($_SESSION['aviso']);
 $csrf = tokenCsrf();
@@ -147,8 +147,37 @@ $porPlataforma = [];
 foreach ($cat->catalogo() as $id => $f) {
     $porPlataforma[$f['plataforma']][$id] = $f;
 }
-$encendidas = count(array_filter($estados));
-$total = count($estados);
+$encendidos = count(array_filter($propios));
+$total = count($propios);
+
+/** Botón on/off de una ref, con su motivo si no se puede cambiar ahora. */
+function boton(Interruptores $cat, array $propios, string $ref, string $csrf, bool $esOpcion): string
+{
+    $on = $propios[$ref];
+    $motivo = '';
+    if (!$on && !$esOpcion) {
+        $faltan = $cat->faltanParaEncender($ref);
+        $motivo = $faltan !== [] ? 'Necesita encendido: ' . implode(', ', $faltan) : '';
+    }
+    if ($on) {
+        $dep = $cat->dependientesActivos($ref);
+        $motivo = $dep !== [] ? 'Otras la necesitan: ' . implode(', ', $dep) : '';
+    }
+    $bloqueado = $motivo !== '';
+
+    $html = '<form class="boton" method="post" action="index.php">';
+    $html .= '<input type="hidden" name="accion" value="cambiar">';
+    $html .= '<input type="hidden" name="csrf" value="' . escapar($csrf) . '">';
+    $html .= '<input type="hidden" name="ref" value="' . escapar($ref) . '">';
+    $html .= '<input type="hidden" name="valor" value="' . ($on ? '0' : '1') . '">';
+    $html .= '<button type="submit" class="sw' . ($on ? ' on' : '') . '"' . ($bloqueado ? ' disabled' : '')
+        . ' title="' . escapar($motivo) . '">' . ($on ? 'Encendido' : 'Apagado') . '</button>';
+    $html .= '</form>';
+    if ($motivo !== '') {
+        $html .= '<div class="dep">' . escapar($motivo) . '</div>';
+    }
+    return $html;
+}
 ?>
 <!doctype html>
 <html lang="es">
@@ -166,26 +195,29 @@ header h1{font-size:1.1rem;margin:0;flex:1}
 .resumen{color:var(--sutil)}
 main{padding:1rem 1.25rem 3rem;max-width:1100px;margin:auto}
 h2{font-size:1rem;color:var(--oro);margin:2rem 0 .5rem;text-transform:uppercase;letter-spacing:.06em}
-.canal{display:grid;grid-template-columns:auto 1fr auto;gap:.9rem;align-items:center;background:var(--panel);border:1px solid var(--borde);border-radius:10px;padding:.7rem .9rem;margin:.45rem 0}
-.canal.apagado{opacity:.72}
-.led{width:12px;height:12px;border-radius:50%;background:var(--off);box-shadow:0 0 0 3px #0000}
-.canal.on .led{background:var(--on);box-shadow:0 0 10px var(--on)}
+.canal{background:var(--panel);border:1px solid var(--borde);border-radius:10px;padding:.7rem .9rem;margin:.5rem 0}
+.fila{display:grid;grid-template-columns:auto 1fr auto;gap:.9rem;align-items:center}
+.led{width:12px;height:12px;border-radius:50%;background:var(--off)}
+.canal.on > .fila .led{background:var(--on);box-shadow:0 0 10px var(--on)}
 .nombre{font-weight:600}
 .meta{color:var(--sutil);font-size:.85rem}
 .dep{color:var(--rojo);font-size:.85rem;margin-top:.2rem}
 form.boton{margin:0}
-button.sw{min-width:92px;font:inherit;font-weight:600;padding:.5rem .8rem;border-radius:999px;border:1px solid var(--borde);cursor:pointer;background:#15110e;color:var(--texto)}
+button.sw{min-width:110px;font:inherit;font-weight:600;padding:.45rem .8rem;border-radius:999px;border:1px solid var(--borde);cursor:pointer;background:#15110e;color:var(--texto)}
 button.sw.on{background:var(--on);color:#15110e;border-color:var(--on)}
 button.sw:disabled{opacity:.4;cursor:not-allowed}
+.opciones{margin:.7rem 0 0 1.6rem;display:grid;gap:.35rem;border-left:2px solid var(--borde);padding-left:1rem}
+.opcion{display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:center}
+.opcion.inactiva{opacity:.6}
 .aviso{background:#3a2a1c;border:1px solid var(--oro);padding:.6rem .8rem;border-radius:8px;margin:1rem 0}
 .salir button{background:none;border:1px solid var(--borde);color:var(--sutil);padding:.4rem .8rem;border-radius:8px;cursor:pointer;font:inherit}
-@media (max-width:600px){.canal{grid-template-columns:auto 1fr}.canal form{grid-column:1/-1}button.sw{width:100%}}
+@media (max-width:600px){.fila{grid-template-columns:auto 1fr}.fila form{grid-column:1/-1}button.sw{width:100%}}
 </style>
 </head>
 <body>
 <header>
   <h1>Interruptores</h1>
-  <span class="resumen"><?= $encendidas ?> de <?= $total ?> encendidas</span>
+  <span class="resumen"><?= $encendidos ?> de <?= $total ?> encendidos (funciones y opciones)</span>
   <form class="salir" method="post" action="index.php"><input type="hidden" name="accion" value="salir"><button type="submit">Salir</button></form>
 </header>
 <main>
@@ -195,31 +227,30 @@ button.sw:disabled{opacity:.4;cursor:not-allowed}
   <?php if (empty($porPlataforma[$clave])) { continue; } ?>
   <h2><?= escapar($titulo) ?></h2>
   <?php foreach ($porPlataforma[$clave] as $id => $f): ?>
-    <?php
-      $on = $estados[$id];
-      $faltan = $on ? [] : $cat->faltanParaEncender($id);
-      $dependientes = $on ? $cat->dependientesActivos($id) : [];
-      $bloqueado = !$on ? $faltan !== [] : $dependientes !== [];
-      $motivo = !$on
-          ? ($faltan !== [] ? 'Necesita encendida: ' . implode(', ', $faltan) : '')
-          : ($dependientes !== [] ? 'Otras la necesitan: ' . implode(', ', $dependientes) : '');
-    ?>
-    <div class="canal <?= $on ? 'on' : 'apagado' ?>">
-      <span class="led" aria-hidden="true"></span>
-      <div>
-        <div class="nombre"><?= escapar($f['nombre']) ?></div>
-        <div class="meta"><code><?= escapar($id) ?></code> · <?= escapar($f['carpeta']) ?> · <?= escapar($f['tipo']) ?></div>
-        <?php if ($motivo !== ''): ?><div class="dep"><?= escapar($motivo) ?></div><?php endif; ?>
+    <?php $on = $propios[$id]; ?>
+    <div class="canal <?= $on ? 'on' : '' ?>">
+      <div class="fila">
+        <span class="led" aria-hidden="true"></span>
+        <div>
+          <div class="nombre"><?= escapar($f['nombre']) ?></div>
+          <div class="meta"><code><?= escapar($id) ?></code> · <?= escapar($f['tipo']) ?><?= $f['opciones'] !== [] ? ' · ' . count($f['opciones']) . ' opciones' : '' ?></div>
+        </div>
+        <div><?= boton($cat, $propios, $id, $csrf, false) ?></div>
       </div>
-      <form class="boton" method="post" action="index.php">
-        <input type="hidden" name="accion" value="cambiar">
-        <input type="hidden" name="csrf" value="<?= escapar($csrf) ?>">
-        <input type="hidden" name="id" value="<?= escapar($id) ?>">
-        <input type="hidden" name="valor" value="<?= $on ? '0' : '1' ?>">
-        <button type="submit" class="sw <?= $on ? 'on' : '' ?>" <?= $bloqueado ? 'disabled' : '' ?> title="<?= escapar($motivo) ?>">
-          <?= $on ? 'Encendida' : 'Apagada' ?>
-        </button>
-      </form>
+      <?php if ($f['opciones'] !== []): ?>
+        <div class="opciones">
+          <?php foreach ($f['opciones'] as $op): ?>
+            <?php $ref = $id . ':' . $op['id']; $efectiva = $cat->activo($ref); ?>
+            <div class="opcion <?= $efectiva ? '' : 'inactiva' ?>">
+              <div>
+                <span class="nombre" style="font-weight:500"><?= escapar($op['nombre']) ?></span>
+                <span class="meta"><code><?= escapar($ref) ?></code><?= $efectiva ? '' : ' · inactiva ahora' ?></span>
+              </div>
+              <div><?= boton($cat, $propios, $ref, $csrf, true) ?></div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
     </div>
   <?php endforeach; ?>
 <?php endforeach; ?>

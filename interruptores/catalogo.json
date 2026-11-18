@@ -1,447 +1,1390 @@
 {
-  "version": 1,
+  "version": 2,
   "plataformas": {
-    "genealogia": "A) Genealogía (sitio de genealogía y herramientas de su operación)",
-    "pos": "B) Librería y etiquetado POS (Contrastocolor, Plataforma POS y Marcalibros)",
-    "transversal": "Transversal (por confirmar a cuál plataforma sirve)"
+    "genealogia": "A) Genealogía",
+    "pos": "B) Librería y etiquetado POS"
   },
   "tipos": {
     "producto": "Lo ve o lo usa una persona fuera del equipo",
     "interno": "Herramienta del equipo u operación",
     "datos": "Datos o base de referencia",
     "visual": "Recursos visuales (iconos, siluetas, portadas)",
-    "contenido": "Textos y contenido",
-    "por-confirmar": "No está claro si es del producto o interno"
+    "contenido": "Textos y contenido"
+  },
+  "origenes": {
+    "repo": "El código está en una carpeta de este repositorio (se comprueba que exista)",
+    "fuera_del_repo": "La función vive en la aplicación principal, que no está en este repositorio",
+    "pr_abierto": "Su carpeta todavía está en un PR abierto, no en master"
   },
   "funciones": [
     {
-      "id": "gen.urls",
+      "id": "gen.vistas",
       "plataforma": "genealogia",
-      "nombre": "Enrutamiento de URLs",
-      "carpeta": "url-routing",
+      "nombre": "Modos de visualización del árbol",
       "tipo": "producto",
-      "descripcion": "El dominio (Host) decide el sitio; la forma del primer segmento de la URL decide el tipo de recurso (cantidad de dígitos, letras). Español e inglés.",
-      "depende_de": [],
-      "por_defecto": true
-    },
-    {
-      "id": "gen.retiros",
-      "plataforma": "genealogia",
-      "nombre": "Pedidos de retiro de información",
-      "carpeta": "url-routing",
-      "tipo": "producto",
-      "descripcion": "Recibe y gestiona los pedidos de retiro; cada texto pasa por el filtro de textos libres.",
-      "depende_de": [
-        "gen.filtro-textos"
+      "origen": "fuera_del_repo",
+      "carpetas": [
+        "iconos-genealogia"
       ],
-      "por_defecto": true
+      "descripcion": "Cómo se dibuja el árbol. Cada modo es una opción; sus iconos están en iconos-genealogia/ (prefijo view_).",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 1,
+      "opciones": [
+        {
+          "id": "circular",
+          "nombre": "Circular"
+        },
+        {
+          "id": "abanico",
+          "nombre": "Abanico"
+        },
+        {
+          "id": "arbol",
+          "nombre": "Árbol"
+        },
+        {
+          "id": "pedigri",
+          "nombre": "Pedigrí"
+        },
+        {
+          "id": "ancestros",
+          "nombre": "Ancestros"
+        },
+        {
+          "id": "descendientes",
+          "nombre": "Descendientes"
+        },
+        {
+          "id": "familia",
+          "nombre": "Grupo familiar"
+        },
+        {
+          "id": "generaciones",
+          "nombre": "Generaciones"
+        },
+        {
+          "id": "reloj-de-arena",
+          "nombre": "Reloj de arena"
+        },
+        {
+          "id": "linea-de-tiempo",
+          "nombre": "Línea de tiempo"
+        },
+        {
+          "id": "lista",
+          "nombre": "Lista"
+        },
+        {
+          "id": "tarjetas",
+          "nombre": "Tarjetas"
+        },
+        {
+          "id": "red",
+          "nombre": "Red"
+        },
+        {
+          "id": "dispersion",
+          "nombre": "Dispersión"
+        }
+      ]
     },
     {
-      "id": "gen.filtro-nombres",
+      "id": "gen.pagos",
       "plataforma": "genealogia",
-      "nombre": "Filtro de nombres y apellidos",
-      "carpeta": "defamatory-content-review",
+      "nombre": "Medios de pago",
       "tipo": "producto",
-      "descripcion": "Detecta insultos, ridiculización y fusión fonética entre nombre y apellido («Elba Gina» → «el vagina»). Protege apellidos legítimos. 11 tipos de riesgo, 33 idiomas.",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Qué formas de pago ofrece el sitio. La lista sale de los métodos que registra el panel de cobros (transferencia, tarjeta, efectivo); si hay más, se agregan aquí.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 1,
+      "opciones": [
+        {
+          "id": "transferencia",
+          "nombre": "Transferencia"
+        },
+        {
+          "id": "tarjeta",
+          "nombre": "Tarjeta"
+        },
+        {
+          "id": "efectivo",
+          "nombre": "Efectivo"
+        }
+      ]
+    },
+    {
+      "id": "gen.mascotas",
+      "plataforma": "genealogia",
+      "nombre": "Perritos y gatitos",
+      "tipo": "contenido",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Dos interruptores independientes: perritos y gatitos. Lo que muestran y dónde, por confirmar.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "perritos",
+          "nombre": "Perritos"
+        },
+        {
+          "id": "gatitos",
+          "nombre": "Gatitos"
+        }
+      ]
+    },
+    {
+      "id": "gen.exportar",
+      "plataforma": "genealogia",
+      "nombre": "Exportar el árbol",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [
+        "iconos-genealogia"
+      ],
+      "descripcion": "Formatos en los que se puede descargar un árbol o una ficha (iconos ui_export_*).",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "csv",
+          "nombre": "CSV"
+        },
+        {
+          "id": "gedcom",
+          "nombre": "GEDCOM"
+        },
+        {
+          "id": "pdf",
+          "nombre": "PDF"
+        }
+      ]
+    },
+    {
+      "id": "gen.idiomas",
+      "plataforma": "genealogia",
+      "nombre": "Idioma de la interfaz",
+      "tipo": "producto",
+      "origen": "repo",
+      "carpetas": [
+        "url-routing"
+      ],
+      "descripcion": "Idiomas en que se sirve el sitio. El enrutador los separa por dominio (spa/eng).",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 1,
+      "opciones": [
+        {
+          "id": "es",
+          "nombre": "Español"
+        },
+        {
+          "id": "en",
+          "nombre": "Inglés"
+        }
+      ]
+    },
+    {
+      "id": "gen.estado-civil",
+      "plataforma": "genealogia",
+      "nombre": "Estados de una persona",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [
+        "iconos-genealogia"
+      ],
+      "descripcion": "Estados que se pueden marcar en una persona (iconos state_*).",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "vivo",
+          "nombre": "Vivo"
+        },
+        {
+          "id": "fallecido",
+          "nombre": "Fallecido"
+        },
+        {
+          "id": "casado",
+          "nombre": "Casado"
+        },
+        {
+          "id": "divorciado",
+          "nombre": "Divorciado"
+        },
+        {
+          "id": "viudo",
+          "nombre": "Viudo"
+        },
+        {
+          "id": "separado",
+          "nombre": "Separado"
+        },
+        {
+          "id": "soltero",
+          "nombre": "Soltero"
+        },
+        {
+          "id": "comprometido",
+          "nombre": "Comprometido"
+        }
+      ]
+    },
+    {
+      "id": "gen.vinculos",
+      "plataforma": "genealogia",
+      "nombre": "Tipos de vínculo",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [
+        "iconos-genealogia"
+      ],
+      "descripcion": "Tipos de relación que se pueden registrar entre dos personas (iconos relationship_*).",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "sangre",
+          "nombre": "Sangre"
+        },
+        {
+          "id": "medio",
+          "nombre": "Medio parentesco"
+        },
+        {
+          "id": "politico",
+          "nombre": "Parentesco político"
+        },
+        {
+          "id": "adopcion",
+          "nombre": "Adopción"
+        },
+        {
+          "id": "acogida",
+          "nombre": "Acogida"
+        },
+        {
+          "id": "familia-nuclear",
+          "nombre": "Familia nuclear"
+        },
+        {
+          "id": "familia-extensa",
+          "nombre": "Familia extensa"
+        },
+        {
+          "id": "monoparental",
+          "nombre": "Familia monoparental"
+        },
+        {
+          "id": "reconstituida",
+          "nombre": "Familia reconstituida"
+        },
+        {
+          "id": "herencia",
+          "nombre": "Herencia"
+        },
+        {
+          "id": "linaje",
+          "nombre": "Linaje"
+        },
+        {
+          "id": "generacional",
+          "nombre": "Generacional"
+        }
+      ]
+    },
+    {
+      "id": "gen.ficha",
+      "plataforma": "genealogia",
+      "nombre": "Secciones de la ficha",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Qué bloques aparecen en la ficha de una persona o de un registro.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "calendario",
+          "nombre": "Calendario"
+        },
+        {
+          "id": "eventos",
+          "nombre": "Eventos"
+        },
+        {
+          "id": "lugares",
+          "nombre": "Lugares"
+        },
+        {
+          "id": "fuentes",
+          "nombre": "Fuentes"
+        },
+        {
+          "id": "notas",
+          "nombre": "Notas"
+        },
+        {
+          "id": "fotos",
+          "nombre": "Fotos"
+        },
+        {
+          "id": "adn",
+          "nombre": "ADN"
+        },
+        {
+          "id": "colecciones",
+          "nombre": "Colecciones"
+        },
+        {
+          "id": "miembros",
+          "nombre": "Miembros"
+        },
+        {
+          "id": "organizaciones",
+          "nombre": "Organizaciones"
+        },
+        {
+          "id": "aportes",
+          "nombre": "Aportes"
+        },
+        {
+          "id": "enlaces",
+          "nombre": "Enlaces"
+        }
+      ]
+    },
+    {
+      "id": "gen.verificacion",
+      "plataforma": "genealogia",
+      "nombre": "Indicador de verificación",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Marca cada dato como verificado o sin verificar (iconos ui_verified y ui_unverified).",
       "depende_de": [],
       "por_defecto": true
     },
     {
-      "id": "gen.filtro-chat",
+      "id": "gen.privacidad",
       "plataforma": "genealogia",
-      "nombre": "Filtro de mensajes de chat",
-      "carpeta": "defamatory-content-review",
+      "nombre": "Protección de personas que podrían estar vivas",
       "tipo": "producto",
-      "descripcion": "Revisa línea a línea los mensajes de chat (ChatLineReviewer). En el navegador, un tope de letras repetidas antes de enviar.",
+      "origen": "repo",
+      "carpetas": [
+        "phone-directory",
+        "Parsing-fb-in-mas"
+      ],
+      "descripcion": "Oculta o no guarda datos de quien podría estar vivo. Las reglas están en los lectores de directorios y de perfiles.",
       "depende_de": [],
       "por_defecto": true
     },
     {
-      "id": "gen.filtro-textos",
+      "id": "gen.estilo-iconos",
       "plataforma": "genealogia",
-      "nombre": "Filtro de textos libres",
-      "carpeta": "defamatory-content-review",
-      "tipo": "producto",
-      "descripcion": "Marca acusaciones contra personas, datos sensibles de terceros (salud, religión, deudas…) y datos personales (RUT, teléfono, correo, dirección) para revisión humana.",
+      "nombre": "Estilo de iconos",
+      "tipo": "visual",
+      "origen": "repo",
+      "carpetas": [
+        "iconos-genealogia"
+      ],
+      "descripcion": "Qué variante del set de iconos se muestra.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "min_opciones": 1,
+      "opciones": [
+        {
+          "id": "color",
+          "nombre": "Color"
+        },
+        {
+          "id": "lineas",
+          "nombre": "Líneas"
+        },
+        {
+          "id": "gris",
+          "nombre": "Gris"
+        }
+      ]
     },
     {
-      "id": "gen.directorio",
+      "id": "gen.acc-agregar",
       "plataforma": "genealogia",
-      "nombre": "Lector de directorios telefónicos históricos",
-      "carpeta": "phone-directory",
+      "nombre": "Agregar familiares",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [
+        "iconos-genealogia"
+      ],
+      "descripcion": "Botones para añadir un familiar desde una persona (iconos action_add_*).",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "padre-madre",
+          "nombre": "Padre o madre"
+        },
+        {
+          "id": "hijo",
+          "nombre": "Hijo o hija"
+        },
+        {
+          "id": "hermano",
+          "nombre": "Hermano o hermana"
+        },
+        {
+          "id": "conyuge",
+          "nombre": "Cónyuge"
+        }
+      ]
+    },
+    {
+      "id": "gen.acc-editar",
+      "plataforma": "genealogia",
+      "nombre": "Editar y deshacer",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [
+        "iconos-genealogia"
+      ],
+      "descripcion": "Acciones sobre el contenido de una ficha.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "editar",
+          "nombre": "Editar"
+        },
+        {
+          "id": "duplicar",
+          "nombre": "Duplicar"
+        },
+        {
+          "id": "eliminar",
+          "nombre": "Eliminar"
+        },
+        {
+          "id": "guardar",
+          "nombre": "Guardar"
+        },
+        {
+          "id": "deshacer",
+          "nombre": "Deshacer"
+        },
+        {
+          "id": "rehacer",
+          "nombre": "Rehacer"
+        }
+      ]
+    },
+    {
+      "id": "gen.acc-conectar",
+      "plataforma": "genealogia",
+      "nombre": "Conectar personas",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [
+        "iconos-genealogia"
+      ],
+      "descripcion": "Enlazar o desenlazar dos personas, y sincronizar datos entre árboles.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "conectar",
+          "nombre": "Conectar"
+        },
+        {
+          "id": "desconectar",
+          "nombre": "Desconectar"
+        },
+        {
+          "id": "enlazar",
+          "nombre": "Enlazar"
+        },
+        {
+          "id": "desenlazar",
+          "nombre": "Desenlazar"
+        },
+        {
+          "id": "sincronizar",
+          "nombre": "Sincronizar"
+        }
+      ]
+    },
+    {
+      "id": "gen.acc-fusion",
+      "plataforma": "genealogia",
+      "nombre": "Fusionar, dividir y copiar fichas",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [
+        "iconos-genealogia"
+      ],
+      "descripcion": "Juntar dos fichas que son la misma persona, separar una, o copiarla.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "fusionar",
+          "nombre": "Fusionar"
+        },
+        {
+          "id": "dividir",
+          "nombre": "Dividir"
+        },
+        {
+          "id": "copiar",
+          "nombre": "Copiar"
+        }
+      ]
+    },
+    {
+      "id": "gen.acc-plegar",
+      "plataforma": "genealogia",
+      "nombre": "Plegar y acercar el árbol",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [
+        "iconos-genealogia"
+      ],
+      "descripcion": "Abrir o cerrar ramas, y acercar o alejar la vista.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "plegar",
+          "nombre": "Plegar"
+        },
+        {
+          "id": "expandir",
+          "nombre": "Expandir"
+        },
+        {
+          "id": "acercar",
+          "nombre": "Acercar"
+        },
+        {
+          "id": "alejar",
+          "nombre": "Alejar"
+        }
+      ]
+    },
+    {
+      "id": "gen.acc-compartir",
+      "plataforma": "genealogia",
+      "nombre": "Compartir",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [
+        "iconos-genealogia"
+      ],
+      "descripcion": "Compartir una ficha o un árbol, y retirar un aporte propio.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "compartir",
+          "nombre": "Compartir ficha"
+        },
+        {
+          "id": "compartir-arbol",
+          "nombre": "Compartir árbol"
+        },
+        {
+          "id": "retirar-aporte",
+          "nombre": "Retirar aporte"
+        }
+      ]
+    },
+    {
+      "id": "gen.acc-buscar",
+      "plataforma": "genealogia",
+      "nombre": "Buscar y filtrar",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [
+        "iconos-genealogia"
+      ],
+      "descripcion": "Buscar personas y filtrar la lista.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "buscar",
+          "nombre": "Buscar"
+        },
+        {
+          "id": "filtrar",
+          "nombre": "Filtrar"
+        }
+      ]
+    },
+    {
+      "id": "gen.acc-archivos",
+      "plataforma": "genealogia",
+      "nombre": "Importar, subir e imprimir",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [
+        "iconos-genealogia"
+      ],
+      "descripcion": "Traer datos desde un archivo, subir archivos, descargarlos o imprimir.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "importar",
+          "nombre": "Importar"
+        },
+        {
+          "id": "subir",
+          "nombre": "Subir"
+        },
+        {
+          "id": "descargar",
+          "nombre": "Descargar"
+        },
+        {
+          "id": "imprimir",
+          "nombre": "Imprimir"
+        }
+      ]
+    },
+    {
+      "id": "gen.fuentes-externas",
+      "plataforma": "genealogia",
+      "nombre": "Importar desde fuentes externas",
       "tipo": "interno",
-      "descripcion": "Convierte directorios telefónicos históricos (6 idiomas) en registros, con búsqueda fonética de apellidos, base de datos y línea de comandos. Aplica reglas de privacidad a personas que podrían estar vivas.",
+      "origen": "repo",
+      "carpetas": [
+        "Parsing-fb-in-mas"
+      ],
+      "descripcion": "Qué fuentes externas se leen para proponer datos. Cada una pasa por revisión humana antes de guardarse.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "facebook",
+          "nombre": "Facebook"
+        },
+        {
+          "id": "linkedin",
+          "nombre": "LinkedIn"
+        },
+        {
+          "id": "twitter-x",
+          "nombre": "Twitter / X"
+        },
+        {
+          "id": "instagram",
+          "nombre": "Instagram"
+        },
+        {
+          "id": "tiktok",
+          "nombre": "TikTok"
+        },
+        {
+          "id": "youtube",
+          "nombre": "YouTube"
+        },
+        {
+          "id": "github",
+          "nombre": "GitHub"
+        },
+        {
+          "id": "pinterest",
+          "nombre": "Pinterest"
+        },
+        {
+          "id": "bluesky",
+          "nombre": "Bluesky"
+        },
+        {
+          "id": "threads",
+          "nombre": "Threads"
+        },
+        {
+          "id": "mastodon",
+          "nombre": "Mastodon"
+        },
+        {
+          "id": "wikitree",
+          "nombre": "WikiTree"
+        },
+        {
+          "id": "find-a-grave",
+          "nombre": "Find a Grave"
+        },
+        {
+          "id": "billiongraves",
+          "nombre": "BillionGraves"
+        },
+        {
+          "id": "schema-org",
+          "nombre": "schema.org"
+        },
+        {
+          "id": "wikidata",
+          "nombre": "Wikidata"
+        }
+      ]
     },
     {
-      "id": "gen.lector-perfiles",
+      "id": "gen.directorios",
       "plataforma": "genealogia",
-      "nombre": "Lectores de perfiles guardados y cruce de fallecidos",
-      "carpeta": "Parsing-fb-in-mas",
+      "nombre": "Importar directorios telefónicos históricos",
       "tipo": "interno",
-      "descripcion": "Lee páginas de perfil ya guardadas (redes sociales, WikiTree, Find a Grave, schema.org), volcados de Wikidata y respuestas de la API de WikiTree; propone cruces solo entre fallecidos. De una persona viva guarda solo nombre, titular, lugar y descripción. Todo queda para revisión humana.",
+      "origen": "repo",
+      "carpetas": [
+        "phone-directory"
+      ],
+      "descripcion": "Convierte directorios telefónicos históricos (6 idiomas) en registros, con búsqueda fonética.",
       "depende_de": [],
       "por_defecto": true
     },
     {
       "id": "gen.siluetas",
       "plataforma": "genealogia",
-      "nombre": "Siluetas de ancestros y árbol de ascendencia",
-      "carpeta": "siluetas-ancestrales",
+      "nombre": "Siluetas de ancestros",
       "tipo": "visual",
-      "descripcion": "Siluetas por edad, sexo, complexión y época, con catálogo de atuendos y colores por región, y un árbol de hasta cuatro generaciones. Es una aproximación histórica para ilustrar, no un estudio de indumentaria.",
+      "origen": "repo",
+      "carpetas": [
+        "siluetas-ancestrales"
+      ],
+      "descripcion": "Partes de la silueta que se muestran: atuendo, colores y árbol de ascendencia de hasta cuatro generaciones.",
       "depende_de": [],
-      "por_defecto": true
-    },
-    {
-      "id": "gen.iconos",
-      "plataforma": "genealogia",
-      "nombre": "Iconos del árbol genealógico",
-      "carpeta": "iconos-genealogia",
-      "tipo": "visual",
-      "descripcion": "207 iconos SVG 2.5D sin texto, en 3 variantes.",
-      "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "atuendo",
+          "nombre": "Atuendo"
+        },
+        {
+          "id": "colores",
+          "nombre": "Colores"
+        },
+        {
+          "id": "arbol",
+          "nombre": "Árbol de ascendencia"
+        }
+      ]
     },
     {
       "id": "gen.mortalidad",
       "plataforma": "genealogia",
-      "nombre": "Mortalidad histórica",
-      "carpeta": "mortalidad-historica",
+      "nombre": "Datos de mortalidad histórica",
       "tipo": "datos",
-      "descripcion": "Esperanza de vida por país y década (1800–2009), epidemias, glosario de causas de defunción en 20 idiomas y consultas en Python, PHP y JavaScript. Salvo la esperanza de vida, es borrador sin verificar.",
+      "origen": "repo",
+      "carpetas": [
+        "mortalidad-historica"
+      ],
+      "descripcion": "Qué datos de contexto se muestran al leer edades y causas de muerte de un antepasado.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "esperanza-de-vida",
+          "nombre": "Esperanza de vida"
+        },
+        {
+          "id": "epidemias",
+          "nombre": "Epidemias"
+        },
+        {
+          "id": "causas",
+          "nombre": "Glosario de causas"
+        },
+        {
+          "id": "hereditarias",
+          "nombre": "Enfermedades hereditarias"
+        },
+        {
+          "id": "registro-civil",
+          "nombre": "Registro civil"
+        }
+      ]
+    },
+    {
+      "id": "gen.paises",
+      "plataforma": "genealogia",
+      "nombre": "Mapa y tabla de países",
+      "tipo": "datos",
+      "origen": "repo",
+      "carpetas": [
+        "Listado-paises"
+      ],
+      "descripcion": "Cómo se muestran los 208 países.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "mapa",
+          "nombre": "Mapa"
+        },
+        {
+          "id": "tabla",
+          "nombre": "Tabla"
+        },
+        {
+          "id": "nacimientos-historicos",
+          "nombre": "Estimación de nacimientos históricos"
+        }
+      ]
     },
     {
       "id": "gen.marketing",
       "plataforma": "genealogia",
       "nombre": "Textos de marketing",
-      "carpeta": "marketing",
       "tipo": "contenido",
-      "descripcion": "Lemas, eslóganes, textos para redes sociales y correo, con dos scripts PHP sueltos para renderizar.",
+      "origen": "repo",
+      "carpetas": [
+        "marketing"
+      ],
+      "descripcion": "Qué piezas de texto se usan en el sitio y en los canales.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "lemas",
+          "nombre": "Lemas"
+        },
+        {
+          "id": "esloganes",
+          "nombre": "Eslóganes"
+        },
+        {
+          "id": "redes",
+          "nombre": "Redes sociales"
+        },
+        {
+          "id": "correo",
+          "nombre": "Correo"
+        }
+      ]
     },
     {
-      "id": "gen.bak-acceso",
+      "id": "gen.legal",
       "plataforma": "genealogia",
-      "nombre": "Backoffice: inicio de sesión",
-      "carpeta": "sistema-nuevo",
-      "tipo": "interno",
-      "descripcion": "Requiere iniciar sesión para entrar al panel de actividad de usuarios.",
+      "nombre": "Consulta de leyes",
+      "tipo": "datos",
+      "origen": "repo",
+      "carpetas": [
+        "privacy-laws",
+        "copyright-laws"
+      ],
+      "descripcion": "Bases de leyes que se pueden consultar. Informativas, no son asesoría legal.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "privacidad",
+          "nombre": "Privacidad"
+        },
+        {
+          "id": "derechos-de-autor",
+          "nombre": "Derechos de autor"
+        }
+      ]
     },
     {
-      "id": "gen.bak-flujo",
+      "id": "gen.filtro",
       "plataforma": "genealogia",
-      "nombre": "Backoffice: flujo cronológico de un usuario",
-      "carpeta": "sistema-nuevo",
-      "tipo": "interno",
-      "descripcion": "Cada acción de un usuario en orden, con su duración, su monto pagado, la ruta o archivo del backend que la atendió, y la IP de la sesión (país, hora local y proveedor).",
+      "nombre": "Filtro de contenido",
+      "tipo": "producto",
+      "origen": "repo",
+      "carpetas": [
+        "defamatory-content-review"
+      ],
+      "descripcion": "Revisa insultos, ridiculización, acusaciones y datos personales en lo que escribe la gente. Cada opción es una superficie.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "nombres",
+          "nombre": "Nombres y apellidos"
+        },
+        {
+          "id": "chat",
+          "nombre": "Mensajes de chat"
+        },
+        {
+          "id": "textos",
+          "nombre": "Textos libres"
+        }
+      ]
+    },
+    {
+      "id": "gen.retiros",
+      "plataforma": "genealogia",
+      "nombre": "Pedidos de retiro de información",
+      "tipo": "producto",
+      "origen": "repo",
+      "carpetas": [
+        "url-routing"
+      ],
+      "descripcion": "Recibe los pedidos de retiro. Cada texto pasa por el filtro de textos libres.",
       "depende_de": [
-        "gen.bak-acceso"
+        "gen.filtro:textos"
       ],
       "por_defecto": true
     },
     {
-      "id": "gen.bak-comparacion",
+      "id": "gen.backoffice",
       "plataforma": "genealogia",
-      "nombre": "Backoffice: comparación con el universo",
-      "carpeta": "sistema-nuevo",
+      "nombre": "Backoffice de actividad",
       "tipo": "interno",
-      "descripcion": "Compara cada acción con el promedio de un universo filtrable (grupos de países, edad, género, tipo de acción) y muestra percentiles.",
-      "depende_de": [
-        "gen.bak-acceso"
+      "origen": "repo",
+      "carpetas": [
+        "sistema-nuevo"
       ],
-      "por_defecto": true
-    },
-    {
-      "id": "gen.bak-kpis",
-      "plataforma": "genealogia",
-      "nombre": "Backoffice: KPIs y gráfico de evolución",
-      "carpeta": "sistema-nuevo",
-      "tipo": "interno",
-      "descripcion": "Dashboard de indicadores y gráfico de evolución temporal de la actividad.",
-      "depende_de": [
-        "gen.bak-acceso"
-      ],
-      "por_defecto": true
-    },
-    {
-      "id": "gen.bak-alertas",
-      "plataforma": "genealogia",
-      "nombre": "Backoffice: alertas proactivas",
-      "carpeta": "sistema-nuevo",
-      "tipo": "interno",
-      "descripcion": "Avisa, por ejemplo, de IPs que no coinciden con el país declarado, y permite configurar las alertas.",
-      "depende_de": [
-        "gen.bak-acceso"
-      ],
-      "por_defecto": true
+      "descripcion": "Panel del equipo para revisar la actividad de un usuario. Requiere iniciar sesión.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "flujo",
+          "nombre": "Flujo cronológico"
+        },
+        {
+          "id": "comparacion",
+          "nombre": "Comparación con el universo"
+        },
+        {
+          "id": "kpis",
+          "nombre": "KPIs y evolución"
+        },
+        {
+          "id": "alertas",
+          "nombre": "Alertas proactivas"
+        },
+        {
+          "id": "filtros",
+          "nombre": "Filtros guardados"
+        }
+      ]
     },
     {
       "id": "gen.bak-notas",
       "plataforma": "genealogia",
       "nombre": "Backoffice: notas por acción",
-      "carpeta": "sistema-nuevo",
       "tipo": "interno",
-      "descripcion": "Notas sobre cada acción, con su filtro y su registro. Pasan por el filtro de textos libres.",
+      "origen": "repo",
+      "carpetas": [
+        "sistema-nuevo"
+      ],
+      "descripcion": "Notas sobre cada acción. Pasan por el filtro de textos libres.",
       "depende_de": [
-        "gen.bak-acceso",
-        "gen.filtro-textos"
+        "gen.backoffice",
+        "gen.filtro:textos"
       ],
       "por_defecto": true
     },
     {
-      "id": "gen.bak-filtros",
+      "id": "gen.cobros",
       "plataforma": "genealogia",
-      "nombre": "Backoffice: filtros guardados y paginación",
-      "carpeta": "sistema-nuevo",
+      "nombre": "Cobros y cartera",
       "tipo": "interno",
-      "descripcion": "Paginación, filtro por tipo de acción y filtros guardados para reutilizar.",
-      "depende_de": [
-        "gen.bak-acceso"
+      "origen": "repo",
+      "carpetas": [
+        "cobros-ingresos-funnels"
       ],
-      "por_defecto": true
-    },
-    {
-      "id": "gen.bak-idioma",
-      "plataforma": "genealogia",
-      "nombre": "Backoffice: idioma de la interfaz",
-      "carpeta": "sistema-nuevo",
-      "tipo": "interno",
-      "descripcion": "Interfaz en español e inglés. Los nombres de usuario se leen bien en latino, japonés, árabe, hebreo, chino, coreano y cirílico.",
-      "depende_de": [
-        "gen.bak-acceso"
-      ],
-      "por_defecto": true
-    },
-    {
-      "id": "cob.ingresos-cartera",
-      "plataforma": "transversal",
-      "nombre": "Cobros: ingresos y cartera",
-      "carpeta": "cobros-ingresos-funnels",
-      "tipo": "interno",
-      "descripcion": "Ingresos devengados frente a cobros reales, y cartera pendiente con antigüedad de saldo (al día, 1–30, 31–60, 61+ días).",
-      "depende_de": [],
-      "por_defecto": true
-    },
-    {
-      "id": "cob.cobranza",
-      "plataforma": "transversal",
-      "nombre": "Cobros: cobranza cliente por cliente",
-      "carpeta": "cobros-ingresos-funnels",
-      "tipo": "interno",
-      "descripcion": "Quién debe, cuánto (total y vencido, en USD a la tasa de hoy), desde cuándo, con su correo y acceso directo a registrar el pago.",
-      "depende_de": [
-        "cob.ingresos-cartera"
-      ],
-      "por_defecto": true
-    },
-    {
-      "id": "cob.flujo",
-      "plataforma": "transversal",
-      "nombre": "Cobros: flujo de caja esperado",
-      "carpeta": "cobros-ingresos-funnels",
-      "tipo": "interno",
-      "descripcion": "Lo que falta cobrar, por mes de vencimiento, a 3, 6 o 12 meses.",
-      "depende_de": [
-        "cob.ingresos-cartera"
-      ],
-      "por_defecto": true
-    },
-    {
-      "id": "cob.tasas",
-      "plataforma": "transversal",
-      "nombre": "Cobros: tasas de cambio",
-      "carpeta": "cobros-ingresos-funnels",
-      "tipo": "interno",
-      "descripcion": "Tasa de hoy por moneda, cambio en 30 días e historial paginado. Las tasas las carga un comando aparte.",
-      "depende_de": [],
-      "por_defecto": true
-    },
-    {
-      "id": "cob.pagos",
-      "plataforma": "transversal",
-      "nombre": "Cobros: pagos por mes y método",
-      "carpeta": "cobros-ingresos-funnels",
-      "tipo": "interno",
-      "descripcion": "Pagos por mes y por método (transferencia, tarjeta, efectivo).",
-      "depende_de": [],
-      "por_defecto": true
-    },
-    {
-      "id": "cob.funnel",
-      "plataforma": "transversal",
-      "nombre": "Funnel de conversión",
-      "carpeta": "cobros-ingresos-funnels",
-      "tipo": "interno",
-      "descripcion": "Visitante → registrado → lead → cliente, con tasas por etapa, por canal de adquisición, país, género y rango de edad.",
-      "depende_de": [],
-      "por_defecto": true
-    },
-    {
-      "id": "cob.cohortes",
-      "plataforma": "transversal",
-      "nombre": "Cohortes de conversión",
-      "carpeta": "cobros-ingresos-funnels",
-      "tipo": "interno",
-      "descripcion": "Qué porcentaje de cada cohorte (mes de primera visita) llegó a cliente en 0, 1, 2 o 3 meses.",
-      "depende_de": [
-        "cob.funnel"
-      ],
-      "por_defecto": true
-    },
-    {
-      "id": "cob.segmentacion",
-      "plataforma": "transversal",
-      "nombre": "Segmentación de clientes",
-      "carpeta": "cobros-ingresos-funnels",
-      "tipo": "interno",
-      "descripcion": "Top de país, ciudad, idioma, género y rango de edad por facturación.",
-      "depende_de": [],
-      "por_defecto": true
-    },
-    {
-      "id": "cob.exportar",
-      "plataforma": "transversal",
-      "nombre": "Cobros: exportar a CSV",
-      "carpeta": "cobros-ingresos-funnels",
-      "tipo": "interno",
-      "descripcion": "Exporta a CSV algunas de sus pantallas (las tasas, entre ellas).",
-      "depende_de": [],
-      "por_defecto": true
-    },
-    {
-      "id": "lg.paises",
-      "plataforma": "transversal",
-      "nombre": "Listado de países",
-      "carpeta": "Listado-paises",
-      "tipo": "datos",
-      "descripcion": "208 países con población, IDH, PIB, alfabetización, internet y emigración; índices de interés para genealogía y de viabilidad para el etiquetador POS; estimación de nacimientos históricos; vista web con mapa.",
-      "depende_de": [],
-      "por_defecto": true
-    },
-    {
-      "id": "lg.leyes-privacidad",
-      "plataforma": "transversal",
-      "nombre": "Base de leyes de privacidad",
-      "carpeta": "privacy-laws",
-      "tipo": "por-confirmar",
-      "descripcion": "Leyes de privacidad por país con buscador web, API PHP y esquema MySQL. Informativa, no es asesoría legal.",
-      "depende_de": [],
-      "por_defecto": true
-    },
-    {
-      "id": "lg.leyes-derechos",
-      "plataforma": "transversal",
-      "nombre": "Base de leyes de derechos de autor",
-      "carpeta": "copyright-laws",
-      "tipo": "por-confirmar",
-      "descripcion": "Leyes de derechos de autor por jurisdicción con buscador web, API PHP y esquema MySQL. Informativa, no es asesoría legal.",
-      "depende_de": [],
-      "por_defecto": true
-    },
-    {
-      "id": "lg.formatos-papel",
-      "plataforma": "transversal",
-      "nombre": "Formatos de documento y papel por país",
-      "carpeta": "document-formats",
-      "tipo": "datos",
-      "descripcion": "Base de formatos de papel y documento por país, con equivalencias, CSV y una demo web.",
-      "depende_de": [],
-      "por_defecto": true
-    },
-    {
-      "id": "pos.urls",
-      "plataforma": "pos",
-      "nombre": "Enrutamiento del sitio POS (Contrastocolor)",
-      "carpeta": "url-routing",
-      "tipo": "producto",
-      "descripcion": "El mismo enrutador que el de genealogía, con su propio Host y su propia base de datos.",
+      "descripcion": "Panel de cobros: ingresos, cartera, cobranza, flujo, tasas y pagos.",
       "depende_de": [],
       "por_defecto": true,
-      "nota": "Comparte código con gen.urls: apagarlo por separado exige que el enrutador lea este interruptor."
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "ingresos-cartera",
+          "nombre": "Ingresos y cartera"
+        },
+        {
+          "id": "cobranza",
+          "nombre": "Cobranza"
+        },
+        {
+          "id": "flujo-caja",
+          "nombre": "Flujo de caja esperado"
+        },
+        {
+          "id": "tasas",
+          "nombre": "Tasas de cambio"
+        },
+        {
+          "id": "pagos-mes",
+          "nombre": "Pagos por mes y método"
+        },
+        {
+          "id": "exportar",
+          "nombre": "Exportar a CSV"
+        }
+      ]
     },
     {
-      "id": "pos.mb-v-generador",
-      "plataforma": "pos",
-      "nombre": "Marcalibros verticales: generador",
-      "carpeta": "marcalibros_b",
-      "tipo": "visual",
-      "descripcion": "Genera 2000 marcalibros verticales 1:7 (200×1400 px), de forma determinista e incremental, y los revisa en Chromium.",
+      "id": "gen.funnel",
+      "plataforma": "genealogia",
+      "nombre": "Funnel y cohortes",
+      "tipo": "interno",
+      "origen": "repo",
+      "carpetas": [
+        "cobros-ingresos-funnels"
+      ],
+      "descripcion": "Análisis de conversión de visitante a cliente.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "embudo",
+          "nombre": "Embudo de conversión"
+        },
+        {
+          "id": "cohortes",
+          "nombre": "Cohortes"
+        },
+        {
+          "id": "segmentacion",
+          "nombre": "Segmentación de clientes"
+        }
+      ]
+    },
+    {
+      "id": "pos.mb-v-movimientos",
+      "plataforma": "pos",
+      "nombre": "Marcalibros verticales: movimientos literarios",
+      "tipo": "visual",
+      "origen": "repo",
+      "carpetas": [
+        "marcalibros_b"
+      ],
+      "descripcion": "Movimientos del catálogo vertical 1:7 (200×1400 px). Cada uno sale con 10 o 15 autores.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 1,
+      "opciones": [
+        {
+          "id": "romanticismo",
+          "nombre": "Romanticismo"
+        },
+        {
+          "id": "gotico",
+          "nombre": "Gótico"
+        },
+        {
+          "id": "realismo-magico",
+          "nombre": "Realismo mágico"
+        },
+        {
+          "id": "realismo",
+          "nombre": "Realismo"
+        },
+        {
+          "id": "naturalismo",
+          "nombre": "Naturalismo"
+        },
+        {
+          "id": "modernismo",
+          "nombre": "Modernismo"
+        },
+        {
+          "id": "vanguardias",
+          "nombre": "Vanguardias"
+        },
+        {
+          "id": "barroco",
+          "nombre": "Barroco"
+        },
+        {
+          "id": "clasicismo",
+          "nombre": "Clasicismo"
+        },
+        {
+          "id": "simbolismo",
+          "nombre": "Simbolismo"
+        },
+        {
+          "id": "renacimiento",
+          "nombre": "Renacimiento"
+        },
+        {
+          "id": "ilustracion",
+          "nombre": "Ilustración"
+        },
+        {
+          "id": "expresionismo",
+          "nombre": "Expresionismo"
+        },
+        {
+          "id": "surrealismo",
+          "nombre": "Surrealismo"
+        },
+        {
+          "id": "oriente",
+          "nombre": "Literaturas de Oriente"
+        }
+      ]
     },
     {
       "id": "pos.mb-v-linea-marca",
       "plataforma": "pos",
       "nombre": "Marcalibros verticales: línea de marca",
-      "carpeta": "marcalibros_b",
       "tipo": "visual",
+      "origen": "repo",
+      "carpetas": [
+        "marcalibros_b"
+      ],
       "descripcion": "Logos, iconos y cabeceras de la línea de marca.",
       "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "logos",
+          "nombre": "Logos"
+        },
+        {
+          "id": "iconos",
+          "nombre": "Iconos"
+        },
+        {
+          "id": "cabeceras",
+          "nombre": "Cabeceras"
+        }
+      ]
+    },
+    {
+      "id": "pos.mb-v-editor",
+      "plataforma": "pos",
+      "nombre": "Editor de marcalibro propio (vertical)",
+      "tipo": "producto",
+      "origen": "repo",
+      "carpetas": [
+        "marcalibros_b"
+      ],
+      "descripcion": "Cada persona crea su marcalibro, con subidas de imagen seguras. El texto pasa por el filtro de textos libres.",
+      "depende_de": [
+        "gen.filtro:textos"
+      ],
       "por_defecto": true
     },
     {
       "id": "pos.mb-v-lector",
       "plataforma": "pos",
-      "nombre": "Marcalibros verticales: modelo de datos del lector",
-      "carpeta": "marcalibros_b",
+      "nombre": "Modelo de datos del lector",
       "tipo": "producto",
-      "descripcion": "Modelo de datos del lector de textos que usa los marcalibros.",
+      "origen": "repo",
+      "carpetas": [
+        "marcalibros_b"
+      ],
+      "descripcion": "Modelo de datos del lector de textos que usa los marcalibros verticales.",
       "depende_de": [],
       "por_defecto": true
     },
     {
-      "id": "pos.mb-v-editor",
+      "id": "pos.mb-h-movimientos",
       "plataforma": "pos",
-      "nombre": "Marcalibros verticales: editor de usuario",
-      "carpeta": "marcalibros_b",
-      "tipo": "producto",
-      "descripcion": "Editor donde cada persona crea su marcalibro, con subidas de imagen seguras.",
-      "depende_de": [
-        "gen.filtro-textos"
+      "nombre": "Marcalibros horizontales: movimientos literarios",
+      "tipo": "visual",
+      "origen": "repo",
+      "carpetas": [
+        "marcalibros-plataforma-pos-brand-identity"
       ],
+      "descripcion": "Once movimientos del catálogo horizontal 7:1 (1400×200 px).",
+      "depende_de": [],
       "por_defecto": true,
-      "nota": "El texto que escribe la persona pasa por el filtro (CLAUDE.md de la carpeta lo exige)."
+      "min_opciones": 1,
+      "opciones": [
+        {
+          "id": "romanticismo",
+          "nombre": "Romanticismo"
+        },
+        {
+          "id": "realismo",
+          "nombre": "Realismo"
+        },
+        {
+          "id": "naturalismo",
+          "nombre": "Naturalismo"
+        },
+        {
+          "id": "modernismo-hispano",
+          "nombre": "Modernismo hispanoamericano"
+        },
+        {
+          "id": "modernismo-anglo",
+          "nombre": "Modernismo anglosajón"
+        },
+        {
+          "id": "vanguardias",
+          "nombre": "Vanguardias"
+        },
+        {
+          "id": "gotico",
+          "nombre": "Gótico"
+        },
+        {
+          "id": "barroco",
+          "nombre": "Barroco"
+        },
+        {
+          "id": "clasicismo",
+          "nombre": "Clasicismo"
+        },
+        {
+          "id": "simbolismo",
+          "nombre": "Simbolismo"
+        },
+        {
+          "id": "realismo-magico",
+          "nombre": "Realismo mágico"
+        }
+      ]
+    },
+    {
+      "id": "pos.mb-h-tipos-texto",
+      "plataforma": "pos",
+      "nombre": "Marcalibros horizontales: tipos de texto",
+      "tipo": "visual",
+      "origen": "repo",
+      "carpetas": [
+        "marcalibros-plataforma-pos-brand-identity"
+      ],
+      "descripcion": "Dieciséis tipos de texto del catálogo horizontal.",
+      "depende_de": [],
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "manuales",
+          "nombre": "Manuales"
+        },
+        {
+          "id": "libros-sagrados",
+          "nombre": "Libros sagrados"
+        },
+        {
+          "id": "leyes",
+          "nombre": "Leyes"
+        },
+        {
+          "id": "cartas",
+          "nombre": "Cartas"
+        },
+        {
+          "id": "diarios",
+          "nombre": "Diarios"
+        },
+        {
+          "id": "tratados-cientificos",
+          "nombre": "Tratados científicos"
+        },
+        {
+          "id": "recetas",
+          "nombre": "Recetas"
+        },
+        {
+          "id": "filosofia",
+          "nombre": "Filosofía"
+        },
+        {
+          "id": "teatro",
+          "nombre": "Teatro"
+        },
+        {
+          "id": "viajes",
+          "nombre": "Viajes"
+        },
+        {
+          "id": "cuentos-leyendas",
+          "nombre": "Cuentos y leyendas"
+        },
+        {
+          "id": "poesia",
+          "nombre": "Poesía"
+        },
+        {
+          "id": "historia",
+          "nombre": "Historia"
+        },
+        {
+          "id": "periodismo",
+          "nombre": "Periodismo"
+        },
+        {
+          "id": "diccionarios",
+          "nombre": "Diccionarios y enciclopedias"
+        },
+        {
+          "id": "discursos",
+          "nombre": "Discursos"
+        }
+      ]
     },
     {
       "id": "pos.mb-h-propios",
       "plataforma": "pos",
       "nombre": "Marcalibros horizontales: marcalibros propios (PHP)",
-      "carpeta": "marcalibros-plataforma-pos-brand-identity",
       "tipo": "producto",
-      "descripcion": "Módulo PHP para crear marcalibros horizontales 7:1 (1400×200) a partir de imágenes subidas.",
+      "origen": "repo",
+      "carpetas": [
+        "marcalibros-plataforma-pos-brand-identity"
+      ],
+      "descripcion": "Módulo PHP para crear marcalibros a partir de imágenes subidas. Revisa el texto con el filtro de textos libres.",
       "depende_de": [
-        "gen.filtro-textos"
+        "gen.filtro:textos"
       ],
       "por_defecto": true
     },
     {
       "id": "pos.mb-h-app",
       "plataforma": "pos",
-      "nombre": "Marcalibros horizontales: aplicación web sin cuentas",
-      "carpeta": "marcalibros-plataforma-pos-brand-identity",
+      "nombre": "Aplicación web de marcalibros (sin cuentas)",
       "tipo": "producto",
-      "descripcion": "Aplicación independiente para explorar los 1350 marcalibros (11 movimientos y 16 tipos de texto) y crear los propios. Sin login; no está conectada a Plataforma POS.",
+      "origen": "repo",
+      "carpetas": [
+        "marcalibros-plataforma-pos-brand-identity"
+      ],
+      "descripcion": "Explorar los 1350 marcalibros y crear los propios. Independiente, sin login, sin conexión a Plataforma POS.",
       "depende_de": [
         "pos.mb-h-propios"
       ],
       "por_defecto": true
     },
     {
-      "id": "pos.mb-h-catalogo",
+      "id": "pos.mb-h-paisajes",
       "plataforma": "pos",
-      "nombre": "Marcalibros horizontales: catálogo y paisajes",
-      "carpeta": "marcalibros-plataforma-pos-brand-identity",
+      "nombre": "Paisajes y vista previa del catálogo horizontal",
       "tipo": "visual",
-      "descripcion": "Tokens de marca, iconos SVG, vista previa JPG del catálogo y paisajes JPG.",
+      "origen": "repo",
+      "carpetas": [
+        "marcalibros-plataforma-pos-brand-identity"
+      ],
+      "descripcion": "Paisajes JPG y la vista previa JPG del catálogo.",
       "depende_de": [],
       "por_defecto": true
     },
@@ -449,21 +1392,38 @@
       "id": "pos.chat-libros",
       "plataforma": "pos",
       "nombre": "Chat con un libro",
-      "carpeta": "chat-con-libros",
       "tipo": "producto",
-      "descripcion": "Chat con un libro en PHP y en Java, con sinónimos y un modo opcional con IA. Pendiente de fusionar (PR abierto).",
+      "origen": "pr_abierto",
+      "carpetas": [
+        "chat-con-libros"
+      ],
+      "descripcion": "Chat con un libro, en PHP y en Java. Sus opciones son sinónimos y un modo opcional con IA. Vive en el PR #603, sin fusionar.",
       "depende_de": [],
       "por_defecto": false,
-      "fuera_de_master": true,
-      "nota": "Vive en un PR abierto, no está en master. Por defecto apagado."
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "sinonimos",
+          "nombre": "Sinónimos",
+          "por_defecto": false
+        },
+        {
+          "id": "ia",
+          "nombre": "Modo con IA",
+          "por_defecto": false
+        }
+      ]
     },
     {
       "id": "pos.colores-lista",
       "plataforma": "pos",
       "nombre": "Léxico de colores: lista completa",
-      "carpeta": "Listado-colores",
       "tipo": "datos",
-      "descripcion": "31.935 nombres de color con su hex, y una marca de buenos nombres con su color CSS más cercano.",
+      "origen": "repo",
+      "carpetas": [
+        "Listado-colores"
+      ],
+      "descripcion": "31.935 nombres de color con su hex y su color CSS más cercano.",
       "depende_de": [],
       "por_defecto": true
     },
@@ -471,79 +1431,158 @@
       "id": "pos.colores-css",
       "plataforma": "pos",
       "nombre": "Léxico de colores: 148 colores CSS anotados",
-      "carpeta": "Listado-colores",
       "tipo": "datos",
-      "descripcion": "Tabla de los 148 colores CSS con dos significados (psicológico y místico) en 30 idiomas, y su evidencia y matices culturales.",
+      "origen": "repo",
+      "carpetas": [
+        "Listado-colores"
+      ],
+      "descripcion": "Significados psicológico y místico en 30 idiomas, con su evidencia.",
       "depende_de": [],
       "por_defecto": true
     },
     {
       "id": "pos.colores-categorias",
       "plataforma": "pos",
-      "nombre": "Léxico de colores: categorías gramaticales",
-      "carpeta": "Listado-colores",
+      "nombre": "Categorías gramaticales de los colores",
       "tipo": "datos",
-      "descripcion": "Categoría gramatical (adjetivo, sustantivo, nombre propio, verbo) de las palabras de color de una sola palabra en inglés y español, con frase de ejemplo. Es la base del etiquetado.",
+      "origen": "repo",
+      "carpetas": [
+        "Listado-colores"
+      ],
+      "descripcion": "Adjetivo, sustantivo, nombre propio o verbo, para las palabras de color de una sola palabra en inglés y español. Es la base del etiquetado.",
       "depende_de": [],
       "por_defecto": true
     },
     {
       "id": "pos.colores-exportes",
       "plataforma": "pos",
-      "nombre": "Léxico de colores: exportes para PLN",
-      "carpeta": "Listado-colores",
+      "nombre": "Exportes para PLN",
       "tipo": "datos",
-      "descripcion": "JSONL, TSV y SQLite; patrones de spaCy; léxico y ejemplos en Universal Dependencies; forma normalizada para texto ruidoso; manifiesto con la versión de los datos.",
+      "origen": "repo",
+      "carpetas": [
+        "Listado-colores"
+      ],
+      "descripcion": "Formatos de exporte del léxico para procesamiento de lenguaje natural.",
       "depende_de": [
         "pos.colores-lista"
       ],
-      "por_defecto": true
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "jsonl",
+          "nombre": "JSONL"
+        },
+        {
+          "id": "tsv",
+          "nombre": "TSV"
+        },
+        {
+          "id": "sqlite",
+          "nombre": "SQLite"
+        },
+        {
+          "id": "spacy",
+          "nombre": "Patrones de spaCy"
+        },
+        {
+          "id": "universal-dependencies",
+          "nombre": "Universal Dependencies"
+        }
+      ]
     },
     {
       "id": "pos.colores-informes",
       "plataforma": "pos",
-      "nombre": "Léxico de colores: informes de calidad",
-      "carpeta": "Listado-colores",
+      "nombre": "Informes de calidad del léxico",
       "tipo": "datos",
-      "descripcion": "Informes de ambigüedad (formas con más de un color), de nombres sospechosos, de cobertura y de auditoría de nombres completos.",
+      "origen": "repo",
+      "carpetas": [
+        "Listado-colores"
+      ],
+      "descripcion": "Informes generados sobre el léxico.",
       "depende_de": [
         "pos.colores-lista"
       ],
-      "por_defecto": true
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "ambiguedad",
+          "nombre": "Ambigüedad"
+        },
+        {
+          "id": "nombres-sospechosos",
+          "nombre": "Nombres sospechosos"
+        },
+        {
+          "id": "cobertura",
+          "nombre": "Cobertura"
+        },
+        {
+          "id": "auditoria",
+          "nombre": "Auditoría de nombres completos"
+        }
+      ]
     },
     {
       "id": "pos.colores-revision",
       "plataforma": "pos",
-      "nombre": "Léxico de colores: revisión por hablantes nativos",
-      "carpeta": "Listado-colores",
+      "nombre": "Revisión por hablantes nativos",
       "tipo": "interno",
-      "descripcion": "Registro de revisión por hablantes nativos, con su informe y su visor HTML. Todavía vacío.",
+      "origen": "repo",
+      "carpetas": [
+        "Listado-colores"
+      ],
+      "descripcion": "Registro y visor de revisión. Todavía vacío. El PR #595 lo marca @deprecated.",
       "depende_de": [
         "pos.colores-lista"
       ],
-      "por_defecto": false,
-      "nota": "El PR #595 (abierto) la marca @deprecated. Por defecto apagado."
+      "por_defecto": false
     },
     {
       "id": "pos.citas",
       "plataforma": "pos",
-      "nombre": "Citas coloreadas por categoría gramatical",
-      "carpeta": "citas-pos",
+      "nombre": "Citas coloreadas por categoría",
       "tipo": "contenido",
-      "descripcion": "Citas de autores de dominio público con cada palabra en el color de su categoría, para el sitio y el correo, y el juego «Adivina la categoría». Todavía no hay citas publicadas.",
+      "origen": "repo",
+      "carpetas": [
+        "citas-pos"
+      ],
+      "descripcion": "Dónde se muestran las citas coloreadas. Todavía no hay citas publicadas.",
       "depende_de": [
         "pos.colores-categorias"
       ],
       "por_defecto": false,
-      "nota": "Sin citas publicadas: por defecto apagado."
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "sitio",
+          "nombre": "Sitio",
+          "por_defecto": false
+        },
+        {
+          "id": "correo",
+          "nombre": "Correo",
+          "por_defecto": false
+        },
+        {
+          "id": "juego",
+          "nombre": "Juego «Adivina la categoría»",
+          "por_defecto": false
+        }
+      ]
     },
     {
       "id": "pos.iconos-pos",
       "plataforma": "pos",
       "nombre": "Iconos del punto de venta",
-      "carpeta": "iconos-pos",
       "tipo": "visual",
-      "descripcion": "23 iconos SVG 2.5D: catálogo, pedidos, cuenta del cliente, carrito y pago.",
+      "origen": "repo",
+      "carpetas": [
+        "iconos-pos"
+      ],
+      "descripcion": "23 iconos: catálogo, pedidos, cuenta, carrito y pago.",
       "depende_de": [],
       "por_defecto": true
     },
@@ -551,9 +1590,12 @@
       "id": "pos.iconos-biblioteca",
       "plataforma": "pos",
       "nombre": "Iconos de biblioteca virtual",
-      "carpeta": "iconos-biblioteca",
       "tipo": "visual",
-      "descripcion": "151 iconos SVG 2.5D para biblioteca virtual, en 3 variantes.",
+      "origen": "repo",
+      "carpetas": [
+        "iconos-biblioteca"
+      ],
+      "descripcion": "151 iconos de biblioteca virtual.",
       "depende_de": [],
       "por_defecto": true
     },
@@ -561,11 +1603,33 @@
       "id": "pos.portadas",
       "plataforma": "pos",
       "nombre": "Portadas de libro en SVG",
-      "carpeta": "portadas-svg",
       "tipo": "visual",
-      "descripcion": "Portada, contratapa, lomo y cubierta completa a partir de un JSON o de una lista CSV; fuentes libres incrustadas; medidas de corte para imprenta.",
+      "origen": "repo",
+      "carpetas": [
+        "portadas-svg"
+      ],
+      "descripcion": "Piezas de la cubierta de un libro, con medidas de corte para imprenta.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "portada",
+          "nombre": "Portada"
+        },
+        {
+          "id": "contratapa",
+          "nombre": "Contratapa"
+        },
+        {
+          "id": "lomo",
+          "nombre": "Lomo"
+        },
+        {
+          "id": "cubierta-completa",
+          "nombre": "Cubierta completa"
+        }
+      ]
     }
   ],
   "fuera_del_interruptor": [
@@ -592,6 +1656,10 @@
     {
       "carpeta": "leyes-comunes",
       "motivo": "Código compartido de las dos bases de leyes; no es una función."
+    },
+    {
+      "carpeta": "document-formats",
+      "motivo": "Formatos de papel por país. Sin plataforma asignada: a confirmar si va en B (impresión de libros) o en A."
     },
     {
       "carpeta": "vps-setup",

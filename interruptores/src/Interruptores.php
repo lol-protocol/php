@@ -7,19 +7,28 @@ namespace LolProtocol\Interruptores;
 require_once __DIR__ . '/Excepciones.php';
 
 /**
- * Interruptores de funciones: qué está encendido y qué está apagado.
+ * Interruptores de funciones y de sus opciones.
  *
- * El catálogo (catalogo.json) dice qué funciones existen y de qué dependen.
- * El estado (var/estado.json) guarda solo si cada una está encendida.
- * Una función sin entrada en el estado usa su valor por defecto del catálogo.
+ * Una «referencia» (ref) es el id de una función, p. ej. `gen.vistas`,
+ * o el de una opción de ella, p. ej. `gen.vistas:abanico`.
+ *
+ * - El catálogo (catalogo.json) dice qué existe y de qué depende cada cosa.
+ * - El estado (var/estado.json) guarda solo los interruptores que no están en su
+ *   valor por defecto. Las claves son refs.
+ *
+ * Estado efectivo (lo que el sitio debe usar):
+ *  - una función está encendida si su interruptor lo está;
+ *  - una opción está encendida si su función lo está Y su propio interruptor lo está.
  *
  * Reglas (las mismas que aplica el panel):
- *  - no se enciende una función si alguna de las que necesita está apagada;
- *  - no se apaga una función si alguna encendida la necesita.
+ *  - no se enciende una función si alguna de sus dependencias no está encendida
+ *    (las dependencias pueden ser funciones u opciones);
+ *  - no se apaga algo si una función encendida lo necesita;
+ *  - una función con `min_opciones` no puede quedarse sin ese mínimo de opciones encendidas.
  */
 final class Interruptores
 {
-    /** @var array<string, array<string, mixed>> */
+    /** @var array<string, array<string, mixed>> id de función => definición */
     private array $funciones = [];
 
     /** @var array<string, string> */
@@ -44,91 +53,227 @@ final class Interruptores
         return $this->plataformas;
     }
 
-    /** @return array<string, bool> id => encendida */
-    public function estados(): array
+    /** Número de interruptores: funciones más opciones. */
+    public function totalInterruptores(): int
     {
-        $guardado = $this->leerEstado();
+        $n = 0;
+        foreach ($this->funciones as $f) {
+            $n += 1 + count($f['opciones']);
+        }
+        return $n;
+    }
+
+    /**
+     * Interruptor propio de cada ref (sin tener en cuenta la función padre).
+     *
+     * @return array<string, bool>
+     */
+    public function interruptores(): array
+    {
         $salida = [];
-        foreach ($this->funciones as $id => $f) {
-            $salida[$id] = $guardado[$id] ?? (bool) $f['por_defecto'];
+        $guardado = $this->leerEstado();
+        foreach ($this->todasLasRefs() as $ref) {
+            $salida[$ref] = $guardado[$ref] ?? $this->valorPorDefecto($ref);
         }
         return $salida;
     }
 
     /**
-     * @throws UnknownInterruptor si el id no existe en el catálogo.
+     * Estado efectivo de una ref: si el sitio la debe usar.
+     *
+     * @throws UnknownInterruptor si la ref no existe.
      */
-    public function activo(string $id): bool
+    public function activo(string $ref): bool
     {
-        $this->exigirExiste($id);
-        $guardado = $this->leerEstado();
-        return $guardado[$id] ?? (bool) $this->funciones[$id]['por_defecto'];
+        [$id, $opcion] = $this->partir($ref);
+        $propio = $this->propio($ref);
+        if ($opcion === null) {
+            return $propio;
+        }
+        return $propio && $this->propio($id);
     }
 
     /**
-     * Funciones que hay que encender antes de encender $id y que están apagadas.
+     * Refs que hay que encender antes de encender $ref (y que hoy están apagadas).
      *
      * @return list<string>
      */
-    public function faltanParaEncender(string $id): array
+    public function faltanParaEncender(string $ref): array
     {
-        $this->exigirExiste($id);
-        $estados = $this->estados();
+        [$id, $opcion] = $this->partir($ref);
         $faltan = [];
-        foreach ($this->funciones[$id]['depende_de'] as $dep) {
-            if (!$estados[$dep]) {
-                $faltan[] = $dep;
+        if ($opcion === null) {
+            foreach ($this->funciones[$id]['depende_de'] as $dep) {
+                if (!$this->activo($dep)) {
+                    $faltan[] = $dep;
+                }
             }
         }
         return $faltan;
     }
 
     /**
-     * Funciones encendidas que necesitan $id, y que quedarían rotas si se apaga.
+     * Funciones encendidas que necesitan $ref, y que quedarían rotas si se apaga.
      *
-     * @return list<string>
+     * @return list<string> ids de función
      */
-    public function dependientesActivos(string $id): array
+    public function dependientesActivos(string $ref): array
     {
-        $this->exigirExiste($id);
-        $estados = $this->estados();
+        $this->partir($ref);
         $afectadas = [];
-        foreach ($this->funciones as $otro => $f) {
-            if ($estados[$otro] && in_array($id, $f['depende_de'], true)) {
-                $afectadas[] = $otro;
+        foreach ($this->funciones as $id => $f) {
+            if (!$this->activo($id)) {
+                continue;
+            }
+            foreach ($f['depende_de'] as $dep) {
+                if ($this->afecta($ref, $dep)) {
+                    $afectadas[] = $id;
+                    break;
+                }
             }
         }
         return $afectadas;
     }
 
     /**
-     * Enciende o apaga una función y guarda el estado.
+     * Enciende o apaga una ref y guarda el estado.
      *
-     * @throws UnknownInterruptor si el id no existe.
-     * @throws DependenciaRota si el cambio dejaría una dependencia rota.
+     * @throws UnknownInterruptor si la ref no existe.
+     * @throws DependenciaRota si el cambio dejaría algo roto.
      */
-    public function cambiar(string $id, bool $encendido): void
+    public function cambiar(string $ref, bool $encendido): void
     {
-        $this->exigirExiste($id);
+        [$id, $opcion] = $this->partir($ref);
+
         if ($encendido) {
-            $faltan = $this->faltanParaEncender($id);
+            $faltan = $this->faltanParaEncender($ref);
             if ($faltan !== []) {
                 throw new DependenciaRota(
-                    "«{$id}» necesita encendidas: " . implode(', ', $faltan) . '.'
+                    "«{$ref}» necesita encendidas: " . implode(', ', $faltan) . '.'
+                );
+            }
+            if ($opcion === null && $this->minimoSinCubrir($id, null)) {
+                throw new DependenciaRota(
+                    "«{$id}» necesita al menos {$this->funciones[$id]['min_opciones']} opción(es) encendida(s)."
                 );
             }
         } else {
-            $dependientes = $this->dependientesActivos($id);
+            $dependientes = $this->dependientesActivos($ref);
             if ($dependientes !== []) {
                 throw new DependenciaRota(
-                    "«{$id}» no se puede apagar mientras estén encendidas: " . implode(', ', $dependientes) . '.'
+                    "«{$ref}» no se puede apagar mientras estén encendidas: " . implode(', ', $dependientes) . '.'
+                );
+            }
+            // El mínimo solo rige mientras la función está encendida.
+            if ($opcion !== null && $this->propio($id) && $this->minimoSinCubrir($id, $opcion)) {
+                throw new DependenciaRota(
+                    "«{$id}» necesita al menos {$this->funciones[$id]['min_opciones']} opción(es) encendida(s): no se puede apagar «{$opcion}»."
                 );
             }
         }
 
         $estado = $this->leerEstado();
-        $estado[$id] = $encendido;
+        $estado[$ref] = $encendido;
         $this->escribirEstado($estado);
+    }
+
+    // --- internas --------------------------------------------------------------
+
+    /** Interruptor propio de una ref (lo que dice el estado o el catálogo). */
+    private function propio(string $ref): bool
+    {
+        $guardado = $this->leerEstado();
+        return $guardado[$ref] ?? $this->valorPorDefecto($ref);
+    }
+
+    private function valorPorDefecto(string $ref): bool
+    {
+        [$id, $opcion] = $this->partir($ref);
+        if ($opcion === null) {
+            return (bool) $this->funciones[$id]['por_defecto'];
+        }
+        foreach ($this->funciones[$id]['opciones'] as $o) {
+            if ($o['id'] === $opcion) {
+                return (bool) $o['por_defecto'];
+            }
+        }
+        return false; // no se llega aquí: partir() ya validó la opción
+    }
+
+    /**
+     * ¿Apagar $ref (o encenderla, si $encendido) deja una dependencia $dep sin efecto?
+     * Una dependencia de función se ve afectada si es la misma ref o, si $ref es una
+     * función, cualquiera de sus opciones.
+     */
+    private function afecta(string $ref, string $dep): bool
+    {
+        if ($dep === $ref) {
+            return true;
+        }
+        if (!str_contains($ref, ':')) {
+            return str_starts_with($dep, $ref . ':');
+        }
+        return false;
+    }
+
+    /**
+     * ¿Tendría $id menos opciones encendidas que su mínimo?
+     * Si $opcionQueSeApaga no es null, se cuenta como si ya estuviera apagada.
+     */
+    private function minimoSinCubrir(string $id, ?string $opcionQueSeApaga): bool
+    {
+        $min = (int) $this->funciones[$id]['min_opciones'];
+        if ($min === 0) {
+            return false;
+        }
+        $on = 0;
+        foreach ($this->funciones[$id]['opciones'] as $o) {
+            $ref = "{$id}:{$o['id']}";
+            $estaOn = $this->propio($ref);
+            if ($o['id'] === $opcionQueSeApaga) {
+                $estaOn = false;
+            }
+            $on += $estaOn ? 1 : 0;
+        }
+        return $on < $min;
+    }
+
+    /** @return list<string> */
+    private function todasLasRefs(): array
+    {
+        $refs = [];
+        foreach ($this->funciones as $id => $f) {
+            $refs[] = $id;
+            foreach ($f['opciones'] as $o) {
+                $refs[] = "{$id}:{$o['id']}";
+            }
+        }
+        return $refs;
+    }
+
+    /**
+     * Separa una ref en [id, opción|null] y valida que exista.
+     *
+     * @return array{0: string, 1: ?string}
+     * @throws UnknownInterruptor
+     */
+    private function partir(string $ref): array
+    {
+        $partes = explode(':', $ref, 2);
+        $id = $partes[0];
+        if (!isset($this->funciones[$id])) {
+            throw new UnknownInterruptor("No hay ninguna función «{$id}» en el catálogo.");
+        }
+        if (count($partes) === 1) {
+            return [$id, null];
+        }
+        $opcion = $partes[1];
+        foreach ($this->funciones[$id]['opciones'] as $o) {
+            if ($o['id'] === $opcion) {
+                return [$id, $opcion];
+            }
+        }
+        throw new UnknownInterruptor("No hay ninguna opción «{$opcion}» en «{$id}».");
     }
 
     private function cargarCatalogo(): void
@@ -145,30 +290,47 @@ final class Interruptores
         $this->plataformas = $datos['plataformas'];
         foreach ($datos['funciones'] as $f) {
             $id = (string) ($f['id'] ?? '');
-            if ($id === '' || isset($this->funciones[$id])) {
-                throw new \RuntimeException("Id de función vacío o repetido: «{$id}».");
+            if ($id === '' || str_contains($id, ':') || isset($this->funciones[$id])) {
+                throw new \RuntimeException("Id de función vacío, repetido o con «:»: «{$id}».");
             }
             if (!isset($this->plataformas[$f['plataforma'] ?? ''])) {
                 throw new \RuntimeException("«{$id}» apunta a una plataforma que no existe.");
             }
+            $opciones = [];
+            foreach ($f['opciones'] ?? [] as $o) {
+                $oid = (string) ($o['id'] ?? '');
+                if ($oid === '' || str_contains($oid, ':') || isset($opciones[$oid])) {
+                    throw new \RuntimeException("Opción vacía, repetida o con «:» en «{$id}»: «{$oid}».");
+                }
+                $opciones[$oid] = [
+                    'id' => $oid,
+                    'nombre' => (string) ($o['nombre'] ?? $oid),
+                    'por_defecto' => (bool) ($o['por_defecto'] ?? true),
+                ];
+            }
+            $f['opciones'] = array_values($opciones);
             $f['depende_de'] = array_values($f['depende_de'] ?? []);
             $f['por_defecto'] = (bool) ($f['por_defecto'] ?? true);
+            $f['min_opciones'] = (int) ($f['min_opciones'] ?? 0);
+            if ($f['min_opciones'] > count($f['opciones'])) {
+                throw new \RuntimeException("«{$id}» pide {$f['min_opciones']} opciones pero tiene " . count($f['opciones']) . '.');
+            }
+            $f['origen'] = (string) ($f['origen'] ?? 'repo');
+            $f['carpetas'] = array_values($f['carpetas'] ?? []);
             $this->funciones[$id] = $f;
         }
 
         foreach ($this->funciones as $id => $f) {
             foreach ($f['depende_de'] as $dep) {
-                if (!isset($this->funciones[$dep]) || $dep === $id) {
-                    throw new \RuntimeException("«{$id}» depende de «{$dep}», que no existe o es ella misma.");
+                if ($dep === $id) {
+                    throw new \RuntimeException("«{$id}» depende de sí misma.");
+                }
+                try {
+                    $this->partir($dep);
+                } catch (UnknownInterruptor) {
+                    throw new \RuntimeException("«{$id}» depende de «{$dep}», que no existe.");
                 }
             }
-        }
-    }
-
-    private function exigirExiste(string $id): void
-    {
-        if (!isset($this->funciones[$id])) {
-            throw new UnknownInterruptor("No hay ninguna función «{$id}» en el catálogo.");
         }
     }
 
@@ -183,11 +345,12 @@ final class Interruptores
         if (!is_array($datos)) {
             throw new \RuntimeException("El estado está dañado: {$this->rutaEstado}");
         }
+        $validas = array_flip($this->todasLasRefs());
         $salida = [];
-        foreach ($datos as $id => $valor) {
-            // Se ignoran los ids que ya no están en el catálogo.
-            if (isset($this->funciones[$id]) && is_bool($valor)) {
-                $salida[(string) $id] = $valor;
+        foreach ($datos as $ref => $valor) {
+            // Las refs que ya no existen en el catálogo se ignoran.
+            if (isset($validas[(string) $ref]) && is_bool($valor)) {
+                $salida[(string) $ref] = $valor;
             }
         }
         return $salida;

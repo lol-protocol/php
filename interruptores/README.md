@@ -1,66 +1,112 @@
 # Interruptores
 
-Un interruptor por función, agrupados en dos plataformas: **A) Genealogía** y **B) Librería y etiquetado POS**. Un panel interno permite encender y apagar cada una. Es, en esencia, una mesa de mezclas: cada canal es una función, y algunos canales necesitan que otros estén encendidos.
+Un interruptor por función y, cuando la función tiene variantes, uno por cada variante. Están agrupados en dos plataformas: **A) Genealogía** y **B) Librería y etiquetado POS**. Un panel interno permite encenderlos y apagarlos.
 
-- [`FUNCIONES.md`](FUNCIONES.md): el listado de las 51 funciones, con su carpeta, su tipo, su valor por defecto y sus dependencias. Se genera.
-- [`catalogo.json`](catalogo.json): la fuente de verdad. Lo que está aquí es lo que existe en el panel.
-- `src/`: la clase `Interruptores` (leer el estado, encender, apagar, validar dependencias).
-- `panel/index.php`: el panel interno, con un botón por función.
-- `bin/generar.php`: genera `FUNCIONES.md` (`--comprobar` falla si no está al día).
-- `pruebas/ejecutar.php`: las pruebas.
+Es una mesa de mezclas: cada **canal** es una función, y cada canal puede tener **sub-canales** (opciones). Algunos canales dependen de otros.
+
+| | Funciones | Opciones | Interruptores |
+|---|---|---|---|
+| A) Genealogía | 32 | 140 | 172 |
+| B) Librería y etiquetado POS | 20 | 63 | 83 |
+| **Total** | **52** | **203** | **255** |
+
+Cifras de `FUNCIONES.md`, que es el listado completo: cada función, sus opciones, su origen y sus dependencias.
+
+## Vocabulario
+
+- **Función**: un canal. Tiene su propio interruptor. Ejemplo: `gen.vistas` (Modos de visualización del árbol).
+- **Opción**: un sub-canal de una función. Ejemplo: `gen.vistas:abanico`. Su interruptor es independiente del de su función.
+- **Referencia (ref)**: el id de una función (`gen.vistas`) o de una opción (`gen.vistas:abanico`). Es lo que usan el código, el panel y el estado.
+
+Estado que usa el sitio:
+
+- Una **función** está encendida si su interruptor lo está.
+- Una **opción** está encendida solo si su función también lo está **y** su propio interruptor lo está. Apagar «Perritos y gatitos» apaga los dos, pero conserva lo que cada uno tenía.
+
+## Ejemplos del catálogo
+
+- **Modos de visualización** (`gen.vistas`): 14 opciones (circular, abanico, árbol, pedigrí…). Mínimo 1: no puede quedar el árbol sin ninguna forma de dibujarse.
+- **Medios de pago** (`gen.pagos`): transferencia, tarjeta y efectivo. Mínimo 1.
+- **Perritos y gatitos** (`gen.mascotas`): dos interruptores independientes.
+- **Pedidos de retiro** (`gen.retiros`): depende de la opción `gen.filtro:textos`. No se puede encender mientras la opción de textos del filtro esté apagada.
 
 ## Probar
 
 ```bash
-php pruebas/ejecutar.php            # 28 pruebas
+php pruebas/ejecutar.php            # 44 pruebas
 php bin/generar.php --comprobar     # FUNCIONES.md al día
 ```
 
-No necesita Composer ni base de datos. El estado se guarda en `var/estado.json`, que está fuera de git (`var/.gitignore`).
+No necesita Composer ni base de datos. El estado se guarda en `var/estado.json`, fuera de git (`var/.gitignore`).
 
-## El panel
+## Estructura
 
-El panel **no se publica**. No pongas `panel/` detrás de un servidor público: que lo sirva solo una red interna, o un VPN, o un servidor con autenticación delante.
+- [`catalogo.json`](catalogo.json): la fuente de verdad. Lo que está aquí es lo que existe en el panel.
+- [`FUNCIONES.md`](FUNCIONES.md): listado generado desde el catálogo. No se edita a mano.
+- `src/Interruptores.php`: la clase. Lee el estado, enciende y apaga, y aplica las reglas.
+- `src/Excepciones.php`: `UnknownInterruptor` (la ref no existe) y `DependenciaRota` (el cambio dejaría algo roto).
+- `panel/index.php`: el panel interno.
+- `bin/generar.php`: genera `FUNCIONES.md`.
+- `pruebas/ejecutar.php`: las pruebas.
+
+## Reglas
+
+1. **No se enciende** una función si alguna de sus dependencias no está encendida. Las dependencias pueden ser funciones u opciones.
+2. **No se apaga** una función ni una opción mientras una función encendida la necesite. Si una dependencia apunta a una función, también la protege cada una de sus opciones.
+3. **Mínimo de opciones**: si la función tiene `min_opciones`, no puede quedar con menos opciones encendidas mientras esté encendida. No se puede apagar la última opción, ni encender la función sin ninguna.
+4. Para apagar una cadena completa, hay que apagar primero lo que depende de ella. `apagarEnCascada()` en las pruebas muestra el orden.
+
+## Usarlo desde un proyecto
+
+```php
+require_once __DIR__ . '/../interruptores/src/Interruptores.php';
+use LolProtocol\Interruptores\Interruptores;
+
+$int = new Interruptores(__DIR__ . '/../interruptores/catalogo.json',
+                         __DIR__ . '/../interruptores/var/estado.json');
+
+if ($int->activo('gen.vistas:abanico')) {
+    // mostrar el modo abanico
+}
+```
+
+El estado se lee del archivo en cada llamada. Es sencillo, y para un sitio con mucho tráfico conviene cachearlo.
+
+**Todavía nadie lo usa.** Apagar un canal en el panel no apaga nada en el sitio. Enchufar cada proyecto es el siguiente paso, un PR por carpeta.
+
+## Panel
+
+El panel **no se publica**. Que lo sirva solo una red interna, o un VPN, o un servidor con autenticación delante.
 
 ```bash
 INTERRUPTORES_CLAVE='una-clave-larga' php -S 127.0.0.1:8080 -t panel
 ```
 
-Sin `INTERRUPTORES_CLAVE` el panel no arranca. La sesión usa cookies `HttpOnly` y `SameSite=Strict`; cada acción lleva un token CSRF; la clave se compara con `hash_equals`; un intento fallido espera 0,4 s. Es una sola clave compartida: ver «Lo que falta».
+Sin `INTERRUPTORES_CLAVE` no arranca. La sesión usa cookies `HttpOnly` y `SameSite=Strict`; cada acción lleva un token CSRF; la clave se compara con `hash_equals`; un intento fallido espera 0,4 s. Es una sola clave compartida.
 
-## Reglas de dependencia
+Cada función es una tarjeta con su interruptor y, debajo, un botón por opción. Un botón bloqueado muestra el motivo: qué le falta, o qué la necesita.
 
-Cada función puede necesitar otras (`depende_de`):
+## Añadir una función o una opción
 
-- **No se enciende** una función si alguna de las que necesita está apagada. El panel muestra cuáles.
-- **No se apaga** una función mientras una encendida la necesite. El panel muestra quiénes la necesitan.
+1. Edita `catalogo.json`. Una función lleva `id` (`plataforma.nombre`), `plataforma`, `nombre`, `tipo`, `origen`, `carpetas`, `descripcion`, `depende_de`, `por_defecto`, y opcionalmente `min_opciones` y `opciones`.
+2. `origen`:
+   - `repo`: su código está en una carpeta de este repositorio; las pruebas comprueban que la carpeta exista.
+   - `fuera_del_repo`: vive en la aplicación principal, que no está aquí.
+   - `pr_abierto`: su carpeta todavía está en un PR sin fusionar.
+3. Corre `php bin/generar.php` y `php pruebas/ejecutar.php`.
 
-Para apagar una cadena completa hay que apagar primero lo de arriba: por ejemplo, para apagar `gen.filtro-textos` hay que apagar antes `gen.retiros`, `gen.bak-notas`, `pos.mb-v-editor` y `pos.mb-h-propios`, y a su vez `pos.mb-h-app` antes de `pos.mb-h-propios`. La prueba `apagarEnCascada()` muestra el orden.
-
-Las dependencias del catálogo son solo las que el propio interruptor debe proteger. Las dependencias de biblioteca (por ejemplo, que `defamatory-content-review/` esté en el `composer.json` de `phone-directory/`) no son interruptores: van en el código.
-
-## Añadir una función
-
-1. Agrega su entrada en `catalogo.json`: `id` único (`plataforma.nombre`), `plataforma`, `nombre`, `carpeta` (que debe existir en el repo, salvo que tenga `"fuera_de_master": true`), `tipo`, `descripcion`, `depende_de` y `por_defecto`.
-2. Corre `php bin/generar.php` para regenerar `FUNCIONES.md`.
-3. Corre `php pruebas/ejecutar.php`.
-
-## Qué hace hoy y qué no
-
-**Hace hoy:** guarda el estado, valida las dependencias, y el panel lo muestra y lo cambia.
-
-**No hace todavía:** nadie lee el estado. Ninguno de los proyectos consulta `Interruptores::activo()`, así que apagar un canal en el panel **no apaga nada** en el sitio. Eso es el siguiente paso, proyecto por proyecto, cada uno en su PR (la regla del repo es un PR por carpeta).
+Las pruebas rechazan un catálogo con ids repetidos, con `:` en un id, con una dependencia a algo que no existe o a sí mismo, con un mínimo mayor que el número de opciones, o con una plataforma que no existe.
 
 ## Lo que falta
 
-Ver la lista completa de ideas en la conversación; estas son las que hacen falta antes de usar el panel en serio:
-
-- **Quién lee el estado.** Un punto de integración en cada proyecto (por ejemplo, un `if (Interruptores::activo('gen.bak-notas'))`) y decidir qué pasa con una función apagada: ocultarla, responder «no disponible» o redirigir.
+- **Listado final.** El listado actual sale de lo que hay en el repositorio. Genealogía tiene aquí 32 funciones y no las ~40 que se mencionaron, y Biblioteca POS tiene 20. Hay que contrastarlo con la lista real de funciones y añadir las que falten.
+- **Qué hace «Perritos y gatitos».** Está como dos interruptores, pero su efecto en el sitio no está definido.
+- **Decisión de privacidad.** ¿Qué pasa con la protección de personas que podrían estar vivas al importar fuentes externas o directorios? El catálogo no las ata a ninguna función; eso es una decisión de la persona (ver `PRIVACIDAD-Y-HONRA.md`).
+- **Quién lee el estado.** Un punto de integración en cada proyecto y una regla para lo que ve el usuario cuando algo está apagado: ocultarlo, mostrar «no disponible» o redirigir.
 - **Registro de cambios.** Quién apagó qué y cuándo. Hoy el estado solo guarda el valor actual.
 - **Usuarios y permisos** en vez de una clave compartida.
-- **Decisiones de la persona:** qué apaga el «filtro de textos» en la práctica. Si se apaga, ¿los pedidos de retiro se aceptan sin revisión, o se rechazan? Eso es una decisión de privacidad y honra (ver `PRIVACIDAD-Y-HONRA.md`), no de código.
-- **Por confirmar:** a qué plataforma sirven `cobros-ingresos-funnels`, `privacy-laws`, `copyright-laws`, `document-formats` y `Listado-paises`. Están como «transversal» hasta que alguien lo diga.
-- **Dos carpetas que dependen de un PR abierto:** `chat-con-libros` (PR #603) no está en `master`, y `pos.colores-revision` depende de la decisión del PR #595.
+- **A confirmar de plataforma:** `document-formats` está fuera del interruptor; no se sabe si va en A o en B.
+- **Dos PR abiertos:** `chat-con-libros` (PR #603) no está en `master`, y `pos.colores-revision` depende de la decisión del PR #595.
 
 ## Convenciones
 
