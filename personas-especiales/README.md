@@ -18,7 +18,7 @@ La decisión de no guardar categorías está en
 [`PRIVACIDAD-Y-HONRA.md`](../PRIVACIDAD-Y-HONRA.md) y en el plan que se acordó
 para este módulo.
 
-## Estado: Fase 1 (modelo) y Fase 2 (política de visibilidad y revisión por apellido)
+## Estado: modelo, política de visibilidad, revisión por apellido, auditoría y migraciones
 
 **La política ya restringe**: una persona con una exclusión activa no se conecta,
 no se muestra en listas y no sale en una exportación. La coincidencia por apellido
@@ -31,16 +31,33 @@ existe pero solo marca para revisión (ver más abajo).
 | `src/Solicitante.php` | `persona`, `familiar_fallecido`, `apoderado`. |
 | `src/Visibilidad.php` | La política: `esVisible`, `puedeConectar`, `puedeExportar` y `filtrar` (quita excluidas de una lista, sin cambiar el orden). Solo dice sí o no, sin decir por qué. |
 | `src/Coincidencias.php` | Compara apellidos normalizados para revisión humana. No oculta a nadie. |
-| `src/RegistroExclusiones.php` | Interfaz del registro: `activasDe` y `guardar`. |
-| `src/RegistroPdo.php` | Implementación sobre la tabla `exclusion` (PostgreSQL). |
+| `src/RegistroExclusiones.php` | Interfaz del registro: `activasDe`, `conExclusionActiva` (por lote, para listas largas), `porId` y `guardar`. |
+| `src/RegistroPdo.php` | Implementación sobre la tabla `exclusion` (PostgreSQL). Dentro de una transacción, `porId` bloquea la fila (`FOR UPDATE`). |
 | `src/RegistroEnMemoria.php` | Implementación sin base de datos, para pruebas. |
-| `database/esquema.sql` | Tabla `exclusion` en PostgreSQL, con `CHECK` de longitudes y estados, y de que una activa tenga prueba. |
+| `src/Gestion.php` | El camino de una solicitud: aplica la transición, la guarda y deja el evento de auditoría. Con un `PDO`, las tres cosas van en una transacción. |
+| `src/Evento.php`, `src/TipoEvento.php`, `src/Auditoria.php` | Un hecho de la auditoría: quién (identificador opaco), qué y cuándo. No lleva razones ni pruebas. |
+| `src/AuditoriaPdo.php`, `src/AuditoriaEnMemoria.php` | Las dos implementaciones de la auditoría. |
+| `src/Migrador.php`, `bin/migrar.php` | Aplican en orden las migraciones que faltan, cada una en su transacción. |
+| `database/migraciones/` | `001_exclusion.sql` (tabla `exclusion`, con `CHECK` de longitudes y estados, y de que una activa tenga prueba) y `002_exclusion_evento.sql` (auditoría). |
 
 ### Respuesta uniforme
 
 Quien llama a la plataforma debe dar **la misma respuesta** cuando una persona no
 existe y cuando está excluida. `Visibilidad` solo devuelve `true` o `false`, sin
 motivo, para que la respuesta no revele que existe un registro.
+
+### Auditoría
+
+Cada paso de una solicitud (`solicitada`, `verificada`, `rechazada`, `revocada`) deja un
+evento con el actor y la hora. La base **no deja editar ni borrar** esa tabla: un
+disparador rechaza `UPDATE`, `DELETE` y `TRUNCATE`. Si falla el registro del evento, no
+queda el cambio de estado (misma transacción). El actor es un identificador opaco, no un
+nombre, y el evento no copia la razón ni la prueba, para que el historial no acumule datos
+personales.
+
+Límite conocido: `Gestion::solicitar` rechaza un id repetido, pero `guardar` es un
+«insertar o reemplazar». Dos solicitudes simultáneas con el mismo id podrían pisarse. Los ids
+los genera quien llama (que sean UUID); la base no los fabrica.
 
 ### Alcance
 
@@ -68,21 +85,28 @@ decisión queda en una persona.
 - Conectar la coincidencia con el registro: hoy `Exclusion` guarda el id de la
   persona, no su apellido, y el apellido lo tiene la plataforma. Quien consulte pasa
   los apellidos de las excluidas.
-- Qué hacer con los parientes de una persona excluida (fuera de esta fase).
+- Qué hacer con los parientes de una persona excluida (decisión de producto).
+- El campo `motivo` es texto libre y podría traer un dato sensible; falta limitarlo.
+- Guardar las pruebas de forma segura, y el contacto del solicitante.
 
 ## Pruebas
 
 ```bash
 composer install
-TEST_PG_DSN="pgsql:host=127.0.0.1;port=5432;dbname=pe_test" TEST_PG_USER=pe_test TEST_PG_PASSWORD=pe_test ./vendor/bin/phpunit
-psql -f database/esquema.sql   # dos veces: la segunda no debe fallar
+export TEST_PG_DSN="pgsql:host=127.0.0.1;port=5432;dbname=pe_test" TEST_PG_USER=pe_test TEST_PG_PASSWORD=pe_test
+./vendor/bin/phpunit --fail-on-skipped
+phpstan analyse                 # nivel max sobre src/ (phpstan.neon.dist)
+PE_DSN=$TEST_PG_DSN PE_USER=pe_test PE_PASSWORD=pe_test php bin/migrar.php   # idempotente
 ```
 
-Sin `TEST_PG_DSN`, las 4 pruebas de `RegistroPdoTest` se omiten; el resto corre igual.
+Las pruebas que usan PostgreSQL **borran las tablas del módulo**: usa solo una base de
+prueba. Sin `TEST_PG_DSN` esas pruebas se omiten y el resto corre; con `--fail-on-skipped`
+una omisión es un fallo, como en la CI.
 
-La CI (`.github/workflows/pruebas-personas-especiales.yml`) corre PHPUnit en PHP
-8.1 a 8.4 contra PostgreSQL 16, comprueba que `RegistroPdoTest` no se omitió, y
-carga el esquema dos veces.
+La CI (`.github/workflows/pruebas-personas-especiales.yml`) corre PHPUnit en PHP 8.1 a 8.4
+contra PostgreSQL 16 (con `--fail-on-skipped`), aplica las migraciones dos veces con
+`bin/migrar.php` y comprueba que la base rechace lo que debe (una activa sin prueba, y editar o
+borrar la auditoría), y corre PHPStan 2.1 en nivel `max`.
 
 ## Dependencias
 

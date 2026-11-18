@@ -47,9 +47,11 @@ final class Visibilidad
      */
     public function filtrar(array $personaIds): array
     {
+        // Una sola consulta para toda la lista, no una por persona.
+        $excluidas = array_flip($this->registro->conExclusionActiva($personaIds));
         $visibles = [];
         foreach ($personaIds as $personaId) {
-            if ($this->esVisible($personaId)) {
+            if (!isset($excluidas[$personaId])) {
                 $visibles[] = $personaId;
             }
         }

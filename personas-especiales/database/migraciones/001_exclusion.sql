@@ -2,7 +2,7 @@
 -- Lo que guarda: quién se excluye, quién lo pidió, con qué prueba y en qué estado.
 -- No guarda categorías de la persona (religión, origen, pertenencia a un grupo).
 
-CREATE TABLE IF NOT EXISTS exclusion (
+CREATE TABLE exclusion (
     id          TEXT PRIMARY KEY CHECK (length(btrim(id)) BETWEEN 1 AND 64),
     persona_id  TEXT NOT NULL CHECK (length(btrim(persona_id)) BETWEEN 1 AND 64),
     solicitante TEXT NOT NULL
@@ -19,6 +19,6 @@ CREATE TABLE IF NOT EXISTS exclusion (
 );
 
 -- Búsqueda de las exclusiones que hoy aplican a una persona (Fase 2).
-CREATE INDEX IF NOT EXISTS exclusion_persona_activa
+CREATE INDEX exclusion_persona_activa
     ON exclusion (persona_id)
     WHERE estado = 'activa';

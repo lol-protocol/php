@@ -12,26 +12,62 @@ use PersonasEspeciales\Solicitante;
 use PersonasEspeciales\Visibilidad;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Corre contra PostgreSQL de verdad. Sin TEST_PG_DSN se omite (como en url-routing);
- * la CI lo corre con un servicio de PostgreSQL.
- */
+/** Corre contra PostgreSQL de verdad (ver PostgresDePrueba). */
 final class RegistroPdoTest extends TestCase
 {
+    use PostgresDePrueba;
+
     private PDO $pdo;
     private DateTimeImmutable $t0;
 
     protected function setUp(): void
     {
-        $dsn = getenv('TEST_PG_DSN');
-        if ($dsn === false || $dsn === '') {
-            self::markTestSkipped('Sin TEST_PG_DSN: se omite la prueba contra PostgreSQL.');
-        }
-
-        $this->pdo = new PDO($dsn, getenv('TEST_PG_USER') ?: null, getenv('TEST_PG_PASSWORD') ?: null);
-        $this->pdo->exec('DROP TABLE IF EXISTS exclusion');
-        $this->pdo->exec((string) file_get_contents(__DIR__ . '/../database/esquema.sql'));
+        $this->pdo = $this->conectar();
         $this->t0 = new DateTimeImmutable('2026-01-10 10:00:00+00');
+    }
+
+    public function testPorIdDevuelveLaSolicitudEnCualquierEstado(): void
+    {
+        $registro = new RegistroPdo($this->pdo);
+        $registro->guardar(Exclusion::solicitar('s-7', 'p-7', Solicitante::Persona, 'Pide.', $this->t0));
+
+        self::assertSame('p-7', $registro->porId('s-7')?->personaId());
+        self::assertNull($registro->porId('no-existe'));
+    }
+
+    public function testConExclusionActivaConsultaPorLotes(): void
+    {
+        $registro = new RegistroPdo($this->pdo);
+        // 1.200 personas (más que un lote de 500); excluidas: una de cada lote y una repetida.
+        $ids = array_map(static fn (int $i): string => "p-{$i}", range(1, 1200));
+        foreach (['p-10', 'p-600', 'p-1199'] as $n => $persona) {
+            $registro->guardar(
+                Exclusion::solicitar("s-{$n}", $persona, Solicitante::Persona, 'Pide.', $this->t0)
+                    ->verificar('Cédula.', $this->t0)
+            );
+        }
+        $registro->guardar(Exclusion::solicitar('s-pend', 'p-20', Solicitante::Persona, 'Pide.', $this->t0));
+
+        $excluidas = $registro->conExclusionActiva([...$ids, 'p-10']);
+        sort($excluidas);
+
+        self::assertSame(['p-10', 'p-1199', 'p-600'], $excluidas);
+        self::assertSame([], $registro->conExclusionActiva([]));
+    }
+
+    public function testFiltrarConservaElOrdenEnVariosLotes(): void
+    {
+        $registro = new RegistroPdo($this->pdo);
+        $registro->guardar(
+            Exclusion::solicitar('s-1', 'p-3', Solicitante::Persona, 'Pide.', $this->t0)
+                ->verificar('Cédula.', $this->t0)
+        );
+        $ids = array_map(static fn (int $i): string => "p-{$i}", range(1, 700));
+
+        $visibles = (new Visibilidad($registro))->filtrar($ids);
+
+        self::assertCount(699, $visibles);
+        self::assertSame(['p-1', 'p-2', 'p-4'], array_slice($visibles, 0, 3));
     }
 
     public function testGuardarYLeerUnaActiva(): void

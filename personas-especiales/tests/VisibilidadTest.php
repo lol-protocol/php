@@ -89,6 +89,18 @@ final class VisibilidadTest extends TestCase
         );
     }
 
+    public function testConExclusionActivaDevuelveCadaPersonaUnaVez(): void
+    {
+        $this->excluir('s-8', 'p-12');
+        $this->excluir('s-9', 'p-12');
+        $this->excluir('s-10', 'p-13');
+
+        $excluidas = $this->registro->conExclusionActiva(['p-12', 'p-13', 'p-14', 'p-12']);
+        sort($excluidas);
+
+        self::assertSame(['p-12', 'p-13'], $excluidas);
+    }
+
     public function testRegistroPuedeTenerVariasExclusionesDeUnaPersona(): void
     {
         // Una persona puede tener dos solicitudes (p. ej. de su familia y de ella misma): basta una activa.
