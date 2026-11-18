@@ -35,6 +35,27 @@ jobs:
       matrix:
         php-version: ['8.1', '8.2', '8.3', '8.4']
 
+    # RegistroPdoTest corre contra PostgreSQL de verdad (TEST_PG_DSN); sin él se omitiría.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: pe_test
+          POSTGRES_PASSWORD: pe_test
+          POSTGRES_DB: pe_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U pe_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      TEST_PG_DSN: pgsql:host=127.0.0.1;port=5432;dbname=pe_test
+      TEST_PG_USER: pe_test
+      TEST_PG_PASSWORD: pe_test
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -43,14 +64,18 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: mbstring
+          extensions: mbstring, pdo_pgsql
           coverage: none
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: Run tests
+      - name: Run tests (PostgreSQL)
         run: ./vendor/bin/phpunit
+
+      # Sin esta comprobación, una omisión silenciosa de RegistroPdoTest pasaría en verde.
+      - name: Las pruebas de PostgreSQL no se omitieron
+        run: ./vendor/bin/phpunit --filter RegistroPdoTest --testdox | tee /dev/stderr | grep -q "OK (4 tests"
 
   # El esquema de database/esquema.sql se carga en PostgreSQL de verdad, dos veces (la segunda
   # comprueba que es idempotente), y una exclusion activa sin prueba tiene que ser rechazada por la base.
