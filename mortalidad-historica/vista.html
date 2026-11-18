@@ -45,7 +45,7 @@ section[hidden] { display: none; }
 <main>
 <h1>Mortalidad histórica</h1>
 <p class="nota">Datos para leer con criterio las edades y causas de muerte de los antepasados. Funciona sin servidor ni conexión: nada sale de tu navegador.</p>
-<div class="aviso" role="note"><strong>Borrador.</strong> Salvo la esperanza de vida, las muertes de Londres y tres cifras de cólera, los datos los escribió un asistente de IA y no están verificados contra una fuente; ninguna persona nativa ha revisado el glosario. Todo son <strong>cifras de población, no de personas</strong>: no dicen de qué murió ni cuánto vivió alguien en concreto. Los datos de salud y de causas de muerte son sensibles: no los uses para inferir nada de una familia.</div>
+<div class="aviso" role="note"><strong>Borrador.</strong> Salvo la esperanza de vida, las muertes de Londres y tres cifras de cólera, los datos los escribió un asistente de IA y no están verificados contra una fuente; el glosario no ha pasado por una revisión humana y no se prevé una revisión por hablantes nativos. Todo son <strong>cifras de población, no de personas</strong>: no dicen de qué murió ni cuánto vivió alguien en concreto. Los datos de salud y de causas de muerte son sensibles: no los uses para inferir nada de una familia.</div>
 
 <nav aria-label="Secciones">
   <button type="button" data-seccion="causas" aria-pressed="true">Causas de defunción</button>
@@ -98,7 +98,8 @@ section[hidden] { display: none; }
   <p class="nota">Bills of Mortality y los registros que las siguieron (vía Our World in Data). Es la ciudad de cada época, no Inglaterra; la serie tiene huecos. El exceso compara con la mediana de los 5 años anteriores y posteriores.</p>
 </section>
 <section id="revision" hidden>
-  <h2>Revisar el glosario (para hablantes nativos)</h2>
+  <h2>Revisar el glosario (opcional)</h2>
+  <p class="nota">No se prevé una revisión por hablantes nativos: esta pestaña queda por si alguna vez alguien quiere revisar algo.</p>
   <p>Si el idioma es el tuyo, marca cada término: <strong>correcto</strong>, <strong>corregir</strong> o <strong>dudoso</strong> (con una nota que diga qué cambiar o por qué dudas). Escribe tu nombre y la fecha, copia las filas que salen abajo y añádelas al final de <code>datos/revisiones.csv</code> en un PR, o pásaselas a quien mantiene el proyecto. Nada sale de tu navegador.</p>
   <div class="controles">
     <label>Idioma <select id="rev-idioma"></select></label>

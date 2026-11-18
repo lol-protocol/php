@@ -1,8 +1,8 @@
-# Revisión del glosario por hablantes nativos
+# Revisión del glosario
 
 <!-- Generado por generar_tabla.py: no lo edites a mano. -->
 
-Los términos del glosario los escribió un asistente de IA y **ninguna persona nativa los ha revisado** salvo lo que diga este informe. `datos/revisiones.csv` es el registro de quién ha revisado qué; cómo revisar está en el [README](README.md) («Revisión por hablantes nativos»).
+Los términos del glosario los escribió un asistente de IA y **ninguna persona los ha revisado** salvo lo que diga este informe. **No se prevé una revisión por hablantes nativos** (decisión de la persona a cargo, 18 de noviembre de 2026): el glosario se queda como borrador. `datos/revisiones.csv` es el registro por si alguna vez alguien quiere revisarlo; cómo hacerlo está en el [README](README.md) («Revisión del glosario»).
 
 **0 de 813 términos revisados** (0 %).
 

@@ -2,7 +2,7 @@
 
 <!-- Generado por generar_tabla.py: no lo edites a mano. -->
 
-> **Borrador.** Lo escribió un asistente de IA y ninguna persona nativa lo ha revisado. Cada término lleva una **confianza** de su correspondencia con una causa moderna: es una pista para leer un registro antiguo, **no un diagnóstico**. Ver «Cómo leer una causa de defunción» en el [README](../README.md).
+> **Borrador.** Lo escribió un asistente de IA y **no ha pasado por una revisión humana ni se prevé una revisión por hablantes nativos**. Cada término lleva una **confianza** de su correspondencia con una causa moderna: es una pista para leer un registro antiguo, **no un diagnóstico**. Ver «Cómo leer una causa de defunción» en el [README](../README.md).
 
 66 términos.
 
