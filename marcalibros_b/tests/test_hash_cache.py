@@ -38,7 +38,7 @@ def test_la_lista_cubre_todo_lo_que_build_importa():
 def test_solo_los_modulos_de_render_cambian_el_hash(tmp_path, monkeypatch):
     shutil.copytree(GENERADOR, tmp_path / "generator", ignore=shutil.ignore_patterns("__pycache__"))
     (tmp_path / "catalog").mkdir()
-    for nombre in ("animos.yaml", "motivos.yaml", "frases.yaml", "escrituras.yaml"):
+    for nombre in ("animos.yaml", "motivos.yaml", "frases.yaml", "escrituras.yaml", "regiones.yaml"):
         shutil.copy(RAIZ / "catalog" / nombre, tmp_path / "catalog" / nombre)
     monkeypatch.setattr(build, "RAIZ", tmp_path)
     monkeypatch.setattr(build, "CATALOGO", tmp_path / "catalog")
