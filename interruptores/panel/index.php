@@ -3,22 +3,31 @@
 declare(strict_types=1);
 
 // Panel interno de interruptores. NO se publica: ver interruptores/README.md.
-// Requiere la variable de entorno INTERRUPTORES_CLAVE; sin ella no arranca.
+// Los usuarios se crean con bin/usuarios.php. Sin usuarios, el panel no entra.
 
 require_once __DIR__ . '/../src/Interruptores.php';
+require_once __DIR__ . '/../src/Usuarios.php';
 
 use LolProtocol\Interruptores\DependenciaRota;
 use LolProtocol\Interruptores\Interruptores;
 use LolProtocol\Interruptores\UnknownInterruptor;
+use LolProtocol\Interruptores\Usuarios;
 
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
 header('Content-Type: text/html; charset=utf-8');
+header('X-Frame-Options: DENY');
+header("Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'");
 
-$clave = (string) getenv('INTERRUPTORES_CLAVE');
-if ($clave === '') {
+// Carpeta con estado y usuarios. Por defecto, var/ del proyecto; las pruebas la cambian.
+$var = rtrim((string) (getenv('INTERRUPTORES_VAR') ?: __DIR__ . '/../var'), '/');
+$rutaCat = __DIR__ . '/../catalogo.json';
+$rutaEst = $var . '/estado.json';
+$usuarios = new Usuarios($var . '/usuarios.json');
+
+if (!$usuarios->hay()) {
     http_response_code(503);
-    echo 'Panel no configurado: define INTERRUPTORES_CLAVE.';
+    echo 'Panel sin usuarios. Crea uno con: php interruptores/bin/usuarios.php crear <nombre> editor';
     exit;
 }
 
@@ -52,33 +61,38 @@ function tokenCsrf(): string
     return $_SESSION['csrf'];
 }
 
-$rutaCat = __DIR__ . '/../catalogo.json';
-$rutaEst = __DIR__ . '/../var/estado.json';
-
 // --- Acciones ---------------------------------------------------------------
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accion = (string) ($_POST['accion'] ?? '');
 
     if ($accion === 'entrar') {
-        if (hash_equals($clave, (string) ($_POST['clave'] ?? ''))) {
+        $nombre = strtolower(trim((string) ($_POST['usuario'] ?? '')));
+        $clave = (string) ($_POST['clave'] ?? '');
+        if ($usuarios->bloqueado($nombre)) {
+            volver('Demasiados intentos fallidos. Espera 15 minutos.');
+        }
+        $ok = $usuarios->verificar($nombre, $clave);
+        if ($ok !== null) {
             session_regenerate_id(true);
-            $_SESSION['dentro'] = true;
-            $_SESSION['csrf'] = bin2hex(random_bytes(16));
+            $_SESSION = ['usuario' => $ok['nombre'], 'rol' => $ok['rol'], 'csrf' => bin2hex(random_bytes(16))];
             volver();
         }
-        usleep(400000); // frena la fuerza bruta de forma sencilla
-        volver('Clave incorrecta.');
+        usleep(400000); // frena la fuerza bruta además del bloqueo por usuario
+        volver('Usuario o clave incorrectos.');
     }
 
     if ($accion === 'salir') {
-        $_SESSION = [];
-        session_destroy();
+        // Con token: una página ajena no puede cerrarle la sesión a nadie.
+        if (!empty($_SESSION['usuario']) && hash_equals(tokenCsrf(), (string) ($_POST['csrf'] ?? ''))) {
+            $_SESSION = [];
+            session_destroy();
+        }
         header('Location: index.php');
         exit;
     }
 
-    if (empty($_SESSION['dentro'])) {
+    if (empty($_SESSION['usuario'])) {
         volver('Entra primero.');
     }
     if (!hash_equals(tokenCsrf(), (string) ($_POST['csrf'] ?? ''))) {
@@ -86,10 +100,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($accion === 'cambiar') {
+        // El rol se comprueba aquí, en el servidor: un lector no cambia nada aunque falsifique el formulario.
+        if (($_SESSION['rol'] ?? '') !== 'editor') {
+            volver('Tu rol (lector) no permite cambiar nada.');
+        }
         $ref = (string) ($_POST['ref'] ?? '');
         $encender = ($_POST['valor'] ?? '') === '1';
         try {
-            (new Interruptores($rutaCat, $rutaEst))->cambiar($ref, $encender);
+            (new Interruptores($rutaCat, $rutaEst))->cambiar($ref, $encender, (string) $_SESSION['usuario']);
             volver(($encender ? 'Encendido: ' : 'Apagado: ') . $ref . '.');
         } catch (DependenciaRota | UnknownInterruptor $e) {
             volver($e->getMessage());
@@ -104,8 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // --- Vista ------------------------------------------------------------------
 
-if (empty($_SESSION['dentro'])) {
-    $aviso = $_SESSION['aviso'] ?? '';
+if (empty($_SESSION['usuario'])) {
+    $aviso = (string) ($_SESSION['aviso'] ?? '');
     unset($_SESSION['aviso']);
     ?>
 <!doctype html>
@@ -126,8 +144,9 @@ button{background:#d9a441;color:#15110e;font-weight:600;cursor:pointer}
 <body>
 <form method="post" action="index.php">
   <h1 style="margin:0;font-size:1.2rem">Interruptores</h1>
-  <?php if ($aviso !== ''): ?><p class="aviso"><?= escapar((string) $aviso) ?></p><?php endif; ?>
-  <input type="password" name="clave" placeholder="Clave" autocomplete="current-password" required autofocus>
+  <?php if ($aviso !== ''): ?><p class="aviso"><?= escapar($aviso) ?></p><?php endif; ?>
+  <input type="text" name="usuario" placeholder="Usuario" autocomplete="username" required autofocus>
+  <input type="password" name="clave" placeholder="Clave" autocomplete="current-password" required>
   <input type="hidden" name="accion" value="entrar">
   <button type="submit">Entrar</button>
 </form>
@@ -139,9 +158,10 @@ button{background:#d9a441;color:#15110e;font-weight:600;cursor:pointer}
 
 $cat = new Interruptores($rutaCat, $rutaEst);
 $propios = $cat->interruptores();
-$aviso = $_SESSION['aviso'] ?? '';
+$aviso = (string) ($_SESSION['aviso'] ?? '');
 unset($_SESSION['aviso']);
 $csrf = tokenCsrf();
+$puedeCambiar = ($_SESSION['rol'] ?? '') === 'editor';
 
 $porPlataforma = [];
 foreach ($cat->catalogo() as $id => $f) {
@@ -151,33 +171,35 @@ $encendidos = count(array_filter($propios));
 $total = count($propios);
 
 /** Botón on/off de una ref, con su motivo si no se puede cambiar ahora. */
-function boton(Interruptores $cat, array $propios, string $ref, string $csrf, bool $esOpcion): string
+function boton(Interruptores $cat, array $propios, string $ref, string $csrf, bool $esOpcion, bool $puedeCambiar): string
 {
     $on = $propios[$ref];
     $motivo = '';
-    if (!$on && !$esOpcion) {
+    if (!$puedeCambiar) {
+        $motivo = 'Solo lectura: tu rol no cambia interruptores.';
+    } elseif (!$on && !$esOpcion) {
         $faltan = $cat->faltanParaEncender($ref);
         $motivo = $faltan !== [] ? 'Necesita encendido: ' . implode(', ', $faltan) : '';
-    }
-    if ($on) {
+    } elseif ($on) {
         $dep = $cat->dependientesActivos($ref);
         $motivo = $dep !== [] ? 'Otras la necesitan: ' . implode(', ', $dep) : '';
     }
-    $bloqueado = $motivo !== '';
 
     $html = '<form class="boton" method="post" action="index.php">';
     $html .= '<input type="hidden" name="accion" value="cambiar">';
     $html .= '<input type="hidden" name="csrf" value="' . escapar($csrf) . '">';
     $html .= '<input type="hidden" name="ref" value="' . escapar($ref) . '">';
     $html .= '<input type="hidden" name="valor" value="' . ($on ? '0' : '1') . '">';
-    $html .= '<button type="submit" class="sw' . ($on ? ' on' : '') . '"' . ($bloqueado ? ' disabled' : '')
+    $html .= '<button type="submit" class="sw' . ($on ? ' on' : '') . '"' . ($motivo !== '' ? ' disabled' : '')
         . ' title="' . escapar($motivo) . '">' . ($on ? 'Encendido' : 'Apagado') . '</button>';
     $html .= '</form>';
-    if ($motivo !== '') {
+    if ($motivo !== '' && $puedeCambiar) {
         $html .= '<div class="dep">' . escapar($motivo) . '</div>';
     }
     return $html;
 }
+
+$historial = $cat->historial(20);
 ?>
 <!doctype html>
 <html lang="es">
@@ -192,7 +214,7 @@ function boton(Interruptores $cat, array $propios, string $ref, string $csrf, bo
 body{margin:0;background:var(--fondo);color:var(--texto);font:15px/1.45 system-ui,sans-serif}
 header{position:sticky;top:0;background:var(--fondo);border-bottom:1px solid var(--borde);padding:1rem 1.25rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap;z-index:1}
 header h1{font-size:1.1rem;margin:0;flex:1}
-.resumen{color:var(--sutil)}
+.resumen,.quien{color:var(--sutil)}
 main{padding:1rem 1.25rem 3rem;max-width:1100px;margin:auto}
 h2{font-size:1rem;color:var(--oro);margin:2rem 0 .5rem;text-transform:uppercase;letter-spacing:.06em}
 .canal{background:var(--panel);border:1px solid var(--borde);border-radius:10px;padding:.7rem .9rem;margin:.5rem 0}
@@ -210,7 +232,9 @@ button.sw:disabled{opacity:.4;cursor:not-allowed}
 .opcion{display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:center}
 .opcion.inactiva{opacity:.6}
 .aviso{background:#3a2a1c;border:1px solid var(--oro);padding:.6rem .8rem;border-radius:8px;margin:1rem 0}
-.salir button{background:none;border:1px solid var(--borde);color:var(--sutil);padding:.4rem .8rem;border-radius:8px;cursor:pointer;font:inherit}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{text-align:left;padding:.35rem .5rem;border-bottom:1px solid var(--borde)}
+header form button{background:none;border:1px solid var(--borde);color:var(--sutil);padding:.4rem .8rem;border-radius:8px;cursor:pointer;font:inherit}
 @media (max-width:600px){.fila{grid-template-columns:auto 1fr}.fila form{grid-column:1/-1}button.sw{width:100%}}
 </style>
 </head>
@@ -218,10 +242,11 @@ button.sw:disabled{opacity:.4;cursor:not-allowed}
 <header>
   <h1>Interruptores</h1>
   <span class="resumen"><?= $encendidos ?> de <?= $total ?> encendidos (funciones y opciones)</span>
-  <form class="salir" method="post" action="index.php"><input type="hidden" name="accion" value="salir"><button type="submit">Salir</button></form>
+  <span class="quien"><?= escapar((string) $_SESSION['usuario']) ?> · <?= escapar((string) $_SESSION['rol']) ?></span>
+  <form method="post" action="index.php"><input type="hidden" name="accion" value="salir"><input type="hidden" name="csrf" value="<?= escapar($csrf) ?>"><button type="submit">Salir</button></form>
 </header>
 <main>
-<?php if ($aviso !== ''): ?><p class="aviso"><?= escapar((string) $aviso) ?></p><?php endif; ?>
+<?php if ($aviso !== ''): ?><p class="aviso"><?= escapar($aviso) ?></p><?php endif; ?>
 
 <?php foreach ($cat->plataformas() as $clave => $titulo): ?>
   <?php if (empty($porPlataforma[$clave])) { continue; } ?>
@@ -235,7 +260,7 @@ button.sw:disabled{opacity:.4;cursor:not-allowed}
           <div class="nombre"><?= escapar($f['nombre']) ?></div>
           <div class="meta"><code><?= escapar($id) ?></code> · <?= escapar($f['tipo']) ?><?= $f['opciones'] !== [] ? ' · ' . count($f['opciones']) . ' opciones' : '' ?></div>
         </div>
-        <div><?= boton($cat, $propios, $id, $csrf, false) ?></div>
+        <div><?= boton($cat, $propios, $id, $csrf, false, $puedeCambiar) ?></div>
       </div>
       <?php if ($f['opciones'] !== []): ?>
         <div class="opciones">
@@ -246,7 +271,7 @@ button.sw:disabled{opacity:.4;cursor:not-allowed}
                 <span class="nombre" style="font-weight:500"><?= escapar($op['nombre']) ?></span>
                 <span class="meta"><code><?= escapar($ref) ?></code><?= $efectiva ? '' : ' · inactiva ahora' ?></span>
               </div>
-              <div><?= boton($cat, $propios, $ref, $csrf, true) ?></div>
+              <div><?= boton($cat, $propios, $ref, $csrf, true, $puedeCambiar) ?></div>
             </div>
           <?php endforeach; ?>
         </div>
@@ -254,6 +279,25 @@ button.sw:disabled{opacity:.4;cursor:not-allowed}
     </div>
   <?php endforeach; ?>
 <?php endforeach; ?>
+
+<h2>Últimos cambios</h2>
+<?php if ($historial === []): ?>
+  <p class="meta">Todavía no hay cambios.</p>
+<?php else: ?>
+  <table>
+    <thead><tr><th>Cuándo (UTC)</th><th>Quién</th><th>Interruptor</th><th>Cambio</th></tr></thead>
+    <tbody>
+    <?php foreach ($historial as $e): ?>
+      <tr>
+        <td><?= escapar((string) $e['ts']) ?></td>
+        <td><?= escapar((string) $e['quien']) ?></td>
+        <td><code><?= escapar((string) $e['ref']) ?></code></td>
+        <td><?= $e['antes'] ? 'encendido' : 'apagado' ?> → <?= $e['despues'] ? 'encendido' : 'apagado' ?></td>
+      </tr>
+    <?php endforeach; ?>
+    </tbody>
+  </table>
+<?php endif; ?>
 </main>
 </body>
 </html>

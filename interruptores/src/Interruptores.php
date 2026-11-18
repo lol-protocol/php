@@ -141,7 +141,47 @@ final class Interruptores
      * @throws UnknownInterruptor si la ref no existe.
      * @throws DependenciaRota si el cambio dejaría algo roto.
      */
-    public function cambiar(string $ref, bool $encendido): void
+    public function cambiar(string $ref, bool $encendido, string $quien = 'sistema'): void
+    {
+        $this->partir($ref);
+        // Todo el cambio (validar, escribir y anotar) va con el estado bloqueado:
+        // dos cambios a la vez no se pisan ni se saltan una dependencia.
+        $bloqueo = $this->bloquear();
+        try {
+            $antes = $this->propio($ref);
+            $this->validarCambio($ref, $encendido);
+            $estado = $this->leerEstado();
+            $estado[$ref] = $encendido;
+            $this->escribirEstado($estado);
+            $this->anotar($ref, $antes, $encendido, $quien);
+        } finally {
+            $this->desbloquear($bloqueo);
+        }
+    }
+
+    /**
+     * Cambios recientes, el más nuevo primero.
+     *
+     * @return list<array{ts: string, quien: string, ref: string, antes: bool, despues: bool}>
+     */
+    public function historial(int $max = 50): array
+    {
+        if (!is_file($this->rutaCambios())) {
+            return [];
+        }
+        $lineas = file($this->rutaCambios(), FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
+        $salida = [];
+        for ($k = count($lineas) - 1; $k >= 0 && count($salida) < $max; $k--) {
+            $e = json_decode($lineas[$k], true);
+            if (is_array($e) && isset($e['ts'], $e['quien'], $e['ref'], $e['antes'], $e['despues'])) {
+                $salida[] = $e;
+            }
+        }
+        return $salida;
+    }
+
+    /** @throws DependenciaRota si el cambio dejaría algo roto (con el estado bloqueado). */
+    private function validarCambio(string $ref, bool $encendido): void
     {
         [$id, $opcion] = $this->partir($ref);
 
@@ -171,13 +211,55 @@ final class Interruptores
                 );
             }
         }
-
-        $estado = $this->leerEstado();
-        $estado[$ref] = $encendido;
-        $this->escribirEstado($estado);
     }
 
     // --- internas --------------------------------------------------------------
+
+    /**
+     * Bloqueo exclusivo del estado (un archivo .lock al lado de estado.json).
+     *
+     * @return resource
+     */
+    private function bloquear()
+    {
+        $dir = dirname($this->rutaEstado);
+        if (!is_dir($dir) && !mkdir($dir, 0775, true) && !is_dir($dir)) {
+            throw new \RuntimeException("No se puede crear {$dir}");
+        }
+        $fh = fopen($this->rutaEstado . '.lock', 'c');
+        if ($fh === false || !flock($fh, LOCK_EX)) {
+            throw new \RuntimeException('No se pudo bloquear el estado.');
+        }
+        return $fh;
+    }
+
+    /** @param resource $fh */
+    private function desbloquear($fh): void
+    {
+        flock($fh, LOCK_UN);
+        fclose($fh);
+    }
+
+    private function rutaCambios(): string
+    {
+        return dirname($this->rutaEstado) . '/cambios.jsonl';
+    }
+
+    /** Añade una línea al registro de cambios (con el estado ya bloqueado). */
+    private function anotar(string $ref, bool $antes, bool $despues, string $quien): void
+    {
+        $quien = substr((string) preg_replace('/[[:cntrl:]]/', '', $quien), 0, 64);
+        $linea = json_encode([
+            'ts' => gmdate('Y-m-d\TH:i:s\Z'),
+            'quien' => $quien,
+            'ref' => $ref,
+            'antes' => $antes,
+            'despues' => $despues,
+        ], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR) . "\n";
+        if (file_put_contents($this->rutaCambios(), $linea, FILE_APPEND | LOCK_EX) === false) {
+            throw new \RuntimeException('No se pudo anotar el cambio en el registro.');
+        }
+    }
 
     /** Interruptor propio de una ref (lo que dice el estado o el catálogo). */
     private function propio(string $ref): bool

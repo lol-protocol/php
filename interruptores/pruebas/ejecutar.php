@@ -5,9 +5,11 @@ declare(strict_types=1);
 // Pruebas de interruptores/. Sin framework: php pruebas/ejecutar.php
 
 require_once __DIR__ . '/../src/Interruptores.php';
+require_once __DIR__ . '/../src/Usuarios.php';
 
 use LolProtocol\Interruptores\DependenciaRota;
 use LolProtocol\Interruptores\Interruptores;
+use LolProtocol\Interruptores\Usuarios;
 use LolProtocol\Interruptores\UnknownInterruptor;
 
 $raiz = dirname(__DIR__);
@@ -225,6 +227,71 @@ comprobar('un catálogo bueno sí carga', !$cargar([$fn('a', ['opciones' => [['i
 
 exec(escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($raiz . '/bin/generar.php') . ' --comprobar 2>&1', $salida, $codigo);
 comprobar('FUNCIONES.md está al día con catalogo.json', $codigo === 0, implode(' ', $salida));
+
+// --- Registro de cambios ----------------------------------------------------
+
+// La prueba del estado dañado dejó un estado.json roto a propósito: se quita antes de seguir.
+@unlink($estado);
+$i = $nuevo();
+$i->cambiar('gen.estilo-iconos:gris', false, 'ana');
+$i->cambiar('gen.estilo-iconos:gris', true, 'luis');
+$h = $i->historial(2);
+comprobar('el historial trae el cambio más nuevo primero', $h[0]['quien'] === 'luis' && $h[0]['despues'] === true);
+comprobar('cada entrada guarda quién, qué y el antes y el después',
+    $h[1]['quien'] === 'ana' && $h[1]['ref'] === 'gen.estilo-iconos:gris' && $h[1]['antes'] === true && $h[1]['despues'] === false);
+comprobar('historial(n) respeta el límite', count($i->historial(1)) === 1);
+
+$i->cambiar('gen.estilo-iconos:gris', false, "ana\n\t");
+comprobar('el nombre de quien cambia pierde los caracteres de control', $i->historial(1)[0]['quien'] === 'ana');
+
+$antes = count($i->historial(100000));
+comprobar('un cambio rechazado no se anota', lanza(fn () => $i->cambiar('no.existe', true, 'ana'), UnknownInterruptor::class)
+    && count($i->historial(100000)) === $antes);
+
+// --- Usuarios ---------------------------------------------------------------
+
+$uf = $tmp . '/usuarios.json';
+$ahora = 1000000;
+$reloj = function () use (&$ahora): int {
+    return $ahora;
+};
+$usr = new Usuarios($uf, $reloj);
+comprobar('sin archivo no hay usuarios', !$usr->hay());
+comprobar('un nombre con mayúsculas o espacios se rechaza',
+    lanza(fn () => $usr->crear('A B', 'editor', 'clave-muy-larga-1'), \InvalidArgumentException::class));
+comprobar('un rol desconocido se rechaza', lanza(fn () => $usr->crear('ana', 'admin', 'clave-muy-larga-1'), \InvalidArgumentException::class));
+comprobar('una clave corta se rechaza', lanza(fn () => $usr->crear('ana', 'editor', 'corta'), \InvalidArgumentException::class));
+comprobar('una clave de más de 72 bytes se rechaza', lanza(fn () => $usr->crear('ana', 'editor', str_repeat('x', 73)), \InvalidArgumentException::class));
+$usr->crear('ana', 'editor', 'clave-de-ana-123');
+$usr->crear('luis', 'lector', 'clave-de-luis-456');
+comprobar('crear un usuario que ya existe se rechaza', lanza(fn () => $usr->crear('ana', 'lector', 'otra-clave-larga-1'), \RuntimeException::class));
+comprobar('listar no muestra hashes', !str_contains(json_encode($usr->listar()), 'hash') && array_keys($usr->listar()) === ['ana', 'luis']);
+comprobar('la clave no queda en claro en el archivo', !str_contains((string) file_get_contents($uf), 'clave-de-ana-123'));
+comprobar('verificar con la clave buena devuelve nombre y rol', $usr->verificar('ana', 'clave-de-ana-123') === ['nombre' => 'ana', 'rol' => 'editor']);
+comprobar('verificar con una clave mala devuelve null', $usr->verificar('ana', 'mala-clave-larga') === null);
+comprobar('un usuario que no existe devuelve null', $usr->verificar('nadie', 'clave-de-ana-123') === null);
+
+for ($k = 0; $k < Usuarios::MAX_FALLOS; $k++) {
+    $usr->verificar('ana', 'mala-clave-larga');
+}
+comprobar('tras MAX_FALLOS claves malas seguidas, el usuario queda bloqueado', $usr->bloqueado('ana'));
+comprobar('bloqueado, ni la clave buena entra', $usr->verificar('ana', 'clave-de-ana-123') === null);
+$ahora += Usuarios::BLOQUEO_SEGUNDOS + 1;
+comprobar('pasado el bloqueo, vuelve a entrar', !$usr->bloqueado('ana') && $usr->verificar('ana', 'clave-de-ana-123') !== null);
+
+comprobar('no se puede bajar al único editor', lanza(fn () => $usr->cambiarRol('ana', 'lector'), \RuntimeException::class));
+comprobar('no se puede borrar al único editor', lanza(fn () => $usr->borrar('ana'), \RuntimeException::class));
+$usr->crear('eva', 'editor', 'clave-de-eva-789');
+$usr->cambiarRol('ana', 'lector');
+comprobar('con otro editor, ana puede pasar a lector', $usr->listar()['ana']['rol'] === 'lector');
+comprobar('ahora eva es el único editor y no se puede borrar', lanza(fn () => $usr->borrar('eva'), \RuntimeException::class));
+$usr->cambiarRol('ana', 'editor');
+$usr->borrar('eva');
+comprobar('con dos editores sí se puede borrar uno', !isset($usr->listar()['eva']));
+
+$usr->cambiarClave('luis', 'nueva-clave-luis-000');
+comprobar('cambiar la clave: la nueva entra y la vieja no',
+    $usr->verificar('luis', 'nueva-clave-luis-000') !== null && $usr->verificar('luis', 'clave-de-luis-456') === null);
 
 // Limpieza de la carpeta temporal.
 foreach (glob($tmp . '/*') ?: [] as $archivo) {
