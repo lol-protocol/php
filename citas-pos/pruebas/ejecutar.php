@@ -766,6 +766,127 @@ $pruebas['render no genera una cita sin verificar aunque tenga todas las revisio
     verdadero(!is_file($dir . '/salida/citas/spa-s9.juego.html'), 'generó el juego de una cita que no está verificada');
 };
 
+// --- render.php --interruptores: solo los canales que el interruptor pos.citas tiene encendidos -----------------
+
+require_once RAIZ . '/bin/lib/interruptores.php';
+
+/**
+ * Una carpeta de interruptores de prueba: el código y el catálogo copiados, con el estado que se pida.
+ *
+ * @param array<string, bool> $estado
+ */
+function interruptoresDePrueba(array $estado): string
+{
+    $dir = temporal() . '/interruptores';
+    mkdir($dir . '/src', 0775, true);
+    mkdir($dir . '/var', 0775, true);
+    $origen = RAIZ . '/../interruptores';
+    copy($origen . '/catalogo.json', $dir . '/catalogo.json');
+    foreach (['Interruptores.php', 'Excepciones.php', 'RegistroJsonl.php'] as $archivo) {
+        copy($origen . '/src/' . $archivo, $dir . '/src/' . $archivo);
+    }
+    file_put_contents($dir . '/var/estado.json', json_encode($estado));
+    return $dir;
+}
+
+/** @return list<string> rutas relativas de todos los archivos bajo $dir, ordenadas */
+function archivosBajo(string $dir): array
+{
+    if (!is_dir($dir)) {
+        return [];
+    }
+    $r = [];
+    $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS));
+    foreach ($it as $f) {
+        if ($f->isFile()) {
+            $r[] = substr($f->getPathname(), strlen($dir) + 1);
+        }
+    }
+    sort($r);
+    return $r;
+}
+
+$pruebas['render --interruptores: solo escribe los canales encendidos'] = function (): void {
+    $int = interruptoresDePrueba(['pos.citas' => true, 'pos.citas:sitio' => true]);
+    $out = temporal() . '/salida';
+    pasa(correr(RAIZ . '/bin/render.php', ['--interruptores=' . $int, '--salida=' . $out]), 'canales: sitio');
+    $archivos = archivosBajo($out);
+    verdadero($archivos !== [], 'tenía que escribir las piezas del sitio');
+    foreach ($archivos as $a) {
+        verdadero($a === 'citas-pos.css' || str_ends_with($a, '.sitio.html'), "«{$a}» no es del sitio");
+    }
+};
+
+$pruebas['render --interruptores: el juego se lleva sus archivos y la hoja del sitio'] = function (): void {
+    $int = interruptoresDePrueba(['pos.citas' => true, 'pos.citas:juego' => true]);
+    $out = temporal() . '/salida';
+    pasa(correr(RAIZ . '/bin/render.php', ['--interruptores=' . $int, '--salida=' . $out]), 'canales: juego');
+    $archivos = archivosBajo($out);
+    foreach (['citas-pos.css', 'citas-pos-juego.css', 'citas-pos-juego.js', 'demo-juego.html'] as $esperado) {
+        verdadero(in_array($esperado, $archivos, true), "falta $esperado");
+    }
+    foreach ($archivos as $a) {
+        verdadero(!str_ends_with($a, '.correo.html') && !str_ends_with($a, '.sitio.html'), "«{$a}» no es del juego");
+    }
+};
+
+$pruebas['render --interruptores: con el interruptor de fábrica (pos.citas apagada) no sale nada'] = function (): void {
+    $int = interruptoresDePrueba([]);
+    $out = temporal() . '/salida';
+    pasa(correr(RAIZ . '/bin/render.php', ['--interruptores=' . $int, '--salida=' . $out]), 'ninguno');
+    igual([], archivosBajo($out));
+};
+
+$pruebas['render --interruptores: lo que quedó de un canal ya apagado se quita'] = function (): void {
+    $out = temporal() . '/salida';
+    $dosCanales = interruptoresDePrueba(['pos.citas' => true, 'pos.citas:sitio' => true, 'pos.citas:correo' => true]);
+    pasa(correr(RAIZ . '/bin/render.php', ['--interruptores=' . $dosCanales, '--salida=' . $out]));
+    verdadero(count(array_filter(archivosBajo($out), fn (string $a): bool => str_ends_with($a, '.correo.html'))) > 0, 'primero tenía que haber correo');
+    $soloSitio = interruptoresDePrueba(['pos.citas' => true, 'pos.citas:sitio' => true]);
+    pasa(correr(RAIZ . '/bin/render.php', ['--interruptores=' . $soloSitio, '--salida=' . $out]));
+    igual([], array_values(array_filter(archivosBajo($out), fn (string $a): bool => str_ends_with($a, '.correo.html'))));
+};
+
+$pruebas['render --interruptores exige otra carpeta de salida y no toca salida/'] = function (): void {
+    $dir = proyecto();
+    $antes = archivosBajo($dir . '/salida');
+    $int = interruptoresDePrueba(['pos.citas' => true]);
+    [$codigo, $texto] = correr($dir . '/bin/render.php', ['--interruptores=' . $int]);
+    igual(2, $codigo);
+    verdadero(str_contains($texto, '--salida'), 'no dice que falta --salida: ' . $texto);
+    [$codigo] = correr($dir . '/bin/render.php', ['--interruptores=' . $int, '--salida=' . $dir . '/salida']);
+    igual(2, $codigo);
+    igual($antes, archivosBajo($dir . '/salida'));
+};
+
+$pruebas['render --interruptores no se combina con --comprobar ni con --salida en --comprobar'] = function (): void {
+    $int = interruptoresDePrueba([]);
+    [$codigo, $texto] = correr(RAIZ . '/bin/render.php', ['--comprobar', '--interruptores=' . $int, '--salida=' . temporal()]);
+    igual(2, $codigo);
+    verdadero(str_contains($texto, '--comprobar'), $texto);
+    [$codigo] = correr(RAIZ . '/bin/render.php', ['--comprobar', '--salida=' . temporal()]);
+    igual(2, $codigo);
+};
+
+$pruebas['render --interruptores: un interruptor que no se puede leer corta antes de escribir'] = function (): void {
+    $out = temporal() . '/salida';
+    [$codigo, $texto] = correr(RAIZ . '/bin/render.php', ['--interruptores=/no/existe', '--salida=' . $out]);
+    igual(2, $codigo);
+    verdadero(str_contains($texto, 'interruptores'), $texto);
+    verdadero(!is_dir($out), 'no tenía que crear la salida');
+};
+
+$pruebas['filtrarPorCanales: un archivo que no es de ningún canal es un error'] = function (): void {
+    $lanzo = false;
+    try {
+        filtrarPorCanales(['nuevo-tipo.txt' => 'x'], ['sitio']);
+    } catch (RuntimeException $e) {
+        $lanzo = str_contains($e->getMessage(), 'ningún canal');
+    }
+    verdadero($lanzo, 'tenía que lanzar RuntimeException');
+    igual(['a.sitio.html' => '1', 'citas-pos.css' => '2'], filtrarPorCanales(['a.sitio.html' => '1', 'b.correo.html' => '3', 'citas-pos.css' => '2'], ['sitio']));
+};
+
 $fallidas = 0;
 foreach ($pruebas as $nombre => $cuerpo) {
     try {
