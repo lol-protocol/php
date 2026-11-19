@@ -4,6 +4,9 @@
 
 ### Cambiado
 
+- **`review/yue.csv` sin rangos de frecuencia**: la planilla del cantonés usaba la lista de chino tradicional
+  (`zh_tw`) como aproximación, y de ella salían 113 rangos y 27 filas «frecuente» que no eran cantonés. Ahora se
+  genera sin lista, como `swa.csv` (179 filas, sin respuestas perdidas: no había ninguna rellenada).
 - **Alemán, sustantivos por terminación** (`GermanInflection`): plural y genitivo según la terminación
   («Hund» → «Hunds», «Hunde», «Hundes»; «Beziehung» → «Beziehungen»; «Wagen» → «Wagens»; «Arsch» →
   «Arsches», «Arsche»). Contra UniMorph, la cobertura pasa de 17 % a 67 % (precisión de 90 % a 81 %) y los
