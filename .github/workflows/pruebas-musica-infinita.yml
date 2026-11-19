@@ -44,8 +44,38 @@ jobs:
       - name: Instalar ffmpeg
         run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
 
-      - name: Pruebas
-        run: node --test 'pruebas/*.test.js'
+      # La cobertura mide los módulos de lógica (los que corren en Node); lo que es solo de
+      # navegador lo cubre el job de Chromium. Si baja de los mínimos, falla.
+      - name: Pruebas con cobertura mínima
+        run: >
+          node --test --experimental-test-coverage
+          --test-coverage-include='js/**'
+          --test-coverage-lines=90 --test-coverage-branches=80 --test-coverage-functions=90
+          'pruebas/*.test.js'
+
+  lint:
+    name: Música infinita (ESLint)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: musica-infinita
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      # El proyecto no tiene dependencias: ESLint se instala solo para esto (configuración en eslint.config.cjs).
+      - name: Instalar ESLint
+        run: npm install --no-save --no-package-lock eslint@10.15.0 @eslint/js@10.0.1
+
+      - name: ESLint
+        run: npx eslint .
 
   navegador:
     name: Música infinita (Chromium)

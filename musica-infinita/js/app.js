@@ -14,7 +14,6 @@
   const E = window.Ejemplos;
   const G = window.Generador;
   const SF = window.SoundFont;
-  const F = window.Flac;
   const S = window.Sintetizador;
   const V = window.Visualizador;
   const P = window.Planificador;
@@ -22,7 +21,7 @@
 
   const $ = function (id) { return document.getElementById(id); };
 
-  const AJUSTES_POR_OMISION = { fidelidad: 0.6, variacion: 0.4, estilo: 'auto', tempo: 1, volumen: 0.8, reverb: 0.55, modoVisual: 'milkdrop', autoVisual: true, bits: '16', semilla: '' };
+  const AJUSTES_POR_OMISION = { fidelidad: 0.6, variacion: 0.4, colorModal: 0.3, contra: 0.6, cambiosCompas: 0.15, estilo: 'auto', tempo: 1, volumen: 0.8, reverb: 0.55, modoVisual: 'milkdrop', autoVisual: true, bits: '16', semilla: '' };
 
   const estado = {
     canciones: [], // {id, nombre, origen: 'ejemplo'|'propio', bytes, midi, analisis, activo}
@@ -223,6 +222,9 @@
       semilla: semilla,
       fidelidad: Number(a.fidelidad),
       variacion: Number(a.variacion),
+      colorModal: Number(a.colorModal),
+      contra: Number(a.contra),
+      cambiosCompas: Number(a.cambiosCompas),
       estilo: a.estilo,
       tempo: Number(a.tempo),
       inicio: inicio || 0,
@@ -246,6 +248,7 @@
     if (estado.vis.modo !== estado.ajustes.modoVisual) estado.vis.ponerModo('milkdrop');
     estado.motor.alTocar = function (ev, t) { estado.vis.nota(ev, t); };
     estado.vis.iniciar();
+    window.PanelVisual.crear({ $: $, avisar: avisar, descargar: descargar }, estado.vis);
     estado.semillaSesion = semillaActual();
     estado.gen = crearGenerador(estado.semillaSesion);
     estado.base = estado.ctx.currentTime + 0.15;
@@ -304,7 +307,7 @@
   function pintarInfo(i) {
     const titulo = i.material === 'cita' ? '♪ ' + i.cancion + ' — frase ' + i.frase + (i.variado ? ' (variada)' : '') : '♪ Frase libre, al estilo de tus canciones';
     $('titulo').textContent = titulo;
-    $('detalle').textContent = i.estilo + ' · ' + i.tonalidad + ' · ' + Math.round(i.bpm) + ' bpm · sección ' + i.seccion + ' · semilla ' + estado.semillaSesion;
+    $('detalle').textContent = i.estilo + ' · ' + i.tonalidad + ' · ' + i.compas + ' · ' + Math.round(i.bpm) + ' bpm' + (i.contra ? ' · contramelodía' : '') + ' · sección ' + i.seccion + ' · semilla ' + estado.semillaSesion;
     $('acordes').textContent = i.acordes.join('  ');
     if ('mediaSession' in navigator) {
       try {
@@ -403,7 +406,7 @@
   const exportar = function () { return exportador.exportar(); };
 
   function iniciarInterfaz() {
-    exportador = window.Exportador.crear({ estado: estado, $: $, avisar: avisar, alternar: alternar, iniciarAudio: iniciarAudio, crearGenerador: crearGenerador, semillaActual: semillaActual });
+    exportador = window.Exportador.crear({ estado: estado, $: $, avisar: avisar, alternar: alternar, iniciarAudio: iniciarAudio, crearGenerador: crearGenerador, semillaActual: semillaActual, descargar: descargar });
     cargarAjustes();
     const sel = $('estilo');
     const auto = document.createElement('option');
@@ -447,6 +450,9 @@
     const pct = function (x) { return Math.round(x * 100) + ' %'; };
     enlazarRango('fidelidad', 'fidelidad', function (v) { if (estado.gen) estado.gen.configurar({ fidelidad: v }); }, pct);
     enlazarRango('variacion', 'variacion', function (v) { if (estado.gen) estado.gen.configurar({ variacion: v }); }, pct);
+    enlazarRango('colorModal', 'colorModal', function (v) { if (estado.gen) estado.gen.configurar({ colorModal: v }); }, pct);
+    enlazarRango('contra', 'contra', function (v) { if (estado.gen) estado.gen.configurar({ contra: v }); }, pct);
+    enlazarRango('cambiosCompas', 'cambiosCompas', function (v) { if (estado.gen) estado.gen.configurar({ cambiosCompas: v }); }, pct);
     enlazarRango('tempo', 'tempo', function (v) { if (estado.gen) estado.gen.configurar({ tempo: v }); }, function (x) { return '×' + x.toFixed(2); });
     enlazarRango('volumen', 'volumen', function (v) { if (estado.motor) estado.motor.ponerVolumen(v); });
     enlazarRango('reverb', 'reverb', function (v) { if (estado.motor) estado.motor.ponerReverb(v); });
@@ -547,6 +553,16 @@
     const p = $('panel');
     p.classList.toggle('oculto');
     $('pantallita').classList.toggle('oculto', p.classList.contains('oculto'));
+  }
+
+  function descargar(blob, nombre) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = nombre;
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
   }
 
   function pantallaCompleta() {

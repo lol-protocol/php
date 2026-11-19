@@ -237,7 +237,7 @@
         let suma = 0;
         for (let i = desde; i < hasta; i++) suma += u[i];
         const media = suma / Math.max(1, hasta - desde);
-        let k0 = media > 1 ? Math.floor(Math.log2(media)) : 0;
+        const k0 = media > 1 ? Math.floor(Math.log2(media)) : 0;
         let mk = k0;
         let mb = Infinity;
         for (let k = Math.max(0, k0 - 1); k <= Math.min(maxParam, k0 + 1); k++) {

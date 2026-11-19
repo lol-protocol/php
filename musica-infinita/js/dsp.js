@@ -168,7 +168,7 @@
     let ant = linea[N - 1];
     for (let i = 0; i < n; i++) {
       const actual = linea[idx];
-      let y = 0.5 * (actual + ant) * perdida;
+      const y = 0.5 * (actual + ant) * perdida;
       ant = actual;
       // pasa-todo para la fracción de muestra
       const ap = coef * y + apX - coef * apY;
@@ -193,7 +193,7 @@
         const ps = [];
         for (let k = 1; k <= 24; k++) {
           const r = k * Math.sqrt(1 + B * k * k);
-          let a = Math.pow(k, -1.05) * (0.25 + Math.abs(Math.sin((Math.PI * k) / 7.3)));
+          const a = Math.pow(k, -1.05) * (0.25 + Math.abs(Math.sin((Math.PI * k) / 7.3)));
           // los parciales agudos se apagan antes, y más en las notas agudas (nunca negativo)
           const d = Math.min(dur, (dur * 0.55) / (1 + 0.45 * (k - 1)) / Math.exp((nota - 60) * 0.006 * k));
           ps.push({ r: r, a: a * 0.65, d: d });

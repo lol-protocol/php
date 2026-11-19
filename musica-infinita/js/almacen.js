@@ -52,5 +52,21 @@
     } catch (e) { /* ajustes dañados: los de siempre */ }
   }
 
-  raiz.Almacen = { BD: BD, guardarAjustes: guardarAjustes, cargarAjustes: cargarAjustes };
+  /** Los ajustes propios de la MilkDrop (una lista de objetos ya validados al leerlos). */
+  function guardarPresets(lista) {
+    try {
+      raiz.localStorage.setItem('musica-infinita:presets', JSON.stringify(lista));
+    } catch (e) { /* sin almacenamiento */ }
+  }
+
+  function cargarPresets() {
+    try {
+      const l = JSON.parse(raiz.localStorage.getItem('musica-infinita:presets') || '[]');
+      return Array.isArray(l) ? l : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  raiz.Almacen = { BD: BD, guardarAjustes: guardarAjustes, cargarAjustes: cargarAjustes, guardarPresets: guardarPresets, cargarPresets: cargarPresets };
 })(window);

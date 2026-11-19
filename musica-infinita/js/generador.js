@@ -17,6 +17,16 @@
  *     música nueva con su estilo.
  *   - Entre secciones modula (a la relativa, a la dominante, un tono arriba...), cambia el
  *     tempo de a poco y, si el estilo es automático, de instrumentos.
+ *   - Color modal: una sección puede tocar sus frases libres en dórico, frigio, mixolidio o
+ *     lidio (según sea mayor o menor la canción de la que parte), con progresiones propias
+ *     del modo. Las citas siguen en el modo original de su canción.
+ *   - Cadencias: cada frase libre cierra con sentido. La primera de cada pareja termina en
+ *     semicadencia (sobre la dominante) y la última de la sección en cadencia auténtica
+ *     (dominante a tónica, o la del modo), con la melodía cayendo sobre la tónica.
+ *   - Contramelodía: una segunda voz que va en terceras por debajo de la melodía o le
+ *     responde en sus silencios con notas del acorde, en sentido contrario.
+ *   - Compás: cada sección toma el de su canción (3/4 o 4/4), y a veces cambia al otro;
+ *     las citas se sacan de canciones del mismo compás cuando las hay.
  */
 (function (raiz) {
   'use strict';
@@ -86,6 +96,8 @@
       bajo: [{ programa: 38, patron: 'redonda' }, { programa: 39, patron: 'redonda' }],
       arpegio: [{ programa: 8, patron: 'lento' }, { programa: 11, patron: 'lento' }, null],
       bateria: null,
+      contra: [52, 71],
+      contraProb: 0.3,
       tempo: 0.82,
       septimas: 0.6,
     },
@@ -96,6 +108,8 @@
       bajo: [{ programa: 33, patron: 'raiz-quinta' }, { programa: 38, patron: 'corcheas' }],
       arpegio: [null, { programa: 25, patron: 'corcheas' }],
       bateria: 'pop',
+      contra: [48, 56],
+      contraProb: 0.5,
       tempo: 1.05,
       septimas: 0.2,
     },
@@ -106,6 +120,8 @@
       bajo: [{ programa: 43, patron: 'blancas' }, { programa: 42, patron: 'blancas' }],
       arpegio: [{ programa: 46, patron: 'arpa' }, { programa: 45, patron: 'pulsos-arpegio' }, null],
       bateria: null,
+      contra: [71, 68, 42],
+      contraProb: 0.85,
       tempo: 0.92,
       septimas: 0.1,
     },
@@ -116,6 +132,8 @@
       bajo: [{ programa: 38, patron: 'corcheas' }],
       arpegio: [null],
       bateria: 'chip',
+      contra: [80],
+      contraProb: 0.3,
       tempo: 1.15,
       septimas: 0,
     },
@@ -126,6 +144,8 @@
       bajo: [{ programa: 33, patron: 'raiz-quinta' }],
       arpegio: [null, { programa: 11, patron: 'lento' }],
       bateria: 'lofi',
+      contra: [11],
+      contraProb: 0.4,
       tempo: 0.8,
       septimas: 0.9,
       swing: 0.55,
@@ -137,6 +157,8 @@
       bajo: [{ programa: 10, patron: 'redonda-alta' }],
       arpegio: [{ programa: 10, patron: 'lento' }, { programa: 46, patron: 'arpa' }],
       bateria: null,
+      contra: [9],
+      contraProb: 0.5,
       tempo: 0.9,
       septimas: 0.15,
     },
@@ -159,7 +181,26 @@
   };
   const VEL_BATERIA = { 36: 100, 38: 88, 42: 58, 46: 64, 49: 96 };
 
-  const CANAL = { melodia: 0, acordes: 1, bajo: 2, arpegio: 3, bateria: 9 };
+  const CANAL = { melodia: 0, acordes: 1, bajo: 2, arpegio: 3, contra: 4, bateria: 9 };
+
+  // Modos de color para las frases libres, según el modo de la canción de la que parte la sección.
+  const MODOS_COLOR = { mayor: ['mixolidia', 'lidia'], menor: ['dorica', 'frigia'] };
+  const ROTULO_MODO = { mayor: 'mayor', menor: 'menor', dorica: 'dórica', mixolidia: 'mixolidia', lidia: 'lidia', frigia: 'frigia' };
+
+  // Progresiones de cada modo (raíz relativa a la tónica : tipo), con el acorde que lo hace sonar a ese modo.
+  const PROGRESIONES_MODALES = {
+    dorica: [['0:m', '5:M', '0:m', '7:m'], ['0:m', '5:M', '10:M', '0:m'], ['0:m', '2:m', '5:M', '0:m']],
+    mixolidia: [['0:M', '10:M', '5:M', '0:M'], ['0:M', '10:M', '5:M', '7:m'], ['0:M', '5:M', '10:M', '0:M']],
+    lidia: [['0:M', '2:M', '0:M', '7:M'], ['0:M', '2:M', '9:m', '4:m'], ['0:M', '7:M', '2:M', '0:M']],
+    frigia: [['0:m', '1:M', '0:m', '10:m'], ['0:m', '1:M', '3:M', '0:m'], ['0:m', '10:m', '1:M', '0:m']],
+  };
+
+  // Cadencias: los dos últimos acordes (autentica y plagal) o el último (semi), por modo.
+  const CADENCIAS = {
+    autentica: { mayor: ['7:M', '0:M'], menor: ['7:M', '0:m'], dorica: ['5:M', '0:m'], mixolidia: ['10:M', '0:M'], lidia: ['2:M', '0:M'], frigia: ['1:M', '0:m'] },
+    plagal: { mayor: ['5:M', '0:M'], menor: ['5:m', '0:m'], dorica: ['5:M', '0:m'], mixolidia: ['5:M', '0:M'], lidia: ['2:M', '0:M'], frigia: ['5:m', '0:m'] },
+    semi: { mayor: '7:M', menor: '7:M', dorica: '7:m', mixolidia: '7:m', lidia: '7:M', frigia: '1:M' },
+  };
 
   // Progresiones por omisión si no hay acordes aprendidos (raíz relativa : tipo).
   const PROGRESIONES = {
@@ -239,6 +280,9 @@
     this.estiloFijo = opciones.estilo && opciones.estilo !== 'auto' ? opciones.estilo : null;
     this.tempoFactor = opciones.tempo || 1;
     this.humanizar = opciones.humanizar == null ? true : opciones.humanizar;
+    this.colorModal = opciones.colorModal == null ? 0.3 : opciones.colorModal; // probabilidad de que una sección sea modal
+    this.contra = opciones.contra == null ? 0.6 : opciones.contra; // 0: sin contramelodía; 0,6: la de cada estilo
+    this.cambiosCompas = opciones.cambiosCompas == null ? 0.15 : opciones.cambiosCompas; // probabilidad de cambiar 3/4 y 4/4
     this.cola = [];
     this.t = opciones.inicio || 0; // segundos: fin de lo ya generado
     this.seccion = null;
@@ -260,13 +304,23 @@
     if (o.variacion != null) this.variacion = o.variacion;
     if (o.estilo !== undefined) this.estiloFijo = o.estilo && o.estilo !== 'auto' ? o.estilo : null;
     if (o.tempo != null) this.tempoFactor = o.tempo;
+    if (o.colorModal != null) this.colorModal = o.colorModal;
+    if (o.contra != null) this.contra = o.contra;
+    if (o.cambiosCompas != null) this.cambiosCompas = o.cambiosCompas;
     if (o.canciones) this.ponerCanciones(o.canciones);
   };
 
   /** Eventos con inicio antes de tHasta (segundos), en orden. Genera lo que haga falta. */
   Generador.prototype.eventosHasta = function (tHasta) {
-    let guarda = 0;
-    while (this.t < tHasta + 0.5 && guarda++ < 64) this.generarBloque();
+    // sin tope de bloques (una exportación pide horas de una vez); solo se corta si, por un
+    // error, los bloques dejaran de avanzar en el tiempo
+    let sinAvance = 0;
+    while (this.t < tHasta + 0.5) {
+      const antes = this.t;
+      this.generarBloque();
+      if (this.t > antes) sinAvance = 0;
+      else if (++sinAvance > 8) break;
+    }
     this.cola.sort(function (a, b) {
       return a.t - b.t;
     });
@@ -333,7 +387,14 @@
     if (previa) bpm = previa.bpm + (bpm - previa.bpm) * 0.5; // sin saltos bruscos
     bpm *= this.tempoFactor;
 
-    const pulsosCompas = ancla && ancla.pulsosCompas === 3 ? 3 : 4;
+    let pulsosCompas = ancla && ancla.pulsosCompas === 3 ? 3 : 4;
+    if (previa && az.prob(this.cambiosCompas)) pulsosCompas = previa.pulsosCompas === 3 ? 4 : 3;
+
+    // color modal para las frases libres, y contramelodía
+    const modoColor = this.colorModal > 0 && az.prob(this.colorModal) ? az.elegir(MODOS_COLOR[modo] || MODOS_COLOR.mayor) : null;
+    const probContra = Math.min(1, ((E.contraProb || 0) * this.contra) / 0.6);
+    const conContra = this.contra > 0 && E.contra && az.prob(probContra);
+    const contraTipo = az.elegir(['terceras', 'respuesta']);
 
     const arpegio = az.elegir(E.arpegio);
     const sec = {
@@ -350,8 +411,11 @@
         acordes: az.elegir(E.acordes),
         bajo: az.elegir(E.bajo),
         arpegio: arpegio,
+        contra: conContra ? { programa: az.elegir(E.contra) } : null,
         bateria: E.bateria,
       },
+      modoColor: modoColor,
+      contraTipo: contraTipo,
       septimas: E.septimas,
       swing: E.swing || 0,
       forma: az.elegir([['A', 'A2', 'B', 'A'], ['A', 'B', 'A', 'B2'], ['A', 'B', 'C', 'A'], ['A', 'A2', 'B', 'B2', 'A'], ['A', 'B', 'A2', 'C', 'A']]),
@@ -378,14 +442,19 @@
     const base = etiqueta.charAt(0);
     const esUltimo = sec.paso === sec.forma.length - 1;
     let mat = sec.materiales[etiqueta];
+    // cadencia que pide este lugar de la forma: la primera de cada pareja queda abierta
+    // (semicadencia), la última de la sección cierra, las demás dependen del azar
+    const cadencia = esUltimo ? 'autentica' : sec.paso % 2 === 0 ? 'semi' : this.azar.elegir(['autentica', 'plagal', 'libre', 'libre']);
     if (!mat) {
       if (etiqueta.length > 1 && sec.materiales[base]) {
         mat = this.variar(sec.materiales[base], Math.max(0.35, this.variacion), sec);
       } else {
-        mat = this.azar.prob(this.fidelidad) && this.canciones.length ? this.cita(sec) : this.fraseLibre(sec);
+        mat = this.azar.prob(this.fidelidad) && this.canciones.length ? this.cita(sec) : this.fraseLibre(sec, cadencia);
       }
       sec.materiales[etiqueta] = mat;
     }
+    // un material que se repite al final tiene que cerrar aunque la primera vez quedara abierto
+    if (esUltimo && mat.tipo === 'libre' && (mat.cadencia !== 'autentica' || mat.variado)) mat = this.cerrar(mat);
     sec.paso++;
     this.realizar(mat, sec, esUltimo);
   };
@@ -396,6 +465,12 @@
   Generador.prototype.cita = function (sec) {
     const az = this.azar;
     let c = sec.ancla && az.prob(0.75) ? sec.ancla : az.elegir(this.canciones);
+    // con el compás de la sección: si la canción elegida es de otro, se busca una del mismo
+    const compasDe = function (x) { return x.pulsosCompas === 3 ? 3 : 4; };
+    if (compasDe(c) !== sec.pulsosCompas) {
+      const iguales = this.canciones.filter(function (x) { return compasDe(x) === sec.pulsosCompas; });
+      if (iguales.length && az.prob(0.85)) c = az.elegir(iguales);
+    }
     // seguir la canción en orden la hace reconocible; a veces salta a otra frase
     let fi;
     if (sec.siguienteFrase && sec.siguienteFrase.cancion === c && az.prob(0.7)) fi = sec.siguienteFrase.indice;
@@ -429,31 +504,54 @@
     if (!acordes.length || acordes[0].inicio > 0) {
       acordes.unshift({ inicio: 0, pulsos: acordes.length ? acordes[0].inicio : pulsos, raizRel: 0, tipo: sec.modo === 'menor' ? 'm' : 'M' });
     }
-    let mat = { tipo: 'cita', cancion: c.nombre, frase: fi + 1, pulsos: pulsos, notas: notas, acordes: acordes };
+    let mat = { tipo: 'cita', modo: sec.modo, cancion: c.nombre, frase: fi + 1, pulsos: pulsos, notas: notas, acordes: acordes };
     if (this.variacion > 0 && az.prob(this.variacion)) mat = this.variar(mat, this.variacion * 0.6, sec);
     return mat;
   };
 
   /** Una frase nueva: progresión de la cadena armónica y melodía de la melódica. */
-  Generador.prototype.fraseLibre = function (sec) {
+  Generador.prototype.fraseLibre = function (sec, cadencia) {
     const az = this.azar;
     const pc = sec.pulsosCompas;
+    const modo = sec.modoColor || sec.modo;
     const compases = az.prob(0.75) ? 4 : 2;
     const pulsos = compases * pc;
-    const acordes = this.progresion(sec, pulsos);
-    const notas = this.melodiaMarkov(sec, pulsos, acordes);
-    return { tipo: 'libre', pulsos: pulsos, notas: notas, acordes: acordes };
+    const cad = cadencia || 'libre';
+    const acordes = this.progresion(sec, pulsos, modo, cad);
+    const notas = this.melodiaMarkov(sec, pulsos, acordes, modo, cad);
+    return { tipo: 'libre', modo: modo, cadencia: cad, pulsos: pulsos, notas: notas, acordes: acordes };
   };
 
-  Generador.prototype.progresion = function (sec, pulsos) {
+  /** Pone la cadencia en los últimos acordes de una lista de {raizRel, tipo}. */
+  function aplicarCadencia(acordes, modo, cadencia) {
+    const n = acordes.length;
+    const poner = function (i, tok) {
+      if (i < 0 || i >= n) return;
+      const p = tok.split(':');
+      acordes[i].raizRel = Number(p[0]);
+      acordes[i].tipo = p[1];
+    };
+    if (cadencia === 'semi') {
+      poner(n - 1, CADENCIAS.semi[modo] || CADENCIAS.semi.mayor);
+    } else if (cadencia === 'autentica' || cadencia === 'plagal') {
+      const par = (CADENCIAS[cadencia][modo] || CADENCIAS[cadencia].mayor);
+      poner(n - 2, par[0]);
+      poner(n - 1, par[1]);
+    }
+    return acordes;
+  }
+
+  Generador.prototype.progresion = function (sec, pulsos, modo, cadencia) {
     const az = this.azar;
-    const cad = this.modelo.armonico[sec.modo] && this.modelo.armonico[sec.modo].size ? this.modelo.armonico[sec.modo] : this.modelo.armonico[sec.modo === 'mayor' ? 'menor' : 'mayor'];
+    modo = modo || sec.modo;
+    const modal = !!PROGRESIONES_MODALES[modo];
+    const cad = modal ? null : this.modelo.armonico[modo] && this.modelo.armonico[modo].size ? this.modelo.armonico[modo] : this.modelo.armonico[modo === 'mayor' ? 'menor' : 'mayor'];
     const pc = sec.pulsosCompas;
     // ritmo armónico: un acorde por compás, o dos
     const porCompas = pc === 4 && az.prob(0.35) ? 2 : 1;
     const dur = pc / porCompas;
     const n = Math.round(pulsos / dur);
-    let toks = [];
+    const toks = [];
     if (cad && cad.size > 2 && az.prob(0.85)) {
       const hist = ['^'];
       for (let i = 0; i < n; i++) {
@@ -467,18 +565,33 @@
         hist.push(t);
       }
     } else {
-      const prog = az.elegir(PROGRESIONES[sec.modo] || PROGRESIONES.mayor);
+      const prog = az.elegir(PROGRESIONES_MODALES[modo] || PROGRESIONES[modo] || PROGRESIONES.mayor);
       for (let i = 0; i < n; i++) toks.push(prog[i % prog.length]);
     }
-    // cadencia: el último acorde tiende a la dominante o a la tónica
-    if (az.prob(0.5)) toks[n - 1] = az.prob(0.5) ? '7:M' : sec.modo === 'menor' ? '0:m' : '0:M';
-    return toks.map(function (t, i) {
+    const acordes = toks.map(function (t, i) {
       const p = t.split(':');
       return { inicio: i * dur, pulsos: dur, raizRel: Number(p[0]), tipo: p[1] };
     });
+    return aplicarCadencia(acordes, modo, cadencia);
   };
 
-  Generador.prototype.melodiaMarkov = function (sec, pulsos, acordes) {
+  /** Copia de un material de frase libre que cierra con cadencia auténtica y cae sobre la tónica. */
+  Generador.prototype.cerrar = function (mat) {
+    const modo = mat.modo;
+    const acordes = mat.acordes.map(function (a) { return Object.assign({}, a); });
+    aplicarCadencia(acordes, modo, 'autentica');
+    const notas = mat.notas.map(function (x) { return Object.assign({}, x); });
+    if (notas.length) {
+      const ult = notas[notas.length - 1];
+      ult.g = cercaDeTonica(ult.g);
+      ult.alt = 0;
+      ult.dur = Math.max(ult.dur, mat.pulsos - ult.inicio);
+    }
+    return Object.assign({}, mat, { acordes: acordes, notas: notas, cadencia: 'autentica' });
+  };
+
+  Generador.prototype.melodiaMarkov = function (sec, pulsos, acordes, modo, cadencia) {
+    modo = modo || sec.modo;
     const az = this.azar;
     const mel = this.modelo.melodico;
     const notas = [];
@@ -517,14 +630,14 @@
         dg = az.elegir([-2, -1, -1, 0, 1, 1, 2, 3, -3]);
         ioi = az.elegir([0.5, 1, 1, 1, 2]);
       }
-      if (g === null) g = notaDeAcordeCercana(az.elegir([2, 4, 4, 7]), acordes[0], sec);
+      if (g === null) g = notaDeAcordeCercana(az.elegir([2, 4, 4, 7]), acordes[0], sec, modo);
       else if (dg != null) g += dg;
       if (g < GRADO_MIN) g += 7;
       if (g > GRADO_MAX) g -= 7;
       if (t + ioi > pulsos) ioi = pulsos - t;
       // en tiempo fuerte, a una nota del acorde
       const ac = acordeEnLista(acordes, t);
-      if (ac && esTiempoFuerte(t, sec.pulsosCompas) && az.prob(0.75)) g = notaDeAcordeCercana(g, ac, sec);
+      if (ac && esTiempoFuerte(t, sec.pulsosCompas) && az.prob(0.75)) g = notaDeAcordeCercana(g, ac, sec, modo);
       notas.push({ inicio: t, dur: ioi > 1.5 ? ioi * 0.9 : ioi, g: g, alt: 0, vel: 88 });
       hist.push(tok || claveToken(dg || 0, ioi));
       t += ioi;
@@ -533,10 +646,68 @@
     if (notas.length) {
       const ult = notas[notas.length - 1];
       const ac = acordeEnLista(acordes, ult.inicio);
-      if (ac) ult.g = notaDeAcordeCercana(ult.g, ac, sec);
+      if (ac) ult.g = notaDeAcordeCercana(ult.g, ac, sec, modo);
+      // cadencia auténtica: la melodía cae sobre la tónica
+      if (cadencia === 'autentica') ult.g = cercaDeTonica(ult.g);
       ult.dur = Math.max(ult.dur, pulsos - ult.inicio);
     }
     return notas;
+  };
+
+  /**
+   * Segunda voz: en terceras por debajo de la melodía (saltándose algunas notas), o una
+   * respuesta que llena sus silencios con notas del acorde, en sentido contrario al último
+   * intervalo de la melodía, y una nota larga bajo cada nota larga.
+   */
+  Generador.prototype.contramelodia = function (mat, sec, modo) {
+    const az = this.azar;
+    const mel = mat.notas;
+    const out = [];
+    if (mel.length < 2) return out;
+    const dentro = function (g) {
+      while (g < GRADO_MIN - 3) g += 7;
+      while (g > GRADO_MAX) g -= 7;
+      return g;
+    };
+    const terceras = function () {
+      for (let i = 0; i < mel.length; i++) {
+        const m = mel[i];
+        if (m.dur < 0.5 || (i % 2 === 1 && az.prob(0.35))) continue;
+        let g = m.g - 2;
+        const ac = acordeEnLista(mat.acordes, m.inicio);
+        if (ac && esTiempoFuerte(m.inicio, sec.pulsosCompas)) g = notaDeAcordeCercana(g, ac, sec, modo);
+        if (g >= m.g) g = m.g - 2; // nunca en unísono ni por encima
+        out.push({ inicio: m.inicio, dur: m.dur, g: dentro(g), alt: 0, vel: (m.vel || 90) * 0.7 });
+      }
+    };
+    if (sec.contraTipo === 'terceras') {
+      terceras();
+      return out;
+    }
+    for (let i = 0; i < mel.length; i++) {
+      const m = mel[i];
+      const ac = acordeEnLista(mat.acordes, m.inicio);
+      const sigInicio = i + 1 < mel.length ? mel[i + 1].inicio : mat.pulsos;
+      const libre = sigInicio - (m.inicio + m.dur);
+      if (m.dur >= 3 && ac) {
+        // una nota larga: debajo, una nota del acorde que la sostiene
+        out.push({ inicio: m.inicio, dur: m.dur, g: dentro(notaDeAcordeCercana(m.g - 4, ac, sec, modo)), alt: 0, vel: (m.vel || 90) * 0.6 });
+      }
+      if (libre >= 1 && ac) {
+        // un silencio: una figurita por grados conjuntos, contraria al último movimiento
+        const subida = i > 0 ? mel[i].g - mel[i - 1].g : 0;
+        const dir = subida > 0 ? -1 : 1;
+        const cuantas = Math.min(4, Math.floor(Math.min(libre, 2) / 0.5));
+        let g = notaDeAcordeCercana(m.g - 3, ac, sec, modo);
+        for (let k = 0; k < cuantas; k++) {
+          out.push({ inicio: m.inicio + m.dur + k * 0.5, dur: 0.5, g: dentro(g), alt: 0, vel: 62 });
+          g += dir;
+        }
+      }
+    }
+    if (!out.length) terceras(); // una melodía sin silencios ni notas largas: terceras
+    out.sort(function (a, b) { return a.inicio - b.inicio; });
+    return out;
   };
 
   /** Variación de un material: adornos, ritmo con puntillo, octava, final distinto. */
@@ -637,6 +808,8 @@
       });
     }
 
+    const modoBloque = mat.modo || sec.modo;
+
     // información para la pantalla
     this.cola.push({
       t: t0,
@@ -644,7 +817,11 @@
       tipo: 'info',
       seccion: sec.numero,
       estilo: ESTILOS[sec.estilo].nombre,
-      tonalidad: T.nombreTonalidad(sec.tonica, sec.modo),
+      tonalidad: T.NOMBRES[T.mod(sec.tonica, 12)] + ' ' + (ROTULO_MODO[modoBloque] || modoBloque),
+      modo: modoBloque,
+      compas: sec.pulsosCompas + '/4',
+      cadencia: mat.cadencia || null,
+      contra: !!sec.voces.contra,
       bpm: sec.bpm,
       material: mat.tipo,
       cancion: mat.cancion || null,
@@ -658,11 +835,18 @@
     const n = mat.notas.length;
     for (let i = 0; i < n; i++) {
       const m = mat.notas[i];
-      let nota = T.notaDeGrado(m.g, m.alt, sec.tonica, sec.modo);
+      const nota = T.notaDeGrado(m.g, m.alt, sec.tonica, modoBloque);
       // en menor, la sensible sube en las cadencias que van a la dominante
       const arco = 0.85 + 0.25 * Math.sin((Math.PI * i) / Math.max(1, n - 1));
       const acento = esTiempoFuerte(m.inicio, sec.pulsosCompas) ? 8 : 0;
       emitir('melodia', pm, nota, m.inicio, m.dur, Math.min(118, (m.vel || 90) * arco + acento));
+    }
+
+    // contramelodía
+    if (sec.voces.contra) {
+      for (const m of this.contramelodia(mat, sec, modoBloque)) {
+        emitir('contra', sec.voces.contra.programa, T.notaDeGrado(m.g, m.alt, sec.tonica, modoBloque), m.inicio, m.dur, m.vel);
+      }
     }
 
     // armonía
@@ -797,13 +981,19 @@
   }
 
   /** El grado más cercano a g cuya nota pertenece al acorde. */
-  function notaDeAcordeCercana(g, ac, sec) {
+  /** La tónica (grado 0 o 7) más cercana a g. */
+  function cercaDeTonica(g) {
+    return Math.max(0, Math.min(7, Math.round(g / 7) * 7));
+  }
+
+  function notaDeAcordeCercana(g, ac, sec, modo) {
+    modo = modo || sec.modo;
     const pcs = T.notasAcorde(T.mod(sec.tonica + ac.raizRel, 12), ac.tipo);
     for (let d = 0; d <= 3; d++) {
       for (const s of d === 0 ? [0] : [-d, d]) {
         const cand = g + s;
         if (cand < GRADO_MIN || cand > GRADO_MAX) continue;
-        if (pcs.indexOf(T.mod(T.notaDeGrado(cand, 0, sec.tonica, sec.modo), 12)) >= 0) return cand;
+        if (pcs.indexOf(T.mod(T.notaDeGrado(cand, 0, sec.tonica, modo), 12)) >= 0) return cand;
       }
     }
     return g;

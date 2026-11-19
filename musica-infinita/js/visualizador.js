@@ -1,30 +1,33 @@
 /*
  * Visualizaciones al estilo de Winamp: el analizador de espectro clásico con sus picos que
  * caen, un osciloscopio, una «MilkDrop» (cada cuadro se dibuja sobre el anterior, acercado,
- * girado y deformado, con la onda encima) y una lluvia de notas que muestra qué toca cada
- * voz. Todas reaccionan al sonido (FFT y onda) y la MilkDrop además al pulso y a los
- * cambios de sección del generador.
+ * girado y deformado, con la onda encima), una lluvia de notas que muestra qué toca cada
+ * voz, partículas que nacen de cada nota y de cada golpe de bombo, y una curva de Lissajous
+ * en 3D que gira con la señal estéreo. Todas reaccionan al sonido (FFT y onda).
+ *
+ * Reaccionan además a la música: cada estilo trae su color y su grupo de ajustes de la
+ * MilkDrop, que cambian al empezar cada sección. Los ajustes se pueden editar, guardar,
+ * exportar e importar (ver panel-visual.js), y fijar para que no cambien solos.
+ *
+ * Lo que se puede calcular sin dibujar (ajustes, partículas, proyección, barras) está en
+ * visual-puro.js y tiene sus pruebas. Aquí solo se dibuja.
  *
  * Solo navegador. La MilkDrop usa WebGL2; sin WebGL2 cae a una versión en canvas 2D.
  */
 (function (raiz) {
   'use strict';
 
-  const MODOS = ['milkdrop', 'espectro', 'notas', 'osciloscopio'];
-  const NOMBRES_MODOS = { milkdrop: 'MilkDrop', espectro: 'Espectro', notas: 'Lluvia de notas', osciloscopio: 'Osciloscopio' };
+  const VP = raiz.VisualPuro;
 
-  const COLOR_VOZ = { melodia: [255, 214, 92], acordes: [120, 170, 255], bajo: [255, 96, 140], arpegio: [120, 255, 200], bateria: [200, 200, 200], midi: [255, 180, 120] };
+  const MODOS = ['milkdrop', 'espectro', 'notas', 'osciloscopio', 'particulas', 'lissajous3d'];
+  const NOMBRES_MODOS = { milkdrop: 'MilkDrop', espectro: 'Espectro', notas: 'Lluvia de notas', osciloscopio: 'Osciloscopio', particulas: 'Partículas', lissajous3d: 'Lissajous 3D' };
+
+  const COLOR_VOZ = { melodia: [255, 214, 92], acordes: [120, 170, 255], bajo: [255, 96, 140], arpegio: [120, 255, 200], contra: [200, 140, 255], bateria: [200, 200, 200], midi: [255, 180, 120] };
+  const MATIZ_VOZ = { melodia: 45, acordes: 220, bajo: 345, arpegio: 160, contra: 270, bateria: 0, midi: 25 };
 
   // Ajustes de la MilkDrop. Se pasa de uno a otro de a poco.
-  const PRESETS = [
-    { nombre: 'Túnel', zoom: 1.035, rot: 0.004, warp: 0.004, warpFrec: 6, decay: 0.965, tono: 0.002, onda: 0, caleido: 0, brillo: 1 },
-    { nombre: 'Remolino', zoom: 1.012, rot: 0.02, warp: 0.009, warpFrec: 3, decay: 0.975, tono: 0.004, onda: 1, caleido: 0, brillo: 0.9 },
-    { nombre: 'Caleidoscopio', zoom: 1.02, rot: -0.008, warp: 0.006, warpFrec: 9, decay: 0.955, tono: 0.003, onda: 2, caleido: 1, brillo: 1 },
-    { nombre: 'Nebulosa', zoom: 0.992, rot: 0.003, warp: 0.012, warpFrec: 2, decay: 0.982, tono: 0.001, onda: 0, caleido: 0, brillo: 0.8 },
-    { nombre: 'Espejo', zoom: 1.04, rot: 0, warp: 0.003, warpFrec: 12, decay: 0.94, tono: 0.006, onda: 3, caleido: 1, brillo: 1.1 },
-    { nombre: 'Lissajous', zoom: 1.006, rot: -0.015, warp: 0.002, warpFrec: 5, decay: 0.97, tono: 0.003, onda: 2, caleido: 0, brillo: 1 },
-  ];
-  const CLAVES_PRESET = ['zoom', 'rot', 'warp', 'warpFrec', 'decay', 'tono', 'onda', 'caleido', 'brillo'];
+  const PRESETS = VP.PRESETS;
+  const CLAVES_PRESET = VP.CLAVES_NUMERICAS.concat(['onda', 'caleido']);
 
   function Visualizador(canvas, motor) {
     this.canvas = canvas;
@@ -34,15 +37,22 @@
     this.info = null;
     this.activo = false;
     this.t0 = performance.now();
-    this.picos = null;
-    this.alturas = null;
+    this.barras = null;
     this.energiaMedia = 0;
     this.pulso = 0;
     this.presetActual = Object.assign({}, PRESETS[0]);
     this.presetObjetivo = PRESETS[0];
     this.cambioPreset = performance.now();
     this.indicePreset = 0;
-    this.tono = 0;
+    this.presetsUsuario = []; // ajustes propios (ver panel-visual.js)
+    this.fijo = false; // con true, los ajustes no cambian solos
+    this.matiz = 190; // color de la paleta, que sigue al estilo de la música
+    this.matizObjetivo = 190;
+    this.deriva = 0;
+    this.particulas = VP.crearParticulas(700);
+    this.ultimoCuadro = performance.now();
+    this.angulo = { x: 0.5, y: 0 };
+    this.puntos3d = new Float32Array(1024 * 3);
 
     const ctx = motor.ctx;
     this.analizador = ctx.createAnalyser();
@@ -76,7 +86,7 @@
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     this.canvas.width = Math.floor(this.canvas.clientWidth * dpr) || 800;
     this.canvas.height = Math.floor(this.canvas.clientHeight * dpr) || 450;
-    this.picos = null;
+    this.barras = null;
     if (this.gl) this.crearTexturas();
   };
 
@@ -110,11 +120,42 @@
     return this.modo;
   };
 
+  /** Los ajustes de fábrica y los del usuario. */
+  Visualizador.prototype.listaPresets = function () {
+    return PRESETS.concat(this.presetsUsuario);
+  };
+
+  /** Pasa a otro ajuste que vaya con el estilo de la música (si no están fijos). Devuelve su nombre. */
   Visualizador.prototype.siguientePreset = function () {
-    this.indicePreset = (this.indicePreset + 1 + Math.floor(Math.random() * (PRESETS.length - 1))) % PRESETS.length;
-    this.presetObjetivo = PRESETS[this.indicePreset];
+    if (this.fijo) return this.presetObjetivo.nombre;
+    const p = VP.paraEstilo(this.info ? this.info.estilo : null, Math.random, this.presetObjetivo.nombre, this.listaPresets());
+    this.presetObjetivo = p;
+    this.indicePreset = this.listaPresets().indexOf(p);
     this.cambioPreset = performance.now();
-    return this.presetObjetivo.nombre;
+    if (this.alCambiarPreset) this.alCambiarPreset(p);
+    return p.nombre;
+  };
+
+  /** Pone un ajuste ya (sin pasar de a poco). Con fijar, no cambia solo hasta que se suelte. */
+  Visualizador.prototype.ponerPreset = function (p, fijar) {
+    const v = VP.validar(p);
+    if (!v) return null;
+    this.presetObjetivo = v;
+    Object.assign(this.presetActual, v);
+    this.fijo = !!fijar;
+    this.cambioPreset = performance.now();
+    return v;
+  };
+
+  /** Cambia un parámetro del ajuste en uso, de inmediato. */
+  Visualizador.prototype.editarPreset = function (clave, valor) {
+    const nuevo = Object.assign({}, this.presetObjetivo);
+    nuevo[clave] = Number(valor);
+    return this.ponerPreset(nuevo, this.fijo);
+  };
+
+  Visualizador.prototype.presetEnUso = function () {
+    return Object.assign({}, this.presetObjetivo);
   };
 
   /** Cada nota tocada (con su tiempo de audio) alimenta la lluvia de notas. */
@@ -126,6 +167,8 @@
   Visualizador.prototype.alInfo = function (info) {
     const cambioSeccion = !this.info || info.seccion !== this.info.seccion;
     this.info = info;
+    // el color sigue al estilo de la música; los ajustes de la MilkDrop, al cambiar de sección
+    this.matizObjetivo = VP.matizDeEstilo(info.estilo);
     if (cambioSeccion) this.siguientePreset();
   };
 
@@ -166,6 +209,9 @@
 
   Visualizador.prototype.dibujar = function () {
     this.leerAudio();
+    // el color se acerca de a poco al del estilo (por el camino más corto)
+    this.matiz = (this.matiz + VP.difMatiz(this.matiz, this.matizObjetivo) * 0.02 + 360) % 360;
+    this.deriva = (this.deriva + 0.05 + this.pulso * 1.5) % 360;
     if (this.modo === 'milkdrop') {
       if (this.gl) this.dibujarGl();
       else this.dibujarMilkdrop2d();
@@ -175,6 +221,8 @@
     if (!this.c2d) return;
     if (this.modo === 'espectro') this.dibujarEspectro();
     else if (this.modo === 'notas') this.dibujarNotas();
+    else if (this.modo === 'particulas') this.dibujarParticulas();
+    else if (this.modo === 'lissajous3d') this.dibujarLissajous3d();
     else this.dibujarOsciloscopio();
   };
 
@@ -188,15 +236,9 @@
     c.fillRect(0, 0, W, H);
     const ancho = Math.max(8, Math.round(W / 64));
     const n = Math.floor(W / ancho);
-    if (!this.picos || this.picos.length !== n) {
-      this.picos = new Float32Array(n);
-      this.velPicos = new Float32Array(n);
-      this.alturas = new Float32Array(n);
-    }
-    const sr = this.motor.ctx.sampleRate;
-    const binHz = sr / this.analizador.fftSize;
-    const fMin = 30;
-    const fMax = Math.min(18000, sr / 2);
+    if (!this.barras || this.barras.n !== n) this.barras = VP.crearBarras(n);
+    const valores = VP.barrasEspectro(this.frec, this.motor.ctx.sampleRate, this.analizador.fftSize, n, 30, 18000, this.valoresBarras && this.valoresBarras.length === n ? this.valoresBarras : (this.valoresBarras = new Float32Array(n)));
+    VP.actualizarBarras(this.barras, valores, H);
     const grad = c.createLinearGradient(0, H, 0, 0);
     grad.addColorStop(0, '#0f9b3a');
     grad.addColorStop(0.55, '#c8e02a');
@@ -204,24 +246,7 @@
     grad.addColorStop(1, '#ff3020');
     const segmento = Math.max(3, Math.round(H / 60));
     for (let i = 0; i < n; i++) {
-      const f0 = fMin * Math.pow(fMax / fMin, i / n);
-      const f1 = fMin * Math.pow(fMax / fMin, (i + 1) / n);
-      const b0 = Math.max(1, Math.floor(f0 / binHz));
-      const b1 = Math.max(b0 + 1, Math.ceil(f1 / binHz));
-      let v = 0;
-      for (let b = b0; b < b1 && b < this.frec.length; b++) v = Math.max(v, this.frec[b]);
-      v = v / 255;
-      v = Math.pow(v, 1.4);
-      // las barras suben rápido y bajan con gravedad, como en Winamp
-      this.alturas[i] = Math.max(v, this.alturas[i] - 0.025);
-      const h = this.alturas[i] * H * 0.92;
-      if (h > this.picos[i]) {
-        this.picos[i] = h;
-        this.velPicos[i] = 0;
-      } else {
-        this.velPicos[i] += 0.35;
-        this.picos[i] = Math.max(0, this.picos[i] - this.velPicos[i]);
-      }
+      const h = this.barras.alturas[i] * H * 0.92;
       const x = i * ancho;
       c.fillStyle = grad;
       // barras en segmentos, como un vúmetro de LED
@@ -229,7 +254,7 @@
         c.fillRect(x + 1, H - y - segmento + 1, ancho - 2, segmento - 1);
       }
       c.fillStyle = '#e8f0ff';
-      c.fillRect(x + 1, H - this.picos[i] - 3, ancho - 2, 2);
+      c.fillRect(x + 1, H - this.barras.picos[i] - 3, ancho - 2, 2);
     }
     this.dibujarOndaSobre(c, W, H * 0.12, H * 0.08, 'rgba(160,255,190,0.55)');
   };
@@ -308,11 +333,6 @@
     c.fillRect(0, 0, W, H);
     // línea de "ahora" a un 78 % del ancho: a la derecha viene lo que va a sonar
     const xAhora = W * 0.78;
-    const segPorAncho = 9;
-    const px = W / segPorAncho;
-    const notaMin = 28;
-    const notaMax = 96;
-    const alto = H / (notaMax - notaMin);
     c.strokeStyle = 'rgba(255,255,255,0.25)';
     c.beginPath();
     c.moveTo(xAhora, 0);
@@ -320,33 +340,148 @@
     c.stroke();
     let vivas = 0;
     for (const n of this.notas) {
-      const x0 = xAhora + (n.t - ahora) * px;
-      const x1 = x0 + Math.max(2, n.dur * px);
-      if (x1 < 0 || x0 > W) continue;
+      const r = VP.rectNota(n, ahora, W, H);
+      if (!r) continue;
       vivas++;
-      let y;
-      if (n.canal === 9) y = H - alto * 3 - ((n.nota * 37) % 11) * alto * 0.6;
-      else y = H - (Math.max(notaMin, Math.min(notaMax, n.nota)) - notaMin) * alto;
       const col = COLOR_VOZ[n.voz] || COLOR_VOZ.midi;
-      const sonando = n.t <= ahora && n.t + n.dur >= ahora;
-      const a = sonando ? 1 : n.t > ahora ? 0.35 : 0.55;
-      c.fillStyle = 'rgba(' + col[0] + ',' + col[1] + ',' + col[2] + ',' + a + ')';
-      if (sonando) {
+      c.fillStyle = 'rgba(' + col[0] + ',' + col[1] + ',' + col[2] + ',' + r.alfa + ')';
+      if (r.sonando) {
         c.shadowColor = 'rgb(' + col.join(',') + ')';
         c.shadowBlur = 18;
       }
-      const h = Math.max(3, alto * (n.canal === 9 ? 0.5 : 0.85));
-      c.fillRect(x0, y - h / 2, x1 - x0, h);
+      c.fillRect(r.x0, r.y - r.h / 2, r.x1 - r.x0, r.h);
       c.shadowBlur = 0;
-      if (sonando && n.voz === 'melodia') {
+      if (r.sonando && n.voz === 'melodia') {
         // chispa en la línea de ahora
         const rr = 4 + (n.vel / 127) * 10 * (1 + this.pulso);
         c.beginPath();
-        c.arc(xAhora, y, rr, 0, Math.PI * 2);
+        c.arc(xAhora, r.y, rr, 0, Math.PI * 2);
         c.fill();
       }
     }
     if (!vivas && this.notas.length > 1000) this.notas = [];
+  };
+
+  // ------------------------------------------------------------ partículas
+
+  Visualizador.prototype.dibujarParticulas = function () {
+    const c = this.c2d;
+    const W = this.canvas.width;
+    const H = this.canvas.height;
+    const ahora = this.motor.ctx.currentTime;
+    const ya = performance.now();
+    const dt = Math.min(0.1, (ya - this.ultimoCuadro) / 1000);
+    this.ultimoCuadro = ya;
+    const s = this.particulas;
+    const az = Math.random;
+    // cada nota que llega a su hora suelta partículas: la melodía chispea arriba, el bajo
+    // sube lento y grande, la batería revienta desde el suelo
+    for (const n of this.notas) {
+      if (n.emitida || n.t > ahora) continue;
+      n.emitida = true;
+      if (ahora - n.t > 0.5) continue; // una nota vieja (pestaña dormida): no
+      const x = VP.xDeNota(n.nota) * W;
+      const fuerza = n.vel / 127;
+      const base = MATIZ_VOZ[n.voz] == null ? MATIZ_VOZ.midi : MATIZ_VOZ[n.voz];
+      const matiz = (base * 0.5 + this.matiz * 0.5 + 360) % 360;
+      if (n.canal === 9) {
+        for (let k = 0; k < 6 + fuerza * 8; k++) {
+          const a = Math.PI + az() * Math.PI;
+          const v = 120 + az() * 380 * fuerza;
+          VP.emitir(s, { x: x, y: H, vx: Math.cos(a) * v, vy: Math.sin(a) * v, vida: 0.5 + az() * 0.6, tam: 2 + az() * 3, matiz: matiz });
+        }
+      } else {
+        const cuantas = n.voz === 'bajo' ? 4 : 3 + Math.round(fuerza * 5);
+        const y = H - H * 0.15 - VP.xDeNota(n.nota) * H * 0.55;
+        for (let k = 0; k < cuantas; k++) {
+          VP.emitir(s, {
+            x: x + (az() - 0.5) * 16,
+            y: y,
+            vx: (az() - 0.5) * 60,
+            vy: -(n.voz === 'bajo' ? 50 : 110 + az() * 160) * (0.5 + fuerza),
+            vida: (n.voz === 'bajo' ? 2.4 : 1 + Math.min(1.8, n.dur)) * (0.6 + az() * 0.6),
+            tam: (n.voz === 'bajo' ? 9 : 2.5 + fuerza * 4) * (0.7 + az() * 0.6),
+            matiz: matiz,
+          });
+        }
+      }
+    }
+    // el golpe de bombo: un anillo de partículas desde el centro
+    if (this.pulso > 0.9) {
+      for (let k = 0; k < 28; k++) {
+        const a = (k / 28) * Math.PI * 2;
+        VP.emitir(s, { x: W / 2, y: H / 2, vx: Math.cos(a) * 260, vy: Math.sin(a) * 260, vida: 0.9, tam: 3, matiz: (this.matiz + this.deriva) % 360 });
+      }
+    }
+    VP.pasoParticulas(s, dt, { gravedad: -25, arrastre: 0.45, ancho: W, alto: H });
+
+    c.globalCompositeOperation = 'source-over';
+    c.fillStyle = 'rgba(3,3,10,0.2)';
+    c.fillRect(0, 0, W, H);
+    c.globalCompositeOperation = 'lighter';
+    const escala = W / 1280;
+    for (let i = 0; i < s.max; i++) {
+      if (s.vida[i] <= 0) continue;
+      const v = VP.vidaRelativa(s, i);
+      const r = Math.max(1, s.tam[i] * (0.4 + v) * escala);
+      const g = c.createRadialGradient(s.x[i], s.y[i], 0, s.x[i], s.y[i], r * 3);
+      g.addColorStop(0, 'hsla(' + s.matiz[i] + ',90%,70%,' + (0.9 * v).toFixed(3) + ')');
+      g.addColorStop(1, 'hsla(' + s.matiz[i] + ',90%,50%,0)');
+      c.fillStyle = g;
+      c.beginPath();
+      c.arc(s.x[i], s.y[i], r * 3, 0, Math.PI * 2);
+      c.fill();
+    }
+    c.globalCompositeOperation = 'source-over';
+    if (this.notas.length > 1000) this.notas.splice(0, 500);
+  };
+
+  // ------------------------------------------------------------ Lissajous 3D
+
+  Visualizador.prototype.dibujarLissajous3d = function () {
+    const c = this.c2d;
+    const W = this.canvas.width;
+    const H = this.canvas.height;
+    c.globalCompositeOperation = 'source-over';
+    c.fillStyle = 'rgba(2,3,8,0.22)';
+    c.fillRect(0, 0, W, H);
+    // gira despacio, y más con la energía de los graves
+    this.angulo.y += 0.006 + (this.energia || 0) * 0.03 + this.pulso * 0.02;
+    this.angulo.x = 0.5 + Math.sin(this.angulo.y * 0.37) * 0.35;
+    const gan = VP.gananciaAuto(this.ondaI, this.ondaD);
+    VP.curvaLissajous3d(this.ondaI, this.ondaD, 256, this.angulo.x, this.angulo.y, gan, this.puntos3d, 3.2);
+    const n = this.ondaI.length;
+    const R = Math.min(W, H) * 0.42;
+    c.globalCompositeOperation = 'lighter';
+    c.lineWidth = Math.max(1.2, W / 700);
+    c.lineJoin = 'round';
+    // por tramos: cada tramo con su color según la profundidad (lo cercano, más claro)
+    const paso = 16;
+    for (let i = 0; i + paso < n; i += paso - 1) {
+      const z = this.puntos3d[(i + paso / 2) * 3 + 2];
+      const prof = Math.max(0, Math.min(1, 0.5 - z * 0.5));
+      c.strokeStyle = 'hsla(' + ((this.matiz + this.deriva + z * 60 + 360) % 360).toFixed(1) + ',90%,' + (45 + prof * 30).toFixed(1) + '%,' + (0.35 + prof * 0.5).toFixed(2) + ')';
+      c.beginPath();
+      for (let k = 0; k <= paso; k++) {
+        const x = W / 2 + this.puntos3d[(i + k) * 3] * R;
+        const y = H / 2 - this.puntos3d[(i + k) * 3 + 1] * R;
+        if (k) c.lineTo(x, y);
+        else c.moveTo(x, y);
+      }
+      c.stroke();
+    }
+    // los ejes, apenas
+    c.strokeStyle = 'rgba(255,255,255,0.12)';
+    c.lineWidth = 1;
+    for (const e of [[1, 0, 0], [0, 1, 0], [0, 0, 1]]) {
+      const a = VP.proyectar(e[0] * 0.8, e[1] * 0.8, e[2] * 0.8, this.angulo.x, this.angulo.y, 3.2);
+      const b = VP.proyectar(-e[0] * 0.8, -e[1] * 0.8, -e[2] * 0.8, this.angulo.x, this.angulo.y, 3.2);
+      c.beginPath();
+      c.moveTo(W / 2 + a.x * R, H / 2 - a.y * R);
+      c.lineTo(W / 2 + b.x * R, H / 2 - b.y * R);
+      c.stroke();
+    }
+    c.globalCompositeOperation = 'source-over';
   };
 
   // ------------------------------------------------------------ MilkDrop en 2D (respaldo)
@@ -368,8 +503,7 @@
     c.restore();
     c.fillStyle = 'rgba(0,0,0,0.04)';
     c.fillRect(0, 0, W, H);
-    this.tono = (this.tono + p.tono * 360) % 360;
-    c.strokeStyle = 'hsl(' + this.tono + ',90%,' + (55 + this.pulso * 20) + '%)';
+    c.strokeStyle = 'hsl(' + ((this.matiz + this.deriva) % 360) + ',90%,' + (55 + this.pulso * 20) + '%)';
     c.lineWidth = 2;
     c.beginPath();
     const r = Math.min(W, H) * 0.22;
@@ -456,7 +590,7 @@
   }
 
   Visualizador.prototype.iniciarGl = function () {
-    let gl = null;
+    let gl;
     try {
       gl = this.canvas.getContext('webgl2', { antialias: false, preserveDrawingBuffer: false });
     } catch (e) {
@@ -526,7 +660,7 @@
     const p = this.interpolarPreset();
     const ahora = (performance.now() - this.t0) / 1000;
     // cambio de ajuste cada 30 s aunque no cambie la sección
-    if (performance.now() - this.cambioPreset > 30000) this.siguientePreset();
+    if (!this.fijo && performance.now() - this.cambioPreset > 30000) this.siguientePreset();
     const origen = this.texs[this.actual];
     const destino = this.texs[1 - this.actual];
     const aspecto = this.canvas.width / this.canvas.height;
@@ -552,8 +686,7 @@
     this.cuadrado(this.pWarp);
 
     // 2) la onda encima
-    this.tono = (this.tono + 0.6 + this.pulso * 3) % 360;
-    const h = this.tono / 60;
+    const h = ((this.matiz + this.deriva) % 360) / 60;
     const x = 1 - Math.abs((h % 2) - 1);
     const rgb = h < 1 ? [1, x, 0] : h < 2 ? [x, 1, 0] : h < 3 ? [0, 1, x] : h < 4 ? [0, x, 1] : h < 5 ? [x, 0, 1] : [1, 0, x];
     const n = this.armarOnda(Math.round(p.onda) % 4, ahora);

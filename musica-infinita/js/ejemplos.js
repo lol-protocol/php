@@ -161,7 +161,7 @@
       const ac = acordeDe(a.simbolo);
       for (const iv of ac.intervalos) {
         // voicing cerrado alrededor de sol3..fa4
-        let n = 55 + ((ac.raiz + iv - 7 + 12) % 12);
+        const n = 55 + ((ac.raiz + iv - 7 + 12) % 12);
         acordes.push({ nota: n, inicio: a.inicio, dur: a.dur, vel: 58 });
       }
       bajo.push({ nota: 36 + ac.raiz, inicio: a.inicio, dur: a.dur, vel: 70 });

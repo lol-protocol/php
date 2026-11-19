@@ -88,7 +88,7 @@ function decodificar(bytes) {
     const codBits = r.leer(3);
     r.leer(1);
     // número de trama en UTF-8
-    let x = r.leer(8);
+    const x = r.leer(8);
     let n = 0;
     while (x & (0x80 >> n)) n++;
     let num = n ? x & (0xff >> (n + 1)) : x;

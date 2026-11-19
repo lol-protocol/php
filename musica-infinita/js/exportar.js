@@ -21,6 +21,7 @@
     const iniciarAudio = app.iniciarAudio;
     const crearGenerador = app.crearGenerador;
     const semillaActual = app.semillaActual;
+    const descargar = app.descargar;
 
     // ------------------------------------------------------------ grabación en vivo
 
@@ -222,15 +223,6 @@
       avisar('Exportado: ' + minutos + ' min, semilla ' + semilla + '.');
     }
 
-    function descargar(blob, nombre) {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = nombre;
-      document.body.append(a);
-      a.click();
-      a.remove();
-      setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
-    }
 
     return { alternarGrabacion: alternarGrabacion, exportar: exportar, exportarAudio: exportarAudio };
   }

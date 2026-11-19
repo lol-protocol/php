@@ -52,6 +52,18 @@
             <input id="variacion" type="range" min="0" max="1" step="0.05" value="0.4">
             <small>cuánto se adornan y cambian las frases citadas</small>
           </label>
+          <label>Color modal <span id="v-colorModal"></span>
+            <input id="colorModal" type="range" min="0" max="1" step="0.05" value="0.3">
+            <small>frases libres en dórico, frigio, mixolidio o lidio</small>
+          </label>
+          <label>Contramelodía <span id="v-contra"></span>
+            <input id="contra" type="range" min="0" max="1" step="0.05" value="0.6">
+            <small>una segunda voz en terceras o que responde a la melodía</small>
+          </label>
+          <label>Cambios de compás <span id="v-cambiosCompas"></span>
+            <input id="cambiosCompas" type="range" min="0" max="1" step="0.05" value="0.15">
+            <small>cuántas secciones pasan entre 3/4 y 4/4</small>
+          </label>
           <label>Estilo
             <select id="estilo"></select>
           </label>
@@ -73,6 +85,20 @@
           <button id="quitar-sf2" hidden>Volver a los instrumentos propios</button>
           <small>Con una SoundFont buena (GeneralUser GS, FluidR3_GM, Salamander Grand Piano…) suena a instrumentos grabados. Ver el README.</small>
           <label>Reverberación <input id="reverb" type="range" min="0" max="1.2" step="0.05" value="0.55"></label>
+        </fieldset>
+
+        <fieldset id="panel-visual" hidden>
+          <legend>MilkDrop</legend>
+          <label>Ajuste <select id="preset"></select></label>
+          <label class="chk"><input id="preset-fijo" type="checkbox"> fijar (que no cambie solo con la música)</label>
+          <div id="preset-controles"></div>
+          <div class="fila">
+            <button id="preset-guardar">Guardar como…</button>
+            <button id="preset-borrar">Borrar</button>
+            <button id="preset-exportar">Exportar</button>
+            <label class="archivo">Importar <input id="preset-importar" type="file" accept=".json,application/json"></label>
+          </div>
+          <small>Cada estilo de música trae su color y su grupo de ajustes, que cambian al empezar cada sección.</small>
         </fieldset>
 
         <fieldset>
@@ -122,10 +148,12 @@
   <script src="js/flac.js"></script>
   <script src="js/dsp.js"></script>
   <script src="js/sintetizador.js"></script>
+  <script src="js/visual-puro.js"></script>
   <script src="js/visualizador.js"></script>
   <script src="js/almacen.js"></script>
   <script src="js/planificador.js"></script>
   <script src="js/exportar.js"></script>
+  <script src="js/panel-visual.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

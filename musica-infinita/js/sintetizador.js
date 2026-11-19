@@ -33,6 +33,7 @@
     1: { vol: 0.4, pan: -0.22, rev: 0.42, eco: 0 }, // acordes
     2: { vol: 0.72, pan: 0, rev: 0.08, eco: 0 }, // bajo
     3: { vol: 0.36, pan: 0.28, rev: 0.36, eco: 0.16 }, // arpegio
+    4: { vol: 0.42, pan: 0.18, rev: 0.34, eco: 0.1 }, // contramelodía
     9: { vol: 0.62, pan: 0, rev: 0.1, eco: 0 }, // batería
   };
   const CANAL_GENERICO = { vol: 0.55, pan: 0, rev: 0.22, eco: 0 };
@@ -253,7 +254,7 @@
     const g = ctx.createGain();
     g.connect(canal.entrada);
     let fuentes = [];
-    let liberacion = 0.2;
+    let liberacion;
 
     if (PRERENDER.has(tipo)) {
       const b = this.bufferInterno(tipo, ev.nota);
