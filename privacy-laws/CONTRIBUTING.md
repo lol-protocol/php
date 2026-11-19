@@ -62,3 +62,15 @@ See [README.md](README.md) for the columns, the API and the web app.
 ## Research files
 
 Findings collected by searching go in as a CSV with the header `code,field,value,conf,source` (`conf` is `high`, `medium` or `low`; one URL you saw per row; `UNKNOWN` for what was not found; `CODE,status,NOLAW,conf,url` when there is no law). `npm run apply-research -- findings.csv --batch=batch.txt` turns it into new rows (the batch file has lines `CODE | name | region`) and patched cells with their field sources, marks low-confidence values `(unconfirmed)` and refuses anything the validation would reject; use `--dry` to see what it would do. Then run `npm run build` and `npm run changes`.
+
+## Check unconfirmed values against their sources
+
+Values marked "(unconfirmed)" can be checked against the text of the pages that back them. The repeatable part is `npm run verify`; reading the texts stays with a person or an agent.
+
+1. `npm run verify -- plan --out=/tmp/verify --limit=25 --texts=/tmp/textos` writes `tasks/<code>.json` (the law, the field and the current value of each unconfirmed value), `PROMPT.md` (the instructions for whoever reads the texts) and prints the list of countries for step 2. `--only=` and `--skip=` choose countries.
+2. Run the workflow "Leyes - textos de las fuentes" (`laws-textos-oficiales.yml`) by hand with that list and `campos` ticked: it publishes the source pages as text on a data branch (`datos/leyes-textos-<module>`), which a session without access to those sites reads with `git fetch` and `git worktree add`. The branch is rewritten on every run: copy what you need before the next one.
+3. Read each country's pages against its task file (`PROMPT.md` says how) and write `out/<code>.csv` (`code,field,value,conf,source`, only what a text supports).
+4. `npm run verify -- apply --from=/tmp/verify` applies the findings, one law at a time, with confidence medium or high (`--min=high` is stricter, `--dry` only reports). A value a text confirms loses its mark and gets its source.
+5. `npm run translations -- --missing=spa` (and fra, deu, por) lists what is new to translate; then `npm run build`, `npm run changes` and a PR.
+
+The pages are third-party guides and aggregators, not the official text: a value they support is at most medium confidence.

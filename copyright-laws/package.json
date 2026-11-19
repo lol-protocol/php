@@ -18,7 +18,8 @@
     "translations": "node scripts/translations.js",
     "replace-url": "node scripts/replace-url.js",
     "apply-research": "node scripts/apply-research.js",
-    "sources": "node scripts/sources.js"
+    "sources": "node scripts/sources.js",
+    "verify": "node scripts/verify.js"
   },
   "keywords": [
     "copyright",
