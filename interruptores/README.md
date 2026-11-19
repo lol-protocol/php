@@ -6,11 +6,11 @@ Es una mesa de mezclas: cada **canal** es una función, y cada canal puede tener
 
 | | Funciones | Opciones | Interruptores |
 |---|---|---|---|
-| A) Genealogía | 32 | 140 | 172 |
-| B) Librería y etiquetado POS | 20 | 63 | 83 |
-| **Total** | **52** | **203** | **255** |
+| A) Genealogía | 39 | 145 | 184 |
+| B) Librería y etiquetado POS | 21 | 64 | 85 |
+| **Total** | **60** | **209** | **269** |
 
-Cifras de `FUNCIONES.md`, que es el listado completo: cada función, sus opciones, su origen y sus dependencias.
+Cifras de `FUNCIONES.md`, que es el listado completo: cada función, sus opciones, su origen y sus dependencias. **8 de las 60 funciones son supuestas** (marcadas *(supuesto)* en el listado y en el panel): no vienen de la lista de la persona, se propusieron a partir de sus respuestas y hay que confirmarlas o quitarlas.
 
 ## Vocabulario
 
@@ -27,13 +27,15 @@ Estado que usa el sitio:
 
 - **Modos de visualización** (`gen.vistas`): 14 opciones (circular, abanico, árbol, pedigrí…). Mínimo 1: no puede quedar el árbol sin ninguna forma de dibujarse.
 - **Medios de pago** (`gen.pagos`): transferencia, tarjeta y efectivo. Mínimo 1.
-- **Perritos y gatitos** (`gen.mascotas`): dos interruptores independientes.
+- **Perritos y gatitos** (`gen.mascotas`): dos asistentes, uno por interruptor. El perrito ladra y el gatito maúlla frases motivacionales con enfoque comercial.
+- **Búsqueda en diarios y revistas** (`gen.prensa`) y todo lo que busca, deduce, infiere o estima personas: depende de `gen.privacidad`, la protección de quien podría estar vivo.
+- **Pasarela de pagos** (`gen.pasarela:stripe`): al apagarse se muestra como «no disponible», no se oculta.
 - **Pedidos de retiro** (`gen.retiros`): depende de la opción `gen.filtro:textos`. No se puede encender mientras la opción de textos del filtro esté apagada.
 
 ## Probar
 
 ```bash
-php pruebas/ejecutar.php            # 88 pruebas: catálogo, dependencias, mínimos, estado, registros, usuarios y bloqueo
+php pruebas/ejecutar.php            # 100 pruebas: catálogo, dependencias, mínimos, estado, registros, usuarios y bloqueo
 php pruebas/panel.php               # 37 pruebas: el panel en vivo, con php -S
 php bin/generar.php --comprobar     # FUNCIONES.md al día
 ```
@@ -77,12 +79,18 @@ if ($int->activo('gen.vistas:abanico')) {
 ```
 
 - `activo(ref)`: lo que el sitio debe usar. Una opción solo está activa si su función también lo está.
-- `alApagar(ref)`: qué hacer cuando está apagada. `ocultar` (por defecto) o `no_disponible`. Una opción usa la política de su función. Cada función la define en `catalogo.json` con el campo `al_apagar`.
+- `alApagar(ref)`: qué hacer cuando está apagada. `ocultar` (por defecto) o `no_disponible`. Una opción usa la política de su función. Cada función la define en `catalogo.json` con el campo `al_apagar`. Con `no_disponible` hoy: `gen.pagos`, `gen.pasarela`, `pos.pasarela`, `gen.exportar` y `gen.retiros` (esta última es una política supuesta: ocultar un pedido de retiro de datos sería peor que avisar que no está disponible).
 - Crea una instancia por petición: el estado es un archivo pequeño y se lee al crearla y en cada `activo()`.
 
-**Ejemplo real: `portadas-svg/`.** Con `--interruptores=../interruptores`, el generador no escribe las piezas que el interruptor `pos.portadas` tiene apagadas (`portada`, `contratapa`, `lomo`, `cubierta-completa`). Sin la opción, no lee nada de fuera. Ver `portadas-svg/docs/linea-de-comandos.md`.
+**Consumidores hoy** (todos opcionales: sin su opción no leen nada de fuera, y cada uno es su propio PR):
 
-**Todavía no lo usan** las aplicaciones de genealogía ni el resto de los proyectos del repositorio: cada integración es su propio PR, carpeta por carpeta.
+| Plataforma | Carpeta | Cómo se activa | Qué apaga |
+|---|---|---|---|
+| POS | `portadas-svg/` | `--interruptores=../interruptores` | las piezas de `pos.portadas`: portada, contratapa, lomo, cubierta completa |
+| POS | `citas-pos/` | `render.php --interruptores=… --salida=<otra carpeta>` | los canales de `pos.citas`: sitio, correo, juego |
+| Genealogía | `sistema-nuevo/` | `BACKOFFICE_INTERRUPTORES=../interruptores` | rutas de la API: `gen.backoffice` (todo), `flujo`, `kpis`, `alertas`, `filtros` y `gen.bak-notas` |
+
+Las aplicaciones de genealogía y de POS que no están en este repositorio (vistas del árbol, medios de pago, asistentes…) todavía no lo usan: tienen que llamar a `activo()` como en el ejemplo de arriba.
 
 ## Registros
 
@@ -133,14 +141,11 @@ Las pruebas rechazan un catálogo con ids repetidos, con `:` en un id, con una d
 
 ## Lo que falta
 
-Lo que no depende de una decisión tuya ya está hecho: integración opcional en `portadas-svg/`, caducidad de sesión, auditoría de accesos, bloqueo por origen y registro que rota. Queda:
-
-- **Listado final.** El listado actual sale de lo que hay en el repositorio. Genealogía tiene aquí 32 funciones y no las ~40 que se mencionaron, y Biblioteca POS tiene 20. Hay que contrastarlo con la lista real de funciones y añadir las que falten.
-- **Qué hace «Perritos y gatitos».** Está como dos interruptores, pero su efecto en el sitio no está definido.
-- **Decisión de privacidad.** ¿Qué pasa con la protección de personas que podrían estar vivas al importar fuentes externas o directorios? El catálogo no las ata a ninguna función; eso es una decisión de la persona (ver `PRIVACIDAD-Y-HONRA.md`).
-- **Política al apagar.** Todas las funciones están en `ocultar`. Cuál debe ser `no_disponible` lo decide el producto.
-- **Siguientes integraciones.** `sistema-nuevo/` (el backoffice, sin PR abierto) y `citas-pos/` son los siguientes candidatos. `url-routing/` tiene un PR abierto (#611) y no se toca hasta que se fusione.
-- **Límites conocidos.** El bloqueo de archivo sirve con un solo servidor; con varios hace falta una base de datos. Un proxy comparte la IP entre sus usuarios. El panel no tiene registro de cada página vista, solo de accesos y cambios.
+- **Confirmar las 8 funciones supuestas.** Genealogía llega a 39 funciones (la persona habló de ~40) con 7 supuestas: las búsquedas, la deducción, la inferencia, la estimación y la pasarela. POS tiene 21 (con la pasarela, supuesta). Faltan por contrastar con la lista real.
+- **Cómo se relaciona la tarjeta con Stripe.** Hoy `gen.pagos:tarjeta` y `gen.pasarela:stripe` no se atan: no se sabe si apagar Stripe debe apagar la tarjeta.
+- **Qué opciones tienen las búsquedas** más allá de diarios y revistas, y qué estima exactamente `gen.estimacion`.
+- **`gen.backoffice:comparacion`** no se aplica en `sistema-nuevo/`: la comparación viaja dentro de la respuesta de la línea de tiempo. Hay que decidir cómo apagarla sin romper la interfaz.
+- **Límites conocidos.** El bloqueo de archivo sirve con un solo servidor; con varios hace falta una base de datos. Un proxy comparte la IP entre sus usuarios. `sistema-nuevo/` lee el estado en cada petición. Los registros apartados al rotar quedan en `var/` sin borrarse.
 - **A confirmar de plataforma:** `document-formats` está fuera del interruptor; no se sabe si va en A o en B.
 - **Candidatos desde PR abiertos:** `newsletter-plugin` (#613, documentación de diseño) y `personas-especiales` (#614, registro de exclusiones) podrían ser funciones nuevas cuando se fusionen. `chat-con-libros` (#603) no está en `master`, y `pos.colores-revision` depende de la decisión del PR #595.
 

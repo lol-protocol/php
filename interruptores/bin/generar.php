@@ -46,8 +46,10 @@ function generarMarkdown(array $crudo, array $funciones, int $totalInterruptores
     foreach ($funciones as $f) {
         $opciones += count($f['opciones']);
     }
+    $supuestas = count(array_filter($funciones, static fn ($f) => $f['supuesto']));
     $o .= '- **' . count($funciones) . ' funciones** (' . count(array_filter($funciones, static fn ($f) => $f['plataforma'] === 'genealogia')) . ' de genealogía y ' . count(array_filter($funciones, static fn ($f) => $f['plataforma'] === 'pos')) . " de POS).\n";
-    $o .= "- **$opciones opciones** (sub-interruptores), y **$totalInterruptores interruptores** en total.\n\n";
+    $o .= "- **$opciones opciones** (sub-interruptores), y **$totalInterruptores interruptores** en total.\n";
+    $o .= "- **$supuestas funciones supuestas**, marcadas con *(supuesto)*: no vienen de la lista de la persona, las propuse a partir de sus respuestas. Hay que confirmarlas o quitarlas.\n\n";
     $o .= "Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: una opción está encendida solo si su función también lo está. «Mínimo de opciones» dice cuántas tienen que quedar encendidas mientras la función esté encendida.\n\n";
 
     $o .= "## Tipos\n\n| Tipo | Significado |\n|---|---|\n";
@@ -69,7 +71,7 @@ function generarMarkdown(array $crudo, array $funciones, int $totalInterruptores
             $o .= sprintf(
                 "| `%s` | %s | %s | %s | `%s` | %s | %s |\n",
                 $id,
-                escapar((string) $f['nombre']),
+                escapar((string) $f['nombre']) . ($f['supuesto'] ? ' *(supuesto)*' : ''),
                 count($f['opciones']) === 0 ? '—' : (string) count($f['opciones']) . ($f['min_opciones'] > 0 ? " (mín. {$f['min_opciones']})" : ''),
                 (string) $f['tipo'],
                 (string) $f['origen'],
@@ -84,6 +86,9 @@ function generarMarkdown(array $crudo, array $funciones, int $totalInterruptores
             $o .= escapar((string) $f['descripcion']) . "\n\n";
             if (!empty($f['carpetas'])) {
                 $o .= 'Carpetas: ' . implode(', ', array_map(static fn (string $c): string => "`$c/`", $f['carpetas'])) . ".\n\n";
+            }
+            if ($f['al_apagar'] !== 'ocultar') {
+                $o .= 'Al apagar: `' . $f['al_apagar'] . "` (se muestra como no disponible en vez de ocultarse).\n\n";
             }
             if (isset($f['nota'])) {
                 $o .= '*Nota:* ' . escapar((string) $f['nota']) . "\n\n";

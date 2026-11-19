@@ -407,6 +407,7 @@ final class Interruptores
             if (!in_array($f['al_apagar'], self::POLITICAS_AL_APAGAR, true)) {
                 throw new \RuntimeException("«{$id}» tiene una política al apagar desconocida: «{$f['al_apagar']}».");
             }
+            $f['supuesto'] = (bool) ($f['supuesto'] ?? false);
             $f['origen'] = (string) ($f['origen'] ?? 'repo');
             $f['carpetas'] = array_values($f['carpetas'] ?? []);
             $this->funciones[$id] = $f;

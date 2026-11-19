@@ -113,16 +113,17 @@
           "id": "efectivo",
           "nombre": "Efectivo"
         }
-      ]
+      ],
+      "al_apagar": "no_disponible"
     },
     {
       "id": "gen.mascotas",
       "plataforma": "genealogia",
-      "nombre": "Perritos y gatitos",
+      "nombre": "Perritos y gatitos (asistentes)",
       "tipo": "contenido",
       "origen": "fuera_del_repo",
       "carpetas": [],
-      "descripcion": "Dos interruptores independientes: perritos y gatitos. Lo que muestran y dónde, por confirmar.",
+      "descripcion": "Dos asistentes, uno por interruptor: el perrito ladra y el gatito maúlla frases motivacionales con enfoque comercial.",
       "depende_de": [],
       "por_defecto": true,
       "min_opciones": 0,
@@ -135,7 +136,8 @@
           "id": "gatitos",
           "nombre": "Gatitos"
         }
-      ]
+      ],
+      "nota": "Las frases comerciales deben seguir la guía de psychology-and-marketing/: persuadir sin presión indebida y sin usar datos personales."
     },
     {
       "id": "gen.exportar",
@@ -163,7 +165,8 @@
           "id": "pdf",
           "nombre": "PDF"
         }
-      ]
+      ],
+      "al_apagar": "no_disponible"
     },
     {
       "id": "gen.idiomas",
@@ -384,7 +387,7 @@
         "phone-directory",
         "Parsing-fb-in-mas"
       ],
-      "descripcion": "Oculta o no guarda datos de quien podría estar vivo. Las reglas están en los lectores de directorios y de perfiles.",
+      "descripcion": "Protege a quien podría estar vivo: no se guardan ni se muestran sus datos. Todo lo que busca, deduce, infiere o estima personas depende de esta función.",
       "depende_de": [],
       "por_defecto": true
     },
@@ -678,7 +681,9 @@
         "Parsing-fb-in-mas"
       ],
       "descripcion": "Qué fuentes externas se leen para proponer datos. Cada una pasa por revisión humana antes de guardarse.",
-      "depende_de": [],
+      "depende_de": [
+        "gen.privacidad"
+      ],
       "por_defecto": true,
       "min_opciones": 0,
       "opciones": [
@@ -758,7 +763,9 @@
         "phone-directory"
       ],
       "descripcion": "Convierte directorios telefónicos históricos (6 idiomas) en registros, con búsqueda fonética.",
-      "depende_de": [],
+      "depende_de": [
+        "gen.privacidad"
+      ],
       "por_defecto": true
     },
     {
@@ -951,7 +958,9 @@
       "depende_de": [
         "gen.filtro:textos"
       ],
-      "por_defecto": true
+      "por_defecto": true,
+      "al_apagar": "no_disponible",
+      "nota": "Ocultar un pedido de retiro de datos sería peor que avisar que no está disponible por ahora (derechos de la persona; ver RECLAMOS.md). Política supuesta, confirmar."
     },
     {
       "id": "gen.backoffice",
@@ -987,7 +996,8 @@
           "id": "filtros",
           "nombre": "Filtros guardados"
         }
-      ]
+      ],
+      "nota": "Lo consume sistema-nuevo/ (BACKOFFICE_INTERRUPTORES). La opción «comparacion» todavía no la aplica: viaja dentro de la respuesta de la línea de tiempo."
     },
     {
       "id": "gen.bak-notas",
@@ -1072,6 +1082,133 @@
           "nombre": "Segmentación de clientes"
         }
       ]
+    },
+    {
+      "id": "gen.busqueda",
+      "plataforma": "genealogia",
+      "nombre": "Búsqueda de personas en archivos y registros externos",
+      "tipo": "interno",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Busca a una persona en archivos y registros fuera del sitio.",
+      "depende_de": [
+        "gen.privacidad"
+      ],
+      "por_defecto": true,
+      "supuesto": true
+    },
+    {
+      "id": "gen.prensa",
+      "plataforma": "genealogia",
+      "nombre": "Búsqueda en diarios y revistas",
+      "tipo": "interno",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Busca menciones de una persona en diarios y revistas.",
+      "depende_de": [
+        "gen.privacidad"
+      ],
+      "por_defecto": true,
+      "supuesto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "diarios",
+          "nombre": "Diarios"
+        },
+        {
+          "id": "revistas",
+          "nombre": "Revistas"
+        }
+      ]
+    },
+    {
+      "id": "gen.congresos",
+      "plataforma": "genealogia",
+      "nombre": "Búsqueda en congresos nacionales",
+      "tipo": "interno",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Busca a una persona en las actas y registros de congresos nacionales.",
+      "depende_de": [
+        "gen.privacidad"
+      ],
+      "por_defecto": true,
+      "supuesto": true
+    },
+    {
+      "id": "gen.deduccion",
+      "plataforma": "genealogia",
+      "nombre": "Deducción de parentescos y datos",
+      "tipo": "interno",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Deduce parentescos y datos a partir de otros registros ya confirmados.",
+      "depende_de": [
+        "gen.privacidad"
+      ],
+      "por_defecto": true,
+      "supuesto": true
+    },
+    {
+      "id": "gen.inferencia",
+      "plataforma": "genealogia",
+      "nombre": "Inferencia de datos faltantes",
+      "tipo": "interno",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Infiere datos que faltan a partir de lo que se sabe de la persona y su entorno.",
+      "depende_de": [
+        "gen.privacidad"
+      ],
+      "por_defecto": true,
+      "supuesto": true
+    },
+    {
+      "id": "gen.estimacion",
+      "plataforma": "genealogia",
+      "nombre": "Estimación de fechas y lugares",
+      "tipo": "interno",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Estima fechas y lugares sin registro, con datos de contexto como la mortalidad histórica.",
+      "depende_de": [
+        "gen.privacidad"
+      ],
+      "por_defecto": true,
+      "supuesto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "fechas",
+          "nombre": "Fechas"
+        },
+        {
+          "id": "lugares",
+          "nombre": "Lugares"
+        }
+      ]
+    },
+    {
+      "id": "gen.pasarela",
+      "plataforma": "genealogia",
+      "nombre": "Pasarela de pagos",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Pasarelas con las que se cobra. Hoy solo Stripe.",
+      "depende_de": [],
+      "por_defecto": true,
+      "supuesto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "stripe",
+          "nombre": "Stripe"
+        }
+      ],
+      "al_apagar": "no_disponible",
+      "nota": "Cuando está apagada el pago se muestra como «no disponible», no se oculta. La relación exacta con la opción «tarjeta» de gen.pagos está por confirmar."
     },
     {
       "id": "pos.mb-v-movimientos",
@@ -1630,6 +1767,27 @@
           "nombre": "Cubierta completa"
         }
       ]
+    },
+    {
+      "id": "pos.pasarela",
+      "plataforma": "pos",
+      "nombre": "Pasarela de pagos del POS",
+      "tipo": "producto",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Pasarelas con las que se cobra en el POS. Hoy solo Stripe.",
+      "depende_de": [],
+      "por_defecto": true,
+      "supuesto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "stripe",
+          "nombre": "Stripe"
+        }
+      ],
+      "al_apagar": "no_disponible",
+      "nota": "Se supone la misma pasarela que en genealogía; confirmar."
     }
   ],
   "fuera_del_interruptor": [

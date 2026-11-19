@@ -321,7 +321,7 @@ header form button{background:none;border:1px solid var(--borde);color:var(--sut
         <span class="led" aria-hidden="true"></span>
         <div>
           <div class="nombre"><?= escapar($f['nombre']) ?></div>
-          <div class="meta"><code><?= escapar($id) ?></code> · <?= escapar($f['tipo']) ?><?= $f['opciones'] !== [] ? ' · ' . count($f['opciones']) . ' opciones' : '' ?></div>
+          <div class="meta"><code><?= escapar($id) ?></code> · <?= escapar($f['tipo']) ?><?= $f['opciones'] !== [] ? ' · ' . count($f['opciones']) . ' opciones' : '' ?><?= $f['al_apagar'] !== 'ocultar' ? ' · al apagar: no disponible' : '' ?><?= $f['supuesto'] ? ' · supuesto' : '' ?></div>
         </div>
         <div><?= boton($cat, $propios, $id, $csrf, false, $puedeCambiar) ?></div>
       </div>

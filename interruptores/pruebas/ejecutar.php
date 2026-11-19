@@ -62,9 +62,9 @@ $nuevo = fn (): Interruptores => new Interruptores($cat, $estado);
 
 $i = $nuevo();
 $funciones = $i->catalogo();
-comprobar('hay 32 funciones de genealogía', count(array_filter($funciones, fn ($f) => $f['plataforma'] === 'genealogia')) === 32);
-comprobar('hay 20 funciones de POS', count(array_filter($funciones, fn ($f) => $f['plataforma'] === 'pos')) === 20);
-comprobar('hay 255 interruptores en total (52 funciones + 203 opciones)', $i->totalInterruptores() === 255);
+comprobar('hay 39 funciones de genealogía', count(array_filter($funciones, fn ($f) => $f['plataforma'] === 'genealogia')) === 39);
+comprobar('hay 21 funciones de POS', count(array_filter($funciones, fn ($f) => $f['plataforma'] === 'pos')) === 21);
+comprobar('hay 269 interruptores en total (60 funciones + 209 opciones)', $i->totalInterruptores() === 269);
 
 $carpetasInexistentes = [];
 foreach ($funciones as $id => $f) {
@@ -362,6 +362,29 @@ comprobar('una opción usa la política de su función', $i->alApagar('gen.vista
 file_put_contents($malo, json_encode(array_merge($base, ['funciones' => [$fn('a', ['al_apagar' => 'mal'])]])));
 comprobar('una política al apagar desconocida impide cargar el catálogo',
     lanza(fn () => new Interruptores($malo, $estado), \RuntimeException::class));
+
+// --- Privacidad: lo que busca, deduce, infiere o estima depende de ella; y las políticas al apagar --------------
+
+$i = $nuevo();
+$buscan = ['gen.fuentes-externas', 'gen.directorios', 'gen.busqueda', 'gen.prensa', 'gen.congresos', 'gen.deduccion', 'gen.inferencia', 'gen.estimacion'];
+$dependientes = $i->dependientesActivos('gen.privacidad');
+sort($buscan);
+sort($dependientes);
+comprobar('todo lo que busca, deduce, infiere o estima depende de gen.privacidad', $dependientes === $buscan, implode(',', $dependientes));
+comprobar('no se apaga la protección de personas vivas mientras algo las busca',
+    lanza(fn () => $i->cambiar('gen.privacidad', false), DependenciaRota::class));
+apagarEnCascada($i, 'gen.privacidad');
+comprobar('en cascada se apaga todo lo que las busca y luego la protección', !$i->activo('gen.privacidad') && !$i->activo('gen.prensa'));
+comprobar('sin la protección, no se enciende una búsqueda',
+    lanza(fn () => $i->cambiar('gen.prensa', true), DependenciaRota::class));
+
+$conNoDisponible = ['gen.pagos', 'gen.pasarela', 'pos.pasarela', 'gen.retiros', 'gen.exportar'];
+foreach ($conNoDisponible as $id) {
+    comprobar("«{$id}» se muestra como no disponible al apagarse", $i->alApagar($id) === 'no_disponible');
+}
+comprobar('una opción de la pasarela hereda «no_disponible»', $i->alApagar('gen.pasarela:stripe') === 'no_disponible');
+comprobar('perritos y gatitos son dos interruptores independientes', array_column($i->catalogo()['gen.mascotas']['opciones'], 'id') === ['perritos', 'gatitos']);
+comprobar('las funciones supuestas están marcadas', $i->catalogo()['gen.prensa']['supuesto'] === true && $i->catalogo()['gen.vistas']['supuesto'] === false);
 
 // Limpieza de la carpeta temporal.
 foreach (glob($tmp . '/*') ?: [] as $archivo) {

@@ -2,8 +2,9 @@
 
 > Generado desde [`catalogo.json`](catalogo.json) con `php interruptores/bin/generar.php`. **No lo edites a mano**: cambia el catálogo y vuelve a generar.
 
-- **52 funciones** (32 de genealogía y 20 de POS).
-- **203 opciones** (sub-interruptores), y **255 interruptores** en total.
+- **60 funciones** (39 de genealogía y 21 de POS).
+- **209 opciones** (sub-interruptores), y **269 interruptores** en total.
+- **8 funciones supuestas**, marcadas con *(supuesto)*: no vienen de la lista de la persona, las propuse a partir de sus respuestas. Hay que confirmarlas o quitarlas.
 
 Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: una opción está encendida solo si su función también lo está. «Mínimo de opciones» dice cuántas tienen que quedar encendidas mientras la función esté encendida.
 
@@ -31,7 +32,7 @@ Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: u
 |---|---|---|---|---|---|---|
 | `gen.vistas` | Modos de visualización del árbol | 14 (mín. 1) | producto | `fuera_del_repo` | encendida | — |
 | `gen.pagos` | Medios de pago | 3 (mín. 1) | producto | `fuera_del_repo` | encendida | — |
-| `gen.mascotas` | Perritos y gatitos | 2 | contenido | `fuera_del_repo` | encendida | — |
+| `gen.mascotas` | Perritos y gatitos (asistentes) | 2 | contenido | `fuera_del_repo` | encendida | — |
 | `gen.exportar` | Exportar el árbol | 3 | producto | `fuera_del_repo` | encendida | — |
 | `gen.idiomas` | Idioma de la interfaz | 2 (mín. 1) | producto | `repo` | encendida | — |
 | `gen.estado-civil` | Estados de una persona | 8 | producto | `fuera_del_repo` | encendida | — |
@@ -48,8 +49,8 @@ Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: u
 | `gen.acc-compartir` | Compartir | 3 | producto | `fuera_del_repo` | encendida | — |
 | `gen.acc-buscar` | Buscar y filtrar | 2 | producto | `fuera_del_repo` | encendida | — |
 | `gen.acc-archivos` | Importar, subir e imprimir | 4 | producto | `fuera_del_repo` | encendida | — |
-| `gen.fuentes-externas` | Importar desde fuentes externas | 16 | interno | `repo` | encendida | — |
-| `gen.directorios` | Importar directorios telefónicos históricos | — | interno | `repo` | encendida | — |
+| `gen.fuentes-externas` | Importar desde fuentes externas | 16 | interno | `repo` | encendida | `gen.privacidad` |
+| `gen.directorios` | Importar directorios telefónicos históricos | — | interno | `repo` | encendida | `gen.privacidad` |
 | `gen.siluetas` | Siluetas de ancestros | 3 | visual | `repo` | encendida | — |
 | `gen.mortalidad` | Datos de mortalidad histórica | 5 | datos | `repo` | encendida | — |
 | `gen.paises` | Mapa y tabla de países | 3 | datos | `repo` | encendida | — |
@@ -61,6 +62,13 @@ Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: u
 | `gen.bak-notas` | Backoffice: notas por acción | — | interno | `repo` | encendida | `gen.backoffice`, `gen.filtro:textos` |
 | `gen.cobros` | Cobros y cartera | 6 | interno | `repo` | encendida | — |
 | `gen.funnel` | Funnel y cohortes | 3 | interno | `repo` | encendida | — |
+| `gen.busqueda` | Búsqueda de personas en archivos y registros externos *(supuesto)* | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.prensa` | Búsqueda en diarios y revistas *(supuesto)* | 2 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.congresos` | Búsqueda en congresos nacionales *(supuesto)* | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.deduccion` | Deducción de parentescos y datos *(supuesto)* | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.inferencia` | Inferencia de datos faltantes *(supuesto)* | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.estimacion` | Estimación de fechas y lugares *(supuesto)* | 2 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.pasarela` | Pasarela de pagos *(supuesto)* | 1 | producto | `fuera_del_repo` | encendida | — |
 
 ### `gen.vistas` · Modos de visualización del árbol
 
@@ -89,15 +97,19 @@ Carpetas: `iconos-genealogia/`.
 
 Qué formas de pago ofrece el sitio. La lista sale de los métodos que registra el panel de cobros (transferencia, tarjeta, efectivo); si hay más, se agregan aquí.
 
+Al apagar: `no_disponible` (se muestra como no disponible en vez de ocultarse).
+
 | Opción (ref) | Nombre | Por defecto |
 |---|---|---|
 | `gen.pagos:transferencia` | Transferencia | encendida |
 | `gen.pagos:tarjeta` | Tarjeta | encendida |
 | `gen.pagos:efectivo` | Efectivo | encendida |
 
-### `gen.mascotas` · Perritos y gatitos
+### `gen.mascotas` · Perritos y gatitos (asistentes)
 
-Dos interruptores independientes: perritos y gatitos. Lo que muestran y dónde, por confirmar.
+Dos asistentes, uno por interruptor: el perrito ladra y el gatito maúlla frases motivacionales con enfoque comercial.
+
+*Nota:* Las frases comerciales deben seguir la guía de psychology-and-marketing/: persuadir sin presión indebida y sin usar datos personales.
 
 | Opción (ref) | Nombre | Por defecto |
 |---|---|---|
@@ -109,6 +121,8 @@ Dos interruptores independientes: perritos y gatitos. Lo que muestran y dónde, 
 Formatos en los que se puede descargar un árbol o una ficha (iconos ui_export_*).
 
 Carpetas: `iconos-genealogia/`.
+
+Al apagar: `no_disponible` (se muestra como no disponible en vez de ocultarse).
 
 | Opción (ref) | Nombre | Por defecto |
 |---|---|---|
@@ -190,7 +204,7 @@ Marca cada dato como verificado o sin verificar (iconos ui_verified y ui_unverif
 
 ### `gen.privacidad` · Protección de personas que podrían estar vivas
 
-Oculta o no guarda datos de quien podría estar vivo. Las reglas están en los lectores de directorios y de perfiles.
+Protege a quien podría estar vivo: no se guardan ni se muestran sus datos. Todo lo que busca, deduce, infiere o estima personas depende de esta función.
 
 Carpetas: `phone-directory/`, `Parsing-fb-in-mas/`.
 
@@ -420,11 +434,17 @@ Recibe los pedidos de retiro. Cada texto pasa por el filtro de textos libres.
 
 Carpetas: `url-routing/`.
 
+Al apagar: `no_disponible` (se muestra como no disponible en vez de ocultarse).
+
+*Nota:* Ocultar un pedido de retiro de datos sería peor que avisar que no está disponible por ahora (derechos de la persona; ver RECLAMOS.md). Política supuesta, confirmar.
+
 ### `gen.backoffice` · Backoffice de actividad
 
 Panel del equipo para revisar la actividad de un usuario. Requiere iniciar sesión.
 
 Carpetas: `sistema-nuevo/`.
+
+*Nota:* Lo consume sistema-nuevo/ (BACKOFFICE_INTERRUPTORES). La opción «comparacion» todavía no la aplica: viaja dentro de la respuesta de la línea de tiempo.
 
 | Opción (ref) | Nombre | Por defecto |
 |---|---|---|
@@ -467,6 +487,52 @@ Carpetas: `cobros-ingresos-funnels/`.
 | `gen.funnel:cohortes` | Cohortes | encendida |
 | `gen.funnel:segmentacion` | Segmentación de clientes | encendida |
 
+### `gen.busqueda` · Búsqueda de personas en archivos y registros externos
+
+Busca a una persona en archivos y registros fuera del sitio.
+
+### `gen.prensa` · Búsqueda en diarios y revistas
+
+Busca menciones de una persona en diarios y revistas.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.prensa:diarios` | Diarios | encendida |
+| `gen.prensa:revistas` | Revistas | encendida |
+
+### `gen.congresos` · Búsqueda en congresos nacionales
+
+Busca a una persona en las actas y registros de congresos nacionales.
+
+### `gen.deduccion` · Deducción de parentescos y datos
+
+Deduce parentescos y datos a partir de otros registros ya confirmados.
+
+### `gen.inferencia` · Inferencia de datos faltantes
+
+Infiere datos que faltan a partir de lo que se sabe de la persona y su entorno.
+
+### `gen.estimacion` · Estimación de fechas y lugares
+
+Estima fechas y lugares sin registro, con datos de contexto como la mortalidad histórica.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.estimacion:fechas` | Fechas | encendida |
+| `gen.estimacion:lugares` | Lugares | encendida |
+
+### `gen.pasarela` · Pasarela de pagos
+
+Pasarelas con las que se cobra. Hoy solo Stripe.
+
+Al apagar: `no_disponible` (se muestra como no disponible en vez de ocultarse).
+
+*Nota:* Cuando está apagada el pago se muestra como «no disponible», no se oculta. La relación exacta con la opción «tarjeta» de gen.pagos está por confirmar.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.pasarela:stripe` | Stripe | encendida |
+
 ## B) Librería y etiquetado POS
 
 | Id | Función | Opciones | Tipo | Origen | Por defecto | Depende de |
@@ -491,6 +557,7 @@ Carpetas: `cobros-ingresos-funnels/`.
 | `pos.iconos-pos` | Iconos del punto de venta | — | visual | `repo` | encendida | — |
 | `pos.iconos-biblioteca` | Iconos de biblioteca virtual | — | visual | `repo` | encendida | — |
 | `pos.portadas` | Portadas de libro en SVG | 4 | visual | `repo` | encendida | — |
+| `pos.pasarela` | Pasarela de pagos del POS *(supuesto)* | 1 | producto | `fuera_del_repo` | encendida | — |
 
 ### `pos.mb-v-movimientos` · Marcalibros verticales: movimientos literarios
 
@@ -701,6 +768,18 @@ Carpetas: `portadas-svg/`.
 | `pos.portadas:contratapa` | Contratapa | encendida |
 | `pos.portadas:lomo` | Lomo | encendida |
 | `pos.portadas:cubierta-completa` | Cubierta completa | encendida |
+
+### `pos.pasarela` · Pasarela de pagos del POS
+
+Pasarelas con las que se cobra en el POS. Hoy solo Stripe.
+
+Al apagar: `no_disponible` (se muestra como no disponible en vez de ocultarse).
+
+*Nota:* Se supone la misma pasarela que en genealogía; confirmar.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `pos.pasarela:stripe` | Stripe | encendida |
 
 ## Fuera del interruptor
 
