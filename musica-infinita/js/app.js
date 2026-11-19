@@ -1,6 +1,7 @@
 /*
  * La aplicación: une la biblioteca (ejemplos y MIDI propios guardados en IndexedDB), el
- * generador, el sintetizador y la visualización, y se encarga de grabar y exportar.
+ * generador, el sintetizador y la visualización. Grabar y exportar viven en exportar.js, el
+ * almacenamiento del navegador en almacen.js y la planificación pura en planificador.js.
  *
  * Solo navegador. Se carga después de los demás scripts.
  */
@@ -16,10 +17,11 @@
   const F = window.Flac;
   const S = window.Sintetizador;
   const V = window.Visualizador;
+  const P = window.Planificador;
+  const BD = window.Almacen.BD;
 
   const $ = function (id) { return document.getElementById(id); };
 
-  const ADELANTO = 1.2; // segundos que se programan por delante
   const AJUSTES_POR_OMISION = { fidelidad: 0.6, variacion: 0.4, estilo: 'auto', tempo: 1, volumen: 0.8, reverb: 0.55, modoVisual: 'milkdrop', autoVisual: true, bits: '16', semilla: '' };
 
   const estado = {
@@ -42,55 +44,8 @@
     ultimoCambioVisual: 0,
   };
 
-  // ------------------------------------------------------------ almacenamiento (IndexedDB)
-
-  const BD = {
-    abrir: function () {
-      if (this._p) return this._p;
-      this._p = new Promise(function (ok, mal) {
-        if (!window.indexedDB) return mal(new Error('Sin IndexedDB'));
-        const r = indexedDB.open('musica-infinita', 1);
-        r.onupgradeneeded = function () {
-          const db = r.result;
-          if (!db.objectStoreNames.contains('midis')) db.createObjectStore('midis', { keyPath: 'id' });
-          if (!db.objectStoreNames.contains('cosas')) db.createObjectStore('cosas');
-        };
-        r.onsuccess = function () { ok(r.result); };
-        r.onerror = function () { mal(r.error); };
-      });
-      return this._p;
-    },
-    op: function (almacen, modo, fn) {
-      return this.abrir().then(function (db) {
-        return new Promise(function (ok, mal) {
-          const tx = db.transaction(almacen, modo);
-          const r = fn(tx.objectStore(almacen));
-          tx.oncomplete = function () { ok(r && r.result); };
-          tx.onerror = function () { mal(tx.error); };
-          tx.onabort = function () { mal(tx.error); };
-        });
-      });
-    },
-    todosMidis: function () { return this.op('midis', 'readonly', function (s) { return s.getAll(); }); },
-    guardarMidi: function (r) { return this.op('midis', 'readwrite', function (s) { return s.put(r); }); },
-    borrarMidi: function (id) { return this.op('midis', 'readwrite', function (s) { return s.delete(id); }); },
-    leer: function (k) { return this.op('cosas', 'readonly', function (s) { return s.get(k); }); },
-    escribir: function (k, v) { return this.op('cosas', 'readwrite', function (s) { return s.put(v, k); }); },
-    borrar: function (k) { return this.op('cosas', 'readwrite', function (s) { return s.delete(k); }); },
-  };
-
-  function guardarAjustes() {
-    try {
-      localStorage.setItem('musica-infinita:ajustes', JSON.stringify(estado.ajustes));
-    } catch (e) { /* sin almacenamiento */ }
-  }
-
-  function cargarAjustes() {
-    try {
-      const a = JSON.parse(localStorage.getItem('musica-infinita:ajustes') || '{}');
-      Object.assign(estado.ajustes, a);
-    } catch (e) { /* ajustes dañados: los de siempre */ }
-  }
+  function guardarAjustes() { window.Almacen.guardarAjustes(estado.ajustes); }
+  function cargarAjustes() { window.Almacen.cargarAjustes(estado.ajustes); }
 
   // ------------------------------------------------------------ biblioteca
 
@@ -143,7 +98,7 @@
     let fallidos = 0;
     for (const f of archivos) {
       const ext = (f.name.split('.').pop() || '').toLowerCase();
-      if (ext === 'sf2') {
+      if (ext === 'sf2' || ext === 'sf3') {
         const bytes = new Uint8Array(await f.arrayBuffer());
         usarSoundFont(bytes, f.name, true);
         continue;
@@ -304,7 +259,7 @@
     const ahora = ctx.currentTime;
     if (estado.modo === 'midi') {
       const cola = estado.colaMidi;
-      while (cola.i < cola.eventos.length && cola.eventos[cola.i].t < ahora + (document.hidden ? ADELANTO * 3 : ADELANTO)) {
+      while (cola.i < cola.eventos.length && cola.eventos[cola.i].t < ahora + P.adelanto(document.hidden)) {
         const ev = cola.eventos[cola.i++];
         if (ev.t >= ahora - 0.05) estado.motor.tocar(ev, Math.max(ahora, ev.t));
       }
@@ -312,7 +267,7 @@
       return;
     }
     // con la pestaña oculta el navegador espacia los temporizadores: se programa más por delante
-    const adelanto = document.hidden ? ADELANTO * 3 : ADELANTO;
+    const adelanto = P.adelanto(document.hidden);
     const evs = estado.gen.eventosHasta(ahora - estado.base + adelanto);
     estado.motor.precalentar(evs);
     for (const ev of evs) {
@@ -416,228 +371,6 @@
     guardarAjustes();
   }
 
-  // ------------------------------------------------------------ grabación en vivo
-
-  const CODIGO_GRABADOR = [
-    'class Grabador extends AudioWorkletProcessor {',
-    '  constructor() { super(); this.buf = [new Float32Array(8192), new Float32Array(8192)]; this.n = 0; this.activo = true;',
-    '    this.port.onmessage = (e) => { if (e.data === "fin") { this.vaciar(); this.port.postMessage("fin"); this.activo = false; } }; }',
-    '  vaciar() { if (this.n) { this.port.postMessage([this.buf[0].slice(0, this.n), this.buf[1].slice(0, this.n)]); this.n = 0; } }',
-    '  process(inputs) {',
-    '    const e = inputs[0];',
-    '    if (this.activo && e && e.length) {',
-    '      const l = e[0], r = e[1] || e[0];',
-    '      for (let i = 0; i < l.length; i++) { this.buf[0][this.n] = l[i]; this.buf[1][this.n] = r[i]; this.n++; if (this.n === 8192) this.vaciar(); }',
-    '    }',
-    '    return this.activo;',
-    '  }',
-    '}',
-    'registerProcessor("grabador-musica-infinita", Grabador);',
-  ].join('\n');
-
-  async function alternarGrabacion() {
-    if (estado.grabacion) return terminarGrabacion();
-    await iniciarAudio();
-    if (!estado.tocando) await alternar();
-    const ctx = estado.ctx;
-    const bits = Number(estado.ajustes.bits) === 24 ? 24 : 16;
-    const enc = new F.CodificadorFlac({ frecuencia: ctx.sampleRate, canales: 2, bits: bits, etiquetas: { TITLE: 'Música infinita', COMMENT: 'semilla ' + estado.semillaSesion, DATE: new Date().toISOString().slice(0, 10) } });
-    const g = { enc: enc, inicio: performance.now(), bits: bits };
-    const silencio = ctx.createGain();
-    silencio.gain.value = 0;
-    silencio.connect(ctx.destination);
-    try {
-      if (!estado.workletListo) {
-        const url = URL.createObjectURL(new Blob([CODIGO_GRABADOR], { type: 'application/javascript' }));
-        await ctx.audioWorklet.addModule(url);
-        estado.workletListo = true;
-      }
-      const nodo = new AudioWorkletNode(ctx, 'grabador-musica-infinita', { numberOfInputs: 1, numberOfOutputs: 1, channelCount: 2, channelCountMode: 'explicit' });
-      nodo.port.onmessage = function (e) {
-        if (e.data === 'fin') {
-          if (g.alTerminar) g.alTerminar();
-          return;
-        }
-        enc.agregar(e.data);
-      };
-      estado.motor.salida.connect(nodo);
-      nodo.connect(silencio);
-      g.nodo = nodo;
-    } catch (e) {
-      // sin AudioWorklet (o bloqueado en file://): ScriptProcessor, que está obsoleto pero funciona
-      const sp = ctx.createScriptProcessor(4096, 2, 2);
-      sp.onaudioprocess = function (ev) {
-        const b = ev.inputBuffer;
-        enc.agregar([b.getChannelData(0).slice(0), b.getChannelData(b.numberOfChannels > 1 ? 1 : 0).slice(0)]);
-      };
-      estado.motor.salida.connect(sp);
-      sp.connect(silencio);
-      g.nodo = sp;
-    }
-    g.silencio = silencio;
-    estado.grabacion = g;
-    $('grabar').classList.add('grabando');
-    $('grabar').textContent = '■ Detener';
-    g.timer = setInterval(function () {
-      const s = Math.floor((performance.now() - g.inicio) / 1000);
-      $('tiempo-grabacion').textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
-    }, 500);
-  }
-
-  async function terminarGrabacion() {
-    const g = estado.grabacion;
-    estado.grabacion = null;
-    clearInterval(g.timer);
-    $('grabar').classList.remove('grabando');
-    $('grabar').textContent = '● Grabar';
-    $('tiempo-grabacion').textContent = '';
-    if (g.nodo.port) {
-      await new Promise(function (ok) {
-        g.alTerminar = ok;
-        g.nodo.port.postMessage('fin');
-        setTimeout(ok, 1000);
-      });
-    }
-    try { estado.motor.salida.disconnect(g.nodo); } catch (e) { /* ya estaba */ }
-    g.nodo.disconnect();
-    const partes = g.enc.terminar();
-    descargar(new Blob(partes, { type: 'audio/flac' }), nombreArchivo('flac'));
-    avisar('Grabación lista: ' + Math.round(g.enc.totalMuestras / g.enc.frecuencia) + ' s en FLAC de ' + g.bits + ' bits.');
-  }
-
-  // ------------------------------------------------------------ exportación
-
-  async function exportar() {
-    const minutos = Math.max(1, Math.min(120, Number($('minutos').value) || 10));
-    const formato = $('formato').value;
-    const semilla = estado.ajustes.semilla.trim() || estado.semillaSesion || semillaActual();
-    const boton = $('exportar');
-    const prog = $('progreso');
-    boton.disabled = true;
-    prog.hidden = false;
-    prog.value = 0;
-    try {
-      if (formato === 'midi') {
-        exportarMidi(minutos, semilla);
-      } else {
-        await exportarAudio(minutos, formato, semilla, function (p) { prog.value = p; });
-      }
-    } catch (e) {
-      console.error(e);
-      avisar('No se pudo exportar: ' + e.message);
-    } finally {
-      boton.disabled = false;
-      prog.hidden = true;
-    }
-  }
-
-  function exportarMidi(minutos, semilla) {
-    const gen = crearGenerador(semilla);
-    gen.humanizar = false;
-    const evs = gen.eventosHasta(minutos * 60);
-    // el MIDI va a 120 bpm fijos: un pulso es medio segundo, así los tiempos quedan exactos
-    const pistas = new Map();
-    for (const ev of evs) {
-      if (ev.tipo === 'info') continue;
-      const k = ev.voz;
-      if (!pistas.has(k)) pistas.set(k, { nombre: k.charAt(0).toUpperCase() + k.slice(1), canal: ev.canal, programa: ev.canal === 9 ? null : ev.programa, notas: [] });
-      pistas.get(k).notas.push({ nota: ev.nota, inicio: ev.t * 2, dur: ev.dur * 2, vel: ev.vel, programa: ev.canal === 9 ? null : ev.programa });
-    }
-    const bytes = M.escribir({ ppq: 480, bpm: 120, pistas: Array.from(pistas.values()) });
-    descargar(new Blob([bytes], { type: 'audio/midi' }), nombreArchivo('mid', semilla));
-    avisar('MIDI exportado: ' + minutos + ' min, semilla ' + semilla + '.');
-  }
-
-  /**
-   * Calcula el audio por tramos de 2 minutos, cada uno en su OfflineAudioContext con unos
-   * segundos de arranque (las notas y la reverberación que vienen del tramo anterior), y lo
-   * codifica a medida: así una hora no necesita una hora de audio en memoria.
-   */
-  async function exportarAudio(minutos, formato, semilla, progreso) {
-    const sr = 48000;
-    const bits = formato === 'flac24' ? 24 : 16;
-    const esWav = formato.indexOf('wav') === 0;
-    const total = minutos * 60;
-    const TRAMO = 120;
-    const PREVIO = 12;
-    const COLA = 4;
-    const gen = crearGenerador(semilla);
-    const cache = new Map();
-    const enc = esWav ? null : new F.CodificadorFlac({ frecuencia: sr, canales: 2, bits: bits, etiquetas: { TITLE: 'Música infinita', COMMENT: 'semilla ' + semilla } });
-    const partesWav = esWav ? [F.cabeceraWav(2, sr, bits, Math.round((total + COLA) * sr))] : null;
-    let pendientes = [];
-    let bpm = 100;
-    for (let s = 0; s < total; s += TRAMO) {
-      const previo = Math.min(s, PREVIO);
-      const ultimo = s + TRAMO >= total;
-      const largo = Math.min(TRAMO, total - s) + (ultimo ? COLA : 0);
-      const ctx = new OfflineAudioContext(2, Math.round((previo + largo) * sr), sr);
-      const motor = new S.Motor(ctx, { cache: cache, maxVoces: 128, volumen: 1 });
-      if (estado.sf) motor.ponerSoundFont(estado.sf);
-      motor.ponerReverb(Number(estado.ajustes.reverb));
-      const desde = s - previo;
-      pendientes = pendientes.concat(gen.eventosHasta(s + TRAMO)).filter(function (ev) { return ev.t >= desde - 1; });
-      motor.ponerTempo(bpm, 0);
-      const delTramo = pendientes.filter(function (ev) { return ev.t < s + TRAMO && ev.t >= desde; });
-      // Las notas se programan de a poco (cada 2 s, como en vivo): Chrome procesa todo nodo
-      // conectado aunque su nota no haya empezado, y programar todo de una vez hace que el
-      // costo crezca con el cuadrado del largo del tramo.
-      let idx = 0;
-      const programarHasta = function (lim) {
-        while (idx < delTramo.length && delTramo[idx].t - desde < lim) {
-          const ev = delTramo[idx++];
-          const t = ev.t - desde;
-          if (ev.tipo === 'info') {
-            bpm = ev.bpm;
-            motor.ponerTempo(ev.bpm, Math.max(ctx.currentTime, t));
-          } else motor.tocar(ev, Math.max(ctx.currentTime, t));
-        }
-      };
-      const VENTANA = 2;
-      programarHasta(VENTANA * 1.5);
-      for (let tk = VENTANA; tk < previo + largo; tk += VENTANA) {
-        ctx.suspend(tk).then(function () {
-          programarHasta(tk + VENTANA * 1.5);
-          ctx.resume();
-        });
-      }
-      pendientes = pendientes.filter(function (ev) { return ev.t >= s + TRAMO - PREVIO - 1; });
-      const buf = await ctx.startRendering();
-      const ini = Math.round(previo * sr);
-      const L = buf.getChannelData(0).subarray(ini);
-      const R = buf.getChannelData(1).subarray(ini);
-      // en trozos, para que la página no se congele
-      for (let k = 0; k < L.length; k += sr * 10) {
-        const l = L.subarray(k, Math.min(L.length, k + sr * 10));
-        const r = R.subarray(k, Math.min(R.length, k + sr * 10));
-        if (enc) enc.agregar([l, r]);
-        else partesWav.push(F.pcm([l, r], bits));
-        progreso(Math.min(0.99, (s + (k / sr)) / total));
-        await new Promise(function (ok) { setTimeout(ok, 0); });
-      }
-    }
-    progreso(1);
-    if (enc) descargar(new Blob(enc.terminar(), { type: 'audio/flac' }), nombreArchivo('flac', semilla));
-    else descargar(new Blob(partesWav, { type: 'audio/wav' }), nombreArchivo('wav', semilla));
-    avisar('Exportado: ' + minutos + ' min, semilla ' + semilla + '.');
-  }
-
-  function nombreArchivo(ext, semilla) {
-    const d = new Date();
-    const p = function (n) { return String(n).padStart(2, '0'); };
-    return 'musica-infinita-' + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + '-' + p(d.getHours()) + p(d.getMinutes()) + (semilla ? '-' + String(semilla).replace(/[^\w-]+/g, '_').slice(0, 24) : '') + '.' + ext;
-  }
-
-  function descargar(blob, nombre) {
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = nombre;
-    document.body.append(a);
-    a.click();
-    a.remove();
-    setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
-  }
-
   // ------------------------------------------------------------ interfaz
 
   let avisoTimer = null;
@@ -665,7 +398,12 @@
     });
   }
 
+  let exportador = null;
+  const alternarGrabacion = function () { return exportador.alternarGrabacion(); };
+  const exportar = function () { return exportador.exportar(); };
+
   function iniciarInterfaz() {
+    exportador = window.Exportador.crear({ estado: estado, $: $, avisar: avisar, alternar: alternar, iniciarAudio: iniciarAudio, crearGenerador: crearGenerador, semillaActual: semillaActual });
     cargarAjustes();
     const sel = $('estilo');
     const auto = document.createElement('option');
@@ -817,7 +555,7 @@
   }
 
   // para las pruebas en el navegador
-  window.MusicaInfinita = { estado: estado, exportarAudio: exportarAudio, siguienteSeccion: siguienteSeccion, cargarArchivos: cargarArchivos };
+  window.MusicaInfinita = { estado: estado, exportarAudio: function () { return exportador.exportarAudio.apply(null, arguments); }, siguienteSeccion: siguienteSeccion, cargarArchivos: cargarArchivos };
 
   document.addEventListener('DOMContentLoaded', iniciarInterfaz);
 })();

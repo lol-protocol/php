@@ -1,8 +1,15 @@
 'use strict';
 
-// Arma una SoundFont 2 mínima y válida, para probar el lector sin bajar una de verdad.
-// Un preset de piano (banco 0, programa 0) con dos zonas (graves y agudos) y un preset de
-// batería (banco 128) con una zona de bombo. Las muestras son senos de 440 Hz con bucle.
+// Arma una SoundFont mínima y válida, para probar el lector sin bajar una de verdad.
+//
+//   Preset 0:0  "Piano de prueba": dos zonas (graves con bucle, agudos con raíz forzada).
+//   Preset 0:1  "Modulado": vibrato, LFO de modulación, envolvente de modulación y dos
+//               moduladores explícitos (velocidad al filtro y nota al paneo).
+//   Preset 0:2  "Estéreo": una muestra izquierda y una derecha enlazadas, sin paneo.
+//   Preset 128:0 "Batería": una zona de bombo con clase exclusiva.
+//
+// Las muestras son senos con bucle. Con opciones.ogg (cuatro trozos de Ogg Vorbis) arma una
+// SoundFont 3: las muestras son esos trozos y la versión del archivo es la 3.
 
 function trozo(id, datos) {
   const b = Buffer.alloc(8 + datos.length + (datos.length & 1));
@@ -38,56 +45,115 @@ function rango(op, lo, hi) {
   return b;
 }
 
-function bag(genNdx) {
+function bag(genNdx, modNdx) {
   const b = Buffer.alloc(4);
   b.writeUInt16LE(genNdx, 0);
+  b.writeUInt16LE(modNdx || 0, 2);
   return b;
 }
 
-function crear() {
+function mod(src, dest, cant, amtSrc, trans) {
+  const b = Buffer.alloc(10);
+  b.writeUInt16LE(src, 0);
+  b.writeUInt16LE(dest, 2);
+  b.writeInt16LE(cant, 4);
+  b.writeUInt16LE(amtSrc || 0, 6);
+  b.writeUInt16LE(trans || 0, 8);
+  return b;
+}
+
+function crear(opciones) {
+  opciones = opciones || {};
   const fr = 22050;
   const largo = fr; // 1 s
-  // muestra 0: seno de 440 Hz (nota 69); muestra 1: seno de 110 Hz (nota 45)
-  const datos = [];
+  // muestras 0 y 2/3: seno de 440 Hz (nota 69); muestra 1: seno de 110 Hz (nota 45)
+  const defs = [
+    { f: 440, tono: 69, tipo: 1, correccion: -5 },
+    { f: 110, tono: 45, tipo: 1, correccion: 0 },
+    { f: 440, tono: 69, tipo: 4, correccion: 0 }, // izquierda
+    { f: 440, tono: 69, tipo: 2, correccion: 0 }, // derecha
+  ];
   const muestras = [];
-  let pos = 0;
-  for (const [f, tono] of [[440, 69], [110, 45]]) {
-    const ini = pos;
-    for (let i = 0; i < largo; i++) datos.push(Math.round(16000 * Math.sin((2 * Math.PI * f * i) / fr)));
-    for (let i = 0; i < 46; i++) datos.push(0); // 46 ceros entre muestras, como pide la norma
-    pos += largo + 46;
-    muestras.push({ ini: ini, fin: ini + largo, loopIni: ini + fr / 2, loopFin: ini + fr / 2 + (fr / f) * 20, fr: fr, tono: tono });
+  let smpl;
+  if (opciones.ogg) {
+    // SoundFont 3: inicio y fin son bytes; los bucles, muestras desde el inicio de la propia muestra
+    const trozos = [];
+    let pos = 0;
+    defs.forEach(function (d, i) {
+      const bytes = Buffer.from(opciones.ogg[i % opciones.ogg.length]);
+      muestras.push({ ini: pos, fin: pos + bytes.length, loopIni: Math.round(fr / 2), loopFin: Math.round(fr / 2 + (fr / d.f) * 20), fr: fr, tono: d.tono, tipo: d.tipo | 0x10, correccion: d.correccion });
+      trozos.push(bytes);
+      pos += bytes.length;
+    });
+    smpl = Buffer.concat(trozos);
+  } else {
+    const datos = [];
+    let pos = 0;
+    defs.forEach(function (d) {
+      const ini = pos;
+      for (let i = 0; i < largo; i++) datos.push(Math.round(16000 * Math.sin((2 * Math.PI * d.f * i) / fr)));
+      for (let i = 0; i < 46; i++) datos.push(0); // 46 ceros entre muestras, como pide la norma
+      pos += largo + 46;
+      muestras.push({ ini: ini, fin: ini + largo, loopIni: ini + fr / 2, loopFin: ini + fr / 2 + (fr / d.f) * 20, fr: fr, tono: d.tono, tipo: d.tipo, correccion: d.correccion });
+    });
+    smpl = Buffer.alloc(datos.length * 2);
+    datos.forEach(function (v, i) { smpl.writeInt16LE(v, i * 2); });
   }
-  const smpl = Buffer.alloc(datos.length * 2);
-  datos.forEach(function (v, i) { smpl.writeInt16LE(v, i * 2); });
 
-  // instrumentos: 0 = "Piano" (zona global con ataque, dos zonas locales), 1 = "Bombo"
+  // instrumentos: 0 "Piano", 1 "Bombo", 2 "Modulado", 3 "Estéreo"
   const igen = [];
   const ibag = [];
+  const imod = [];
+  const nuevaZona = function () { ibag.push(bag(igen.length, imod.length)); };
   // Piano: zona global
-  ibag.push(bag(igen.length));
+  nuevaZona();
   igen.push(gen(34, -2400)); // attackVolEnv: 2^(-2) = 0,25 s
   igen.push(gen(48, 60)); // initialAttenuation 6 dB
   // zona grave: teclas 0-59, muestra 1 con bucle continuo
-  ibag.push(bag(igen.length));
+  nuevaZona();
   igen.push(rango(43, 0, 59));
   igen.push(gen(54, 1));
   igen.push(gen(53, 1));
   // zona aguda: teclas 60-127, muestra 0, raíz forzada a 81, paneo a la derecha
-  ibag.push(bag(igen.length));
+  nuevaZona();
   igen.push(rango(43, 60, 127));
   igen.push(gen(58, 81));
   igen.push(gen(17, 250));
   igen.push(gen(52, 10)); // fineTune +10 cents
   igen.push(gen(53, 0));
   // Bombo
-  ibag.push(bag(igen.length));
+  nuevaZona();
   igen.push(rango(43, 35, 36));
   igen.push(gen(57, 3)); // exclusiveClass
   igen.push(gen(53, 1));
-  // terminal
-  ibag.push(bag(igen.length));
+  // Modulado
+  nuevaZona();
+  igen.push(gen(6, 50)); // vibLfoToPitch: 50 cents
+  igen.push(gen(24, -1200)); // freqVibLFO: 4,09 Hz
+  igen.push(gen(23, -1200)); // delayVibLFO: 0,5 s
+  igen.push(gen(5, 100)); // modLfoToPitch
+  igen.push(gen(10, -1200)); // modLfoToFilterFc
+  igen.push(gen(13, 60)); // modLfoToVolume: 6 dB
+  igen.push(gen(22, 0)); // freqModLFO: 8,176 Hz
+  igen.push(gen(7, 1200)); // modEnvToPitch: una octava
+  igen.push(gen(11, 2400)); // modEnvToFilterFc
+  igen.push(gen(8, 6000)); // initialFilterFc: ~ 232 Hz
+  igen.push(gen(26, -1200)); // attackModEnv: 0,5 s
+  igen.push(gen(29, 500)); // sustainModEnv: la mitad
+  igen.push(gen(28, -1200)); // decayModEnv
+  igen.push(gen(53, 0));
+  // velocidad al filtro, explícito: -3600 cents a velocidad 127 (lineal positivo), y nota al paneo (bipolar)
+  imod.push(mod(0x0002, 8, -3600, 0, 0));
+  imod.push(mod(0x0203, 17, 500, 0, 0));
+  // Estéreo: una izquierda y una derecha, sin paneo
+  nuevaZona();
+  igen.push(gen(53, 2));
+  nuevaZona();
+  igen.push(gen(53, 3));
+  // terminales
+  ibag.push(bag(igen.length, imod.length));
   igen.push(Buffer.alloc(4));
+  imod.push(Buffer.alloc(10));
 
   const inst = [];
   const insReg = function (n, b) {
@@ -98,7 +164,9 @@ function crear() {
   };
   insReg('Piano', 0);
   insReg('Bombo', 3);
-  insReg('EOI', 4);
+  insReg('Modulado', 4);
+  insReg('Estereo', 5);
+  insReg('EOI', 7);
 
   const pgen = [];
   const pbag = [];
@@ -109,6 +177,12 @@ function crear() {
   // preset Batería
   pbag.push(bag(pgen.length));
   pgen.push(gen(41, 1));
+  // preset Modulado
+  pbag.push(bag(pgen.length));
+  pgen.push(gen(41, 2));
+  // preset Estéreo
+  pbag.push(bag(pgen.length));
+  pgen.push(gen(41, 3));
   pbag.push(bag(pgen.length));
   pgen.push(Buffer.alloc(4));
 
@@ -123,7 +197,9 @@ function crear() {
   };
   preReg('Piano de prueba', 0, 0, 0);
   preReg('Bateria de prueba', 0, 128, 1);
-  preReg('EOP', 0, 0, 2);
+  preReg('Modulado', 1, 0, 2);
+  preReg('Estereo', 2, 0, 3);
+  preReg('EOP', 0, 0, 4);
 
   const shdr = [];
   muestras.forEach(function (m, i) {
@@ -135,8 +211,8 @@ function crear() {
     r.writeUInt32LE(Math.round(m.loopFin), 32);
     r.writeUInt32LE(m.fr, 36);
     r[40] = m.tono;
-    r.writeInt8(i === 0 ? -5 : 0, 41); // corrección de afinación de la muestra 0
-    r.writeUInt16LE(1, 44); // mono
+    r.writeInt8(m.correccion, 41);
+    r.writeUInt16LE(m.tipo, 44);
     shdr.push(r);
   });
   shdr.push(Buffer.alloc(46)); // EOS
@@ -148,13 +224,13 @@ function crear() {
     trozo('pgen', Buffer.concat(pgen)),
     trozo('inst', Buffer.concat(inst)),
     trozo('ibag', Buffer.concat(ibag)),
-    trozo('imod', Buffer.alloc(10)),
+    trozo('imod', Buffer.concat(imod)),
     trozo('igen', Buffer.concat(igen)),
     trozo('shdr', Buffer.concat(shdr)),
   ]);
   const ifil = Buffer.alloc(4);
-  ifil.writeUInt16LE(2, 0);
-  ifil.writeUInt16LE(4, 2);
+  ifil.writeUInt16LE(opciones.ogg ? 3 : 2, 0);
+  ifil.writeUInt16LE(opciones.ogg ? 0 : 4, 2);
   const info = lista('INFO', [trozo('ifil', ifil), trozo('INAM', Buffer.from('SoundFont de prueba\0', 'latin1'))]);
   const sdta = lista('sdta', [trozo('smpl', smpl)]);
   const cuerpo = Buffer.concat([Buffer.from('sfbk', 'latin1'), info, sdta, pdta]);

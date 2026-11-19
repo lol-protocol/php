@@ -1,11 +1,11 @@
 'use strict';
 
-// Recetas de los instrumentos propios (la parte pura del sintetizador): que den sonido
+// Recetas de los instrumentos propios (js/dsp.js, la parte pura del sintetizador): que den sonido
 // válido, a la altura pedida, y que se apague.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const S = require('../js/sintetizador.js');
+const S = require('../js/dsp.js');
 
 const SR = 48000;
 

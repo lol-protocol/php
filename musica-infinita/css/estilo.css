@@ -154,7 +154,7 @@ hr { border: 0; border-top: 1px solid var(--borde); }
 .lista li button { padding: .1rem .45rem; font-size: .85rem; }
 
 body.arrastrando::after {
-  content: "Suelta aquí tus .mid o tu .sf2";
+  content: "Suelta aquí tus .mid o tu SoundFont";
   position: fixed;
   inset: 0;
   display: flex;
