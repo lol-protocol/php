@@ -9,7 +9,7 @@ Uso (desde esta carpeta; las rutas apuntan a copias locales de las fuentes, ver 
         --alfabetizacion alfabetizacion-gapminder.csv --internet internet-gapminder.csv \\
         --emigrantes emigrantes-gapminder.csv --poblacion-gapminder poblacion-gapminder.csv \\
         --libertad libertad-gapminder.csv --democracia democracia-gapminder.csv \\
-        --corrupcion corrupcion-gapminder.csv \\
+        --corrupcion corrupcion-owid.csv \\
         --pib-ppa pib-ppa-gapminder.csv --pib-pc-bm pib-pc.csv --poblacion-bm population.csv
 
 Escribe:
@@ -52,8 +52,10 @@ PIB per cápita PPA: el de Gapminder de ANIO_PIB_PPA, en dólares internacionale
 en el Banco Mundial).
 IDH: el del PNUD de ANIO_IDH, tal como lo publica Gapminder.
 Libertad (estatus de Freedom House), democracia (índice de la EIU, 0-100) y corrupción (índice de
-percepción de Transparencia Internacional, 0-100, 100 = sin corrupción), vía Gapminder: el último
-dato de cada país desde ANIO_MINIMO_GOBERNANZA.
+percepción de Transparencia Internacional, 0-100, 100 = sin corrupción): el último dato de cada
+país desde ANIO_MINIMO_GOBERNANZA. Libertad y democracia vienen vía Gapminder; la corrupción, del
+grapher de Our World in Data, que va un año por delante de Gapminder y trae Hong Kong, Kosovo y
+Taiwán.
 Alfabetización de adultos (UNESCO) y usuarios de internet (Banco Mundial), también vía Gapminder:
 el último dato de cada país desde ANIO_MINIMO_ALFABETIZACION y ANIO_MINIMO_INTERNET.
 Emigrantes: los de ANIO_EMIGRANTES (ONU, vía Gapminder), en porcentaje de la población residente.
@@ -196,6 +198,16 @@ def leer_gapminder(ruta, convertir=float):
     return datos
 
 
+def leer_owid(ruta):
+    """Archivo de un grapher de OWID (entity, code, year, valor[, owid_region]) -> código OWID -> {anio: valor}."""
+    datos = {}
+    for f in filas_csv(ruta):
+        (columna,) = set(f) - {"entity", "code", "year", "owid_region"}
+        if f[columna] and f["code"]:
+            datos.setdefault(f["code"], {})[int(f["year"])] = float(f[columna])
+    return datos
+
+
 def leer_bm_api(ruta):
     """JSON de la API del Banco Mundial (una página con todo) -> código ISO alfa-3 -> {anio: valor}."""
     datos = {}
@@ -334,7 +346,7 @@ def main(argv=None, carpeta=AQUI):
     emigrantes = leer_gapminder(args.emigrantes)
     gobernanza = (("libertad_fh", leer_gapminder(args.libertad, lambda v: LIBERTAD[v])),
                   ("democracia_eiu", leer_gapminder(args.democracia)),
-                  ("corrupcion_cpi", leer_gapminder(args.corrupcion)))
+                  ("corrupcion_cpi", leer_owid(args.corrupcion)))
 
     pib_pc_bm, poblacion_bm = leer_bm(args.pib_pc_bm), leer_bm(args.poblacion_bm)
     # Sin población de OWID, la del Banco Mundial hasta el mismo año. Sin esa, la de Gapminder hasta
@@ -364,7 +376,7 @@ def main(argv=None, carpeta=AQUI):
     sin_emigrantes, sin_gobernanza = [], {columna: [] for columna, _ in gobernanza}
     detalle = []  # (codigo, columna, anio, fuente) de cada dato con valor
     fuente_gobernanza = {"libertad_fh": "Freedom House vía Gapminder", "democracia_eiu": "EIU vía Gapminder",
-                         "corrupcion_cpi": "Transparencia Internacional vía Gapminder"}
+                         "corrupcion_cpi": "Transparencia Internacional vía Our World in Data"}
     for fila in paises:
         codigo, clave = fila["codigo"], owid[fila["codigo"]]
 
