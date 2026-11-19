@@ -127,17 +127,29 @@ jobs:
       - name: Una segunda vez no encuentra nada pendiente
         run: php bin/migrar.php | grep -q 'sin migraciones pendientes'
 
+      # Cada rechazo lleva su control positivo: la misma fila, corregida solo en lo que se prueba, tiene
+      # que entrar. Sin él, una fila con dos defectos pasaría por el defecto equivocado.
       - name: Una exclusion activa sin prueba se rechaza
         run: |
-          if psql -h 127.0.0.1 -U pe_test -d pe_test -q -c "INSERT INTO exclusion VALUES ('x', 'p', 'persona', 'm', NULL, 'activa', now(), now())" 2>/dev/null; then
+          if psql -h 127.0.0.1 -U pe_test -d pe_test -q -c "INSERT INTO exclusion VALUES ('a1', 'p', 'persona', 'otro', NULL, 'activa', now(), now())" 2>/dev/null; then
             echo "::error::La base aceptó una exclusión activa sin prueba"
             exit 1
           fi
-          echo "Rechazada, como debe ser."
+          psql -h 127.0.0.1 -U pe_test -d pe_test -v ON_ERROR_STOP=1 -q -c "INSERT INTO exclusion VALUES ('a2', 'p', 'persona', 'otro', 'una prueba', 'activa', now(), now())"
+          echo "Sin prueba se rechaza; con prueba entra."
+
+      - name: Un motivo de texto libre se rechaza
+        run: |
+          if psql -h 127.0.0.1 -U pe_test -d pe_test -q -c "INSERT INTO exclusion VALUES ('m1', 'p', 'persona', 'texto libre', NULL, 'pendiente', now(), now())" 2>/dev/null; then
+            echo "::error::La base aceptó un motivo de texto libre"
+            exit 1
+          fi
+          psql -h 127.0.0.1 -U pe_test -d pe_test -v ON_ERROR_STOP=1 -q -c "INSERT INTO exclusion VALUES ('m2', 'p', 'persona', 'seguridad', NULL, 'pendiente', now(), now())"
+          echo "Texto libre se rechaza; uno de la lista entra."
 
       - name: La auditoria no se edita ni se borra
         run: |
-          psql -h 127.0.0.1 -U pe_test -d pe_test -v ON_ERROR_STOP=1 -q -c "INSERT INTO exclusion VALUES ('x', 'p', 'persona', 'm', NULL, 'pendiente', now(), now())" -c "INSERT INTO exclusion_evento (exclusion_id, tipo, actor, ocurrido_en) VALUES ('x', 'solicitada', 'a', now())"
+          psql -h 127.0.0.1 -U pe_test -d pe_test -v ON_ERROR_STOP=1 -q -c "INSERT INTO exclusion VALUES ('x', 'p', 'persona', 'otro', NULL, 'pendiente', now(), now())" -c "INSERT INTO exclusion_evento (exclusion_id, tipo, actor, ocurrido_en) VALUES ('x', 'solicitada', 'a', now())"
           for sql in "UPDATE exclusion_evento SET actor = 'otro'" "DELETE FROM exclusion_evento" "TRUNCATE exclusion_evento"; do
             if psql -h 127.0.0.1 -U pe_test -d pe_test -q -c "$sql" 2>/dev/null; then
               echo "::error::La base aceptó: $sql"
