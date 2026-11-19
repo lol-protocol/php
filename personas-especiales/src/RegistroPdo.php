@@ -93,7 +93,7 @@ final class RegistroPdo implements RegistroExclusiones
             'id' => $exclusion->id(),
             'persona' => $exclusion->personaId(),
             'solicitante' => $exclusion->solicitante()->value,
-            'motivo' => $exclusion->motivo(),
+            'motivo' => $exclusion->motivo()->value,
             'prueba' => $exclusion->prueba(),
             'estado' => $exclusion->estado()->value,
             'creada' => $exclusion->creadaEn()->format(DATE_ATOM),

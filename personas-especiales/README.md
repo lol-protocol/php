@@ -29,6 +29,7 @@ existe pero solo marca para revisión (ver más abajo).
 | `src/Exclusion.php` | La solicitud, inmutable. Transiciones: `solicitar` → `verificar` (activa) o `rechazar`; `activa` → `revocar`. Entradas inválidas lanzan `InvalidArgumentException`; transiciones no permitidas, `DomainException`. |
 | `src/Estado.php` | `pendiente`, `activa`, `rechazada`, `revocada`. |
 | `src/Solicitante.php` | `persona`, `familiar_fallecido`, `apoderado`. |
+| `src/Motivo.php` | `privacidad_personal`, `seguridad`, `asociacion_con_familiar`, `otro`. Lista cerrada, **sin texto libre**: lo elige quien pide, y ninguno nombra una religión, un origen ni una organización. |
 | `src/Visibilidad.php` | La política: `esVisible`, `puedeConectar`, `puedeExportar` y `filtrar` (quita excluidas de una lista, sin cambiar el orden). Solo dice sí o no, sin decir por qué. |
 | `src/Coincidencias.php` | Compara apellidos normalizados para revisión humana. No oculta a nadie. |
 | `src/RegistroExclusiones.php` | Interfaz del registro: `activasDe`, `conExclusionActiva` (por lote, para listas largas), `porId` y `guardar`. |
@@ -59,6 +60,15 @@ Límite conocido: `Gestion::solicitar` rechaza un id repetido, pero `guardar` es
 «insertar o reemplazar». Dos solicitudes simultáneas con el mismo id podrían pisarse. Los ids
 los genera quien llama (que sean UUID); la base no los fabrica.
 
+### El motivo es una lista cerrada
+
+Un campo de texto libre invitaría a escribir justo lo que el módulo no debe guardar («es
+judío», «hijo de tal político»). Por eso `motivo` es una lista cerrada (`Motivo`), y la base
+también la exige con un `CHECK`. «Otro» no pide ni guarda cuál es la razón. Si hace falta un
+motivo más, se agrega al `enum` y a la migración, a propósito y a mano.
+
+Esta lista es un valor por defecto que elegí yo; se puede cambiar.
+
 ### Alcance
 
 - Solo la persona excluida queda fuera. Sus parientes siguen visibles: qué hacer
@@ -86,7 +96,6 @@ decisión queda en una persona.
   persona, no su apellido, y el apellido lo tiene la plataforma. Quien consulte pasa
   los apellidos de las excluidas.
 - Qué hacer con los parientes de una persona excluida (decisión de producto).
-- El campo `motivo` es texto libre y podría traer un dato sensible; falta limitarlo.
 - Guardar las pruebas de forma segura, y el contacto del solicitante.
 
 ## Pruebas

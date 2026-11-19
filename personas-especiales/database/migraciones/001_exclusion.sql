@@ -7,7 +7,9 @@ CREATE TABLE exclusion (
     persona_id  TEXT NOT NULL CHECK (length(btrim(persona_id)) BETWEEN 1 AND 64),
     solicitante TEXT NOT NULL
                 CHECK (solicitante IN ('persona', 'familiar_fallecido', 'apoderado')),
-    motivo      TEXT NOT NULL CHECK (length(btrim(motivo)) BETWEEN 1 AND 500),
+    -- Lista cerrada, sin texto libre: un campo abierto invita a guardar lo que no debe (ver Motivo.php).
+    motivo      TEXT NOT NULL
+                CHECK (motivo IN ('privacidad_personal', 'seguridad', 'asociacion_con_familiar', 'otro')),
     prueba      TEXT NULL CHECK (prueba IS NULL OR length(btrim(prueba)) BETWEEN 1 AND 1000),
     estado      TEXT NOT NULL
                 CHECK (estado IN ('pendiente', 'activa', 'rechazada', 'revocada')),

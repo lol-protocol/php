@@ -17,14 +17,13 @@ use InvalidArgumentException;
  */
 final class Exclusion
 {
-    public const MOTIVO_MAX = 500;
     public const PRUEBA_MAX = 1000;
 
     private function __construct(
         private string $id,
         private string $personaId,
         private Solicitante $solicitante,
-        private string $motivo,
+        private Motivo $motivo,
         private ?string $prueba,
         private Estado $estado,
         private DateTimeImmutable $creadaEn,
@@ -36,12 +35,11 @@ final class Exclusion
         string $id,
         string $personaId,
         Solicitante $solicitante,
-        string $motivo,
+        Motivo $motivo,
         DateTimeImmutable $ahora,
     ): self {
         $id = self::texto($id, 'id', 64);
         $personaId = self::texto($personaId, 'persona', 64);
-        $motivo = self::texto($motivo, 'motivo', self::MOTIVO_MAX);
 
         return new self($id, $personaId, $solicitante, $motivo, null, Estado::Pendiente, $ahora, $ahora);
     }
@@ -59,6 +57,8 @@ final class Exclusion
     ): self {
         $sol = Solicitante::tryFrom($solicitante)
             ?? throw new InvalidArgumentException("Solicitante desconocido: {$solicitante}.");
+        $mot = Motivo::tryFrom($motivo)
+            ?? throw new InvalidArgumentException('Motivo desconocido: no está en la lista cerrada.');
         $est = Estado::tryFrom($estado)
             ?? throw new InvalidArgumentException("Estado desconocido: {$estado}.");
         if ($cambiadaEn < $creadaEn) {
@@ -73,7 +73,7 @@ final class Exclusion
             self::texto($id, 'id', 64),
             self::texto($personaId, 'persona', 64),
             $sol,
-            self::texto($motivo, 'motivo', self::MOTIVO_MAX),
+            $mot,
             $prueba,
             $est,
             $creadaEn,
@@ -122,7 +122,7 @@ final class Exclusion
         return $this->solicitante;
     }
 
-    public function motivo(): string
+    public function motivo(): Motivo
     {
         return $this->motivo;
     }

@@ -7,6 +7,7 @@ namespace Tests;
 use DateTimeImmutable;
 use PersonasEspeciales\Exclusion;
 use PersonasEspeciales\RegistroEnMemoria;
+use PersonasEspeciales\Motivo;
 use PersonasEspeciales\Solicitante;
 use PersonasEspeciales\Visibilidad;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +27,7 @@ final class VisibilidadTest extends TestCase
 
     private function excluir(string $id, string $persona): void
     {
-        $e = Exclusion::solicitar($id, $persona, Solicitante::Persona, 'Pide no aparecer.', $this->t0)
+        $e = Exclusion::solicitar($id, $persona, Solicitante::Persona, Motivo::PrivacidadPersonal, $this->t0)
             ->verificar('Cédula presentada.', $this->t0);
         $this->registro->guardar($e);
     }
@@ -53,7 +54,7 @@ final class VisibilidadTest extends TestCase
 
     public function testPendienteNoExcluye(): void
     {
-        $pendiente = Exclusion::solicitar('s-2', 'p-4', Solicitante::Apoderado, 'Pide.', $this->t0);
+        $pendiente = Exclusion::solicitar('s-2', 'p-4', Solicitante::Apoderado, Motivo::PrivacidadPersonal, $this->t0);
         $this->registro->guardar($pendiente);
 
         self::assertTrue($this->visibilidad->esVisible('p-4'));
@@ -61,7 +62,7 @@ final class VisibilidadTest extends TestCase
 
     public function testRechazadaNoExcluye(): void
     {
-        $rechazada = Exclusion::solicitar('s-3', 'p-5', Solicitante::Persona, 'Pide.', $this->t0)
+        $rechazada = Exclusion::solicitar('s-3', 'p-5', Solicitante::Persona, Motivo::PrivacidadPersonal, $this->t0)
             ->rechazar('No corresponde.', $this->t0);
         $this->registro->guardar($rechazada);
 

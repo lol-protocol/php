@@ -9,6 +9,7 @@ use DomainException;
 use InvalidArgumentException;
 use PersonasEspeciales\Estado;
 use PersonasEspeciales\Exclusion;
+use PersonasEspeciales\Motivo;
 use PersonasEspeciales\Solicitante;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +24,7 @@ final class ExclusionTest extends TestCase
 
     private function pendiente(): Exclusion
     {
-        return Exclusion::solicitar('s-1', 'p-1', Solicitante::Persona, 'Pide no aparecer.', $this->t0);
+        return Exclusion::solicitar('s-1', 'p-1', Solicitante::Persona, Motivo::PrivacidadPersonal, $this->t0);
     }
 
     public function testSolicitarQuedaPendienteSinPrueba(): void
@@ -109,38 +110,23 @@ final class ExclusionTest extends TestCase
     }
 
     /** @dataProvider camposVacios */
-    public function testCamposObligatoriosNoPuedenEstarVacios(string $id, string $persona, string $motivo): void
+    public function testCamposObligatoriosNoPuedenEstarVacios(string $id, string $persona): void
     {
         $this->expectException(InvalidArgumentException::class);
-        Exclusion::solicitar($id, $persona, Solicitante::Apoderado, $motivo, $this->t0);
+        Exclusion::solicitar($id, $persona, Solicitante::Apoderado, Motivo::Otro, $this->t0);
     }
 
-    /** @return iterable<string, array{string, string, string}> */
+    /** @return iterable<string, array{string, string}> */
     public static function camposVacios(): iterable
     {
-        yield 'id vacío' => ['', 'p-1', 'Motivo.'];
-        yield 'persona vacía' => ['s-1', ' ', 'Motivo.'];
-        yield 'motivo vacío' => ['s-1', 'p-1', ''];
-    }
-
-    public function testMotivoNoPasaDeQuinientosCaracteres(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        Exclusion::solicitar('s-1', 'p-1', Solicitante::Persona, str_repeat('a', Exclusion::MOTIVO_MAX + 1), $this->t0);
-    }
-
-    public function testMotivoDeQuinientosCaracteresSiPasa(): void
-    {
-        $motivo = str_repeat('á', Exclusion::MOTIVO_MAX);
-        $e = Exclusion::solicitar('s-1', 'p-1', Solicitante::Persona, $motivo, $this->t0);
-
-        self::assertSame($motivo, $e->motivo());
+        yield 'id vacío' => ['', 'p-1'];
+        yield 'persona vacía' => ['s-1', ' '];
     }
 
     public function testDesdeReconstruyeUnaActiva(): void
     {
         $e = Exclusion::desde(
-            's-9', 'p-9', 'familiar_fallecido', 'Pide no aparecer.', 'Acta.', 'activa',
+            's-9', 'p-9', 'familiar_fallecido', 'seguridad', 'Acta.', 'activa',
             $this->t0, $this->t0->modify('+1 day'),
         );
 
@@ -151,25 +137,57 @@ final class ExclusionTest extends TestCase
     public function testDesdeRechazaActivaSinPrueba(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        Exclusion::desde('s-9', 'p-9', 'persona', 'Motivo.', null, 'activa', $this->t0, $this->t0);
+        Exclusion::desde('s-9', 'p-9', 'persona', 'privacidad_personal', null, 'activa', $this->t0, $this->t0);
     }
 
     public function testDesdeRechazaSolicitanteDesconocido(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        Exclusion::desde('s-9', 'p-9', 'religion', 'Motivo.', null, 'pendiente', $this->t0, $this->t0);
+        Exclusion::desde('s-9', 'p-9', 'religion', 'privacidad_personal', null, 'pendiente', $this->t0, $this->t0);
     }
 
     public function testDesdeRechazaEstadoDesconocido(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        Exclusion::desde('s-9', 'p-9', 'persona', 'Motivo.', null, 'borrada', $this->t0, $this->t0);
+        Exclusion::desde('s-9', 'p-9', 'persona', 'privacidad_personal', null, 'borrada', $this->t0, $this->t0);
     }
 
     public function testDesdeRechazaCambioAnteriorAlAlta(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        Exclusion::desde('s-9', 'p-9', 'persona', 'Motivo.', null, 'pendiente', $this->t0, $this->t0->modify('-1 day'));
+        Exclusion::desde('s-9', 'p-9', 'persona', 'privacidad_personal', null, 'pendiente', $this->t0, $this->t0->modify('-1 day'));
+    }
+
+    /** @dataProvider motivosLibres */
+    public function testDesdeRechazaUnMotivoQueNoEstaEnLaLista(string $motivo): void
+    {
+        // Lo que ya estuviera guardado con texto libre no se reconstruye: la lista es cerrada.
+        $this->expectException(InvalidArgumentException::class);
+        Exclusion::desde('s-9', 'p-9', 'persona', $motivo, null, 'pendiente', $this->t0, $this->t0);
+    }
+
+    /** @return iterable<string, array{string}> */
+    public static function motivosLibres(): iterable
+    {
+        yield 'texto libre' => ['Pide no aparecer.'];
+        yield 'dato sensible' => ['es judío'];
+        yield 'vacío' => [''];
+        yield 'mayúsculas' => ['SEGURIDAD'];
+    }
+
+    public function testElMotivoSeGuardaTalCual(): void
+    {
+        $e = Exclusion::solicitar('s-1', 'p-1', Solicitante::Persona, Motivo::AsociacionConFamiliar, $this->t0);
+
+        self::assertSame(Motivo::AsociacionConFamiliar, $e->motivo());
+    }
+
+    public function testElMotivoEsUnaListaCerradaSinCategoriasDePersona(): void
+    {
+        // Decisión: ningún motivo nombra una religión, un origen ni una organización, y no hay texto libre.
+        $valores = array_map(static fn (Motivo $m): string => $m->value, Motivo::cases());
+
+        self::assertSame(['privacidad_personal', 'seguridad', 'asociacion_con_familiar', 'otro'], $valores);
     }
 
     public function testNoHayCategoriasDePersonaEnElModelo(): void

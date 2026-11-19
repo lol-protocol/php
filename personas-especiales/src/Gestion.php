@@ -27,7 +27,7 @@ final class Gestion
         string $id,
         string $personaId,
         Solicitante $solicitante,
-        string $motivo,
+        Motivo $motivo,
         string $actor,
         DateTimeImmutable $ahora,
     ): Exclusion {

@@ -17,6 +17,7 @@ use PersonasEspeciales\Evento;
 use PersonasEspeciales\Gestion;
 use PersonasEspeciales\RegistroEnMemoria;
 use PersonasEspeciales\RegistroPdo;
+use PersonasEspeciales\Motivo;
 use PersonasEspeciales\Solicitante;
 use PersonasEspeciales\TipoEvento;
 use PHPUnit\Framework\TestCase;
@@ -44,7 +45,7 @@ final class GestionTest extends TestCase
     {
         [$gestion, $registro, $auditoria] = $this->enMemoria();
 
-        $gestion->solicitar('s-1', 'p-1', Solicitante::Persona, 'Pide.', 'solicitante-1', $this->t0);
+        $gestion->solicitar('s-1', 'p-1', Solicitante::Persona, Motivo::PrivacidadPersonal, 'solicitante-1', $this->t0);
         $gestion->verificar('s-1', 'Cédula.', 'revisor-9', $this->t0->modify('+1 day'));
         $gestion->revocar('s-1', 'revisor-9', $this->t0->modify('+2 days'));
 
@@ -57,7 +58,7 @@ final class GestionTest extends TestCase
     public function testRechazarDejaSuEvento(): void
     {
         [$gestion, , $auditoria] = $this->enMemoria();
-        $gestion->solicitar('s-2', 'p-2', Solicitante::Apoderado, 'Pide.', 'a', $this->t0);
+        $gestion->solicitar('s-2', 'p-2', Solicitante::Apoderado, Motivo::PrivacidadPersonal, 'a', $this->t0);
 
         $gestion->rechazar('s-2', 'No corresponde.', 'revisor-1', $this->t0);
 
@@ -67,7 +68,7 @@ final class GestionTest extends TestCase
     public function testUnaTransicionInvalidaNoDejaEvento(): void
     {
         [$gestion, , $auditoria] = $this->enMemoria();
-        $gestion->solicitar('s-3', 'p-3', Solicitante::Persona, 'Pide.', 'a', $this->t0);
+        $gestion->solicitar('s-3', 'p-3', Solicitante::Persona, Motivo::PrivacidadPersonal, 'a', $this->t0);
 
         try {
             $gestion->revocar('s-3', 'revisor-1', $this->t0); // pendiente: no se revoca
@@ -90,10 +91,10 @@ final class GestionTest extends TestCase
     public function testNoSePisaUnaSolicitudConElMismoId(): void
     {
         [$gestion, $registro] = $this->enMemoria();
-        $gestion->solicitar('s-4', 'p-4', Solicitante::Persona, 'Pide.', 'a', $this->t0);
+        $gestion->solicitar('s-4', 'p-4', Solicitante::Persona, Motivo::PrivacidadPersonal, 'a', $this->t0);
 
         try {
-            $gestion->solicitar('s-4', 'p-OTRA', Solicitante::Persona, 'Otra.', 'b', $this->t0);
+            $gestion->solicitar('s-4', 'p-OTRA', Solicitante::Persona, Motivo::PrivacidadPersonal, 'b', $this->t0);
             self::fail('Debía fallar.');
         } catch (DomainException) {
             // esperado
@@ -107,7 +108,7 @@ final class GestionTest extends TestCase
         [$gestion] = $this->enMemoria();
 
         $this->expectException(InvalidArgumentException::class);
-        $gestion->solicitar('s-5', 'p-5', Solicitante::Persona, 'Pide.', '  ', $this->t0);
+        $gestion->solicitar('s-5', 'p-5', Solicitante::Persona, Motivo::PrivacidadPersonal, '  ', $this->t0);
     }
 
     public function testConPostgresLaAuditoriaQuedaEnLaBase(): void
@@ -116,7 +117,7 @@ final class GestionTest extends TestCase
         $auditoria = new AuditoriaPdo($pdo);
         $gestion = new Gestion(new RegistroPdo($pdo), $auditoria, $pdo);
 
-        $gestion->solicitar('s-1', 'p-1', Solicitante::FamiliarFallecido, 'Pide.', 'solicitante-1', $this->t0);
+        $gestion->solicitar('s-1', 'p-1', Solicitante::FamiliarFallecido, Motivo::PrivacidadPersonal, 'solicitante-1', $this->t0);
         $gestion->verificar('s-1', 'Acta.', 'revisor-9', $this->t0->modify('+1 day'));
 
         $eventos = $auditoria->eventosDe('s-1');
@@ -130,7 +131,7 @@ final class GestionTest extends TestCase
     {
         $pdo = $this->conectar();
         $gestion = new Gestion(new RegistroPdo($pdo), new AuditoriaPdo($pdo), $pdo);
-        $gestion->solicitar('s-1', 'p-1', Solicitante::Persona, 'Pide.', 'a', $this->t0);
+        $gestion->solicitar('s-1', 'p-1', Solicitante::Persona, Motivo::PrivacidadPersonal, 'a', $this->t0);
 
         $rota = new class implements Auditoria {
             public function registrar(Evento $evento): void
@@ -160,7 +161,7 @@ final class GestionTest extends TestCase
     {
         $pdo = $this->conectar();
         (new Gestion(new RegistroPdo($pdo), new AuditoriaPdo($pdo), $pdo))
-            ->solicitar('s-1', 'p-1', Solicitante::Persona, 'Pide.', 'a', $this->t0);
+            ->solicitar('s-1', 'p-1', Solicitante::Persona, Motivo::PrivacidadPersonal, 'a', $this->t0);
 
         $this->expectException(PDOException::class);
         $this->expectExceptionMessage('solo admite INSERT');
