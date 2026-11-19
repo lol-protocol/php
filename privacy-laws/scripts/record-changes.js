@@ -16,7 +16,7 @@ import { followRenames, unrecorded, createRecordChanges } from "../../leyes-comu
 // The comparison and the writing of changes.csv are shared with the other laws module; see
 // ../../leyes-comunes/record-changes-core.js. This file supplies only this project's dataset.
 export { followRenames, unrecorded };
-export const { recordChanges, main } = createRecordChanges({ dataset });
+export const { recordChanges, writeRecorded, main } = createRecordChanges({ dataset });
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   try {
