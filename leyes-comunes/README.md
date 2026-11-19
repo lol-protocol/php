@@ -40,6 +40,11 @@ Vive acá todo lo que no depende de qué módulo lo llama. Lo que sí depende de
   Los PDF se convierten con `pdftotext` (poppler-utils) si está instalado; si no, se saltan, como las páginas que
   necesitan JavaScript. En local: `sudo apt-get install poppler-utils` (Debian y Ubuntu) o `brew install poppler` (macOS);
   `laws-textos-oficiales.yml` lo instala en el runner. Las pruebas del PDF se saltan si no está.
+  Con `--browser`, una página que sin JavaScript no tiene texto se renderiza con Chrome sin cabeza (`chrome-headless-shell`,
+  `google-chrome` o `chromium`; la variable `CHROMIUM` manda) y se vuelve a leer: solo para URL que ya pasaron la guarda de
+  direcciones privadas y `robots.txt`, y pensado para un runner, porque el navegador hace las peticiones de la página.
+  Va con el user-agent del navegador (cualquier `--user-agent` cuelga este Chrome con `--dump-dom`). Las pruebas se
+  saltan si no hay navegador.
 
 Cada envoltorio conserva además el comentario de uso de su script y, en `record-changes.js` y `translations.js`,
 reexporta las funciones que usan las pruebas, para que los `import` de las pruebas no cambien.

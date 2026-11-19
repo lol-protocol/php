@@ -48,6 +48,12 @@ switch ($path) {
         header('Content-Type: application/pdf');
         echo '%PDF-1.4 binary';
         break;
+    case '/js.html':
+        header('Content-Type: text/html; charset=utf-8');
+        echo '<html><head><title>Ley con JavaScript</title></head><body><main id="app"></main><script>'
+            . 'document.getElementById("app").innerHTML = "<h1>Articulo 1</h1><p>" + "El plazo de proteccion dura toda la vida del autor y setenta anos mas. ".repeat(6) + "</p>";'
+            . '</script></body></html>';
+        break;
     case '/empty.html':
         header('Content-Type: text/html');
         echo '<html><body><div id="app"></div><script>boot()</script></body></html>';
