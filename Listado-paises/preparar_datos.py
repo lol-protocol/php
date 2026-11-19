@@ -199,7 +199,10 @@ def leer_gapminder(ruta, convertir=float):
 def leer_bm_api(ruta):
     """JSON de la API del Banco Mundial (una página con todo) -> código ISO alfa-3 -> {anio: valor}."""
     datos = {}
-    for f in json.loads(Path(ruta).read_text(encoding="utf-8"))[1]:
+    meta, filas = json.loads(Path(ruta).read_text(encoding="utf-8"))
+    if meta.get("pages", 1) != 1:  # per_page de descargar_fuentes.py ya no alcanza: faltarían países
+        raise SystemExit(f"{Path(ruta).name} viene en {meta['pages']} páginas: sube per_page en la URL")
+    for f in filas:
         if f["value"] is not None and f["countryiso3code"]:
             datos.setdefault(f["countryiso3code"], {})[int(f["date"])] = float(f["value"])
     return datos
@@ -208,13 +211,15 @@ def leer_bm_api(ruta):
 def natalidad_pais(tasas, fecundidad, bm=None):
     """{anio: nacimientos por mil} de un país, hasta ANIO_FIN.
 
-    tasas son las de Gapminder; bm, las del Banco Mundial, que mandan después de
-    ANIO_MAXIMO_GAPMINDER; los años sin dato entre dos tasas se interpolan. Antes de la primera tasa, FACTOR_NATALIDAD x fecundidad (los países
-    que Gapminder no tiene). Después de la última, la última escalada por la fecundidad
-    (tasa(t) = tasa(u) x TFR(t) / TFR(u)), o constante si falta la fecundidad.
-    Sin tasas: FACTOR_NATALIDAD x fecundidad. Sin ninguna de las dos: vacío.
+    tasas son las de Gapminder; bm, las del Banco Mundial. Con tasas de Gapminder, las del Banco
+    Mundial entran solo después de ANIO_MAXIMO_GAPMINDER; sin ellas, entran todas. Los años sin
+    dato entre dos tasas se interpolan. Antes de la primera tasa, FACTOR_NATALIDAD x fecundidad.
+    Después de la última, la última escalada por la fecundidad (tasa(t) = tasa(u) x TFR(t) /
+    TFR(u)), o constante si falta la fecundidad. Sin ninguna tasa: FACTOR_NATALIDAD x fecundidad;
+    sin fecundidad tampoco, vacío.
     """
-    tasas = {**tasas, **{a: v for a, v in (bm or {}).items() if a > ANIO_MAXIMO_GAPMINDER}}
+    desde = ANIO_MAXIMO_GAPMINDER if tasas else float("-inf")
+    tasas = {**tasas, **{a: v for a, v in (bm or {}).items() if a > desde}}
     if not tasas:
         return {a: FACTOR_NATALIDAD * v for a, v in fecundidad.items() if a <= ANIO_FIN}
     primero = min(tasas)

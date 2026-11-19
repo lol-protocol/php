@@ -95,6 +95,23 @@ check "re-correr 06_B conserva el .env (no rota la contrasena)" bash -c "cp /var
 check "$APP_PY sigue respondiendo tras re-correr" bash -c "sleep 2; curl -s -H 'Host: $D_PY' http://127.0.0.1/ | grep -q 'Hello from Python App'"
 check "cambiar el puerto de $APP_PY al re-correr REINICIA el servicio (sin eso: 502)" bash -c "./06_B-setup-python-app.sh $APP_PY $D_PY 8013 > /dev/null && sleep 3 && ss -ltn | grep -q '127.0.0.1:8013' && ! ss -ltn | grep -q '127.0.0.1:$PY_PORT ' && curl -s -H 'Host: $D_PY' http://127.0.0.1/ | grep -q 'Hello from Python App'"
 
+step "Workers de gunicorn segun la RAM real y GUNICORN_WORKERS (06_B)"
+check "la unidad usa los workers que calcula lib.sh con la RAM y las CPU reales" bash -c "test \"\$(grep -oE -- '--workers [0-9]+' /etc/systemd/system/$APP_PY.service | cut -d' ' -f2)\" = \"\$(bash -c 'source ./lib.sh; gunicorn_workers')\""
+check "los workers estan entre 2 y 2xCPU+1" bash -c "w=\$(grep -oE -- '--workers [0-9]+' /etc/systemd/system/$APP_PY.service | cut -d' ' -f2); [ \$w -ge 2 ] && [ \$w -le \$((\$(nproc) * 2 + 1)) ]"
+check "GUNICORN_WORKERS=3 al re-correr deja 3 workers de verdad (procesos hijos de gunicorn)" bash -c "GUNICORN_WORKERS=3 ./06_B-setup-python-app.sh $APP_PY $D_PY 8013 > /dev/null && sleep 4 && grep -q -- '--workers 3 ' /etc/systemd/system/$APP_PY.service && test \"\$(pgrep -P \$(systemctl show -p MainPID --value $APP_PY) | wc -l)\" = 3"
+check "un GUNICORN_WORKERS invalido se rechaza antes de tocar la unidad" bash -c "cp /etc/systemd/system/$APP_PY.service /tmp/e2e-state/unit.antes; ! GUNICORN_WORKERS='3; x' ./06_B-setup-python-app.sh $APP_PY $D_PY 8013 && cmp /etc/systemd/system/$APP_PY.service /tmp/e2e-state/unit.antes"
+
+step "10_B --purge-app (PostgreSQL y usuario reales): respaldo y luego borrado"
+D_API=api.$D
+check "se guarda un dato en la base de api" bash -c "sudo -u postgres psql -q -d app_api -c 'create table t(a int); insert into t values (42);'"
+check "--purge-app --dry-run no toca nada" bash -c "./10_B-remove-domain.sh $D_API --purge-app --dry-run | grep -q 'BORRAR la base app_api' && id app-api"
+check "--purge-app --yes termina bien" ./10_B-remove-domain.sh "$D_API" --purge-app --yes
+wait_http "$D_API" / 000
+check "el respaldo existe (600), solo root, y trae el dato" bash -c "d=\$(ls -d /var/backups/vps-setup/removed/$D_API-* | tail -1); test \"\$(stat -c %a \$d/db/app_api.dump)\" = 600 && test \"\$(stat -c %a \$d)\" = 700 && pg_restore -f - \$d/db/app_api.dump | grep -q '^42'"
+check "la base, el rol y el usuario de sistema de api ya no existen" bash -c "test -z \"\$(sudo -u postgres psql -tAc \"select 1 from pg_database where datname='app_api'\")\" && test -z \"\$(sudo -u postgres psql -tAc \"select 1 from pg_roles where rolname='app_api'\")\" && ! id app-api"
+check "el servicio y el sitio de api ya no estan" bash -c "! systemctl is-active --quiet api && test \"\$(curl -s -o /dev/null -m 10 -w '%{http_code}' -H 'Host: $D_API' http://127.0.0.1/)\" = 000"
+check "las demas apps siguen intactas ($APP_PY responde y conserva su base)" bash -c "curl -s -H 'Host: $D_PY' http://127.0.0.1/ | grep -q 'Hello from Python App' && set -a && . /var/www/$APP_PY/.env && set +a && cd / && psql \"\$DATABASE_URL\" -tAc 'select 1' | grep -qx 1"
+
 step "Tomcat (02_H + 06_D en la raiz)"
 check "02_H termina bien" ./02_H-install-tomcat.sh
 check "06_D termina bien" ./06_D-setup-tomcat-app.sh "$D_JAVA"

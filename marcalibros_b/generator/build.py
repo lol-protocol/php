@@ -29,6 +29,7 @@ from PIL import Image
 from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
 import muestreo
 import texto as tx
+from regiones import lengua_de_autor, zona_de_autor
 from qa import (contraste_texto, ESCALA_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, OPACIDADES_VELO, TONOS_TEXTO, UMBRAL_CAMBIO, UMBRAL_DUPLICADO,
                 hoja_de_contacto, hoja_de_miniaturas, huella_visual, mejor_texto, parecido_a, validar_jpg,
                 validar_frases, validar_svg, validar_taxonomia)
@@ -121,6 +122,8 @@ def construir(config, mov, autor, v, intento=0, animos=None, ocultar_motivo=Fals
         "autor_id": autor["id"],
         "epoca": autor["epoca"],
         "region": autor["region"],
+        "zona": zona_de_autor(autor),
+        "lengua": lengua_de_autor(autor),
         "variante": v,
         "obra_id": obra["id"],
         "obra": obra["titulo"],
@@ -360,7 +363,7 @@ def copiar_muestras(generados, rutas, por_movimiento=3):
 # Módulos que dibujan las piezas. Los demás (editor, modelo, marca, revisión, Gutenberg) no cambian el
 # catálogo: tocarlos no debe invalidar la caché de las 1000 piezas. tests/test_incremental.py comprueba
 # que esta lista cubre todo lo que build.py importa.
-MODULOS_DE_RENDER = ("build", "color", "movimientos", "movimientos4", "muestreo", "plantillas", "qa", "render_raster", "render_svg", "scene", "texto")
+MODULOS_DE_RENDER = ("build", "color", "movimientos", "movimientos4", "muestreo", "plantillas", "qa", "regiones", "render_raster", "render_svg", "scene", "texto")
 
 
 def hash_generador():
@@ -369,7 +372,7 @@ def hash_generador():
     for ruta in ([RAIZ / "generator" / f"{m}.py" for m in MODULOS_DE_RENDER]
                  + sorted((RAIZ / "generator" / "fuentes").glob("*.[to]tf"))
                  + [CATALOGO / "animos.yaml", CATALOGO / "motivos.yaml", CATALOGO / "frases.yaml",
-                    CATALOGO / "escrituras.yaml"]):
+                    CATALOGO / "escrituras.yaml", CATALOGO / "regiones.yaml"]):
         h.update(ruta.name.encode() + b"\0" + ruta.read_bytes() + b"\0")
     return h.hexdigest()
 

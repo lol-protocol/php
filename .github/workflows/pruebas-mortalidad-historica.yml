@@ -95,7 +95,7 @@ jobs:
 
   # Solo al lanzarlo a mano (workflow_dispatch): baja las fuentes de la esperanza de vida fijadas por
   # commit, comprueba su SHA-256 contra fuentes.sha256, rehace datos/esperanza_vida.csv y falla si
-  # cambia. Baja unos 5 MB y tarda menos de un minuto.
+  # cambia. Baja unos 55 MB (casi todos de MONDO) y tarda un par de minutos.
   reproducir:
     name: "mortalidad-historica: la esperanza de vida se rehace idéntica desde las fuentes"
     if: github.event_name == 'workflow_dispatch'

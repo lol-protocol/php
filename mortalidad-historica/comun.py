@@ -45,7 +45,7 @@ CONFIANZAS = ("alta", "media", "baja")
 ESTADOS = ("borrador", "verificado")
 GRUPOS_CAUSA = (
     "infecciosa", "cardiovascular", "respiratoria", "digestiva", "perinatal_infantil", "neurologica",
-    "cancer", "externa", "materna", "desnutricion", "otra", "mal_definida",
+    "cancer", "externa", "materna", "desnutricion", "mental", "otra", "mal_definida",
 )
 HERENCIAS = (
     "autosómica recesiva", "autosómica dominante", "recesiva ligada al X", "dominante ligada al X",
@@ -58,6 +58,21 @@ CALIDADES = ("A", "B", "C")  # A: registro civil completo; B: reconstrucción pa
 RE_ID = re.compile(r"^[a-z0-9_]+$")
 RE_CIE10 = re.compile(r"^[A-Z][0-9]{2}(\.[0-9])?$")
 RE_PAIS = re.compile(r"^[A-Z]{2}$")
+RE_MONDO = re.compile(r"^MONDO:[0-9]{7}$")
+
+
+RESULTADOS_REVISION = ("correcto", "corregir", "dudoso", "corregido")
+RE_FECHA = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
+
+
+def huella(termino, idioma, causa_id, confianza):
+    """Huella de un término del glosario (FNV-1a de 32 bits, en hexadecimal): cambia si cambia el término, su
+    idioma, su causa o su confianza. Sirve para que una revisión caduque cuando el dato cambia; no es criptográfica.
+    La misma función está en js/mortalidad.js (la vista genera las filas de revisiones.csv con ella)."""
+    h = 0x811C9DC5
+    for byte in f"{termino}|{idioma}|{causa_id}|{confianza}".encode("utf-8"):
+        h = ((h ^ byte) * 0x01000193) & 0xFFFFFFFF
+    return f"{h:08x}"
 
 
 def leer_csv(ruta):

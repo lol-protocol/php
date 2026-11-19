@@ -1,0 +1,89 @@
+# Región y lengua como eje del catálogo. Cada autor tiene una `region` (país o ámbito, en taxonomia.yaml); aquí se
+# agrupan en pocas zonas para filtrar y se decide la lengua en que escribe. La lengua sale de la región salvo en los
+# autores listados en `lengua_por_autor` (escriben en otra lengua que la de su región). Si se añade una región o un
+# autor con lengua distinta, hay que listarlo aquí: una prueba falla si queda alguno sin zona o sin lengua.
+version: '0.1'
+zonas:
+  - id: europa
+    nombre: Europa
+    regiones: [Francia, España, Alemania, Reino Unido, Inglaterra, Escocia, Irlanda, Italia, Rusia, Portugal, Bohemia, Austria, Suiza, Bélgica, Países Bajos, Polonia, Rumanía, Noruega]
+  - id: america-latina
+    nombre: América Latina
+    regiones: [México, Nueva España, Chile, Argentina, Cuba, Uruguay, Colombia, Brasil, Nicaragua, Perú, Guatemala, Venezuela]
+  - id: norteamerica
+    nombre: Norteamérica
+    regiones: [Estados Unidos]
+  - id: antiguedad
+    nombre: Antigüedad clásica
+    regiones: [Grecia, Roma]
+  - id: asia
+    nombre: Asia
+    regiones: [India, Japón, China]
+  - id: oriente-medio
+    nombre: Oriente Medio
+    regiones: [Persia, Siria]
+lenguas:
+  es: Español
+  fr: Francés
+  de: Alemán
+  en: Inglés
+  it: Italiano
+  ru: Ruso
+  pt: Portugués
+  pl: Polaco
+  nl: Neerlandés
+  'no': Noruego
+  ro: Rumano
+  la: Latín
+  grc: Griego antiguo
+  ja: Japonés
+  zh: Chino
+  fa: Persa
+  ar: Árabe
+  hi: Hindi
+  bn: Bengalí
+lengua_por_region:
+  Francia: fr
+  España: es
+  México: es
+  Nueva España: es
+  Chile: es
+  Argentina: es
+  Cuba: es
+  Uruguay: es
+  Colombia: es
+  Nicaragua: es
+  Perú: es
+  Guatemala: es
+  Venezuela: es
+  Alemania: de
+  Austria: de
+  Bohemia: de
+  Reino Unido: en
+  Inglaterra: en
+  Escocia: en
+  Irlanda: en
+  Estados Unidos: en
+  Italia: it
+  Rusia: ru
+  Portugal: pt
+  Brasil: pt
+  Polonia: pl
+  Países Bajos: nl
+  Noruega: 'no'
+  Suiza: fr
+  Bélgica: fr
+  Rumanía: ro
+  Roma: la
+  Grecia: grc
+  Japón: ja
+  China: zh
+  Persia: fa
+  Siria: ar
+  India: hi
+# id del autor -> lengua, cuando no coincide con la de su región.
+lengua_por_autor:
+  rushdie: en
+  tagore: bn
+  tzara: fr
+  erasmo: la

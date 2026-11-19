@@ -10,7 +10,7 @@ use InvalidArgumentException;
  * El dia en que se le devolvio la plata al cliente por una nota de credito.
  *
  * Devuelve la fecha ya validada y lanza una excepcion con el mensaje que ve la
- * persona si no sirve (la misma forma que Dinero::centavos()): el que la llama no
+ * persona si no sirve (la misma forma que Dinero::milesimas()): el que la llama no
  * puede seguir con una fecha mala, y no tiene que acordarse de revisar un retorno.
  */
 final class FechaDeDevolucion
