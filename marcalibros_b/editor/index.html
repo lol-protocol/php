@@ -20411,17 +20411,22 @@
   }
   CAT.movs.forEach(function (m) { var o = document.createElement("option"); o.value = m.id; o.textContent = m.nombre; $("f-mov").appendChild(o); });
   function llenarAutores() {
-    var m = $("f-mov").value, sel = $("f-autor"); sel.innerHTML = '<option value="">Todos</option>';
-    CAT.autores.forEach(function (a) { if (!m || a.m === m) { var o = document.createElement("option"); o.value = a.m + "/" + a.id; o.textContent = a.nombre; sel.appendChild(o); } });
+    var m = $("f-mov").value, z = $("f-zona").value, l = $("f-len").value, sel = $("f-autor"), antes = sel.value;
+    sel.innerHTML = '<option value="">Todos</option>';
+    CAT.autores.forEach(function (a) {
+      if ((!m || a.m === m) && (z === "" || String(a.z) === z) && (l === "" || String(a.l) === l)) { var o = document.createElement("option"); o.value = a.m + "/" + a.id; o.textContent = a.nombre; sel.appendChild(o); }
+    });
+    if (antes && Array.prototype.some.call(sel.options, function (o) { return o.value === antes; })) sel.value = antes;
   }
   $("f-mov").onchange = function () { llenarAutores(); visibles = MOSTRAR; listarPiezas(); };
   CAT.generos.forEach(function (g, i) { var o = document.createElement("option"); o.value = String(i); o.textContent = g.nombre; $("f-gen").appendChild(o); });
   $("f-gen").onchange = function () { visibles = MOSTRAR; listarPiezas(); };
   CAT.zonas.forEach(function (z, i) { var o = document.createElement("option"); o.value = String(i); o.textContent = z.nombre; $("f-zona").appendChild(o); });
   CAT.lenguas.forEach(function (l, i) { var o = document.createElement("option"); o.value = String(i); o.textContent = l.nombre; $("f-len").appendChild(o); });
-  $("f-zona").onchange = function () { visibles = MOSTRAR; listarPiezas(); };
-  $("f-len").onchange = function () { visibles = MOSTRAR; listarPiezas(); };
+  $("f-zona").onchange = function () { llenarAutores(); visibles = MOSTRAR; listarPiezas(); };
+  $("f-len").onchange = function () { llenarAutores(); visibles = MOSTRAR; listarPiezas(); };
   $("f-autor").onchange = function () { visibles = MOSTRAR; listarPiezas(); };
+  llenarAutores();  // sin movimiento elegido, el filtro ya ofrece todos los autores (antes quedaba vacío hasta elegir uno)
   $("f-buscar").oninput = function () { visibles = MOSTRAR; listarPiezas(); };
   $("mas").onclick = function () { visibles += MOSTRAR; listarPiezas(); };
 

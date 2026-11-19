@@ -978,12 +978,6 @@ movimientos:
     idioma: ja
     muerte: 1694
     estado: sin_verificar
-  - texto: いづれの御時にか、女御、更衣あまたさぶらひたまひけるなかに
-    autor: Murasaki Shikibu
-    obra: La historia de Genji
-    idioma: ja
-    muerte: 1031
-    estado: sin_verificar
   - texto: 床前明月光，疑是地上霜。
     autor: Li Bai
     obra: Pensamientos en una noche tranquila
@@ -995,42 +989,6 @@ movimientos:
     obra: Primavera en la ciudad arruinada
     idioma: zh
     muerte: 770
-    estado: sin_verificar
-  - texto: 希望本是无所谓有，无所谓无的。
-    autor: Lu Xun
-    obra: Mi tierra natal
-    idioma: zh
-    muerte: 1936
-    estado: sin_verificar
-  - texto: الخيل والليل والبيداء تعرفني
-    autor: Al-Mutanabbi
-    obra: Diván
-    idioma: ar
-    muerte: 965
-    estado: sin_verificar
-  - texto: على قدر أهل العزم تأتي العزائم
-    autor: Al-Mutanabbi
-    obra: Diván
-    idioma: ar
-    muerte: 965
-    estado: sin_verificar
-  - texto: بشنو از نی چون حکایت میکند
-    autor: Rumi
-    obra: Masnavi
-    idioma: fa
-    muerte: 1273
-    estado: sin_verificar
-  - texto: ढाई आखर प्रेम का पढ़े सो पंडित होय
-    autor: Kabir
-    obra: Sakhi
-    idioma: hi
-    muerte: 1518
-    estado: sin_verificar
-  - texto: बुरा जो देखन मैं चला बुरा न मिलिया कोय
-    autor: Kabir
-    obra: Sakhi
-    idioma: hi
-    muerte: 1518
     estado: sin_verificar
   - texto: Where the mind is without fear and the head is held high
     autor: Rabindranath Tagore

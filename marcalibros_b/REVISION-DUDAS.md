@@ -77,5 +77,7 @@ Diez autores por movimiento; todas las obras y temas son borrador, escritos de m
 - **Surrealismo**: Aragon, Desnos, Artaud, Cocteau, Cernuda, Aleixandre, Neruda, Paz, Roussel, Max Jacob. Casi todos tienen derechos vigentes: sus frases son originales y sin firma.
 - **Literaturas de Oriente**: Bashō, Murasaki Shikibu, Li Bai, Du Fu, Lu Xun, Omar Khayyam, Rumi, Al-Mutanabbi, Kabir, Tagore
 
-Cosas concretas a revisar: la fecha de muerte de Murasaki Shikibu en la frase (se puso 1031, la fecha es incierta); los capítulos de *Genji* (tipo `capítulo`); las obras de Al-Mutanabbi y de Kabir, que salen en parte como temas genéricos de su obra principal; las frases en árabe, persa, hindi, chino y japonés (texto exacto, de memoria) y la de Tagore.
+Cosas concretas a revisar: la fecha de muerte de Murasaki Shikibu en la frase (se puso 1031, la fecha es incierta); los capítulos de *Genji* (tipo `capítulo`); las obras de Al-Mutanabbi y de Kabir, que salen en parte como temas genéricos de su obra principal; la frase de Tagore.
+
+Se retiraron las frases en árabe, persa, hindi, la de *Genji* y la de Lu Xun, que no se recordaban con total seguridad. En Oriente quedan las de Bashō, Li Bai, Du Fu y Tagore. Las escrituras árabe y devanagari siguen soportadas (fuentes y pruebas con un verso de muestra en `catalog/escrituras.yaml`) y se pueden volver a usar cuando haya texto verificado.
 

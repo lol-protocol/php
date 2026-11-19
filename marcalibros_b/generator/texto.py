@@ -201,7 +201,7 @@ def _glifos_de_linea(linea, t, x0, ancho_caja, y, fuente):
     return glifos
 
 
-def componer(frase, autor, caja, tam=15.0, tam_autor=11.0, interlineado=1.32, idioma=None):
+def componer(frase, autor, caja, tam=None, tam_autor=11.0, interlineado=1.32, idioma=None):
     """Compone la frase centrada y, debajo, «— Autor» más pequeño, dentro de la caja
     (x0, y0, x1, y1). Devuelve (bloques, alto_usado); cada bloque es
     {"tam", "glifos": [(clave, x, y_linea_base)]} con coordenadas en px. Si el `idioma` usa una
@@ -209,6 +209,8 @@ def componer(frase, autor, caja, tam=15.0, tam_autor=11.0, interlineado=1.32, id
     x0, y0, x1, y1 = caja
     ancho = x1 - x0 - 20
     fuente = fuente_de_idioma(idioma)
+    if tam is None:  # tamaño por defecto: el de la escritura si lo declara, o 15 px
+        tam = float(escrituras()["fuentes"][fuente].get("tam", 15.0)) if fuente else 15.0
     bloques = []
     lineas = _partir(frase, tam, ancho, fuente)
     autores = _partir("— " + autor, tam_autor, ancho) if autor else []  # sin autoría: solo la frase

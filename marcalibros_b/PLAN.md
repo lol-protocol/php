@@ -313,3 +313,8 @@ Cinco autores nuevos por movimiento (lista en `REVISION-DUDAS.md`, sección 6), 
 ## Región y lengua como eje
 Tras la fase 4 se añade el eje «región / lengua» (sugerencia aceptada en la ampliación del catálogo). `catalog/regiones.yaml` agrupa las 38 regiones de los autores en 6 zonas (Europa, América Latina, Norteamérica, Antigüedad clásica, Asia, Oriente Medio) y da la lengua en que escribe cada autor: la de su región, salvo `lengua_por_autor` (Rushdie en inglés, Tagore en bengalí, Tzara en francés, Erasmo en latín). `generator/regiones.py` (solo PyYAML) lo resuelve y `build.py` pone `zona` y `lengua` en cada entrada del manifest; el editor tiene dos filtros nuevos («Región» y «Lengua») junto a movimiento, género y autor. Una prueba (`tests/test_regiones.py`) falla si un autor queda sin zona o sin lengua, si una región está en dos zonas o si `regiones.yaml` lista una que nadie usa. Como `build.py` es módulo de render, el cambio rehízo el catálogo entero (las piezas salen idénticas; solo cambia el manifest).
 
+## Ajustes tras la revisión de la fase 4
+- Frases de Oriente: solo quedan las de Bashō, Li Bai, Du Fu y Tagore (se retiraron las de Genji, Lu Xun, Al-Mutanabbi, Rumi y Kabir, no verificadas). Las fuentes árabe y devanagari y su composición se conservan.
+- El CJK (japonés y chino) se dibuja a 17 px (`tam` en `catalog/escrituras.yaml`); el resto, a 15.
+- Editor: la lista de autores se acota también por región y lengua, y arranca con todos los autores (antes quedaba vacía hasta elegir un movimiento). Prueba de navegador en `tests/test_regiones.py`.
+

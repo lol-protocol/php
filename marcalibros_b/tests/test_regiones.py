@@ -60,3 +60,39 @@ def test_el_editor_ofrece_los_filtros_de_region_y_lengua():
         assert 0 <= a["z"] < len(cat["zonas"]) and 0 <= a["l"] < len(cat["lenguas"])
     html = (RAIZ / "editor" / "index.html").read_text(encoding="utf-8")
     assert 'id="f-zona"' in html and 'id="f-len"' in html
+
+
+import pytest  # noqa: E402
+
+import build  # noqa: E402
+
+
+@pytest.mark.lento
+@pytest.mark.skipif(build.chromium() is None, reason="hace falta Chromium")
+def test_los_filtros_de_region_y_lengua_acotan_la_lista_de_autores():
+    from playwright.sync_api import sync_playwright
+
+    cat = editor_datos.catalogo()
+    nombre_zona = {z["nombre"]: i for i, z in enumerate(cat["zonas"])}
+    nombre_len = {le["nombre"]: i for i, le in enumerate(cat["lenguas"])}
+
+    def autores(page, **seleccion):
+        for campo, valor in seleccion.items():
+            page.evaluate("([id, v]) => { var s = document.getElementById(id); s.value = v; s.dispatchEvent(new Event('change')); }", [campo, valor])
+        return page.evaluate("() => Array.from(document.querySelectorAll('#f-autor option')).slice(1).map(o => o.textContent)")
+
+    with sync_playwright() as p:
+        nav = p.chromium.launch(executable_path=build.chromium(), args=["--no-sandbox"])
+        page = nav.new_page()
+        page.goto((RAIZ / "editor" / "index.html").as_uri())
+        todos = autores(page)
+        assert len(todos) == len(cat["autores"])
+        asia = autores(page, **{"f-zona": str(nombre_zona["Asia"])})
+        esperado = sorted({a["nombre"] for a in cat["autores"] if a["z"] == nombre_zona["Asia"]})
+        assert sorted(asia) == esperado and "Matsuo Bashō" in asia and "Charles Dickens" not in asia
+        japones = autores(page, **{"f-zona": "", "f-len": str(nombre_len["Japonés"])})
+        assert sorted(japones) == ["Haruki Murakami", "Matsuo Bashō", "Murasaki Shikibu"]
+        persa = autores(page, **{"f-mov": "oriente", "f-len": str(nombre_len["Persa"])})
+        assert sorted(persa) == ["Omar Khayyam", "Yalal ad-Din Rumi"]
+        assert len(autores(page, **{"f-mov": "", "f-len": ""})) == len(todos)
+        nav.close()
