@@ -25,7 +25,7 @@ final class FlujoDeCajaTest extends HttpTestCase
         $flujo = $this->get('page=flujo');
         $this->assertStatus(200, $flujo);
 
-        foreach (['Flujo de caja esperado', 'Ya vencido', 'Más adelante', 'Por mes de vencimiento'] as $texto) {
+        foreach (['Flujo de caja esperado', 'Ya vencido', 'Más adelante', 'Por mes de cobro esperado'] as $texto) {
             self::assertStringContainsString($texto, $flujo['cuerpo']);
         }
         // Una fila por cubeta con el horizonte por defecto: vencido + 6 meses + mas adelante.
@@ -83,7 +83,7 @@ final class FlujoDeCajaTest extends HttpTestCase
         self::assertMatchesRegularExpression('/^Cache-Control: no-store\r?$/mi', $respuesta['cabeceras']);
 
         $filas = self::leer($respuesta['cuerpo']);
-        self::assertSame(['Vencimiento', 'Saldo USD', 'Boletas', 'Clientes'], $filas[0]);
+        self::assertSame(['Cobro esperado', 'Saldo USD', 'Boletas', 'Clientes'], $filas[0]);
         $primerMes = new DateTimeImmutable('first day of this month');
         self::assertSame(
             ['Ya vencido', ...array_map(static fn (int $i): string => $primerMes->modify("+{$i} months")->format('Y-m'), range(0, 5)), 'Más adelante'],
@@ -120,5 +120,44 @@ final class FlujoDeCajaTest extends HttpTestCase
         $cuerpo = $this->get('page=flujo&meses=12')['cuerpo'];
 
         self::assertMatchesRegularExpression('~<a href="\?page=flujo-csv&amp;meses=12">Exportar CSV</a>~', $cuerpo);
+    }
+
+    public function testPorDefectoSeEsperaConElAtrasoHabitualYElSelectorLoMuestra(): void
+    {
+        $cuerpo = $this->get('page=flujo')['cuerpo'];
+
+        self::assertStringContainsString('<option value="atraso" selected>Con el atraso habitual de cada cliente</option>', $cuerpo);
+        self::assertStringContainsString('<option value="vencimiento" >El día del vencimiento</option>', $cuerpo);
+        self::assertStringContainsString('Se espera este mes (USD)', $cuerpo);
+        self::assertStringContainsString('Cada boleta por vencer se corre según cuánto se atrasa su cliente en pagar', $cuerpo);
+        self::assertStringContainsString('que todavía no vencen,', $cuerpo, 'dice cuanto de lo que falta se movio por el atraso');
+    }
+
+    public function testConElSupuestoDelVencimientoSeVuelveAlTextoDeAntes(): void
+    {
+        $cuerpo = $this->get('page=flujo&supuesto=vencimiento')['cuerpo'];
+
+        self::assertStringContainsString('<option value="vencimiento" selected>El día del vencimiento</option>', $cuerpo);
+        self::assertStringContainsString('Vence este mes (USD)', $cuerpo);
+        self::assertStringContainsString('<h2>Por mes de vencimiento</h2>', $cuerpo);
+        self::assertStringContainsString('Supone que cada cliente paga el día del vencimiento', $cuerpo);
+        self::assertStringNotContainsString('que todavía no vencen,', $cuerpo, 'nada se movio: no hay nada que contar');
+    }
+
+    public function testUnSupuestoQueNoExisteAvisaYUsaElPorDefecto(): void
+    {
+        $respuesta = $this->get('page=flujo&supuesto=adivinar');
+
+        $this->assertStatus(200, $respuesta);
+        self::assertStringContainsString('El supuesto pedido no existe; se usa «Con el atraso habitual de cada cliente».', $respuesta['cuerpo']);
+        self::assertStringContainsString('<option value="atraso" selected>', $respuesta['cuerpo']);
+        self::assertStringNotContainsString('no existe', $this->get('page=flujo&supuesto=')['cuerpo'], 'vacio es no haber pedido nada');
+    }
+
+    public function testElSupuestoYElHorizonteSeConservanEnElEnlaceDelCsv(): void
+    {
+        $cuerpo = $this->get('page=flujo&meses=12&supuesto=vencimiento')['cuerpo'];
+
+        self::assertMatchesRegularExpression('~<a href="\?page=flujo-csv&amp;meses=12&amp;supuesto=vencimiento">Exportar CSV</a>~', $cuerpo);
     }
 }
