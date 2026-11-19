@@ -26,7 +26,57 @@ final class TurkishInflection implements TopicInflection
             return [$lemma, $plural];
         }
 
-        return array_values(array_unique([$lemma, $plural, ...$this->cases($lemma), ...$this->cases($plural)]));
+        return array_values(array_unique([$lemma, $plural, ...$this->cases($lemma), ...$this->cases($plural), ...$this->possessiveForms($lemma, $plural)]));
+    }
+
+    /**
+     * Los posesivos y sus casos. Las personas 1.ª y 2.ª acaban en consonante y toman los casos de siempre
+     * («kitabımı», «kitabıma», «kitabımda»); la 3.ª acaba en vocal y los toma con «n» de unión
+     * («kitabını», «kitabına», «kitabında», «kitabından», «kitabıyla»).
+     *
+     * @return list<string>
+     */
+    private function possessiveForms(string $word, string $plural): array
+    {
+        $vowelFinal = mb_strpos(self::VOWELS, mb_substr($word, -1)) !== false;
+        $stem = $this->softened($word) ?? $word;
+        $link = $vowelFinal ? '' : self::FOUR[$this->lastVowel($word)]; // vocal de unión tras consonante
+        $four = self::FOUR[$this->lastVowel($word)];
+        $pf = self::FOUR[$this->lastVowel($plural)];
+        $consonantFinal = [
+            $stem . $link . 'm', $stem . $link . 'n', $stem . $link . 'm' . $four . 'z', $stem . $link . 'n' . $four . 'z',
+            $plural . $pf . 'm', $plural . $pf . 'n', $plural . $pf . 'm' . $pf . 'z', $plural . $pf . 'n' . $pf . 'z',
+        ];
+        $thirdPerson = [$stem . ($vowelFinal ? 's' : '') . $four, $plural . $pf]; // «kitabı», «kitapları»
+        $forms = [...$consonantFinal, ...$thirdPerson];
+        foreach ($consonantFinal as $base) {
+            array_push($forms, ...$this->cases($base));
+        }
+        foreach ($thirdPerson as $base) {
+            array_push($forms, ...$this->casesAfterThirdPerson($base));
+        }
+
+        return $forms;
+    }
+
+    /** @return list<string> */
+    private function casesAfterThirdPerson(string $word): array
+    {
+        $v = $this->lastVowel($word);
+        [$four, $two] = [self::FOUR[$v], self::TWO[$v]];
+
+        return [$word . 'n' . $four, $word . 'n' . $two, $word . 'n' . $four . 'n', $word . 'nd' . $two, $word . 'nd' . $two . 'n', $word . 'yl' . $two];
+    }
+
+    /** La palabra con la última consonante sonorizada («kitap» → «kitab»), solo en polisílabas; null si no cambia. */
+    private function softened(string $word): ?string
+    {
+        $last = mb_substr($word, -1);
+        if (mb_strpos(self::VOWELS, $last) !== false || !isset(self::SOFTEN[$last]) || preg_match_all('/[' . self::VOWELS . ']/u', $word) < 2) {
+            return null;
+        }
+
+        return mb_substr($word, 0, -1) . (str_ends_with($word, 'nk') ? 'g' : self::SOFTEN[$last]);
     }
 
     /** @return list<string> */
