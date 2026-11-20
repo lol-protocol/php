@@ -19,7 +19,12 @@ final class YouTube extends Analizador
 
     protected function patronesDePublicacion(): array
     {
-        return ['^/(watch|shorts|live|embed)(/|$)'];
+        return ['^/(watch|shorts|live|embed|clip|playlist)(/|$)'];
+    }
+
+    protected function dominiosDePublicacion(): array
+    {
+        return ['youtu.be'];
     }
 
     protected function extraer(array $d, ?string $url): array

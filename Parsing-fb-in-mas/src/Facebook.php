@@ -23,7 +23,7 @@ final class Facebook extends Analizador
 
     protected function patronesDePublicacion(): array
     {
-        return ['/(posts|videos|photos|reel|reels|watch|permalink|story)(/|$)', '/(permalink|photo|story)\\.php$'];
+        return ['^/[^/]+/(posts|videos|photos)/[^/]+', '^/groups/[^/]+/(posts|permalink)/', '^/(reel|reels|watch|permalink|story)(/|$)', '/(permalink|photo|story)\\.php$'];
     }
 
     protected function extraer(array $d, ?string $url): array

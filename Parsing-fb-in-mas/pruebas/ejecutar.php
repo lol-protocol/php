@@ -523,9 +523,9 @@ foreach ([
     ['pinterest pin', 'https://www.pinterest.com/pin/12345/', 'Un pin'],
 ] as [$red, $url, $titulo]) {
     $pub = $conTexto($url, $titulo);
-    igual("publicación ($red): no se guarda su texto como descripción y se avisa", [null, true], [
+    igual("publicación ($red): no se guarda su texto y se avisa", [null, true], [
         $pub->descripcion,
-        in_array('la dirección es de una publicación, no de un perfil: su texto no se guarda como descripción', $pub->avisos, true),
+        in_array('la dirección es de una publicación, no de un perfil: su texto no se guarda (ni descripción, ni nombre, ni titular, ni lugar)', $pub->avisos, true),
     ]);
 }
 foreach ([
@@ -538,7 +538,7 @@ foreach ([
 ] as [$red, $url, $titulo]) {
     igual("perfil ($red): sí conserva su descripción", 'TEXTO DE LA PAGINA', $conTexto($url, $titulo)->descripcion);
 }
-igual('publicación: el nombre del autor se conserva', 'Ana', $conTexto('https://x.com/ana/status/123', 'Ana (@ana) on X')->nombre);
+igual('publicación: el nombre tampoco se guarda (el título puede ser el texto), pero el usuario sí', [null, 'ana'], [$conTexto('https://x.com/ana/status/123', 'Ana (@ana) on X')->nombre, $conTexto('https://x.com/ana/status/123', 'Ana (@ana) on X')->usuario]);
 
 // --- Auditoría: sin texto no se llama al filtro ni se avisa de su falta ---
 $filtroAntes = getenv('FILTRO_DIFAMACION_DIR');
@@ -549,6 +549,60 @@ putenv($filtroAntes === false ? 'FILTRO_DIFAMACION_DIR' : 'FILTRO_DIFAMACION_DIR
 $avisoFiltro = 'sin filtro de difamación (falta ../defamatory-content-review/): solo se marcan términos sensibles';
 igual('revisión: un perfil sin texto no avisa de que falta el filtro (ni lo llama)', false, in_array($avisoFiltro, $sinFiltroSinTexto, true));
 igual('revisión: un perfil con texto sí avisa de que falta el filtro', true, in_array($avisoFiltro, $sinFiltroConTexto, true));
+
+// --- Revisión independiente (code-review) del PR: ocho hallazgos ---
+// 1) más formas de publicación, y un perfil real con pestaña de fotos NO es una publicación
+$avisoPublicacion = 'la dirección es de una publicación, no de un perfil: su texto no se guarda (ni descripción, ni nombre, ni titular, ni lugar)';
+foreach ([
+    ['youtu.be', 'https://youtu.be/dQw4w9WgXcQ', 'Un video'],
+    ['youtube /clip/', 'https://www.youtube.com/clip/UgkxABC', 'Un clip'],
+    ['youtube /playlist', 'https://www.youtube.com/playlist', 'Una lista'],
+    ['instagram /usuario/p/', 'https://www.instagram.com/ana/p/ABC123/', 'Ana (@ana) • Instagram'],
+    ['instagram /usuario/reel/', 'https://www.instagram.com/ana/reel/ABC123/', 'Ana (@ana) • Instagram'],
+    ['facebook /usuario/photos/ID', 'https://www.facebook.com/ana.ejemplo/photos/123456', 'Ana'],
+    ['facebook /groups/…/posts/', 'https://www.facebook.com/groups/12345/posts/678', 'Un grupo'],
+    ['facebook /watch', 'https://www.facebook.com/watch/?v=123', 'Un video'],
+] as [$red, $url, $titulo]) {
+    $pub = $conTexto($url, $titulo);
+    igual("publicación ($red): sin descripción y con aviso", [null, true], [$pub->descripcion, in_array($avisoPublicacion, $pub->avisos, true)]);
+}
+foreach (['https://www.facebook.com/ana.ejemplo/photos', 'https://www.facebook.com/ana.ejemplo/videos', 'https://youtu.be/', 'https://www.instagram.com/ana/reels/', 'https://www.facebook.com/p/Ana-Ejemplo-100000000000001/'] as $perfilReal) {
+    igual("no es una publicación: $perfilReal", false, in_array($avisoPublicacion, $conTexto($perfilReal, 'Ana')->avisos, true));
+}
+// 4) el título de una publicación puede ser su texto: no llega ni al nombre ni a las marcas
+$fuga = Detector::analizar('<link rel="canonical" href="https://www.facebook.com/ana.ejemplo/posts/998877"><meta property="og:title" content="Mi número es 912345678, llámame">');
+igual('publicación: el teléfono del título no llega al nombre ni a las marcas', [null, []], [$fuga->nombre, $fuga->marcas]);
+igual('publicación: no avisa «sin nombre» (no es un perfil)', false, str_starts_with(implode('|', $fuga->avisos), 'sin nombre') || in_array('sin nombre: la página no trae las etiquetas que se leen; quizá pide iniciar sesión', $fuga->avisos, true));
+// 2) enlaces antiguos con #!/ : cada perfil con su clave
+igual('claveUrl: dos perfiles con #!/ no se confunden con el dominio', true, Lote::claveUrl('https://twitter.com/#!/ana') !== Lote::claveUrl('https://twitter.com/#!/beto') && Lote::claveUrl('https://twitter.com/#!/ana') !== 'twitter.com');
+igual('claveUrl: un fragmento normal sigue ignorándose', Lote::claveUrl('https://x.com/ana'), Lote::claveUrl('https://x.com/ana#about'));
+$vistosHash = [];
+igual('repetida: dos perfiles con #!/ distintos no son repetidos', [false, false, true], [Lote::repetida('https://twitter.com/#!/ana', $vistosHash), Lote::repetida('https://twitter.com/#!/beto', $vistosHash), Lote::repetida('https://twitter.com/#!/ana', $vistosHash)]);
+// 3) los parámetros de rastreo se descartan solo donde lo son
+igual('claveUrl: ?t= o ?s= en otro sitio elige la página: no se descarta', true, Lote::claveUrl('https://example.org/perfil?t=ana') !== Lote::claveUrl('https://example.org/perfil?t=beto'));
+igual('claveUrl: en X, ?s= y ?t= sí son de rastreo', Lote::claveUrl('https://x.com/ana'), Lote::claveUrl('https://x.com/ana?s=20&t=AbCdEf'));
+igual('claveUrl: en Facebook, ?ref= es de rastreo; en otro sitio no', [true, false], [
+    Lote::claveUrl('https://www.facebook.com/ana?ref=bookmarks') === Lote::claveUrl('https://facebook.com/ana'),
+    Lote::claveUrl('https://example.org/ana?ref=1') === Lote::claveUrl('https://example.org/ana'),
+]);
+igual('claveUrl: en YouTube, ?si= es de rastreo', Lote::claveUrl('https://youtube.com/@ana'), Lote::claveUrl('https://youtube.com/@ana?si=XYZ'));
+// 8) los identificadores que distinguen mayúsculas no se confunden al deduplicar; la exclusión sigue siendo de más
+$vistosYt = [];
+igual('repetida: dos videos cuyo id solo difiere en mayúsculas no son repetidos', [false, false], [Lote::repetida('https://youtube.com/watch?v=aBcDeFgHiJk', $vistosYt), Lote::repetida('https://youtube.com/watch?v=ABCDEFGHIJK', $vistosYt)]);
+igual('repetida: el usuario (primer tramo) sí ignora mayúsculas', [false, true], [Lote::repetida('https://www.instagram.com/Ana/p/AbC/', $vistosYt), Lote::repetida('https://instagram.com/ana/p/AbC', $vistosYt)]);
+igual('exclusión: sigue ignorando mayúsculas (excluir de más antes que de menos)', true, Exclusiones::desdeTexto("https://youtube.com/watch?v=abcdefghijk\n")->contiene(['url' => 'https://youtube.com/watch?v=ABCDEFGHIJK', 'red' => 'a', 'usuario' => 'b']));
+// 6) «twitter:@» sin usuario falla en voz alta
+foreach (['twitter:@', 'twitter:@@', "x:@\n"] as $mala) {
+    try {
+        Exclusiones::desdeTexto($mala);
+        igual("exclusión: «" . trim($mala) . "» lanza", true, false);
+    } catch (RuntimeException $e) {
+        igual("exclusión: «" . trim($mala) . "» lanza y dice que falta el usuario", true, str_contains($e->getMessage(), 'falta el usuario'));
+    }
+}
+// 7) un objeto vacío {} no es una línea ilegible
+igual('purga: «{}» no es ilegible y se conserva tal cual', [false, '{}'], [Purga::linea('{}', $excluirPurga)['ilegible'], Purga::linea('{}', $excluirPurga)['linea']]);
+igual('purga: un arreglo con datos sigue siendo ilegible', true, Purga::linea('[1]', $excluirPurga)['ilegible']);
 
 // CLI: no descarga de la red
 $salida = [];
@@ -806,6 +860,11 @@ exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --jsonl ' . e
 igual('analizar.php: la misma página con dos formas de URL sale una vez', [0, 1], [$codigo, count($salida)]);
 array_map('unlink', glob("$tmp/variantes/*") ?: []);
 rmdir("$tmp/variantes");
+
+file_put_contents("$tmp/con-vacios.jsonl", "{}\n" . (string) file_get_contents("$tmp/a.jsonl"));
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/con-vacios.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' 2>&1 >/dev/null', $salida, $codigo);
+igual('cruzar.php: un «{}» no se cuenta como línea que no es un objeto JSON', false, str_contains(implode("\n", $salida), 'no son un objeto JSON') || str_contains(implode("\n", $salida), 'no es un objeto JSON'));
 array_map('unlink', glob("$tmp/*") ?: []);
 rmdir($tmp);
 

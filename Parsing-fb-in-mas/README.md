@@ -41,13 +41,18 @@ como `phone-directory/`).
   **Cuesta:** unos 5 ms por texto (20.000 páginas con descripción: 90 s con revisión y 2,7 s con `--sin-revision`). Un
   perfil sin titular ni descripción no se revisa. Para lotes grandes, `--sin-revision` y revisar después solo lo que
   importe (por ejemplo, los candidatos del cruce).
-- **Una publicación no es un perfil.** Si la dirección es de una publicación (`…/status/123`, `…/posts/…`, `/p/…`,
-  `…/video/…`, `/pin/…`, `/watch`), su texto no se guarda como descripción (no es la biografía de nadie) y sale un
-  aviso. El nombre y el usuario del autor sí se conservan.
+- **Una publicación no es un perfil.** Si la dirección es de una publicación (`…/status/123`, `…/posts/…`,
+  `/usuario/p/…`, `…/video/…`, `/pin/…`, `/watch`, un enlace `youtu.be/…`), no se guarda **ningún texto** de la página:
+  ni la descripción, ni el nombre, ni el titular, ni el lugar, porque el título suele ser el texto de la publicación.
+  Quedan la URL y el usuario, y sale un aviso. Una pestaña de un perfil (`/usuario/photos`, `/usuario/reels/`) no cuenta
+  como publicación; una con identificador (`/usuario/photos/123`) sí.
 - **Lista de exclusión (`--excluir=lista.txt`)** en `analizar.php`, `wikidata.php`, `wikidata-nombres.php` y
   `cruzar.php`: una entrada por línea, una URL o `red:usuario` (`twitter:ana`, `wikidata:Q42`, `wikitree:Ejemplo-1`);
   `#` es comentario. Una URL vale también para su versión móvil (`m.`), con barra final, con parámetros de rastreo
-  (`utm_*`, `fbclid`, `ref`…) o con fragmento, y `twitter:@ana` es lo mismo que `twitter:ana`; un archivo con BOM de
+  (`utm_*`, `fbclid`, y `ref` solo en Facebook, `s` y `t` solo en X…) o con fragmento (menos el de los enlaces
+  antiguos `#!/usuario`, que cuenta), y `twitter:@ana` es lo mismo que `twitter:ana` (`twitter:@` sin usuario falla en
+  voz alta); en la exclusión todo va en minúsculas (se excluye de más antes que de menos), mientras que al quitar
+  páginas repetidas se respetan las mayúsculas de los identificadores (`watch?v=AbC` no es `watch?v=abc`); un archivo con BOM de
   Windows se lee bien, y una lista sin ninguna entrada avisa. Sirve para que alguien que pidió retirarse no vuelva a salir al reprocesar
   (ver `RECLAMOS.md`). **No está conectada a la cola de pedidos de retiro del sitio** (`url-routing/`): se
   mantiene a mano, y quien decide un retiro tiene que agregar la entrada. `--excluir` solo evita que alguien

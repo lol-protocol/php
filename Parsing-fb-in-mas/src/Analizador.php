@@ -53,12 +53,25 @@ abstract class Analizador
         return [];
     }
 
-    /** Si la dirección es de una publicación: su texto no es la biografía de nadie, así que no se guarda como descripción. */
+    /**
+     * Dominios donde TODA página es una publicación (el acortador `youtu.be`). Por defecto, ninguno.
+     *
+     * @return list<string>
+     */
+    protected function dominiosDePublicacion(): array
+    {
+        return [];
+    }
+
+    /** Si la dirección es de una publicación: su texto no es la biografía de nadie, así que no se guarda. */
     private function esPublicacion(?string $url): bool
     {
         $ruta = $url === null ? null : parse_url($url, PHP_URL_PATH);
         if (!is_string($ruta)) {
             return false;
+        }
+        if (in_array(self::host($url), $this->dominiosDePublicacion(), true) && trim($ruta, '/') !== '') {
+            return true;
         }
         foreach ($this->patronesDePublicacion() as $patron) {
             if (preg_match('~' . $patron . '~i', $ruta) === 1) {
@@ -105,15 +118,17 @@ abstract class Analizador
         $url = self::urlDe($d);
         $c = $this->extraer($d, $url);
 
-        $nombre = self::texto($c['nombre'] ?? null);
+        // De una publicación no se guarda ningún texto: ni la descripción ni el nombre ni el titular ni el lugar, porque el
+        // título de la página suele ser el texto de la publicación («Ana on X: "mi número es…"»). Queda la URL y el usuario.
         $publicacion = $this->esPublicacion($url);
+        $nombre = $publicacion ? null : self::texto($c['nombre'] ?? null);
         $descripcion = $publicacion ? null : self::texto($c['descripcion'] ?? null);
         if ($descripcion !== null && mb_strlen($descripcion) > self::LARGO_MAXIMO_DESCRIPCION) {
             $descripcion = rtrim(mb_substr($descripcion, 0, self::LARGO_MAXIMO_DESCRIPCION - 1)) . '…';
         }
 
         $avisos = [];
-        if ($nombre === null) {
+        if ($nombre === null && !$publicacion) {
             $avisos[] = 'sin nombre: la página no trae las etiquetas que se leen; quizá pide iniciar sesión';
         }
         if ($url === null) {
@@ -123,14 +138,14 @@ abstract class Analizador
             $avisos[] = 'sin fecha de captura: anótala al citar la fuente';
         }
         if ($publicacion) {
-            $avisos[] = 'la dirección es de una publicación, no de un perfil: su texto no se guarda como descripción';
+            $avisos[] = 'la dirección es de una publicación, no de un perfil: su texto no se guarda (ni descripción, ni nombre, ni titular, ni lugar)';
         }
         $segmento = self::primerSegmento($url);
         if ($segmento !== null && in_array(strtolower($segmento), $this->reservados(), true)) {
             $avisos[] = 'la dirección parece una publicación u otra página, no un perfil: sin usuario';
         }
 
-        $titular = self::texto($c['titular'] ?? null);
+        $titular = $publicacion ? null : self::texto($c['titular'] ?? null);
         $marcas = [];
         // Sin texto no hay nada que revisar: ni se llama al filtro (que cuesta unos 5 ms por texto) ni se avisa de su falta.
         $texto = implode("\n", array_filter([$titular, $descripcion]));
@@ -150,7 +165,7 @@ abstract class Analizador
             self::texto($c['usuario'] ?? null),
             $nombre,
             $titular,
-            self::texto($c['lugar'] ?? null),
+            $publicacion ? null : self::texto($c['lugar'] ?? null),
             $descripcion,
             $capturado,
             $avisos,

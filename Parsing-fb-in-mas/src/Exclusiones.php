@@ -58,7 +58,11 @@ final class Exclusiones
                 $claves['url:' . Lote::claveUrl($linea)] = true;
             } elseif (preg_match('/^([a-z][a-z0-9_-]*):(\S+)$/i', $linea, $m) === 1) {
                 // «twitter:@ana» y «twitter:ana» son la misma cuenta: el perfil guarda el usuario sin arroba.
-                $claves['cuenta:' . strtolower($m[1]) . ':' . strtolower(ltrim($m[2], '@'))] = true;
+                $usuario = strtolower(ltrim($m[2], '@'));
+                if ($usuario === '') {
+                    throw new RuntimeException('Lista de exclusión, línea ' . ($n + 1) . ': falta el usuario después de «' . $m[1] . ':»');
+                }
+                $claves['cuenta:' . strtolower($m[1]) . ':' . $usuario] = true;
             } else {
                 // Fallar en voz alta: una línea mal escrita no puede dejar a alguien sin excluir en silencio.
                 throw new RuntimeException('Lista de exclusión, línea ' . ($n + 1) . ': no es una URL ni «red:usuario»');

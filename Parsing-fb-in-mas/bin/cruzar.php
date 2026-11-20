@@ -40,7 +40,7 @@ function leerPerfiles(string $ruta, Exclusiones $exclusiones, array &$cuenta): G
         while (($linea = fgets($f)) !== false) {
             $texto = rtrim($linea, "\r\n");
             $p = json_decode($texto, true);
-            if (!is_array($p) || array_is_list($p)) {
+            if (!is_array($p) || ($p !== [] && array_is_list($p))) {
                 $cuenta['ilegibles'] += $texto === '' ? 0 : 1;
                 continue;
             }

@@ -21,7 +21,7 @@ final class Purga
     public static function linea(string $linea, Exclusiones $excluidos): array
     {
         $datos = json_decode($linea, true);
-        if (!is_array($datos) || array_is_list($datos)) {
+        if (!is_array($datos) || ($datos !== [] && array_is_list($datos))) {
             return ['linea' => $linea, 'parientes' => 0, 'ilegible' => true];
         }
         $perfil = array_filter($datos, 'is_string', ARRAY_FILTER_USE_KEY);

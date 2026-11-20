@@ -23,7 +23,7 @@ final class Instagram extends Analizador
 
     protected function patronesDePublicacion(): array
     {
-        return ['^/(p|reel|reels|tv|stories)/'];
+        return ['^(/[^/]+)?/(p|reel|reels|tv)/[^/]+', '^/stories/'];
     }
 
     protected function extraer(array $d, ?string $url): array
