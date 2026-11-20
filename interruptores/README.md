@@ -6,11 +6,11 @@ Es una mesa de mezclas: cada **canal** es una función, y cada canal puede tener
 
 | | Funciones | Opciones | Interruptores |
 |---|---|---|---|
-| A) Genealogía | 39 | 145 | 184 |
+| A) Genealogía | 41 | 161 | 202 |
 | B) Librería y etiquetado POS | 21 | 64 | 85 |
-| **Total** | **60** | **209** | **269** |
+| **Total** | **62** | **225** | **287** |
 
-Cifras de `FUNCIONES.md`, que es el listado completo: cada función, sus opciones, su origen y sus dependencias. **8 de las 60 funciones son supuestas** (marcadas *(supuesto)* en el listado y en el panel): no vienen de la lista de la persona, se propusieron a partir de sus respuestas y hay que confirmarlas o quitarlas.
+Cifras de `FUNCIONES.md`, que es el listado completo: cada función, sus opciones, su origen y sus dependencias. **2 de las 62 funciones son supuestas** (marcadas *(supuesto)* en el listado y en el panel): las dos de búsquedas por tipo de fuente y por país. Las otras 8 que se habían propuesto se dieron por buenas.
 
 ## Vocabulario
 
@@ -29,13 +29,13 @@ Estado que usa el sitio:
 - **Medios de pago** (`gen.pagos`): transferencia, tarjeta y efectivo. Mínimo 1.
 - **Perritos y gatitos** (`gen.mascotas`): dos asistentes, uno por interruptor. El perrito ladra y el gatito maúlla frases motivacionales con enfoque comercial.
 - **Búsqueda en diarios y revistas** (`gen.prensa`) y todo lo que busca, deduce, infiere o estima personas: depende de `gen.privacidad`, la protección de quien podría estar vivo.
-- **Pasarela de pagos** (`gen.pasarela:stripe`): al apagarse se muestra como «no disponible», no se oculta.
+- **Pasarela de pagos** (`gen.pasarela:stripe`): al apagarse se muestra como «no disponible», no se oculta. La opción `gen.pagos:tarjeta` depende de ella: es una **dependencia de opción** (`depende_de` también va en las opciones).
 - **Pedidos de retiro** (`gen.retiros`): depende de la opción `gen.filtro:textos`. No se puede encender mientras la opción de textos del filtro esté apagada.
 
 ## Probar
 
 ```bash
-php pruebas/ejecutar.php            # 100 pruebas: catálogo, dependencias, mínimos, estado, registros, usuarios y bloqueo
+php pruebas/ejecutar.php            # 110 pruebas: catálogo, dependencias, mínimos, estado, registros, usuarios y bloqueo
 php pruebas/panel.php               # 37 pruebas: el panel en vivo, con php -S
 php bin/generar.php --comprobar     # FUNCIONES.md al día
 ```
@@ -90,7 +90,7 @@ if ($int->activo('gen.vistas:abanico')) {
 | POS | `citas-pos/` | `render.php --interruptores=… --salida=<otra carpeta>` | los canales de `pos.citas`: sitio, correo, juego |
 | Genealogía | `sistema-nuevo/` | `BACKOFFICE_INTERRUPTORES=../interruptores` | rutas de la API: `gen.backoffice` (todo), `flujo`, `kpis`, `alertas`, `filtros` y `gen.bak-notas` |
 
-Las aplicaciones de genealogía y de POS que no están en este repositorio (vistas del árbol, medios de pago, asistentes…) todavía no lo usan: tienen que llamar a `activo()` como en el ejemplo de arriba.
+La aplicación de genealogía y POS vive en otro repositorio que todavía no está en la sesión (hace falta su nombre y acceso). Las vistas del árbol, los medios de pago y los asistentes (vistas del árbol, medios de pago, asistentes…) todavía no lo usan: tienen que llamar a `activo()` como en el ejemplo de arriba.
 
 ## Registros
 
@@ -141,9 +141,7 @@ Las pruebas rechazan un catálogo con ids repetidos, con `:` en un id, con una d
 
 ## Lo que falta
 
-- **Confirmar las 8 funciones supuestas.** Genealogía llega a 39 funciones (la persona habló de ~40) con 7 supuestas: las búsquedas, la deducción, la inferencia, la estimación y la pasarela. POS tiene 21 (con la pasarela, supuesta). Faltan por contrastar con la lista real.
-- **Cómo se relaciona la tarjeta con Stripe.** Hoy `gen.pagos:tarjeta` y `gen.pasarela:stripe` no se atan: no se sabe si apagar Stripe debe apagar la tarjeta.
-- **Qué opciones tienen las búsquedas** más allá de diarios y revistas, y qué estima exactamente `gen.estimacion`.
+- **Confirmar las 2 funciones supuestas** (`gen.busqueda-fuentes` y `gen.busqueda-paises`). Los países son los 11 de prioridad máxima para genealogía en `Listado-paises/` (Australia, Canadá, Corea del Sur, Dinamarca, Estados Unidos, Irlanda, Noruega, Países Bajos, Portugal, Reino Unido y Suecia): falta decidir si van otros, p. ej. los de habla hispana.
 - **Límites conocidos.** El bloqueo de archivo sirve con un solo servidor; con varios hace falta una base de datos. Un proxy comparte la IP entre sus usuarios. `sistema-nuevo/` lee el estado en cada petición. Los registros apartados al rotar quedan en `var/` sin borrarse.
 - **A confirmar de plataforma:** `document-formats` está fuera del interruptor; no se sabe si va en A o en B.
 - **Candidatos desde PR abiertos:** `newsletter-plugin` (#613, documentación de diseño) y `personas-especiales` (#614, registro de exclusiones) podrían ser funciones nuevas cuando se fusionen. `chat-con-libros` (#603) no está en `master`, y `pos.colores-revision` depende de la decisión del PR #595.

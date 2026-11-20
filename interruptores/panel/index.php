@@ -240,7 +240,7 @@ function boton(Interruptores $cat, array $propios, string $ref, string $csrf, bo
     $motivo = '';
     if (!$puedeCambiar) {
         $motivo = 'Solo lectura: tu rol no cambia interruptores.';
-    } elseif (!$on && !$esOpcion) {
+    } elseif (!$on) {
         $faltan = $cat->faltanParaEncender($ref);
         $motivo = $faltan !== [] ? 'Necesita encendido: ' . implode(', ', $faltan) : '';
     } elseif ($on) {

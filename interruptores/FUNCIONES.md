@@ -2,9 +2,9 @@
 
 > Generado desde [`catalogo.json`](catalogo.json) con `php interruptores/bin/generar.php`. **No lo edites a mano**: cambia el catálogo y vuelve a generar.
 
-- **60 funciones** (39 de genealogía y 21 de POS).
-- **209 opciones** (sub-interruptores), y **269 interruptores** en total.
-- **8 funciones supuestas**, marcadas con *(supuesto)*: no vienen de la lista de la persona, las propuse a partir de sus respuestas. Hay que confirmarlas o quitarlas.
+- **62 funciones** (41 de genealogía y 21 de POS).
+- **225 opciones** (sub-interruptores), y **287 interruptores** en total.
+- **2 funciones supuestas**, marcadas con *(supuesto)*: no vienen de la lista de la persona, las propuse a partir de sus respuestas. Hay que confirmarlas o quitarlas.
 
 Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: una opción está encendida solo si su función también lo está. «Mínimo de opciones» dice cuántas tienen que quedar encendidas mientras la función esté encendida.
 
@@ -62,13 +62,15 @@ Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: u
 | `gen.bak-notas` | Backoffice: notas por acción | — | interno | `repo` | encendida | `gen.backoffice`, `gen.filtro:textos` |
 | `gen.cobros` | Cobros y cartera | 6 | interno | `repo` | encendida | — |
 | `gen.funnel` | Funnel y cohortes | 3 | interno | `repo` | encendida | — |
-| `gen.busqueda` | Búsqueda de personas en archivos y registros externos *(supuesto)* | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
-| `gen.prensa` | Búsqueda en diarios y revistas *(supuesto)* | 2 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
-| `gen.congresos` | Búsqueda en congresos nacionales *(supuesto)* | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
-| `gen.deduccion` | Deducción de parentescos y datos *(supuesto)* | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
-| `gen.inferencia` | Inferencia de datos faltantes *(supuesto)* | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
-| `gen.estimacion` | Estimación de fechas y lugares *(supuesto)* | 2 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
-| `gen.pasarela` | Pasarela de pagos *(supuesto)* | 1 | producto | `fuera_del_repo` | encendida | — |
+| `gen.busqueda` | Búsqueda de personas en archivos y registros externos | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.prensa` | Búsqueda en diarios y revistas | 2 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.congresos` | Búsqueda en congresos nacionales | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.deduccion` | Deducción de parentescos y datos | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.inferencia` | Inferencia de datos faltantes | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.estimacion` | Estimación de fechas y lugares | 2 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.pasarela` | Pasarela de pagos | 1 | producto | `fuera_del_repo` | encendida | — |
+| `gen.busqueda-fuentes` | Tipos de fuente de las búsquedas externas *(supuesto)* | 5 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.busqueda-paises` | Países de las búsquedas externas *(supuesto)* | 11 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
 
 ### `gen.vistas` · Modos de visualización del árbol
 
@@ -99,10 +101,12 @@ Qué formas de pago ofrece el sitio. La lista sale de los métodos que registra 
 
 Al apagar: `no_disponible` (se muestra como no disponible en vez de ocultarse).
 
+*Nota:* La opción «tarjeta» depende de la pasarela Stripe (gen.pasarela:stripe).
+
 | Opción (ref) | Nombre | Por defecto |
 |---|---|---|
 | `gen.pagos:transferencia` | Transferencia | encendida |
-| `gen.pagos:tarjeta` | Tarjeta | encendida |
+| `gen.pagos:tarjeta` | Tarjeta (depende de `gen.pasarela:stripe`) | encendida |
 | `gen.pagos:efectivo` | Efectivo | encendida |
 
 ### `gen.mascotas` · Perritos y gatitos (asistentes)
@@ -527,11 +531,41 @@ Pasarelas con las que se cobra. Hoy solo Stripe.
 
 Al apagar: `no_disponible` (se muestra como no disponible en vez de ocultarse).
 
-*Nota:* Cuando está apagada el pago se muestra como «no disponible», no se oculta. La relación exacta con la opción «tarjeta» de gen.pagos está por confirmar.
+*Nota:* Cuando está apagada el pago se muestra como «no disponible», no se oculta. La opción «tarjeta» de gen.pagos depende de Stripe: sin Stripe no se puede encender.
 
 | Opción (ref) | Nombre | Por defecto |
 |---|---|---|
 | `gen.pasarela:stripe` | Stripe | encendida |
+
+### `gen.busqueda-fuentes` · Tipos de fuente de las búsquedas externas
+
+Qué tipos de fuente se consultan al buscar, deducir o estimar: cada uno se puede apagar por separado.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.busqueda-fuentes:actas-parlamentarias` | Actas parlamentarias y de congresos | encendida |
+| `gen.busqueda-fuentes:hemerotecas` | Hemerotecas (diarios y revistas) | encendida |
+| `gen.busqueda-fuentes:bibliotecas-nacionales` | Bibliotecas nacionales | encendida |
+| `gen.busqueda-fuentes:archivos-historicos` | Archivos históricos | encendida |
+| `gen.busqueda-fuentes:cementerios` | Registros de cementerios | encendida |
+
+### `gen.busqueda-paises` · Países de las búsquedas externas
+
+País de origen de la fuente consultada. Las opciones son los 11 países de prioridad máxima para genealogía en Listado-paises/ (sin excluidos); se pueden agregar más.
+
+| Opción (ref) | Nombre | Por defecto |
+|---|---|---|
+| `gen.busqueda-paises:au` | Australia | encendida |
+| `gen.busqueda-paises:ca` | Canadá | encendida |
+| `gen.busqueda-paises:kr` | Corea del Sur | encendida |
+| `gen.busqueda-paises:dk` | Dinamarca | encendida |
+| `gen.busqueda-paises:us` | Estados Unidos | encendida |
+| `gen.busqueda-paises:ie` | Irlanda | encendida |
+| `gen.busqueda-paises:no` | Noruega | encendida |
+| `gen.busqueda-paises:nl` | Países Bajos | encendida |
+| `gen.busqueda-paises:pt` | Portugal | encendida |
+| `gen.busqueda-paises:gb` | Reino Unido | encendida |
+| `gen.busqueda-paises:se` | Suecia | encendida |
 
 ## B) Librería y etiquetado POS
 
@@ -557,7 +591,7 @@ Al apagar: `no_disponible` (se muestra como no disponible en vez de ocultarse).
 | `pos.iconos-pos` | Iconos del punto de venta | — | visual | `repo` | encendida | — |
 | `pos.iconos-biblioteca` | Iconos de biblioteca virtual | — | visual | `repo` | encendida | — |
 | `pos.portadas` | Portadas de libro en SVG | 4 | visual | `repo` | encendida | — |
-| `pos.pasarela` | Pasarela de pagos del POS *(supuesto)* | 1 | producto | `fuera_del_repo` | encendida | — |
+| `pos.pasarela` | Pasarela de pagos del POS | 1 | producto | `fuera_del_repo` | encendida | — |
 
 ### `pos.mb-v-movimientos` · Marcalibros verticales: movimientos literarios
 

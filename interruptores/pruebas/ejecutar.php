@@ -62,9 +62,9 @@ $nuevo = fn (): Interruptores => new Interruptores($cat, $estado);
 
 $i = $nuevo();
 $funciones = $i->catalogo();
-comprobar('hay 39 funciones de genealogía', count(array_filter($funciones, fn ($f) => $f['plataforma'] === 'genealogia')) === 39);
+comprobar('hay 41 funciones de genealogía', count(array_filter($funciones, fn ($f) => $f['plataforma'] === 'genealogia')) === 41);
 comprobar('hay 21 funciones de POS', count(array_filter($funciones, fn ($f) => $f['plataforma'] === 'pos')) === 21);
-comprobar('hay 269 interruptores en total (60 funciones + 209 opciones)', $i->totalInterruptores() === 269);
+comprobar('hay 287 interruptores en total (62 funciones + 225 opciones)', $i->totalInterruptores() === 287);
 
 $carpetasInexistentes = [];
 foreach ($funciones as $id => $f) {
@@ -224,6 +224,8 @@ comprobar('un mínimo mayor que el número de opciones impide cargar', $cargar([
 comprobar('una dependencia a una función inexistente impide cargar', $cargar([$fn('a', ['depende_de' => ['b']])]));
 comprobar('una dependencia a una opción inexistente impide cargar', $cargar([$fn('a', ['opciones' => [['id' => 'x']]]), $fn('b', ['depende_de' => ['a:y']])]));
 comprobar('una dependencia a sí misma impide cargar', $cargar([$fn('a', ['depende_de' => ['a']])]));
+comprobar('una dependencia de opción a algo que no existe impide cargar', $cargar([$fn('a', ['opciones' => [['id' => 'x', 'depende_de' => ['zz']]]])]));
+comprobar('una opción que depende de sí misma impide cargar', $cargar([$fn('a', ['opciones' => [['id' => 'x', 'depende_de' => ['a:x']]]])]));
 comprobar('una plataforma inexistente impide cargar', $cargar([$fn('a', ['plataforma' => 'nope'])]));
 comprobar('un catálogo bueno sí carga', !$cargar([$fn('a', ['opciones' => [['id' => 'x']], 'min_opciones' => 1]), $fn('b', ['depende_de' => ['a:x']])]));
 
@@ -366,7 +368,7 @@ comprobar('una política al apagar desconocida impide cargar el catálogo',
 // --- Privacidad: lo que busca, deduce, infiere o estima depende de ella; y las políticas al apagar --------------
 
 $i = $nuevo();
-$buscan = ['gen.fuentes-externas', 'gen.directorios', 'gen.busqueda', 'gen.prensa', 'gen.congresos', 'gen.deduccion', 'gen.inferencia', 'gen.estimacion'];
+$buscan = ['gen.fuentes-externas', 'gen.directorios', 'gen.busqueda', 'gen.prensa', 'gen.congresos', 'gen.deduccion', 'gen.inferencia', 'gen.estimacion', 'gen.busqueda-fuentes', 'gen.busqueda-paises'];
 $dependientes = $i->dependientesActivos('gen.privacidad');
 sort($buscan);
 sort($dependientes);
@@ -384,7 +386,26 @@ foreach ($conNoDisponible as $id) {
 }
 comprobar('una opción de la pasarela hereda «no_disponible»', $i->alApagar('gen.pasarela:stripe') === 'no_disponible');
 comprobar('perritos y gatitos son dos interruptores independientes', array_column($i->catalogo()['gen.mascotas']['opciones'], 'id') === ['perritos', 'gatitos']);
-comprobar('las funciones supuestas están marcadas', $i->catalogo()['gen.prensa']['supuesto'] === true && $i->catalogo()['gen.vistas']['supuesto'] === false);
+comprobar('las dos funciones nuevas de búsqueda están marcadas como supuestas; las ya confirmadas no',
+    $i->catalogo()['gen.busqueda-paises']['supuesto'] === true && $i->catalogo()['gen.prensa']['supuesto'] === false);
+
+// --- Dependencias de una opción: la tarjeta depende de Stripe ----------------------------------------------------
+
+$i = $nuevo();
+comprobar('no se apaga Stripe mientras la tarjeta lo necesita',
+    lanza(fn () => $i->cambiar('gen.pasarela:stripe', false), DependenciaRota::class));
+comprobar('dependientesActivos de Stripe incluye la opción tarjeta', in_array('gen.pagos:tarjeta', $i->dependientesActivos('gen.pasarela:stripe'), true));
+comprobar('apagar la función pasarela también la protege la tarjeta',
+    lanza(fn () => $i->cambiar('gen.pasarela', false), DependenciaRota::class));
+apagarEnCascada($i, 'gen.pasarela');
+comprobar('en cascada se apaga la tarjeta y luego la pasarela', !$i->activo('gen.pagos:tarjeta') && !$i->activo('gen.pasarela'));
+comprobar('las otras formas de pago siguen: transferencia no depende de Stripe', $i->activo('gen.pagos:transferencia') === true);
+comprobar('sin Stripe no se enciende la tarjeta', lanza(fn () => $i->cambiar('gen.pagos:tarjeta', true), DependenciaRota::class));
+comprobar('faltanParaEncender de la tarjeta señala la opción de Stripe', in_array('gen.pasarela:stripe', $i->faltanParaEncender('gen.pagos:tarjeta'), true));
+$i->cambiar('gen.pasarela', true);
+$i->cambiar('gen.pagos:tarjeta', true);
+comprobar('con Stripe encendido, la tarjeta vuelve', $i->activo('gen.pagos:tarjeta') === true);
+
 
 // Limpieza de la carpeta temporal.
 foreach (glob($tmp . '/*') ?: [] as $archivo) {

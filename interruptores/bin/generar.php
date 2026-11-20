@@ -96,7 +96,8 @@ function generarMarkdown(array $crudo, array $funciones, int $totalInterruptores
             if ($f['opciones'] !== []) {
                 $o .= "| Opción (ref) | Nombre | Por defecto |\n|---|---|---|\n";
                 foreach ($f['opciones'] as $op) {
-                    $o .= sprintf("| `%s:%s` | %s | %s |\n", $id, $op['id'], escapar((string) $op['nombre']), $op['por_defecto'] ? 'encendida' : 'apagada');
+                    $dep = $op['depende_de'] === [] ? '' : ' (depende de ' . implode(', ', array_map(static fn (string $d): string => "`$d`", $op['depende_de'])) . ')';
+                    $o .= sprintf("| `%s:%s` | %s | %s |\n", $id, $op['id'], escapar((string) $op['nombre']) . $dep, $op['por_defecto'] ? 'encendida' : 'apagada');
                 }
                 $o .= "\n";
             }

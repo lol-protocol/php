@@ -106,11 +106,9 @@ final class Interruptores
     {
         [$id, $opcion] = $this->partir($ref);
         $faltan = [];
-        if ($opcion === null) {
-            foreach ($this->funciones[$id]['depende_de'] as $dep) {
-                if (!$this->activo($dep)) {
-                    $faltan[] = $dep;
-                }
+        foreach ($this->dependenciasDe($id, $opcion) as $dep) {
+            if (!$this->activo($dep)) {
+                $faltan[] = $dep;
             }
         }
         return $faltan;
@@ -126,13 +124,20 @@ final class Interruptores
         $this->partir($ref);
         $afectadas = [];
         foreach ($this->funciones as $id => $f) {
-            if (!$this->activo($id)) {
-                continue;
+            // Cada función y cada una de sus opciones, con sus propias dependencias.
+            $candidatas = [$id => null];
+            foreach ($f['opciones'] as $o) {
+                $candidatas["{$id}:{$o['id']}"] = $o['id'];
             }
-            foreach ($f['depende_de'] as $dep) {
-                if ($this->afecta($ref, $dep)) {
-                    $afectadas[] = $id;
-                    break;
+            foreach ($candidatas as $candidata => $opcion) {
+                if (!$this->activo($candidata)) {
+                    continue;
+                }
+                foreach ($this->dependenciasDe($id, $opcion) as $dep) {
+                    if ($this->afecta($ref, $dep)) {
+                        $afectadas[] = $candidata;
+                        break;
+                    }
                 }
             }
         }
@@ -267,6 +272,24 @@ final class Interruptores
         return new RegistroJsonl(dirname($this->rutaEstado) . '/cambios.jsonl');
     }
 
+    /**
+     * Las dependencias de una función o, si se da la opción, de esa opción.
+     *
+     * @return list<string>
+     */
+    private function dependenciasDe(string $id, ?string $opcion): array
+    {
+        if ($opcion === null) {
+            return $this->funciones[$id]['depende_de'];
+        }
+        foreach ($this->funciones[$id]['opciones'] as $o) {
+            if ($o['id'] === $opcion) {
+                return $o['depende_de'];
+            }
+        }
+        return [];
+    }
+
     /** Interruptor propio de una ref (lo que dice el estado o el catálogo). */
     private function propio(string $ref): bool
     {
@@ -394,6 +417,7 @@ final class Interruptores
                     'id' => $oid,
                     'nombre' => (string) ($o['nombre'] ?? $oid),
                     'por_defecto' => (bool) ($o['por_defecto'] ?? true),
+                    'depende_de' => array_values($o['depende_de'] ?? []),
                 ];
             }
             $f['opciones'] = array_values($opciones);
@@ -414,14 +438,20 @@ final class Interruptores
         }
 
         foreach ($this->funciones as $id => $f) {
-            foreach ($f['depende_de'] as $dep) {
-                if ($dep === $id) {
-                    throw new \RuntimeException("«{$id}» depende de sí misma.");
-                }
-                try {
-                    $this->partir($dep);
-                } catch (UnknownInterruptor) {
-                    throw new \RuntimeException("«{$id}» depende de «{$dep}», que no existe.");
+            $quienes = [$id => $f['depende_de']];
+            foreach ($f['opciones'] as $o) {
+                $quienes["{$id}:{$o['id']}"] = $o['depende_de'];
+            }
+            foreach ($quienes as $quien => $deps) {
+                foreach ($deps as $dep) {
+                    if ($dep === $quien) {
+                        throw new \RuntimeException("«{$quien}» depende de sí misma.");
+                    }
+                    try {
+                        $this->partir($dep);
+                    } catch (UnknownInterruptor) {
+                        throw new \RuntimeException("«{$quien}» depende de «{$dep}», que no existe.");
+                    }
                 }
             }
         }

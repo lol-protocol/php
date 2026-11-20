@@ -87,7 +87,8 @@
           "id": "dispersion",
           "nombre": "Dispersión"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.pagos",
@@ -107,14 +108,19 @@
         },
         {
           "id": "tarjeta",
-          "nombre": "Tarjeta"
+          "nombre": "Tarjeta",
+          "depende_de": [
+            "gen.pasarela:stripe"
+          ]
         },
         {
           "id": "efectivo",
           "nombre": "Efectivo"
         }
       ],
-      "al_apagar": "no_disponible"
+      "al_apagar": "no_disponible",
+      "supuesto": false,
+      "nota": "La opción «tarjeta» depende de la pasarela Stripe (gen.pasarela:stripe)."
     },
     {
       "id": "gen.mascotas",
@@ -137,7 +143,8 @@
           "nombre": "Gatitos"
         }
       ],
-      "nota": "Las frases comerciales deben seguir la guía de psychology-and-marketing/: persuadir sin presión indebida y sin usar datos personales."
+      "nota": "Las frases comerciales deben seguir la guía de psychology-and-marketing/: persuadir sin presión indebida y sin usar datos personales.",
+      "supuesto": false
     },
     {
       "id": "gen.exportar",
@@ -166,7 +173,8 @@
           "nombre": "PDF"
         }
       ],
-      "al_apagar": "no_disponible"
+      "al_apagar": "no_disponible",
+      "supuesto": false
     },
     {
       "id": "gen.idiomas",
@@ -190,7 +198,8 @@
           "id": "en",
           "nombre": "Inglés"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.estado-civil",
@@ -238,7 +247,8 @@
           "id": "comprometido",
           "nombre": "Comprometido"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.vinculos",
@@ -302,7 +312,8 @@
           "id": "generacional",
           "nombre": "Generacional"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.ficha",
@@ -364,7 +375,8 @@
           "id": "enlaces",
           "nombre": "Enlaces"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.verificacion",
@@ -375,7 +387,8 @@
       "carpetas": [],
       "descripcion": "Marca cada dato como verificado o sin verificar (iconos ui_verified y ui_unverified).",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "gen.privacidad",
@@ -389,7 +402,8 @@
       ],
       "descripcion": "Protege a quien podría estar vivo: no se guardan ni se muestran sus datos. Todo lo que busca, deduce, infiere o estima personas depende de esta función.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "gen.estilo-iconos",
@@ -417,7 +431,8 @@
           "id": "gris",
           "nombre": "Gris"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.acc-agregar",
@@ -449,7 +464,8 @@
           "id": "conyuge",
           "nombre": "Cónyuge"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.acc-editar",
@@ -489,7 +505,8 @@
           "id": "rehacer",
           "nombre": "Rehacer"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.acc-conectar",
@@ -525,7 +542,8 @@
           "id": "sincronizar",
           "nombre": "Sincronizar"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.acc-fusion",
@@ -553,7 +571,8 @@
           "id": "copiar",
           "nombre": "Copiar"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.acc-plegar",
@@ -585,7 +604,8 @@
           "id": "alejar",
           "nombre": "Alejar"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.acc-compartir",
@@ -613,7 +633,8 @@
           "id": "retirar-aporte",
           "nombre": "Retirar aporte"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.acc-buscar",
@@ -637,7 +658,8 @@
           "id": "filtrar",
           "nombre": "Filtrar"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.acc-archivos",
@@ -669,7 +691,8 @@
           "id": "imprimir",
           "nombre": "Imprimir"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.fuentes-externas",
@@ -751,7 +774,8 @@
           "id": "wikidata",
           "nombre": "Wikidata"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.directorios",
@@ -766,7 +790,8 @@
       "depende_de": [
         "gen.privacidad"
       ],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "gen.siluetas",
@@ -794,7 +819,8 @@
           "id": "arbol",
           "nombre": "Árbol de ascendencia"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.mortalidad",
@@ -830,7 +856,8 @@
           "id": "registro-civil",
           "nombre": "Registro civil"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.paises",
@@ -858,7 +885,8 @@
           "id": "nacimientos-historicos",
           "nombre": "Estimación de nacimientos históricos"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.marketing",
@@ -890,7 +918,8 @@
           "id": "correo",
           "nombre": "Correo"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.legal",
@@ -915,7 +944,8 @@
           "id": "derechos-de-autor",
           "nombre": "Derechos de autor"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.filtro",
@@ -943,7 +973,8 @@
           "id": "textos",
           "nombre": "Textos libres"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.retiros",
@@ -960,7 +991,8 @@
       ],
       "por_defecto": true,
       "al_apagar": "no_disponible",
-      "nota": "Ocultar un pedido de retiro de datos sería peor que avisar que no está disponible por ahora (derechos de la persona; ver RECLAMOS.md). Política supuesta, confirmar."
+      "nota": "Ocultar un pedido de retiro de datos sería peor que avisar que no está disponible por ahora (derechos de la persona; ver RECLAMOS.md). Política supuesta, confirmar.",
+      "supuesto": false
     },
     {
       "id": "gen.backoffice",
@@ -997,7 +1029,8 @@
           "nombre": "Filtros guardados"
         }
       ],
-      "nota": "Lo consume sistema-nuevo/ (BACKOFFICE_INTERRUPTORES). La opción «comparacion» la aplica quitando la cohorte y los deltas de la respuesta de la línea de tiempo."
+      "nota": "Lo consume sistema-nuevo/ (BACKOFFICE_INTERRUPTORES). La opción «comparacion» la aplica quitando la cohorte y los deltas de la respuesta de la línea de tiempo.",
+      "supuesto": false
     },
     {
       "id": "gen.bak-notas",
@@ -1013,7 +1046,8 @@
         "gen.backoffice",
         "gen.filtro:textos"
       ],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "gen.cobros",
@@ -1053,7 +1087,8 @@
           "id": "exportar",
           "nombre": "Exportar a CSV"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.funnel",
@@ -1081,7 +1116,8 @@
           "id": "segmentacion",
           "nombre": "Segmentación de clientes"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "gen.busqueda",
@@ -1095,7 +1131,7 @@
         "gen.privacidad"
       ],
       "por_defecto": true,
-      "supuesto": true
+      "supuesto": false
     },
     {
       "id": "gen.prensa",
@@ -1109,7 +1145,7 @@
         "gen.privacidad"
       ],
       "por_defecto": true,
-      "supuesto": true,
+      "supuesto": false,
       "min_opciones": 0,
       "opciones": [
         {
@@ -1134,7 +1170,7 @@
         "gen.privacidad"
       ],
       "por_defecto": true,
-      "supuesto": true
+      "supuesto": false
     },
     {
       "id": "gen.deduccion",
@@ -1148,7 +1184,7 @@
         "gen.privacidad"
       ],
       "por_defecto": true,
-      "supuesto": true
+      "supuesto": false
     },
     {
       "id": "gen.inferencia",
@@ -1162,7 +1198,7 @@
         "gen.privacidad"
       ],
       "por_defecto": true,
-      "supuesto": true
+      "supuesto": false
     },
     {
       "id": "gen.estimacion",
@@ -1176,7 +1212,7 @@
         "gen.privacidad"
       ],
       "por_defecto": true,
-      "supuesto": true,
+      "supuesto": false,
       "min_opciones": 0,
       "opciones": [
         {
@@ -1199,7 +1235,7 @@
       "descripcion": "Pasarelas con las que se cobra. Hoy solo Stripe.",
       "depende_de": [],
       "por_defecto": true,
-      "supuesto": true,
+      "supuesto": false,
       "min_opciones": 0,
       "opciones": [
         {
@@ -1208,7 +1244,105 @@
         }
       ],
       "al_apagar": "no_disponible",
-      "nota": "Cuando está apagada el pago se muestra como «no disponible», no se oculta. La relación exacta con la opción «tarjeta» de gen.pagos está por confirmar."
+      "nota": "Cuando está apagada el pago se muestra como «no disponible», no se oculta. La opción «tarjeta» de gen.pagos depende de Stripe: sin Stripe no se puede encender."
+    },
+    {
+      "id": "gen.busqueda-fuentes",
+      "plataforma": "genealogia",
+      "nombre": "Tipos de fuente de las búsquedas externas",
+      "tipo": "interno",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "Qué tipos de fuente se consultan al buscar, deducir o estimar: cada uno se puede apagar por separado.",
+      "depende_de": [
+        "gen.privacidad"
+      ],
+      "por_defecto": true,
+      "supuesto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "actas-parlamentarias",
+          "nombre": "Actas parlamentarias y de congresos"
+        },
+        {
+          "id": "hemerotecas",
+          "nombre": "Hemerotecas (diarios y revistas)"
+        },
+        {
+          "id": "bibliotecas-nacionales",
+          "nombre": "Bibliotecas nacionales"
+        },
+        {
+          "id": "archivos-historicos",
+          "nombre": "Archivos históricos"
+        },
+        {
+          "id": "cementerios",
+          "nombre": "Registros de cementerios"
+        }
+      ]
+    },
+    {
+      "id": "gen.busqueda-paises",
+      "plataforma": "genealogia",
+      "nombre": "Países de las búsquedas externas",
+      "tipo": "interno",
+      "origen": "fuera_del_repo",
+      "carpetas": [],
+      "descripcion": "País de origen de la fuente consultada. Las opciones son los 11 países de prioridad máxima para genealogía en Listado-paises/ (sin excluidos); se pueden agregar más.",
+      "depende_de": [
+        "gen.privacidad"
+      ],
+      "por_defecto": true,
+      "supuesto": true,
+      "min_opciones": 0,
+      "opciones": [
+        {
+          "id": "au",
+          "nombre": "Australia"
+        },
+        {
+          "id": "ca",
+          "nombre": "Canadá"
+        },
+        {
+          "id": "kr",
+          "nombre": "Corea del Sur"
+        },
+        {
+          "id": "dk",
+          "nombre": "Dinamarca"
+        },
+        {
+          "id": "us",
+          "nombre": "Estados Unidos"
+        },
+        {
+          "id": "ie",
+          "nombre": "Irlanda"
+        },
+        {
+          "id": "no",
+          "nombre": "Noruega"
+        },
+        {
+          "id": "nl",
+          "nombre": "Países Bajos"
+        },
+        {
+          "id": "pt",
+          "nombre": "Portugal"
+        },
+        {
+          "id": "gb",
+          "nombre": "Reino Unido"
+        },
+        {
+          "id": "se",
+          "nombre": "Suecia"
+        }
+      ]
     },
     {
       "id": "pos.mb-v-movimientos",
@@ -1284,7 +1418,8 @@
           "id": "oriente",
           "nombre": "Literaturas de Oriente"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "pos.mb-v-linea-marca",
@@ -1312,7 +1447,8 @@
           "id": "cabeceras",
           "nombre": "Cabeceras"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "pos.mb-v-editor",
@@ -1327,7 +1463,8 @@
       "depende_de": [
         "gen.filtro:textos"
       ],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "pos.mb-v-lector",
@@ -1340,7 +1477,8 @@
       ],
       "descripcion": "Modelo de datos del lector de textos que usa los marcalibros verticales.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "pos.mb-h-movimientos",
@@ -1400,7 +1538,8 @@
           "id": "realismo-magico",
           "nombre": "Realismo mágico"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "pos.mb-h-tipos-texto",
@@ -1480,7 +1619,8 @@
           "id": "discursos",
           "nombre": "Discursos"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "pos.mb-h-propios",
@@ -1495,7 +1635,8 @@
       "depende_de": [
         "gen.filtro:textos"
       ],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "pos.mb-h-app",
@@ -1510,7 +1651,8 @@
       "depende_de": [
         "pos.mb-h-propios"
       ],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "pos.mb-h-paisajes",
@@ -1523,7 +1665,8 @@
       ],
       "descripcion": "Paisajes JPG y la vista previa JPG del catálogo.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "pos.chat-libros",
@@ -1549,7 +1692,8 @@
           "nombre": "Modo con IA",
           "por_defecto": false
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "pos.colores-lista",
@@ -1562,7 +1706,8 @@
       ],
       "descripcion": "31.935 nombres de color con su hex y su color CSS más cercano.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "pos.colores-css",
@@ -1575,7 +1720,8 @@
       ],
       "descripcion": "Significados psicológico y místico en 30 idiomas, con su evidencia.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "pos.colores-categorias",
@@ -1588,7 +1734,8 @@
       ],
       "descripcion": "Adjetivo, sustantivo, nombre propio o verbo, para las palabras de color de una sola palabra en inglés y español. Es la base del etiquetado.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "pos.colores-exportes",
@@ -1626,7 +1773,8 @@
           "id": "universal-dependencies",
           "nombre": "Universal Dependencies"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "pos.colores-informes",
@@ -1660,7 +1808,8 @@
           "id": "auditoria",
           "nombre": "Auditoría de nombres completos"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "pos.colores-revision",
@@ -1675,7 +1824,8 @@
       "depende_de": [
         "pos.colores-lista"
       ],
-      "por_defecto": false
+      "por_defecto": false,
+      "supuesto": false
     },
     {
       "id": "pos.citas",
@@ -1708,7 +1858,8 @@
           "nombre": "Juego «Adivina la categoría»",
           "por_defecto": false
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "pos.iconos-pos",
@@ -1721,7 +1872,8 @@
       ],
       "descripcion": "23 iconos: catálogo, pedidos, cuenta, carrito y pago.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "pos.iconos-biblioteca",
@@ -1734,7 +1886,8 @@
       ],
       "descripcion": "151 iconos de biblioteca virtual.",
       "depende_de": [],
-      "por_defecto": true
+      "por_defecto": true,
+      "supuesto": false
     },
     {
       "id": "pos.portadas",
@@ -1766,7 +1919,8 @@
           "id": "cubierta-completa",
           "nombre": "Cubierta completa"
         }
-      ]
+      ],
+      "supuesto": false
     },
     {
       "id": "pos.pasarela",
@@ -1778,7 +1932,7 @@
       "descripcion": "Pasarelas con las que se cobra en el POS. Hoy solo Stripe.",
       "depende_de": [],
       "por_defecto": true,
-      "supuesto": true,
+      "supuesto": false,
       "min_opciones": 0,
       "opciones": [
         {
