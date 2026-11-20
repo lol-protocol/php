@@ -80,8 +80,12 @@ Esta lista es un valor por defecto que elegí yo; se puede cambiar.
 
 ### Alcance
 
-- Solo la persona excluida queda fuera. Sus parientes siguen visibles: qué hacer
-  con sus vínculos queda para decidirlo aparte.
+- Solo la persona excluida queda fuera de las listas, las conexiones y las exportaciones.
+- **Parientes (decisión de la persona a cargo, 2026-11-20):** en la ficha de un pariente, la persona
+  excluida se muestra con el mismo marcador que `url-routing` usa para una persona viva
+  («Persona viva»), sin nombre ni datos. Así es indistinguible de una persona viva oculta por
+  privacidad y no revela que existe una exclusión. Esto se implementa en la integración con
+  `url-routing` (espera a #611); este módulo hoy solo dice si una persona es visible.
 - Una exclusión pendiente o rechazada no excluye. Una revocada vuelve a verse.
 
 ### Coincidencia por apellido: solo para revisión
@@ -104,7 +108,7 @@ decisión queda en una persona.
 - Conectar la coincidencia con el registro: hoy `Exclusion` guarda el id de la
   persona, no su apellido, y el apellido lo tiene la plataforma. Quien consulte pasa
   los apellidos de las excluidas.
-- Qué hacer con los parientes de una persona excluida (decisión de producto).
+- Mostrar el marcador de `url-routing` donde aparece una persona excluida (ver «Alcance»).
 - Guardar las pruebas de forma segura, y el contacto del solicitante.
 
 ## Pruebas
