@@ -19,15 +19,6 @@ interface RegistroExclusiones
      */
     public function activasDe(string $personaId): array;
 
-    /**
-     * Las personas de la lista que tienen al menos una exclusión activa, en una sola consulta
-     * (una por persona no aguanta un árbol de miles).
-     *
-     * @param list<string> $personaIds
-     * @return list<string>
-     */
-    public function conExclusionActiva(array $personaIds): array;
-
     /** Una solicitud por su id, en cualquier estado; null si no existe. */
     public function porId(string $id): ?Exclusion;
 

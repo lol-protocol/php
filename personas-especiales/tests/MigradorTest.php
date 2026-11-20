@@ -42,7 +42,7 @@ final class MigradorTest extends TestCase
 
         self::assertSame([], $otraVez);
         $nombres = $this->pdo->query('SELECT nombre FROM schema_migraciones ORDER BY nombre')?->fetchAll(PDO::FETCH_COLUMN);
-        self::assertSame(['001_exclusion.sql', '002_exclusion_evento.sql'], $nombres);
+        self::assertSame(['001_exclusion.sql'], $nombres);
     }
 
     public function testAplicaSoloLasNuevasYEnOrden(): void

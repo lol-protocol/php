@@ -22,8 +22,7 @@ trait PostgresDePrueba
         }
 
         $pdo = $this->abrir();
-        $pdo->exec('DROP TABLE IF EXISTS exclusion_evento, exclusion, schema_migraciones CASCADE');
-        $pdo->exec('DROP FUNCTION IF EXISTS exclusion_evento_solo_agrega() CASCADE');
+        $pdo->exec('DROP TABLE IF EXISTS exclusion, schema_migraciones CASCADE');
         (new Migrador($pdo, __DIR__ . '/../database/migraciones'))->aplicar();
 
         return $pdo;

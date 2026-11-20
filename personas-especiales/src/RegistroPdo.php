@@ -17,9 +17,6 @@ use UnexpectedValueException;
  */
 final class RegistroPdo implements RegistroExclusiones
 {
-    /** Tope de parámetros por consulta de conExclusionActiva (PostgreSQL admite 65535). */
-    private const LOTE = 500;
-
     private const COLUMNAS = 'id, persona_id, solicitante, motivo, prueba, estado, creada_en, cambiada_en';
 
     public function __construct(private PDO $pdo)
@@ -41,27 +38,6 @@ final class RegistroPdo implements RegistroExclusiones
         }
 
         return $exclusiones;
-    }
-
-    public function conExclusionActiva(array $personaIds): array
-    {
-        $excluidas = [];
-        foreach (array_chunk(array_values(array_unique($personaIds)), self::LOTE) as $lote) {
-            $marcas = implode(', ', array_fill(0, count($lote), '?'));
-            $consulta = $this->pdo->prepare(
-                "SELECT DISTINCT persona_id FROM exclusion
-                  WHERE estado = 'activa' AND persona_id IN ({$marcas})"
-            );
-            $consulta->execute($lote);
-            foreach ($consulta->fetchAll(PDO::FETCH_COLUMN) as $persona) {
-                if (!is_string($persona)) {
-                    throw new UnexpectedValueException('persona_id debía ser texto y no lo es.');
-                }
-                $excluidas[] = $persona;
-            }
-        }
-
-        return $excluidas;
     }
 
     public function porId(string $id): ?Exclusion
