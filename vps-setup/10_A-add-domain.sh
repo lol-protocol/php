@@ -1,9 +1,10 @@
 #!/bin/bash
 # Agrega un dominio nuevo a un VPS ya instalado, encadenando los scripts existentes.
 # Uso: ./10_A-add-domain.sh <dominio> [--type landing|php|python|tomcat|marcalibros] [--name APP]
-#                           [--context RUTA] [--port N] [--ssl] [--email EMAIL] [--dry-run]
+#                           [--context RUTA] [--port N] [--docroot DIR] [--ssl] [--email EMAIL] [--dry-run]
 #   --type     tipo de sitio (por defecto landing): 03 | 06_A | 06_B | 06_D | 06_E
 #   --name     nombre de la app (php/python); por defecto el dominio con "-" en vez de "."
+#   --docroot  subcarpeta de la app que se sirve como raiz web (solo --type php; ej. public)
 #   --context  context path de Tomcat (solo --type tomcat; vacio = raiz)
 #   --port     puerto local de gunicorn (solo --type python; por defecto 8000, uno por app)
 #   --ssl      pide el certificado con 04-setup-ssl.sh (el DNS ya debe apuntar al VPS)
@@ -16,18 +17,18 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 source lib.sh
 
-TYPE=landing NAME="" CONTEXT="" PORT="" SSL=0 EMAIL="" DRY_RUN=0 DOMAIN=""
+TYPE=landing NAME="" CONTEXT="" PORT="" DOCROOT="" SSL=0 EMAIL="" DRY_RUN=0 DOMAIN=""
 while [ $# -gt 0 ]; do
     case "$1" in
-        --type|--name|--context|--port|--email)
+        --type|--name|--context|--port|--email|--docroot)
             [ $# -ge 2 ] || { echo "Falta el valor de $1"; exit 2; }
             case "$1" in
-                --type) TYPE=$2 ;; --name) NAME=$2 ;; --context) CONTEXT=$2 ;; --port) PORT=$2 ;; --email) EMAIL=$2 ;;
+                --type) TYPE=$2 ;; --name) NAME=$2 ;; --context) CONTEXT=$2 ;; --port) PORT=$2 ;; --email) EMAIL=$2 ;; --docroot) DOCROOT=$2 ;;
             esac
             shift 2 ;;
         --ssl) SSL=1; shift ;;
         --dry-run) DRY_RUN=1; shift ;;
-        -h|--help) sed -n '2,12p' "$0"; exit 0 ;;
+        -h|--help) sed -n '2,14p' "$0"; exit 0 ;;
         -*) echo "Opcion desconocida: $1 (usa --help)"; exit 2 ;;
         *) [ -z "$DOMAIN" ] || { echo "Solo se admite un dominio (sobra: $1)"; exit 2; }
            DOMAIN=$1; shift ;;
@@ -45,6 +46,10 @@ if [ "$TYPE" = php ] || [ "$TYPE" = python ]; then require_valid name "$NAME" "-
 # sale del dominio y puede ser largo, asi que se avisa aqui (con --name) en vez de fallar a mitad.
 if [ "$TYPE" = python ]; then require_valid appuser "$NAME" "--name (o el nombre sacado del dominio: pasa uno corto con --name)"; fi
 [ "$TYPE" != tomcat ] || require_valid context_path "$CONTEXT" "--context"
+if [ -n "$DOCROOT" ]; then
+    [ "$TYPE" = php ] || { echo "--docroot solo aplica a --type php"; exit 2; }
+    require_valid docroot "$DOCROOT" "--docroot"
+fi
 if [ -n "$PORT" ]; then
     [ "$TYPE" = python ] || { echo "--port solo aplica a --type python"; exit 2; }
     require_valid port "$PORT" "--port"
@@ -53,7 +58,7 @@ require_valid email "$EMAIL" "--email"
 
 case "$TYPE" in
     landing) SITE_CMD=(./03-configure-nginx-site.sh "$DOMAIN") ;;
-    php)     SITE_CMD=(./06_A-setup-php-app.sh "$NAME" "$DOMAIN") ;;
+    php)     SITE_CMD=(./06_A-setup-php-app.sh "$NAME" "$DOMAIN" ${DOCROOT:+--docroot "$DOCROOT"}) ;;
     python)  SITE_CMD=(./06_B-setup-python-app.sh "$NAME" "$DOMAIN" ${PORT:+"$PORT"}) ;;
     tomcat)  SITE_CMD=(./06_D-setup-tomcat-app.sh "$DOMAIN" "$CONTEXT") ;;
     marcalibros) SITE_CMD=(./06_E-setup-marcalibros-app.sh "$DOMAIN") ;;
