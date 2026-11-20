@@ -970,8 +970,8 @@ sistemático se ve enseguida: con ella se vio que los adjetivos búlgaros en «-
 | alemán | 81 % / 67 % | 99 % / 81 % |
 | neerlandés | — | 78 % / 96 % |
 | búlgaro | 50 % / 64 % | 57 % / 26 % |
-| húngaro | 80 % / 24 % | 79 % / 29 % |
-| turco | 79 % / 23 % | — |
+| húngaro | 70 % / 59 % | 68 % / 70 % |
+| turco | 54 % / 81 % | — |
 | noruego | 48 % / 88 % | 51 % / 62 % |
 | danés | 42 % / 33 % | 59 % / 53 % |
 | sueco | 46 % / 39 % | 53 % / 27 % |
