@@ -76,6 +76,51 @@ test('las lunas giran sincronizadas: su rotación coincide con su periodo orbita
   }
 });
 
+const G = 6.674e-11;
+const MASA_SOL_KG = 1.989e30;
+const porId = Object.fromEntries(ASTROS.map(a => [a.id, a]));
+
+// Periodo que da la tercera ley de Kepler para una distancia y una masa central.
+function periodoKepler(distanciaKm, masaCentralKg) {
+  const a = distanciaKm * 1000;
+  return (2 * Math.PI * Math.sqrt((a ** 3) / (G * masaCentralKg))) / 86400;
+}
+
+test('el año de cada planeta cuadra con su distancia al Sol (tercera ley de Kepler, 2 %)', () => {
+  // Cazó un periodo mal copiado de Makemake (111 años en vez de unos 306).
+  for (const a of ASTROS.filter(x => x.categoria === 'planeta')) {
+    const esperado = periodoKepler(a.distancia_media.valor * 1e6, MASA_SOL_KG);
+    const dif = Math.abs(a.periodo_orbital_dias - esperado) / esperado;
+    assert.ok(dif < 0.02, `${a.id}: periodo ${a.periodo_orbital_dias} d frente a ${esperado.toFixed(0)} d por Kepler`);
+  }
+});
+
+test('el periodo de cada luna cuadra con su distancia y la masa de su cuerpo padre (Kepler, 3 %)', () => {
+  for (const a of ASTROS.filter(x => x.categoria === 'luna')) {
+    const padre = porId[a.padre];
+    const esperado = periodoKepler(a.distancia_media.valor, padre.masa_kg + a.masa_kg);
+    const dif = Math.abs(a.periodo_orbital_dias - esperado) / esperado;
+    assert.ok(dif < 0.03, `${a.id}: periodo ${a.periodo_orbital_dias} d frente a ${esperado.toFixed(3)} d por Kepler`);
+  }
+});
+
+test('la distancia de cada luna se mide al cuerpo padre y lo nombra bien', () => {
+  for (const a of ASTROS.filter(x => x.categoria === 'luna')) {
+    assert.equal(a.distancia_media.unidad, 'km', `${a.id}: unidad`);
+    assert.equal(a.distancia_media.referencia, porId[a.padre].nombre, `${a.id}: referencia`);
+  }
+  for (const a of ASTROS.filter(x => x.categoria === 'planeta')) {
+    assert.equal(a.distancia_media.referencia, 'Sol', `${a.id}: referencia`);
+  }
+});
+
+test('las lunas conocidas de cada planeta no son menos que las que trae el catálogo', () => {
+  for (const a of ASTROS.filter(x => x.categoria === 'planeta')) {
+    const enCatalogo = ASTROS.filter(x => x.categoria === 'luna' && x.padre === a.id).length;
+    assert.ok(a.lunas >= enCatalogo, `${a.id}: dice ${a.lunas} lunas y el catálogo trae ${enCatalogo}`);
+  }
+});
+
 test('Caronte gira a la par de Plutón: el mismo periodo y el mismo sentido', () => {
   const caronte = ASTROS.find(a => a.id === 'caronte');
   const pluton = ASTROS.find(a => a.id === 'pluton');
