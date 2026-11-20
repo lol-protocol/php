@@ -352,7 +352,8 @@ function findBrowser(): ?string
  * HTML of a page after its JavaScript ran, through headless Chrome (`--dump-dom`), without a shell and with a
  * time limit. Only used (with --browser) for a URL fetchUrl() already vetted (robots.txt included), when its plain
  * HTML had no text. It runs with the browser's own User-Agent: any --user-agent makes this Chrome hang with
- * --dump-dom. The browser follows the page's own requests, so use it on a network with no internal services (a runner).
+ * --dump-dom. The window is very tall so that viewers which load their text as you scroll (leychile.cl) load more
+ * of it. The browser follows the page's own requests, so use it on a network with no internal services (a runner).
  * Null when there is no browser, it fails, times out, or prints nothing.
  */
 function renderWithBrowser(string $url, int $timeout): ?string
@@ -363,7 +364,7 @@ function renderWithBrowser(string $url, int $timeout): ?string
     }
     $profile = sys_get_temp_dir() . '/laws-browser-' . bin2hex(random_bytes(6));
     $command = [$browser, str_ends_with($browser, 'chrome-headless-shell') ? '--headless' : '--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage', '--no-first-run',
-        '--disable-extensions', '--user-data-dir=' . $profile, '--virtual-time-budget=' . (max(5, $timeout) * 1000), '--dump-dom', $url];
+        '--disable-extensions', '--window-size=1280,40000', '--user-data-dir=' . $profile, '--virtual-time-budget=' . (max(5, $timeout) * 1000), '--dump-dom', $url];
     $process = @proc_open($command, [0 => ['file', '/dev/null', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
     if (!is_resource($process)) {
         return null;
