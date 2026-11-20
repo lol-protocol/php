@@ -93,6 +93,7 @@
   Visualizador.prototype.ponerModo = function (modo) {
     if (MODOS.indexOf(modo) < 0) return;
     this.modo = modo;
+    this.limpiar = true; // el lienzo se borra al cambiar, para que no queden restos de la visualización anterior
     // un canvas no puede tener contexto 2D y WebGL a la vez: si hay que cambiar, se reemplaza
     if (modo === 'milkdrop' && !this.sinGl) {
       if (!this.gl) {
@@ -219,6 +220,11 @@
     }
     if (!this.c2d) this.c2d = this.canvas.getContext('2d');
     if (!this.c2d) return;
+    if (this.limpiar) {
+      this.c2d.globalCompositeOperation = 'source-over';
+      this.c2d.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.limpiar = false;
+    }
     if (this.modo === 'espectro') this.dibujarEspectro();
     else if (this.modo === 'notas') this.dibujarNotas();
     else if (this.modo === 'particulas') this.dibujarParticulas();
@@ -415,8 +421,10 @@
     }
     VP.pasoParticulas(s, dt, { gravedad: -25, arrastre: 0.45, ancho: W, alto: H });
 
-    c.globalCompositeOperation = 'source-over';
-    c.fillStyle = 'rgba(3,3,10,0.2)';
+    // la estela se desvanece hacia transparente (con un fondo oscuro encima se quedaban restos
+    // por el redondeo a 8 bits); la página pone el fondo
+    c.globalCompositeOperation = 'destination-out';
+    c.fillStyle = 'rgba(0,0,0,0.2)';
     c.fillRect(0, 0, W, H);
     c.globalCompositeOperation = 'lighter';
     const escala = W / 1280;
@@ -442,8 +450,8 @@
     const c = this.c2d;
     const W = this.canvas.width;
     const H = this.canvas.height;
-    c.globalCompositeOperation = 'source-over';
-    c.fillStyle = 'rgba(2,3,8,0.22)';
+    c.globalCompositeOperation = 'destination-out';
+    c.fillStyle = 'rgba(0,0,0,0.22)';
     c.fillRect(0, 0, W, H);
     // gira despacio, y más con la energía de los graves
     this.angulo.y += 0.006 + (this.energia || 0) * 0.03 + this.pulso * 0.02;
