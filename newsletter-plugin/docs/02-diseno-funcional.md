@@ -14,7 +14,7 @@ Describe qué hace el plugin, sin fijar todavía la tecnología. Las reglas est�
 - **Renderizador** de plantilla por segmento.
 - **Adaptador de correo** (sistema existente).
 - **Regla sensible** y **adaptador de notificaciones** (solo Conce).
-- **Lector del submódulo de difamación** (solo lectura).
+- **Recepción de la clasificación de cambios sensibles**, que el host entrega con el evento. El submódulo `defamatory-content-review/` no se consulta desde el plugin.
 - **Scheduler:** cron horario en Conce y fecha fija en POS.
 - **Registro** de envíos y eventos.
 
@@ -27,18 +27,16 @@ ContentProvider.collect(usuario, desde) -> [ContentItem]
 ScheduleStrategy.intervalo(perfil) -> duración
 ScheduleStrategy.vencida(usuario, ahora) -> bool
 MailSender.send(destinatario, asunto, html, texto)
-NotificationAdapter.emit(evento_sensible) -> ack | error
-DefamationReader.consultar(ref_registro) -> datos | error   (solo lectura)
 ```
 
-**Nota (18-nov-2026):** el submódulo es `defamatory-content-review/`. Su API pública revisa nombres y texto libre (`DefamatoryContentReviewer::validateName`, `ChatLineReviewer::review`). No consulta registros, así que `consultar(ref_registro)` no existe tal cual. Cómo llega la clasificación al plugin queda pendiente en docs/05.
+**Nota (18-nov-2026):** el submódulo es `defamatory-content-review/`. Su API pública revisa nombres y texto libre (`DefamatoryContentReviewer::validateName`, `ChatLineReviewer::review`). No consulta registros, así que `consultar(ref_registro)` no existe tal cual. **Decidido (20-nov-2026):** el host guarda el resultado del revisor y lo pasa con el evento (`EventoSensible.clasificacion`). El plugin no llama al revisor ni ve el valor del dato.
 
 **Propuesta de contrato del carril de notificaciones** [PROPUESTA, la valida Conce]:
 
 ```
 NotificationAdapter.emit(evento: EventoSensible) -> ack | error
 NotificationAdapter.estado(evento_id) -> pendiente | entregado | error
-EventoSensible = { id, arbol_id, ref_registro, tipo_cambio, titular_id, afectada_id | null, detectado_at }
+EventoSensible = { id, arbol_id, ref_registro, tipo_cambio, clasificacion, titular_id, afectada_id | null, detectado_at }
 ```
 
 `id` es la clave de idempotencia: un reintento del cron no duplica el aviso. El evento no lleva valores del dato (docs/01, sección 5).

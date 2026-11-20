@@ -29,11 +29,10 @@ Están marcados en docs/. No implementarlos como definitivos sin validación.
 ## Pendientes [PENDIENTE]
 No implementar hasta resolverse:
 - Contrato del carril de notificaciones (propuesta en docs/02; la valida Conce).
-- Cómo llega al plugin la clasificación de un cambio sensible (docs/05, pendiente 3).
 - Alcance del caso "abuelo avisa a familiares" (se decide al implementar el carril).
-- Validación de la lista de campos sensibles (docs/05, pendiente 4).
+- Validación de la lista de campos sensibles (docs/05, pendiente 3).
 
-Decididos el 18-nov-2026 (ver docs/05): destinatarios, cron en el VPS del host, stack PHP, doble confirmación y umbrales con valores iniciales.
+Decididos el 18-nov-2026 (ver docs/05): destinatarios, cron en el VPS del host, stack PHP, doble confirmación y umbrales con valores iniciales. Decididos el 20-nov-2026: el host entrega la clasificación con el evento, y la lista sensible incluye opiniones políticas.
 
 ## Stack
 PHP, igual que el resto del repo (decidido el 18-nov-2026).
