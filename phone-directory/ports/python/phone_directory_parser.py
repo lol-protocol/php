@@ -491,8 +491,23 @@ class SingleLineEntrySplitter:
         street = fields[street_index]
 
         # A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name.
-        if not re.search(_L, name) or street == '':
+        if not re.search(_L, name) or re.fullmatch(r'\d+\s*(?:bis|ter|quater)?', name, re.I) or street == '':
             return None
+
+        # A phone at the end of the street field ("Calle Mayor 12 91 234 56 78", after "GARCÍA LÓPEZ, Juan").
+        if phone is None:
+            m = PhonePattern.regex_for(language).search(street)
+            if m and m.end() == len(street) and street[:m.start()].strip() != '':
+                phone = m.group()
+                street = street[:m.start()].strip()
+
+        # Where the house number comes last, a lone word before the street word ("Juan Calle Mayor 12", after
+        # "GARCÍA LÓPEZ,") is the rest of the name.
+        if language in StreetRules.NUMBER_LAST_LANGUAGES:
+            parts = re.match(r'(' + _L + r'+)\s+(\S.*)$', street, re.S)
+            if parts and not looks_like_street(parts.group(1)) and StreetRules.has_street_word(parts.group(2), language):
+                name += ', ' + parts.group(1)
+                street = parts.group(2)
 
         # Where the house number comes first, a "street" field that opens with words before its number
         # ("John 12 Oak Street 555-123-4567", after "SMITH,") holds the rest of the name too.

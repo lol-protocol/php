@@ -747,8 +747,28 @@ final class SingleLineEntrySplitter {
         String street = fields.get(streetIndex);
 
         // A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name.
-        if (!PhonePattern.LETTER.matcher(name).find() || street.isEmpty()) {
+        if (!PhonePattern.LETTER.matcher(name).find()
+            || Pattern.compile("(?i)\\d+\\s*(?:bis|ter|quater)?").matcher(name).matches() || street.isEmpty()) {
             return null;
+        }
+
+        // A phone at the end of the street field ("Calle Mayor 12 91 234 56 78", after "GARCÍA LÓPEZ, Juan").
+        if (phone == null) {
+            Matcher m = PhonePattern.regexFor(language).matcher(street);
+            if (m.find() && m.end() == street.length() && !street.substring(0, m.start()).trim().isEmpty()) {
+                phone = m.group();
+                street = street.substring(0, m.start()).trim();
+            }
+        }
+
+        // Where the house number comes last, a lone word before the street word ("Juan Calle Mayor 12", after
+        // "GARCÍA LÓPEZ,") is the rest of the name.
+        if (language != null && StreetRules.NUMBER_LAST_LANGUAGES.contains(language)) {
+            Matcher parts = Pattern.compile("^(\\p{L}+)\\s+(\\S.*)$", Pattern.DOTALL).matcher(street);
+            if (parts.find() && !looksLikeStreet.test(parts.group(1)) && StreetRules.hasStreetWord(parts.group(2), language)) {
+                name += ", " + parts.group(1);
+                street = parts.group(2);
+            }
         }
 
         // Where the house number comes first, a "street" field that opens with words before its number

@@ -138,9 +138,27 @@ final class SingleLineEntrySplitter
         $name = implode(', ', $nameFields);
         $street = $fields[$streetIndex];
 
-        // A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name.
-        if (!self::hasLetter($name) || $street === '') {
+        // A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name; nor
+        // is one with only a number and its suffix ("12 bis, rue de la Paix").
+        if (!self::hasLetter($name) || preg_match('/^\d+\s*(?:bis|ter|quater)?$/iu', $name) === 1 || $street === '') {
             return null;
+        }
+
+        // A phone at the end of the street field ("Calle Mayor 12 91 234 56 78", after "GARCÍA LÓPEZ, Juan"):
+        // the line had commas, but not around the phone.
+        if ($phone === null && preg_match(PhonePattern::regexFor($language), $street, $m, PREG_OFFSET_CAPTURE) === 1
+            && $m[0][1] + strlen($m[0][0]) === strlen($street) && trim(substr($street, 0, $m[0][1])) !== '') {
+            $phone = $m[0][0];
+            $street = trim(substr($street, 0, $m[0][1]));
+        }
+
+        // Where the house number comes last, a lone word before the street word ("Juan Calle Mayor 12", after
+        // "GARCÍA LÓPEZ,") is the rest of the name.
+        if (in_array($language, StreetRules::NUMBER_LAST_LANGUAGES, true)
+            && preg_match('/^(\p{L}+)\s+(\S.*)$/u', $street, $parts) === 1
+            && !$looksLikeStreet($parts[1]) && StreetRules::hasStreetWord($parts[2], $language)) {
+            $name .= ', ' . $parts[1];
+            $street = $parts[2];
         }
 
         // Where the house number comes first, a "street" field that opens with words before its number
