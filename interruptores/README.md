@@ -144,7 +144,6 @@ Las pruebas rechazan un catálogo con ids repetidos, con `:` en un id, con una d
 - **Confirmar las 8 funciones supuestas.** Genealogía llega a 39 funciones (la persona habló de ~40) con 7 supuestas: las búsquedas, la deducción, la inferencia, la estimación y la pasarela. POS tiene 21 (con la pasarela, supuesta). Faltan por contrastar con la lista real.
 - **Cómo se relaciona la tarjeta con Stripe.** Hoy `gen.pagos:tarjeta` y `gen.pasarela:stripe` no se atan: no se sabe si apagar Stripe debe apagar la tarjeta.
 - **Qué opciones tienen las búsquedas** más allá de diarios y revistas, y qué estima exactamente `gen.estimacion`.
-- **`gen.backoffice:comparacion`** no se aplica en `sistema-nuevo/`: la comparación viaja dentro de la respuesta de la línea de tiempo. Hay que decidir cómo apagarla sin romper la interfaz.
 - **Límites conocidos.** El bloqueo de archivo sirve con un solo servidor; con varios hace falta una base de datos. Un proxy comparte la IP entre sus usuarios. `sistema-nuevo/` lee el estado en cada petición. Los registros apartados al rotar quedan en `var/` sin borrarse.
 - **A confirmar de plataforma:** `document-formats` está fuera del interruptor; no se sabe si va en A o en B.
 - **Candidatos desde PR abiertos:** `newsletter-plugin` (#613, documentación de diseño) y `personas-especiales` (#614, registro de exclusiones) podrían ser funciones nuevas cuando se fusionen. `chat-con-libros` (#603) no está en `master`, y `pos.colores-revision` depende de la decisión del PR #595.

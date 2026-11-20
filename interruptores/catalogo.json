@@ -997,7 +997,7 @@
           "nombre": "Filtros guardados"
         }
       ],
-      "nota": "Lo consume sistema-nuevo/ (BACKOFFICE_INTERRUPTORES). La opción «comparacion» todavía no la aplica: viaja dentro de la respuesta de la línea de tiempo."
+      "nota": "Lo consume sistema-nuevo/ (BACKOFFICE_INTERRUPTORES). La opción «comparacion» la aplica quitando la cohorte y los deltas de la respuesta de la línea de tiempo."
     },
     {
       "id": "gen.bak-notas",

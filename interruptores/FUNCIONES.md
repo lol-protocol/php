@@ -444,7 +444,7 @@ Panel del equipo para revisar la actividad de un usuario. Requiere iniciar sesi�
 
 Carpetas: `sistema-nuevo/`.
 
-*Nota:* Lo consume sistema-nuevo/ (BACKOFFICE_INTERRUPTORES). La opción «comparacion» todavía no la aplica: viaja dentro de la respuesta de la línea de tiempo.
+*Nota:* Lo consume sistema-nuevo/ (BACKOFFICE_INTERRUPTORES). La opción «comparacion» la aplica quitando la cohorte y los deltas de la respuesta de la línea de tiempo.
 
 | Opción (ref) | Nombre | Por defecto |
 |---|---|---|
