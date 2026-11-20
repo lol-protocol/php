@@ -1,7 +1,7 @@
 name: Borrar ramas fusionadas
 
 # SOLO A MANO para borrar (workflow_dispatch). En un PR que toca estos archivos solo corre la prueba del
-# script (contra un remoto de juguete, sin tocar el repositorio). Borra las ramas remotas que informe-de-ramas.yml lista como vacías o ya fusionadas
+# script (contra un remoto de juguete, sin tocar el repositorio). Borra las ramas remotas que informe-de-ramas.yml lista como vacías, con su PR fusionado o ya fusionadas
 # (mismos criterios: .github/scripts/informe-de-ramas.sh), sin PR abierto y sin commits de los últimos
 # MIN_DIAS días. Por defecto es un SIMULACRO: lista lo que borraría y no borra nada. Para borrar de
 # verdad, lanza el workflow con «borrar» marcado.
@@ -80,7 +80,7 @@ jobs:
             if ! [[ "${!v}" =~ ^[0-9]+$ ]]; then echo "::error::$v debe ser un número entero (llegó «${!v}»)"; exit 1; fi
           done
 
-      - name: Hacer la lista (vacías y fusionadas)
+      - name: Hacer la lista (vacías, con PR fusionado y fusionadas)
         shell: bash
         env:
           LISTA_RAMAS: ${{ runner.temp }}/ramas.txt
