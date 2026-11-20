@@ -7,7 +7,9 @@ namespace DefamatoryContentReview\Chat\Inflection;
  * singular y plural, acusativo (-ı/-i/-u/-ü), dativo (-a/-e), locativo (-da/-de/-ta/-te), ablativo
  * (-dan/-den/-tan/-ten), genitivo (-ın/-in/-un/-ün) e instrumental (-la/-le). Tras vocal, las
  * consonantes de unión (y, n); tras «k, p, ç, t», la forma con y sin la consonante sonorizada
- * (solo en polisílabas: «kitap» → «kitabı», pero «top» → «topu»; tras «n», «k» pasa a «g»: «pezevengi»). Los verbos, que se aglutinan, quedan literales.
+ * (solo en polisílabas: «kitap» → «kitabı», pero «top» → «topu»; tras «n», «k» pasa a «g»: «pezevengi»). Los sustantivos
+ * llevan además los posesivos y sus casos («kitabım», «kitabından»); los adjetivos, solo plural y casos. Los verbos, que se
+ * aglutinan, quedan literales.
  */
 final class TurkishInflection implements TopicInflection
 {
@@ -26,7 +28,9 @@ final class TurkishInflection implements TopicInflection
             return [$lemma, $plural];
         }
 
-        return array_values(array_unique([$lemma, $plural, ...$this->cases($lemma), ...$this->cases($plural), ...$this->possessiveForms($lemma, $plural)]));
+        $possessives = $kind === 'noun' ? $this->possessiveForms($lemma, $plural) : []; // el adjetivo: solo plural y casos
+
+        return array_values(array_unique([$lemma, $plural, ...$this->cases($lemma), ...$this->cases($plural), ...$possessives]));
     }
 
     /**

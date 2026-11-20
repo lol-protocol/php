@@ -13,6 +13,7 @@
   precisión de 79 % a 54 % (de 14 a 71 formas por lema). Con `bin/false-positives.php`: +57 formas marcadas en
   las 50.000 palabras más frecuentes, casi todas de insultos del diccionario; las tres que eran palabras
   corrientes («katılım» —participación—, «kadınsın», «kadınsınız») pasan a `everyday` de `config/chat-topics/tur.php`.
+  Los adjetivos turcos llevan solo plural y casos, sin posesivos.
 - **Húngaro, casos del plural y casos menos comunes** (`HungarianInflection`): «barmoknak», «barmokkal» y los
   casos ilativo («baromba»), adesivo («baromnál»), translativo («barommá»), terminativo («baromig») y formal
   («baromként»). Sustantivos: cobertura de 24 % a 59 % (precisión de 80 % a 70 %); adjetivos: de 29 % a 70 %

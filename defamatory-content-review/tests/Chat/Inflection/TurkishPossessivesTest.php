@@ -45,6 +45,17 @@ class TurkishPossessivesTest extends TestCase
         $this->assertSame('review', $chat->review('bu götüm iyi')->getDecision());
     }
 
+    public function testAdjectivesGetCasesButNoPossessives(): void
+    {
+        $forms = TopicInflector::forms('tur', 'aptal', 'adj');
+
+        $this->assertContains('aptallar', $forms);
+        $this->assertContains('aptalı', $forms);
+        $this->assertContains('aptalda', $forms);
+        $this->assertNotContains('aptalım', $forms);
+        $this->assertNotContains('aptalına', $forms);
+    }
+
     public function testVerbsStayLiteral(): void
     {
         $this->assertSame(['gelmek'], TopicInflector::forms('tur', 'gelmek', 'verb'));
