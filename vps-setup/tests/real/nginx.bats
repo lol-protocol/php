@@ -15,6 +15,8 @@ teardown() {
     rm -f /etc/php/*/fpm/conf.d/90-vps-setup-uploads.ini
     rm -f /etc/nginx/conf.d/security-headers.conf /etc/nginx/conf.d/server-tokens.conf /etc/nginx/conf.d/performance.conf /etc/nginx/conf.d/00-default-server.conf /etc/nginx/conf.d/bats-real-*.conf
     rm -rf /var/www/marcalibros /var/www/marcalibros.nuevo /var/www/marcalibros.anterior /var/lib/marcalibros /etc/cron.d/marcalibros
+    userdel "app-$APP" 2> /dev/null || true
+    userdel app-marcalibros 2> /dev/null || true   # lo crea el test real de 06_E
     for n in $D1 $D2 $D3 $APP; do rm -f "/etc/nginx/sites-enabled/$n" "/etc/nginx/sites-available/$n"; done
     rm -rf "/var/www/landing-page/$D1" "/var/www/$APP" "/var/log/nginx/$D1" "/var/log/nginx/$D2" "/var/log/nginx/$D3"
     sed -i "/$D1/d" /etc/hosts 2>/dev/null || true
@@ -37,7 +39,7 @@ teardown() {
     [[ "$output" == *"404"* ]]
     echo "$output" | grep -qi '^X-Frame-Options:'
     run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D1" http://127.0.0.1/.htaccess
-    [ "$output" = "403" ]
+    [ "$output" = "404" ]
     # un .php en la landing ni se ejecuta ni se sirve su codigo: 404
     echo '<?php echo "EJECUTADO"; // clave=secreta' > /var/www/landing-page/$D1/t.php
     run curl -s -w ' %{http_code}' -H "Host: $D1" http://127.0.0.1/t.php
@@ -52,6 +54,7 @@ teardown() {
 }
 
 @test "06_E: el vhost de Marcalibros pasa nginx -t real y deja el codigo, los datos y el cron" {
+    export PHP_POOL_DIR="$BATS_TEST_TMPDIR/pool.d"; mkdir -p "$PHP_POOL_DIR"   # el pool propio: no depende del php-fpm del runner
     # php no esta instalado en el runner: solo hace falta que diga que tiene lo que la app pide
     make_stub php 'case "$1" in -m) printf "gd\nmbstring\nfileinfo\nexif\nzlib\n";; esac'
     run bash "$VPS_DIR/06_E-setup-marcalibros-app.sh" $D2
@@ -63,12 +66,46 @@ teardown() {
     [ "$status" -eq 0 ]
 }
 
-@test "06_A: el vhost PHP pasa nginx -t real" {
+@test "06_A: el vhost PHP pasa nginx -t real, con su socket propio, y no sirve ocultos, vendor/ ni manifiestos" {
+    # Sin PostgreSQL ni php-fpm del runner de por medio: esta prueba es del vhost.
+    export APP_DB=0 PHP_POOL_DIR="$BATS_TEST_TMPDIR/pool.d"; mkdir -p "$PHP_POOL_DIR"
     run bash "$VPS_DIR/06_A-setup-php-app.sh" $APP $D2
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
-    grep -q "fastcgi_pass unix:/run/php/php8.3-fpm.sock" /etc/nginx/sites-available/$D2
+    grep -q "fastcgi_pass unix:/run/php/app-$APP.sock" /etc/nginx/sites-available/$D2
     run nginx -t
     [ "$status" -eq 0 ]
+    # Nginx REAL: lo que hay en la carpeta de la app (el chown real lo hace el servidor; aqui se deja leible)
+    A=/var/www/$APP
+    mkdir -p $A/.git $A/vendor/x $A/.well-known/acme-challenge
+    echo 'url = secreto' > $A/.git/config;  echo 'CLAVE=1' > $A/.env.example
+    echo '<?php echo "EJECUTADO";' > $A/vendor/x/run.php;  echo '{}' > $A/composer.json
+    echo 'hola' > $A/leeme.txt;  echo 'token' > $A/.well-known/acme-challenge/abc
+    chmod -R a+rX $A
+    nginx_up
+    for f in .git/config .env.example vendor/x/run.php composer.json; do
+        run curl -s -w ' %{http_code}' -H "Host: $D2" "http://127.0.0.1/$f"
+        [[ "$output" == *" 404" ]] || { echo "$f no dio 404: $output"; return 1; }
+        [[ "$output" != *secreto* && "$output" != *CLAVE* && "$output" != *EJECUTADO* ]]
+    done
+    run curl -s -w ' %{http_code}' -H "Host: $D2" http://127.0.0.1/leeme.txt
+    [[ "$output" == "hola"* ]] && [[ "$output" == *" 200" ]]
+    run curl -s -w ' %{http_code}' -H "Host: $D2" http://127.0.0.1/.well-known/acme-challenge/abc
+    [[ "$output" == "token"* ]] && [[ "$output" == *" 200" ]]           # certbot sigue pudiendo validar
+}
+
+@test "06_A --docroot public: Nginx sirve solo esa subcarpeta (lo de fuera de public/ no se alcanza)" {
+    export APP_DB=0 PHP_POOL_DIR="$BATS_TEST_TMPDIR/pool.d"; mkdir -p "$PHP_POOL_DIR"
+    run bash "$VPS_DIR/06_A-setup-php-app.sh" $APP $D2 --docroot public
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    grep -q "root /var/www/$APP/public;" /etc/nginx/sites-available/$D2
+    [ -f /var/www/$APP/public/index.php ]
+    echo 'fuera' > /var/www/$APP/privado.txt; echo 'dentro' > /var/www/$APP/public/dentro.txt
+    chmod -R a+rX /var/www/$APP
+    nginx_up
+    run curl -s -w ' %{http_code}' -H "Host: $D2" http://127.0.0.1/privado.txt
+    [[ "$output" == *" 404" ]] && [[ "$output" != *fuera* ]]
+    run curl -s -w ' %{http_code}' -H "Host: $D2" http://127.0.0.1/dentro.txt
+    [[ "$output" == "dentro"* ]]
 }
 
 @test "06_D: el proxy a Tomcat pasa nginx -t real y termina el proxy_pass en '/'" {

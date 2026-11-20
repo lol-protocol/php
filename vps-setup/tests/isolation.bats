@@ -236,3 +236,79 @@ php_setup() {
     [ "$(sed -n 1p "$WWW_DIR/tienda/.env")" = 'SECRETO=1' ]
     sed -n 2p "$WWW_DIR/tienda/.env" | grep -q '^DATABASE_URL=postgresql://app_tienda:'
 }
+
+# ---- 06_A: raiz web (--docroot), ocultos y vendor/ ----
+
+@test "06_A: el vhost niega ocultos (salvo .well-known), vendor/ y manifiestos ANTES de la ubicacion de PHP, y no repite parametros fastcgi" {
+    php_setup
+    run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    v="$NGINX_DIR/sites-available/tienda.ejemplo.com"
+    grep -qF 'location ~ /\.(?!well-known/) {' "$v"
+    grep -qF 'location ~* ^/(vendor|node_modules)/ {' "$v"
+    grep -qF 'location ~* ^/(composer\.(json|lock)|package(-lock)?\.json)$ {' "$v"
+    hid=$(grep -n 'well-known' "$v" | head -1 | cut -d: -f1); ven=$(grep -n 'vendor|node_modules' "$v" | cut -d: -f1); php=$(grep -n 'location ~ \\.php\$' "$v" | cut -d: -f1)
+    [ "$hid" -lt "$php" ] && [ "$ven" -lt "$php" ]                 # primera coincidencia gana: tienen que ir antes
+    ! grep -q 'include fastcgi_params' "$v" && ! grep -q 'fastcgi_param SCRIPT_FILENAME' "$v"
+    grep -q 'include snippets/fastcgi-php.conf;' "$v"
+    ! grep -q 'location ~ /\\.ht ' "$v"                            # el viejo bloque solo de .ht
+}
+
+@test "06_A --docroot public: la raiz web es la subcarpeta y la pagina de prueba va dentro" {
+    php_setup
+    run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com --docroot public
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    grep -q "root $WWW_DIR/tienda/public;" "$NGINX_DIR/sites-available/tienda.ejemplo.com"
+    [ -f "$WWW_DIR/tienda/public/index.php" ] && [ ! -e "$WWW_DIR/tienda/index.php" ]
+    [[ "$output" == *"Nginx sirve solo $WWW_DIR/tienda/public"* ]]
+}
+
+@test "06_A: re-correr SIN --docroot conserva el del vhost; --docroot . vuelve a la carpeta de la app" {
+    php_setup
+    bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com --docroot web/public > /dev/null
+    export FAKE_OWNER=app-tienda
+    run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    [[ "$output" == *"Se conserva el docroot del vhost: web/public"* ]]
+    grep -q "root $WWW_DIR/tienda/web/public;" "$NGINX_DIR/sites-available/tienda.ejemplo.com"
+    MAX_UPLOAD=50M run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com   # otro cambio cualquiera: sigue igual
+    grep -q "root $WWW_DIR/tienda/web/public;" "$NGINX_DIR/sites-available/tienda.ejemplo.com"
+    run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com --docroot .
+    [ "$status" -eq 0 ]
+    grep -q "root $WWW_DIR/tienda;" "$NGINX_DIR/sites-available/tienda.ejemplo.com"
+}
+
+@test "06_A rechaza un --docroot peligroso o una opcion/argumento de mas, sin tocar nada" {
+    php_setup
+    for d in '../etc' 'a b' '/abs' 'public/' 'x;y' 'a/../b'; do
+        run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com --docroot "$d"
+        [ "$status" -eq 2 ] || { echo "'$d' no se rechazo"; return 1; }
+    done
+    run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com --nada;        [ "$status" -eq 2 ]
+    run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com extra;         [ "$status" -eq 2 ]
+    run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com --docroot;     [ "$status" -eq 2 ]
+    [ ! -e "$NGINX_DIR/sites-available/tienda.ejemplo.com" ] && [ ! -e "$WWW_DIR/tienda" ]
+}
+
+@test "10_A --docroot llega a 06_A solo con --type php; con otro tipo o valor invalido se rechaza" {
+    cp "$VPS_DIR/10_A-add-domain.sh" "$VPS_DIR/lib.sh" "$BATS_TEST_TMPDIR/"
+    printf '#!/bin/bash\necho "06_A $*"\n' > "$BATS_TEST_TMPDIR/06_A-setup-php-app.sh"; chmod +x "$BATS_TEST_TMPDIR/06_A-setup-php-app.sh"
+    printf '#!/bin/bash\nexit 0\n' > "$BATS_TEST_TMPDIR/08-healthcheck.sh"; chmod +x "$BATS_TEST_TMPDIR/08-healthcheck.sh"
+    run bash "$BATS_TEST_TMPDIR/10_A-add-domain.sh" tienda.ejemplo.com --type php --name tienda --docroot public
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    [[ "$output" == *"06_A tienda tienda.ejemplo.com --docroot public"* ]]
+    run bash "$BATS_TEST_TMPDIR/10_A-add-domain.sh" tienda.ejemplo.com --type php --name tienda
+    [[ "$output" != *"--docroot"* ]]
+    run bash "$BATS_TEST_TMPDIR/10_A-add-domain.sh" api.ejemplo.com --type python --docroot public;  [ "$status" -eq 2 ]
+    run bash "$BATS_TEST_TMPDIR/10_A-add-domain.sh" tienda.ejemplo.com --type php --docroot '../x';   [ "$status" -eq 2 ]
+}
+
+@test "03: la landing tambien niega archivos ocultos, y su contenido es de root (Nginx solo lo lee)" {
+    export APP_DB=0
+    mkdir -p "$BATS_TEST_TMPDIR/landing-src"
+    run bash "$VPS_DIR/03-configure-nginx-site.sh" ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    grep -qF 'location ~ /\.(?!well-known/) {' "$NGINX_DIR/sites-available/ejemplo.com"
+    grep -q 'chown -R root:root' "$SUDO_LOG"
+    ! grep -q 'chown -R www-data' "$SUDO_LOG"
+}
