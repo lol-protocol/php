@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "organic-code-of-the-social-economy-of-knowledge-creativity-and-innovation-coescc",
+        "law": "Organic Code of the Social Economy of Knowledge, Creativity and Innovation (COESCCI)",
+        "source": "https://www.derechosintelectuales.gob.ec/",
+        "file": "organic-code-of-the-social-economy-of-knowledge-creativity-and-innovation-coescc.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-15T07:32:50Z",
+        "checkedAt": "2026-11-15T07:32:50Z",
+        "etag": "\"1450b-65ffab0030b8d\"",
+        "lastModified": "Wed, 11 Nov 2026 06:55:59 GMT",
+        "sha256": "cf6d8f16a6205152abd6666090809ed86b1b8c4fc5fcd3dd965f13d0ed85a126",
+        "chars": 748
+    },
+    {
+        "slug": "organic-code-of-the-social-economy-of-knowledge-creativity-and-innovation-coescc--1a750f98",
+        "law": "Organic Code of the Social Economy of Knowledge, Creativity and Innovation (COESCCI) (digital_protection)",
+        "source": "https://www.unemi.edu.ec/wp-content/uploads/2023/07/CODIGO-ORGANICO-DE-LA-ECONOMIA-SOCIAL-DE-LOS-CONOCIMIENTOS-COESCCI.pdf",
+        "file": "organic-code-of-the-social-economy-of-knowledge-creativity-and-innovation-coescc--1a750f98.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-15T07:32:54Z",
+        "checkedAt": "2026-11-15T07:32:54Z",
+        "etag": "\"64b04f0a-c80bc\"",
+        "lastModified": "Thu, 13 Jul 2023 19:22:50 GMT",
+        "sha256": "64f2bc0a8032c8368aa1a510e41b4d10a763010341c4bef73e3f3323492c4abb",
+        "chars": 400760
+    },
+    {
+        "slug": "organic-code-of-the-social-economy-of-knowledge-creativity-and-innovation-coescc--a6647c96",
+        "law": "Organic Code of the Social Economy of Knowledge, Creativity and Innovation (COESCCI) (orphan_works)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/20757",
+        "file": "organic-code-of-the-social-economy-of-knowledge-creativity-and-innovation-coescc--a6647c96.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-15T07:32:52Z",
+        "checkedAt": "2026-11-15T07:32:52Z",
+        "etag": "W/\"76885-rgrvFmQmAXllUesaqJzb11ZxFgI\"",
+        "lastModified": null,
+        "sha256": "e063c2810c8ab10a0261a86355faeea1acb256db0c6e8adc13396ec84c864ceb",
+        "chars": 400407
+    }
+]
