@@ -12,7 +12,9 @@ namespace PhoneDirectory\Parser;
  * 1. Field splitting: the line has strong delimiters (commas, dot leaders, tabs, or runs of spaces/dashes),
  *    common in CSV-like exports and OCR output. Splitting on those gives clean fields, and the one that
  *    looks like a street (via $looksLikeStreet) can be anywhere in the line — first or last, since street
- *    number placement varies by convention ("12 Oak Street" vs "Calle Mayor 12").
+ *    number placement varies by convention ("12 Oak Street" vs "Calle Mayor 12"). When the commas are only
+ *    around the surname ("GARCÍA LÓPEZ, Juan Calle Mayor 12 91 234 56 78"), the street field still holds the
+ *    rest of the name and the phone: it hands the phone over and, where the number comes last, a lone first word.
  * 2. Digit-boundary splitting: no such delimiters (fields run together with single spaces, e.g.
  *    "SMITH John 12 Oak Street 555-123-4567"). Here the first digit in the line, once any phone number is
  *    removed, is assumed to start the street — true for the number-first convention this covers, since
