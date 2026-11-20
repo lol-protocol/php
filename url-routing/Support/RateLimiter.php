@@ -74,8 +74,9 @@ class RateLimiter
             );
 
             if (count($requests) >= $maxRequests) {
-                // The window frees a place when its oldest request falls out of it.
-                $this->retryAfter = max(1, min($requests) + $windowSeconds - $now);
+                // The window frees a place when its oldest request falls out of it. With a limit of 0 (or less) there is no
+                // oldest request and no place ever frees: nobody gets in, and the wait is the whole window.
+                $this->retryAfter = $requests === [] ? max(1, $windowSeconds) : max(1, min($requests) + $windowSeconds - $now);
                 return false;
             }
 
