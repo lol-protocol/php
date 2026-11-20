@@ -65,6 +65,7 @@ test('la tabla de planetas trae una fila por planeta, y la de soles por sol', ()
   assert.match(md, /\| Tierra \| Planeta rocoso/);
   assert.match(md, /\| Sirio A \| Can Mayor \| — \| A1V/);
   assert.match(md, /\| Aldebarán \| Tauro \| Tauro \| K5III/);
+  assert.match(md, /\| Eris \| Planeta enano[^|]*\|[^|]*\|[^|]*\|[^|]*\|[^|]*\|[^|]*\| — \|/, 'la inclinación desconocida de Eris debe salir como —');
 });
 
 test('lo committeado (js/datos.js y caracteristicas.md) está al día con el JSON', () => {

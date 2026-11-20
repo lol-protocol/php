@@ -13,12 +13,12 @@ const ASTROS = DATOS.astros;
 const HEX = /^#[0-9a-f]{6}$/;
 const TIPOS_TEXTURA = new Set(['rocoso', 'bandas', 'nubes', 'tierra', 'volcanico', 'hielo', 'estrella']);
 
-test('hay 9 planetas, 10 lunas y 19 soles, con id único', () => {
+test('hay 12 planetas (con 4 enanos), 21 lunas y 19 soles, con id único', () => {
   const ids = ASTROS.map(a => a.id);
   assert.equal(new Set(ids).size, ids.length, 'ids repetidos');
   const cuenta = c => ASTROS.filter(a => a.categoria === c).length;
-  assert.equal(cuenta('planeta'), 9);
-  assert.equal(cuenta('luna'), 10);
+  assert.equal(cuenta('planeta'), 12);
+  assert.equal(cuenta('luna'), 21);
   assert.equal(cuenta('sol'), 19);
 });
 
@@ -47,8 +47,13 @@ test('planetas y lunas traen radio, masa y periodos; los soles, radio y masa sol
   }
 });
 
-test('los planetas traen inclinación del eje; las lunas y soles no', () => {
+test('los planetas traen inclinación del eje (null si no se conoce); las lunas y soles no', () => {
+  const desconocida = ['eris', 'makemake'];
   for (const a of ASTROS.filter(x => x.categoria === 'planeta')) {
+    if (desconocida.includes(a.id)) {
+      assert.equal(a.inclinacion_eje_grados, null, `${a.id}: su inclinación no se conoce`);
+      continue;
+    }
     assert.equal(typeof a.inclinacion_eje_grados, 'number', `${a.id}: inclinación`);
     assert.ok(a.inclinacion_eje_grados >= 0 && a.inclinacion_eje_grados <= 180, `${a.id}: inclinación fuera de 0..180`);
   }
@@ -57,9 +62,24 @@ test('los planetas traen inclinación del eje; las lunas y soles no', () => {
   }
 });
 
-test('rotación retrógrada solo en Venus, Urano, Plutón y Tritón', () => {
+test('rotación retrógrada solo en Venus, Urano, Plutón, Tritón y Caronte', () => {
   const retro = ASTROS.filter(a => a.periodo_rotacion_h < 0).map(a => a.id).sort();
-  assert.deepEqual(retro, ['pluton', 'triton', 'urano', 'venus']);
+  assert.deepEqual(retro, ['caronte', 'pluton', 'triton', 'urano', 'venus']);
+});
+
+test('las lunas giran sincronizadas: su rotación coincide con su periodo orbital', () => {
+  // Todas las lunas del catálogo están en rotación sincrónica; si un dato no cuadra, se copió mal.
+  for (const a of ASTROS.filter(x => x.categoria === 'luna')) {
+    const orbitaH = a.periodo_orbital_dias * 24;
+    const dif = Math.abs(Math.abs(a.periodo_rotacion_h) - orbitaH) / orbitaH;
+    assert.ok(dif < 0.02, `${a.id}: rotación ${a.periodo_rotacion_h} h frente a órbita ${orbitaH.toFixed(1)} h`);
+  }
+});
+
+test('Caronte gira a la par de Plutón: el mismo periodo y el mismo sentido', () => {
+  const caronte = ASTROS.find(a => a.id === 'caronte');
+  const pluton = ASTROS.find(a => a.id === 'pluton');
+  assert.equal(caronte.periodo_rotacion_h, pluton.periodo_rotacion_h);
 });
 
 test('cada astro trae una textura con tipo válido y colores hexadecimales', () => {
