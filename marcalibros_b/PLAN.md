@@ -316,5 +316,4 @@ Tras la fase 4 se añade el eje «región / lengua» (sugerencia aceptada en la 
 ## Ajustes tras la revisión de la fase 4
 - Frases de Oriente: solo quedan las de Bashō, Li Bai, Du Fu y Tagore (se retiraron las de Genji, Lu Xun, Al-Mutanabbi, Rumi y Kabir, no verificadas). Las fuentes árabe y devanagari y su composición se conservan.
 - El CJK (japonés y chino) se dibuja a 17 px (`tam` en `catalog/escrituras.yaml`); el resto, a 15.
-- Editor: la lista de autores se acota también por región y lengua, y arranca con todos los autores (antes quedaba vacía hasta elegir un movimiento). Prueba de navegador en `tests/test_regiones.py`.
-
+- Editor: la lista de autores se acota también por región y lengua, y arranca con todos los autores (antes quedaba vacía hasta elegir un movimiento). Prueba de navegador en `tests/test_regiones.py`.- Sprites del editor: `editor/plantillas/` estaba versionado por error desde #510 (20 archivos, 5 MB, ya desfasados: 10 movimientos de 100 piezas), contra lo que dice la sección «Pestaña de plantillas». Se dejan de versionar (`git rm --cached` y entrada en `.gitignore`); la CI los genera.
