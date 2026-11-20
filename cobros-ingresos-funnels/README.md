@@ -712,7 +712,8 @@ database/
                         del catálogo de países y monedas, 015 = email único sin
                         importar mayúsculas, 016 = monedas reemplazadas, 017 =
                         mayoría de edad de Puerto Rico, 018 = el historial de las
-                        tasas de cambio, 019 = montos con tres decimales)
+                        tasas de cambio, 019 = montos con tres decimales, 020 = la tasa de
+                        la fecha de cada fila nueva)
 bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
