@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use DateTimeImmutable;
+use PersonasEspeciales\Estado;
 use PersonasEspeciales\Exclusion;
 use PersonasEspeciales\RegistroEnMemoria;
 use PersonasEspeciales\Motivo;
@@ -29,7 +30,7 @@ final class VisibilidadTest extends TestCase
     {
         $e = Exclusion::solicitar($id, $persona, Solicitante::Persona, Motivo::PrivacidadPersonal, $this->t0)
             ->verificar('Cédula presentada.', $this->t0);
-        $this->registro->guardar($e);
+        $this->registro->insertar($e);
     }
 
     public function testPersonaSinRegistroEsVisible(): void
@@ -55,7 +56,7 @@ final class VisibilidadTest extends TestCase
     public function testPendienteNoExcluye(): void
     {
         $pendiente = Exclusion::solicitar('s-2', 'p-4', Solicitante::Apoderado, Motivo::PrivacidadPersonal, $this->t0);
-        $this->registro->guardar($pendiente);
+        $this->registro->insertar($pendiente);
 
         self::assertTrue($this->visibilidad->esVisible('p-4'));
     }
@@ -64,7 +65,7 @@ final class VisibilidadTest extends TestCase
     {
         $rechazada = Exclusion::solicitar('s-3', 'p-5', Solicitante::Persona, Motivo::PrivacidadPersonal, $this->t0)
             ->rechazar('No corresponde.', $this->t0);
-        $this->registro->guardar($rechazada);
+        $this->registro->insertar($rechazada);
 
         self::assertTrue($this->visibilidad->esVisible('p-5'));
     }
@@ -75,7 +76,7 @@ final class VisibilidadTest extends TestCase
         self::assertFalse($this->visibilidad->esVisible('p-6'));
 
         $activa = $this->registro->activasDe('p-6')[0];
-        $this->registro->guardar($activa->revocar($this->t0->modify('+1 day')));
+        $this->registro->actualizar($activa->revocar($this->t0->modify('+1 day')), Estado::Activa);
 
         self::assertTrue($this->visibilidad->esVisible('p-6'));
     }

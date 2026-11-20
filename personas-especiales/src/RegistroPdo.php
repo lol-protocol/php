@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace PersonasEspeciales;
 
 use DateTimeImmutable;
+use DomainException;
 use PDO;
+use PDOException;
 use UnexpectedValueException;
 
 /**
  * Registro sobre la tabla `exclusion` (PostgreSQL; ver database/migraciones/).
  *
- * El SQL usa solo sintaxis que PostgreSQL acepta igual que el resto de la base:
- * INSERT ... ON CONFLICT y parámetros.
+ * El SQL es estándar con parámetros; solo el código de error 23505 (unique_violation) es de PostgreSQL.
  */
 final class RegistroPdo implements RegistroExclusiones
 {
@@ -75,30 +76,52 @@ final class RegistroPdo implements RegistroExclusiones
         return $fila === null ? null : $this->hidratar($fila);
     }
 
-    public function guardar(Exclusion $exclusion): void
+    public function insertar(Exclusion $exclusion): void
     {
-        $sql = "INSERT INTO exclusion
-                    (id, persona_id, solicitante, motivo, prueba, estado, creada_en, cambiada_en)
-                VALUES (:id, :persona, :solicitante, :motivo, :prueba, :estado, :creada, :cambiada)
-                ON CONFLICT (id) DO UPDATE SET
-                    persona_id  = EXCLUDED.persona_id,
-                    solicitante = EXCLUDED.solicitante,
-                    motivo      = EXCLUDED.motivo,
-                    prueba      = EXCLUDED.prueba,
-                    estado      = EXCLUDED.estado,
-                    creada_en   = EXCLUDED.creada_en,
-                    cambiada_en = EXCLUDED.cambiada_en";
-        $consulta = $this->pdo->prepare($sql);
+        $consulta = $this->pdo->prepare(
+            'INSERT INTO exclusion
+                (id, persona_id, solicitante, motivo, prueba, estado, creada_en, cambiada_en)
+             VALUES (:id, :persona, :solicitante, :motivo, :prueba, :estado, :creada, :cambiada)'
+        );
+        try {
+            $consulta->execute([
+                'id' => $exclusion->id(),
+                'persona' => $exclusion->personaId(),
+                'solicitante' => $exclusion->solicitante()->value,
+                'motivo' => $exclusion->motivo()->value,
+                'prueba' => $exclusion->prueba(),
+                'estado' => $exclusion->estado()->value,
+                'creada' => $exclusion->creadaEn()->format(DATE_ATOM),
+                'cambiada' => $exclusion->cambiadaEn()->format(DATE_ATOM),
+            ]);
+        } catch (PDOException $e) {
+            // 23505 = unique_violation: otro (o este mismo) ya agregó una solicitud con ese id.
+            if ($e->getCode() === '23505') {
+                throw new DomainException('Ya existe una solicitud con ese id.', 0, $e);
+            }
+            throw $e;
+        }
+    }
+
+    public function actualizar(Exclusion $exclusion, Estado $estadoEsperado): void
+    {
+        // Solo las columnas que una transición cambia, y solo si sigue en el estado que se leyó. El
+        // WHERE hace la comprobación y el cambio en un solo paso: no hay hueco entre leer y escribir.
+        $consulta = $this->pdo->prepare(
+            'UPDATE exclusion
+                SET prueba = :prueba, estado = :estado, cambiada_en = :cambiada
+              WHERE id = :id AND estado = :esperado'
+        );
         $consulta->execute([
-            'id' => $exclusion->id(),
-            'persona' => $exclusion->personaId(),
-            'solicitante' => $exclusion->solicitante()->value,
-            'motivo' => $exclusion->motivo()->value,
             'prueba' => $exclusion->prueba(),
             'estado' => $exclusion->estado()->value,
-            'creada' => $exclusion->creadaEn()->format(DATE_ATOM),
             'cambiada' => $exclusion->cambiadaEn()->format(DATE_ATOM),
+            'id' => $exclusion->id(),
+            'esperado' => $estadoEsperado->value,
         ]);
+        if ($consulta->rowCount() !== 1) {
+            throw new DomainException('La solicitud no existe o cambió de estado mientras se trabajaba en ella.');
+        }
     }
 
     /** @param array<array-key, mixed> $fila */

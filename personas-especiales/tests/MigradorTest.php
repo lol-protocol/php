@@ -74,6 +74,84 @@ final class MigradorTest extends TestCase
         self::assertSame(0, (int) $anotadas);
     }
 
+    private function candadoLibre(): bool
+    {
+        $otra = $this->abrir();
+        $consulta = $otra->query('SELECT pg_try_advisory_lock(' . Migrador::CLAVE_CANDADO . ')');
+        $libre = $consulta !== false && $consulta->fetchColumn() === true;
+        if ($libre) {
+            $otra->query('SELECT pg_advisory_unlock(' . Migrador::CLAVE_CANDADO . ')');
+        }
+
+        return $libre;
+    }
+
+    public function testElCandadoSeLiberaAlTerminar(): void
+    {
+        file_put_contents($this->carpeta . '/001_a.sql', 'CREATE TABLE pe_prueba_a (x INT)');
+        (new Migrador($this->pdo, $this->carpeta))->aplicar();
+
+        self::assertTrue($this->candadoLibre());
+    }
+
+    public function testElCandadoSeLiberaSiUnaMigracionFalla(): void
+    {
+        file_put_contents($this->carpeta . '/001_a.sql', 'SELECT * FROM no_existe');
+
+        try {
+            (new Migrador($this->pdo, $this->carpeta))->aplicar();
+            self::fail('Debía fallar.');
+        } catch (PDOException) {
+            // esperado
+        }
+
+        self::assertTrue($this->candadoLibre());
+    }
+
+    public function testUnaSegundaInstanciaEsperaMientrasOtraTieneElCandado(): void
+    {
+        $dsn = (string) getenv('TEST_PG_DSN');
+        // Esta conexión simula a la instancia que está migrando: tiene el candado.
+        $this->pdo->query('SELECT pg_advisory_lock(' . Migrador::CLAVE_CANDADO . ')');
+
+        $proceso = proc_open(
+            [PHP_BINARY, __DIR__ . '/../bin/migrar.php'],
+            [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+            $tuberias,
+            null,
+            [
+                'PE_DSN' => $dsn,
+                'PE_USER' => (string) getenv('TEST_PG_USER'),
+                'PE_PASSWORD' => (string) getenv('TEST_PG_PASSWORD'),
+                'PATH' => (string) getenv('PATH'),
+            ],
+        );
+        self::assertIsResource($proceso);
+
+        try {
+            // Mientras la otra instancia tiene el candado, esta no avanza. Sin candado terminaría de inmediato.
+            usleep(1_500_000);
+            self::assertTrue(proc_get_status($proceso)['running'], 'La segunda instancia no esperó el candado.');
+
+            $this->pdo->query('SELECT pg_advisory_unlock(' . Migrador::CLAVE_CANDADO . ')');
+
+            $limite = microtime(true) + 15;
+            while (proc_get_status($proceso)['running'] && microtime(true) < $limite) {
+                usleep(100_000);
+            }
+            self::assertFalse(proc_get_status($proceso)['running'], 'No terminó al liberarse el candado.');
+            $salida = (string) stream_get_contents($tuberias[1]);
+            self::assertStringContainsString('sin migraciones pendientes', $salida);
+        } finally {
+            if (proc_get_status($proceso)['running']) {
+                proc_terminate($proceso);
+            }
+            fclose($tuberias[1]);
+            fclose($tuberias[2]);
+            proc_close($proceso);
+        }
+    }
+
     public function testNombreInvalidoEsUnError(): void
     {
         file_put_contents($this->carpeta . '/1_mal.sql', 'SELECT 1');

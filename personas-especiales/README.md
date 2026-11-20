@@ -32,13 +32,13 @@ existe pero solo marca para revisión (ver más abajo).
 | `src/Motivo.php` | `privacidad_personal`, `seguridad`, `asociacion_con_familiar`, `otro`. Lista cerrada, **sin texto libre**: lo elige quien pide, y ninguno nombra una religión, un origen ni una organización. |
 | `src/Visibilidad.php` | La política: `esVisible`, `puedeConectar`, `puedeExportar` y `filtrar` (quita excluidas de una lista, sin cambiar el orden). Solo dice sí o no, sin decir por qué. |
 | `src/Coincidencias.php` | Compara apellidos normalizados para revisión humana. No oculta a nadie. |
-| `src/RegistroExclusiones.php` | Interfaz del registro: `activasDe`, `conExclusionActiva` (por lote, para listas largas), `porId` y `guardar`. |
+| `src/RegistroExclusiones.php` | Interfaz del registro: `activasDe`, `conExclusionActiva` (por lote, para listas largas), `porId`, `insertar` (nunca reemplaza) y `actualizar` (solo lo que cambia una transición, y solo si el estado sigue siendo el leído). |
 | `src/RegistroPdo.php` | Implementación sobre la tabla `exclusion` (PostgreSQL). Dentro de una transacción, `porId` bloquea la fila (`FOR UPDATE`). |
 | `src/RegistroEnMemoria.php` | Implementación sin base de datos, para pruebas. |
 | `src/Gestion.php` | El camino de una solicitud: aplica la transición, la guarda y deja el evento de auditoría. Con un `PDO`, las tres cosas van en una transacción. |
 | `src/Evento.php`, `src/TipoEvento.php`, `src/Auditoria.php` | Un hecho de la auditoría: quién (identificador opaco), qué y cuándo. No lleva razones ni pruebas. |
 | `src/AuditoriaPdo.php`, `src/AuditoriaEnMemoria.php` | Las dos implementaciones de la auditoría. |
-| `src/Migrador.php`, `bin/migrar.php` | Aplican en orden las migraciones que faltan, cada una en su transacción. |
+| `src/Migrador.php`, `bin/migrar.php` | Aplican en orden las migraciones que faltan, cada una en su transacción, con un candado asesor de PostgreSQL para que dos instancias no choquen. |
 | `database/migraciones/` | `001_exclusion.sql` (tabla `exclusion`, con `CHECK` de longitudes y estados, y de que una activa tenga prueba) y `002_exclusion_evento.sql` (auditoría). |
 
 ### Respuesta uniforme
@@ -56,9 +56,18 @@ queda el cambio de estado (misma transacción). El actor es un identificador opa
 nombre, y el evento no copia la razón ni la prueba, para que el historial no acumule datos
 personales.
 
-Límite conocido: `Gestion::solicitar` rechaza un id repetido, pero `guardar` es un
-«insertar o reemplazar». Dos solicitudes simultáneas con el mismo id podrían pisarse. Los ids
-los genera quien llama (que sean UUID); la base no los fabrica.
+### Concurrencia
+
+- **Un id repetido nunca pisa a otra solicitud.** `insertar` falla con `DomainException` si el
+  id ya existe, y lo decide la base (la llave primaria), no una lectura previa: vale también
+  cuando dos solicitudes llegan a la vez. Los ids los genera quien llama (que sean UUID).
+- **Dos revisores sobre la misma solicitud no se pisan.** `actualizar` recibe el estado que se
+  leyó y cambia la fila solo si sigue en ese estado (`WHERE id = … AND estado = …`, en un solo
+  paso). Si otro la cambió antes, falla en vez de deshacerle el cambio. Tampoco puede tocar la
+  persona, quien pide, el motivo ni la fecha de alta: solo estado, prueba y fecha del cambio.
+- **Dos instancias que migran a la vez** se turnan: `Migrador` toma un candado asesor de
+  PostgreSQL (`Migrador::CLAVE_CANDADO`), la segunda espera y luego no encuentra nada pendiente.
+  El candado se libera al terminar, también si una migración falla, y si la conexión se cae.
 
 ### El motivo es una lista cerrada
 

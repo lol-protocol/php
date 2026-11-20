@@ -32,11 +32,9 @@ final class Gestion
         DateTimeImmutable $ahora,
     ): Exclusion {
         return $this->atomico(function () use ($id, $personaId, $solicitante, $motivo, $actor, $ahora): Exclusion {
-            if ($this->registro->porId(trim($id)) !== null) {
-                throw new DomainException('Ya existe una solicitud con ese id.');
-            }
+            // insertar() rechaza un id repetido, también cuando dos solicitudes llegan a la vez.
             $nueva = Exclusion::solicitar($id, $personaId, $solicitante, $motivo, $ahora);
-            $this->registro->guardar($nueva);
+            $this->registro->insertar($nueva);
             $this->auditoria->registrar(new Evento($nueva->id(), TipoEvento::Solicitada, $actor, $ahora));
 
             return $nueva;
@@ -68,7 +66,8 @@ final class Gestion
             $actual = $this->registro->porId($id)
                 ?? throw new DomainException('No existe esa solicitud.');
             $nueva = $aplicar($actual);
-            $this->registro->guardar($nueva);
+            // Falla si otro cambió la solicitud entre leerla y guardarla, en vez de pisarle el cambio.
+            $this->registro->actualizar($nueva, $actual->estado());
             $this->auditoria->registrar(new Evento($nueva->id(), $tipo, $actor, $ahora));
 
             return $nueva;
