@@ -604,6 +604,26 @@ foreach (['twitter:@', 'twitter:@@', "x:@\n"] as $mala) {
 igual('purga: «{}» no es ilegible y se conserva tal cual', [false, '{}'], [Purga::linea('{}', $excluirPurga)['ilegible'], Purga::linea('{}', $excluirPurga)['linea']]);
 igual('purga: un arreglo con datos sigue siendo ilegible', true, Purga::linea('[1]', $excluirPurga)['ilegible']);
 
+// --- Validado contra entidades reales de Wikidata: la etiqueta universal es «mul», no «la primera que haya» ---
+$conMul = [
+    'id' => 'Q9001', 'type' => 'item',
+    // como una entidad real de hoy: sin «es» ni «en», con «mul» y otras escrituras (la primera por orden alfabético es la árabe)
+    'labels' => ['ar' => ['language' => 'ar', 'value' => 'ماريا فيكتيسيا'], 'ja' => ['language' => 'ja', 'value' => 'マリア'], 'mul' => ['language' => 'mul', 'value' => 'Maria Ficticia']],
+    'descriptions' => ['ar' => ['language' => 'ar', 'value' => 'وصف'], 'en' => ['language' => 'en', 'value' => 'invented person']],
+    'claims' => [
+        'P31' => [['mainsnak' => ['datavalue' => ['value' => ['id' => 'Q5']]], 'rank' => 'normal']],
+        'P570' => [['mainsnak' => ['datavalue' => ['value' => ['time' => '+1900-05-05T00:00:00Z', 'precision' => 11]]], 'rank' => 'normal']],
+    ],
+];
+$perfilMul = Wikidata::persona($conMul);
+igual('wikidata: sin etiqueta es ni en, usa mul y no la primera (árabe)', ['Maria Ficticia', 'invented person'], [$perfilMul?->nombre, $perfilMul?->descripcion]);
+$conEs = $conMul;
+$conEs['labels']['es'] = ['language' => 'es', 'value' => 'María Ficticia'];
+igual('wikidata: si hay etiqueta en español, esa gana sobre mul', 'María Ficticia', Wikidata::persona($conEs)?->nombre);
+$soloOtras = $conMul;
+unset($soloOtras['labels']['mul']);
+igual('wikidata: sin es, en ni mul, cae a la primera que haya', 'ماريا فيكتيسيا', Wikidata::persona($soloOtras)?->nombre);
+
 // CLI: no descarga de la red
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' https://www.facebook.com/alguien 2>&1', $salida, $codigo);

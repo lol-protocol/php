@@ -300,7 +300,9 @@ final class Wikidata
     }
 
     /**
-     * Etiqueta o descripción: en español, si no en inglés, si no la primera que haya.
+     * Etiqueta o descripción: en español, si no en inglés, si no en `mul` (el código con que Wikidata guarda hoy el
+     * nombre que vale para todos los idiomas: p. ej. «Douglas Adams» no tiene etiqueta `es` ni `en`, solo `mul`),
+     * si no la primera que haya. Sin `mul`, «la primera» era la árabe y el nombre salía en otra escritura.
      *
      * @param array<mixed> $e
      */
@@ -310,7 +312,7 @@ final class Wikidata
         if (!is_array($m)) {
             return null;
         }
-        foreach (['es', 'en'] as $idioma) {
+        foreach (['es', 'en', 'mul'] as $idioma) {
             $texto = Json::texto($m, $idioma, 'value');
             if ($texto !== null) {
                 return $texto;

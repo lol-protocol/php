@@ -69,10 +69,18 @@ como `phone-directory/`).
   Twitter Cards), `<link rel="canonical">`, JSON-LD y microdatos, no clases CSS. Si la red pide
   iniciar sesión para ver el perfil, la página guardada no trae nada y el resultado sale sin
   nombre y con un aviso: funciona sobre todo con páginas públicas.
-- **Sin probar contra páginas reales.** Los formatos de título y descripción de cada red, y los
-  microdatos de WikiTree y Find a Grave, están escritos de memoria y probados solo con muestras
-  inventadas (`pruebas/muestras/`, de personas que no existen). Antes de confiar en uno, guarda
-  una página real y compáralo. Revisa también los términos de cada sitio.
+- **Qué está validado contra datos reales y qué no.**
+  - **Wikidata: sí, parcialmente.** El lector se probó el 20 de noviembre de 2026 contra 6 entidades reales de
+    personajes históricos (la API pública de Wikidata, CC0; los datos no se guardan en el repo). Funcionan las
+    fechas con su precisión, los identificadores de lugares y parientes y la regla de fallecidos, y la prueba
+    **encontró un error**: Wikidata guarda hoy el nombre universal bajo el código `mul`, y sin él el nombre de
+    «Douglas Adams» salía en árabe. Sigue sin probarse un volcado completo (más de 100 GB) ni la velocidad real.
+  - **Todo lo demás, no.** Los formatos de título y descripción de cada red, los microdatos de WikiTree, Find a
+    Grave y BillionGraves y la API de WikiTree están escritos de memoria y probados solo con muestras inventadas
+    (`pruebas/muestras/`, de personas que no existen). WikiTree (desafío anti-robots), Find a Grave y BillionGraves
+    (403) rechazan a los clientes automáticos, así que las páginas hay que guardarlas desde un navegador y revisarlas
+    con `bin/diagnostico.php`. Antes de confiar en un formato, compáralo con una página real, y revisa los términos
+    de cada sitio.
 
 ## Uso
 
