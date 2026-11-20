@@ -34,8 +34,8 @@ const API_RUTAS = [
  * Las funciones que no figuran aquí (usuarios, grupos y tipos de acción) son la base del backoffice: solo las apaga
  * `gen.backoffice`. pruebas/php/interruptores-test.php exige decidirlo para cada función nueva.
  *
- * `gen.backoffice:comparacion` no se aplica aquí: la comparación con el universo viaja dentro de la respuesta de
- * api_timeline, y no se puede apagar por separado sin cambiar esa respuesta.
+ * `gen.backoffice:comparacion` no apaga una ruta: la comparación con el universo viaja dentro de la respuesta de api_timeline.
+ * Apagada, esa respuesta sale sin cohorte y con los deltas en null (api_timeline_con_cohortes, api_funcion_encendida).
  */
 const API_INTERRUPTORES = [
     'api_timeline' => 'gen.backoffice:flujo',

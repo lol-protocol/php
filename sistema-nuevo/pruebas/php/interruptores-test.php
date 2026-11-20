@@ -112,6 +112,25 @@ $danado = $interruptores('danado', []);
 file_put_contents("$danado/var/estado.json", '{no es json');
 assert_igual(503, $exigir('api_kpis', $danado)['estado'], 'interruptores: un estado dañado -> 503, no se atiende como si estuviera encendido');
 
+// --- La comparación con el universo no apaga una ruta: apaga una parte de la respuesta ---------------------------------
+
+assert_igual(true, api_funcion_encendida('gen.backoffice:comparacion', null), 'interruptores: sin configurar, la comparación está encendida');
+assert_igual(true, api_funcion_encendida('gen.backoffice:comparacion', $fabrica), 'interruptores: con el estado de fábrica, también');
+$sinComparacion = $interruptores('sin-comparacion', ['gen.backoffice:comparacion' => false]);
+assert_igual(false, api_funcion_encendida('gen.backoffice:comparacion', $sinComparacion), 'interruptores: apagada, la comparación se omite');
+assert_igual(true, $exigir('api_timeline', $sinComparacion)['ok'], 'interruptores: apagar la comparación no corta la ruta de la línea de tiempo');
+assert_igual(false, api_funcion_encendida('gen.backoffice:comparacion', "$base/no-existe"), 'interruptores: ilegibles, la comparación se omite');
+
+require_once __DIR__ . '/../../servidor-php/codigo/Universo.php';
+require_once __DIR__ . '/../../servidor-php/codigo/ClienteEstadisticas.php';
+require_once __DIR__ . '/../../servidor-php/codigo/AlmacenAlertas.php';
+require_once __DIR__ . '/../../servidor-php/codigo/api/linea-tiempo-cohortes.php';
+$accion = ['type' => 'login', 'duration_ms' => 120, 'amount_usd' => 5.0, 'ip_country' => 'AR'];
+// Sin servidor de estadísticas: si intentara compararse, stats_service_available sería false.
+$resultado = api_timeline_con_cohortes([$accion], 'AR', new Universo(null, 0, 150, 'all', 'u1'), false);
+assert_igual(true, $resultado['stats_service_available'], 'interruptores: sin comparación no se llama al servicio de estadísticas');
+assert_igual([null, null, null, false], [$resultado['timeline'][0]['cohort'], $resultado['timeline'][0]['duration_delta_pct'], $resultado['timeline'][0]['amount_delta_pct'], $resultado['timeline'][0]['ip_mismatch']], 'interruptores: sin comparación, cohorte y deltas en null; la alerta de IP sigue');
+
 // --- Coherencia con la tabla de rutas y con el catálogo -----------------------------------------------------------
 
 $conSesion = [];

@@ -855,7 +855,7 @@ desde el panel de interruptores. Sin la variable no se lee nada y todo funciona 
 - La tabla es `API_INTERRUPTORES` en `servidor-php/codigo/rutas.php`; la lógica, `api/interruptores.php`, y el cableado, una línea en `publico/index.php`. `login`, `logout` y `session` no se apagan: se puede entrar y salir con el backoffice apagado. La autenticación se comprueba antes: sin sesión sigue siendo 401.
 - Una función apagada responde según su política (`al_apagar` en el catálogo): `ocultar` es un 404 `funcion_apagada` y `no_disponible` un 503 `funcion_no_disponible`. Si los interruptores están configurados y no se pueden leer, 503 `interruptores_ilegibles`: se corta en vez de atender algo que quizá está apagado.
 - La interfaz omite los KPIs y las alertas apagados en vez de fallar la carga inicial; el resto de las funciones muestra el error traducido.
-- **`gen.backoffice:comparacion` no se aplica:** la comparación con el universo viaja dentro de la respuesta de `/api/timeline`, y no se puede apagar por separado sin cambiar esa respuesta. Queda sin consumidor hasta que se decida cómo.
+- **`gen.backoffice:comparacion` no apaga una ruta, apaga una parte de la respuesta:** la comparación con el universo viaja dentro de `/api/timeline`. Apagada, esa respuesta sale sin `cohort` y con `duration_delta_pct` y `amount_delta_pct` en `null` (la interfaz ya los muestra como «sin comparación»), no se llama al servicio de estadísticas y la alerta de IP sigue. Si los interruptores no se pueden leer, la comparación se omite.
 - `pruebas/php/interruptores-test.php` exige decidir el interruptor de cada función nueva de la API, y que todos existan en el catálogo.
 
 ## Notas / alcance

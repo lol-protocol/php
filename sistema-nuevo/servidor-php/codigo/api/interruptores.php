@@ -58,6 +58,22 @@ function api_interruptor_apagado(Interruptores $interruptores, string $handler):
 }
 
 /**
+ * Si un interruptor está encendido, para quien consulta una parte de una respuesta (no una ruta entera). Sin interruptores
+ * configurados, true. Si están configurados y no se pueden leer, false: la ruta ya pasó por api_exigir_funcion(), y ante la duda
+ * se omite lo opcional en vez de mostrarlo.
+ */
+function api_funcion_encendida(string $ref, ?string $carpeta = null): bool
+{
+    try {
+        $interruptores = api_interruptores($carpeta);
+        return $interruptores === null || $interruptores->activo($ref);
+    } catch (Throwable $e) {
+        error_log('interruptores: ' . $e->getMessage());
+        return false;
+    }
+}
+
+/**
  * Exige que la función de esta ruta no esté apagada. Si lo está, responde (404 `funcion_apagada` o 503
  * `funcion_no_disponible`, según su política) y devuelve false: hay que cortar. Sin interruptores configurados, siempre true.
  */
