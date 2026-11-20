@@ -39,6 +39,18 @@ class RateLimiterTest extends TestCase
         }
     }
 
+    public function testALimitOfZeroLetsNobodyInInsteadOfFailing(): void
+    {
+        $limiter = RateLimiter::getInstance();
+        $ip = $this->uniqueIp();
+
+        // RETIRO_MAX_POR_HORA=0 reached min([]), a ValueError: the form answered 500 instead of 429.
+        foreach ([0, -1] as $maximo) {
+            $this->assertFalse($limiter->isAllowed($ip, $maximo, 3600));
+            $this->assertSame(3600, $limiter->retryAfter());
+        }
+    }
+
     public function testBlocksRequestsOverLimit(): void
     {
         $limiter = RateLimiter::getInstance();

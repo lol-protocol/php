@@ -9,6 +9,7 @@ name: Leyes - textos de las fuentes
 # Para qué: el contenedor de las sesiones en la nube no llega a esos sitios y un runner sí, así que esa rama
 # permite leer las fuentes con `git fetch origin <rama>` y comprobar un dato contra ellas. La rama no tiene
 # historia común con master, nunca se fusiona y se reescribe entera en cada corrida (.github/scripts/publicar-textos.sh).
+# Con «navegador» las páginas que sin JavaScript no tienen texto se renderizan con el Chrome del runner (--browser).
 # Con «campos» baja además las páginas que field_sources.csv cita para cada campo (cache-texts.php --field-sources).
 # Son páginas de terceros, a veces guías de despachos: sirven para comprobar un dato, no son la fuente oficial.
 #
@@ -31,6 +32,10 @@ on:
         default: false
       campos:
         description: 'Bajar también las páginas que field_sources.csv cita para cada campo (plazo, sanciones…), no solo la de referencia de la ley'
+        type: boolean
+        default: false
+      navegador:
+        description: 'Renderizar con Chrome las páginas que sin JavaScript no tienen texto (más lento; para leychile.cl, WIPO y similares)'
         type: boolean
         default: false
   pull_request:
@@ -71,6 +76,7 @@ jobs:
       SOLO: ${{ inputs.solo }}
       FORZAR: ${{ inputs.forzar }}
       CAMPOS: ${{ inputs.campos }}
+      NAVEGADOR: ${{ inputs.navegador }}
       GH_TOKEN: ${{ github.token }}
 
     steps:
@@ -102,6 +108,7 @@ jobs:
           args="--only=$SOLO"
           if [ "$FORZAR" = true ]; then args="$args --force"; fi
           if [ "$CAMPOS" = true ]; then args="$args --field-sources"; fi
+          if [ "$NAVEGADOR" = true ]; then args="$args --browser"; fi
           php scripts/cache-texts.php $args | tee "$RUNNER_TEMP/cache-texts.log"
           {
             echo "### Textos de $MODULO ($SOLO)"

@@ -3,7 +3,7 @@ window.ASTROS_DATOS = {
   "version": "1.0.0",
   "nota": "Valores de referencia redondeados (NASA Planetary Fact Sheet y fichas de satélites; estrellas, valores aproximados de la literatura). Las estrellas de radio incierto llevan incertidumbre «alta». Las texturas son procedurales: colores aproximados, no fotografías ni mapas científicos.",
   "categorias": {
-    "planeta": "Planetas y el planeta enano Plutón",
+    "planeta": "Planetas y planetas enanos (Plutón, Ceres, Eris y Makemake)",
     "luna": "Lunas del Sistema Solar (con su cuerpo padre)",
     "sol": "Soles: el Sol y estrellas de las constelaciones, con un color propio"
   },
@@ -378,6 +378,100 @@ window.ASTROS_DATOS = {
       "densidad_kg_m3": 1853.862480479675
     },
     {
+      "id": "ceres",
+      "nombre": "Ceres",
+      "categoria": "planeta",
+      "tipo": "Planeta enano (el mayor del cinturón de asteroides)",
+      "radio_km": 469.7,
+      "masa_kg": 938000000000000000000,
+      "periodo_rotacion_h": 9.07,
+      "periodo_orbital_dias": 1681,
+      "inclinacion_eje_grados": 4,
+      "distancia_media": {
+        "valor": 413.7,
+        "unidad": "millones de km",
+        "referencia": "Sol"
+      },
+      "temperatura_media_k": 168,
+      "atmosfera": "Casi inexistente (exosfera de vapor de agua)",
+      "anillos": false,
+      "lunas": 0,
+      "textura": {
+        "tipo": "rocoso",
+        "colores": [
+          "#4f4c49",
+          "#6f6b66",
+          "#948f88"
+        ],
+        "craters": 220,
+        "escala": 3.5
+      },
+      "gravedad_ms2": 0.2837578731644354,
+      "densidad_kg_m3": 2160.988961738994
+    },
+    {
+      "id": "eris",
+      "nombre": "Eris",
+      "categoria": "planeta",
+      "tipo": "Planeta enano (el más masivo del Sistema Solar exterior)",
+      "radio_km": 1163,
+      "masa_kg": 1.66e+22,
+      "periodo_rotacion_h": 25.9,
+      "periodo_orbital_dias": 203830,
+      "inclinacion_eje_grados": null,
+      "distancia_media": {
+        "valor": 10120,
+        "unidad": "millones de km",
+        "referencia": "Sol"
+      },
+      "temperatura_media_k": 42,
+      "atmosfera": "Posiblemente tenue y estacional",
+      "anillos": false,
+      "lunas": 1,
+      "textura": {
+        "tipo": "hielo",
+        "colores": [
+          "#cfcac4",
+          "#e6e2dc",
+          "#f4f1ec"
+        ],
+        "escala": 3
+      },
+      "gravedad_ms2": 0.8190961052633914,
+      "densidad_kg_m3": 2519.3025981392384
+    },
+    {
+      "id": "makemake",
+      "nombre": "Makemake",
+      "categoria": "planeta",
+      "tipo": "Planeta enano (cinturón de Kuiper)",
+      "radio_km": 715,
+      "masa_kg": 3.1e+21,
+      "periodo_rotacion_h": 22.8,
+      "periodo_orbital_dias": 40590,
+      "inclinacion_eje_grados": null,
+      "distancia_media": {
+        "valor": 6850,
+        "unidad": "millones de km",
+        "referencia": "Sol"
+      },
+      "temperatura_media_k": 32,
+      "atmosfera": "Sin atmósfera apreciable",
+      "anillos": false,
+      "lunas": 1,
+      "textura": {
+        "tipo": "hielo",
+        "colores": [
+          "#8a5a3c",
+          "#b07a54",
+          "#d4a77f"
+        ],
+        "escala": 3
+      },
+      "gravedad_ms2": 0.4047024304366961,
+      "densidad_kg_m3": 2024.6733158830777
+    },
+    {
       "id": "luna",
       "nombre": "Luna",
       "categoria": "luna",
@@ -663,6 +757,321 @@ window.ASTROS_DATOS = {
       "densidad_kg_m3": 1609.2244006651376
     },
     {
+      "id": "mimas",
+      "nombre": "Mimas",
+      "categoria": "luna",
+      "padre": "saturno",
+      "tipo": "Luna de hielo con un cráter enorme",
+      "radio_km": 198.2,
+      "masa_kg": 37500000000000000000,
+      "periodo_rotacion_h": 22.6,
+      "periodo_orbital_dias": 0.942,
+      "distancia_media": {
+        "valor": 185540,
+        "unidad": "km",
+        "referencia": "Saturno"
+      },
+      "temperatura_media_k": 64,
+      "atmosfera": "Nula",
+      "anillos": false,
+      "textura": {
+        "tipo": "rocoso",
+        "colores": [
+          "#8a8a8c",
+          "#b0b0b2",
+          "#d0d0d2"
+        ],
+        "craters": 200,
+        "escala": 3.5
+      },
+      "gravedad_ms2": 0.06371037623169576,
+      "densidad_kg_m3": 1149.824896595443
+    },
+    {
+      "id": "tetis",
+      "nombre": "Tetis",
+      "categoria": "luna",
+      "padre": "saturno",
+      "tipo": "Luna de hielo muy reflectante",
+      "radio_km": 531.1,
+      "masa_kg": 617000000000000000000,
+      "periodo_rotacion_h": 45.3,
+      "periodo_orbital_dias": 1.888,
+      "distancia_media": {
+        "valor": 294619,
+        "unidad": "km",
+        "referencia": "Saturno"
+      },
+      "temperatura_media_k": 86,
+      "atmosfera": "Nula",
+      "anillos": false,
+      "textura": {
+        "tipo": "hielo",
+        "colores": [
+          "#b8b5b0",
+          "#d6d3ce",
+          "#ecebe8"
+        ],
+        "craters": 120,
+        "escala": 3.5
+      },
+      "gravedad_ms2": 0.14598853939811013,
+      "densidad_kg_m3": 983.2583664642601
+    },
+    {
+      "id": "dione",
+      "nombre": "Dione",
+      "categoria": "luna",
+      "padre": "saturno",
+      "tipo": "Luna de hielo con vetas claras",
+      "radio_km": 561.4,
+      "masa_kg": 1.095e+21,
+      "periodo_rotacion_h": 65.7,
+      "periodo_orbital_dias": 2.737,
+      "distancia_media": {
+        "valor": 377396,
+        "unidad": "km",
+        "referencia": "Saturno"
+      },
+      "temperatura_media_k": 87,
+      "atmosfera": "Muy tenue, de oxígeno",
+      "anillos": false,
+      "textura": {
+        "tipo": "hielo",
+        "colores": [
+          "#9c9a96",
+          "#c4c2be",
+          "#e0dfdc"
+        ],
+        "craters": 100,
+        "escala": 3.5,
+        "lineas": "#8f8d89"
+      },
+      "gravedad_ms2": 0.23187584248194212,
+      "densidad_kg_m3": 1477.43466614667
+    },
+    {
+      "id": "rea",
+      "nombre": "Rea",
+      "categoria": "luna",
+      "padre": "saturno",
+      "tipo": "Luna de hielo craterizada",
+      "radio_km": 763.8,
+      "masa_kg": 2.306e+21,
+      "periodo_rotacion_h": 108.4,
+      "periodo_orbital_dias": 4.518,
+      "distancia_media": {
+        "valor": 527108,
+        "unidad": "km",
+        "referencia": "Saturno"
+      },
+      "temperatura_media_k": 76,
+      "atmosfera": "Muy tenue, de oxígeno y dióxido de carbono",
+      "anillos": false,
+      "textura": {
+        "tipo": "rocoso",
+        "colores": [
+          "#8f8d89",
+          "#b5b3af",
+          "#d2d0cc"
+        ],
+        "craters": 180,
+        "escala": 3.5
+      },
+      "gravedad_ms2": 0.26380692834116376,
+      "densidad_kg_m3": 1235.4686553565323
+    },
+    {
+      "id": "japeto",
+      "nombre": "Jápeto",
+      "categoria": "luna",
+      "padre": "saturno",
+      "tipo": "Luna de dos tonos: un hemisferio oscuro y otro claro",
+      "radio_km": 734.5,
+      "masa_kg": 1.806e+21,
+      "periodo_rotacion_h": 1903.7,
+      "periodo_orbital_dias": 79.32,
+      "distancia_media": {
+        "valor": 3560820,
+        "unidad": "km",
+        "referencia": "Saturno"
+      },
+      "temperatura_media_k": 110,
+      "atmosfera": "Nula",
+      "anillos": false,
+      "textura": {
+        "tipo": "rocoso",
+        "colores": [
+          "#c8c2b8",
+          "#ddd8cf",
+          "#efebe4"
+        ],
+        "craters": 140,
+        "escala": 3,
+        "dicotomia": "#2e251d"
+      },
+      "gravedad_ms2": 0.2234191257395291,
+      "densidad_kg_m3": 1088.062233600364
+    },
+    {
+      "id": "miranda",
+      "nombre": "Miranda",
+      "categoria": "luna",
+      "padre": "urano",
+      "tipo": "Luna de hielo con terrenos fracturados",
+      "radio_km": 235.8,
+      "masa_kg": 65900000000000000000,
+      "periodo_rotacion_h": 33.9,
+      "periodo_orbital_dias": 1.413,
+      "distancia_media": {
+        "valor": 129390,
+        "unidad": "km",
+        "referencia": "Urano"
+      },
+      "temperatura_media_k": 59,
+      "atmosfera": "Nula",
+      "anillos": false,
+      "textura": {
+        "tipo": "hielo",
+        "colores": [
+          "#7c7a78",
+          "#9c9a97",
+          "#bdbbb7"
+        ],
+        "craters": 100,
+        "escala": 3.5,
+        "lineas": "#6a6866"
+      },
+      "gravedad_ms2": 0.07910137183003954,
+      "densidad_kg_m3": 1199.9562248798077
+    },
+    {
+      "id": "ariel",
+      "nombre": "Ariel",
+      "categoria": "luna",
+      "padre": "urano",
+      "tipo": "Luna de hielo y roca",
+      "radio_km": 578.9,
+      "masa_kg": 1.251e+21,
+      "periodo_rotacion_h": 60.5,
+      "periodo_orbital_dias": 2.52,
+      "distancia_media": {
+        "valor": 190900,
+        "unidad": "km",
+        "referencia": "Urano"
+      },
+      "temperatura_media_k": 60,
+      "atmosfera": "Nula",
+      "anillos": false,
+      "textura": {
+        "tipo": "hielo",
+        "colores": [
+          "#8c8a87",
+          "#b0aeab",
+          "#d0cecb"
+        ],
+        "craters": 120,
+        "escala": 3.5,
+        "lineas": "#757370"
+      },
+      "gravedad_ms2": 0.24913595727399918,
+      "densidad_kg_m3": 1539.4232863059215
+    },
+    {
+      "id": "umbriel",
+      "nombre": "Umbriel",
+      "categoria": "luna",
+      "padre": "urano",
+      "tipo": "Luna oscura de hielo y roca",
+      "radio_km": 584.7,
+      "masa_kg": 1.275e+21,
+      "periodo_rotacion_h": 99.5,
+      "periodo_orbital_dias": 4.144,
+      "distancia_media": {
+        "valor": 266000,
+        "unidad": "km",
+        "referencia": "Urano"
+      },
+      "temperatura_media_k": 61,
+      "atmosfera": "Nula",
+      "anillos": false,
+      "textura": {
+        "tipo": "rocoso",
+        "colores": [
+          "#3f3d3b",
+          "#5a5856",
+          "#7a7875"
+        ],
+        "craters": 160,
+        "escala": 3
+      },
+      "gravedad_ms2": 0.24890303912765072,
+      "densidad_kg_m3": 1522.727860862584
+    },
+    {
+      "id": "titania",
+      "nombre": "Titania",
+      "categoria": "luna",
+      "padre": "urano",
+      "tipo": "Luna de hielo y roca (la mayor de Urano)",
+      "radio_km": 788.4,
+      "masa_kg": 3.4e+21,
+      "periodo_rotacion_h": 208.9,
+      "periodo_orbital_dias": 8.706,
+      "distancia_media": {
+        "valor": 436300,
+        "unidad": "km",
+        "referencia": "Urano"
+      },
+      "temperatura_media_k": 60,
+      "atmosfera": "Nula",
+      "anillos": false,
+      "textura": {
+        "tipo": "hielo",
+        "colores": [
+          "#6f6b66",
+          "#8f8b86",
+          "#b0aca7"
+        ],
+        "craters": 140,
+        "escala": 3.5,
+        "lineas": "#5f5b56"
+      },
+      "gravedad_ms2": 0.3650664209938064,
+      "densidad_kg_m3": 1656.3437028067976
+    },
+    {
+      "id": "oberon",
+      "nombre": "Oberón",
+      "categoria": "luna",
+      "padre": "urano",
+      "tipo": "Luna de hielo y roca, muy craterizada",
+      "radio_km": 761.4,
+      "masa_kg": 3.076e+21,
+      "periodo_rotacion_h": 323,
+      "periodo_orbital_dias": 13.46,
+      "distancia_media": {
+        "valor": 583500,
+        "unidad": "km",
+        "referencia": "Urano"
+      },
+      "temperatura_media_k": 61,
+      "atmosfera": "Nula",
+      "anillos": false,
+      "textura": {
+        "tipo": "rocoso",
+        "colores": [
+          "#5c5651",
+          "#7d7770",
+          "#9d9790"
+        ],
+        "craters": 200,
+        "escala": 3
+      },
+      "gravedad_ms2": 0.35411700992648365,
+      "densidad_kg_m3": 1663.6390444128967
+    },
+    {
       "id": "triton",
       "nombre": "Tritón",
       "categoria": "luna",
@@ -693,6 +1102,38 @@ window.ASTROS_DATOS = {
       },
       "gravedad_ms2": 0.7793717191119229,
       "densidad_kg_m3": 2059.888242971553
+    },
+    {
+      "id": "caronte",
+      "nombre": "Caronte",
+      "categoria": "luna",
+      "padre": "pluton",
+      "tipo": "Luna de hielo, casi tan grande como su planeta enano",
+      "radio_km": 606,
+      "masa_kg": 1.586e+21,
+      "periodo_rotacion_h": -153.3,
+      "periodo_orbital_dias": 6.387,
+      "distancia_media": {
+        "valor": 19591,
+        "unidad": "km",
+        "referencia": "Plutón"
+      },
+      "temperatura_media_k": 53,
+      "atmosfera": "Nula",
+      "anillos": false,
+      "textura": {
+        "tipo": "rocoso",
+        "colores": [
+          "#6e6a66",
+          "#9a9692",
+          "#c4c0bb"
+        ],
+        "craters": 90,
+        "escala": 3,
+        "casquetes": "#8c4b3a"
+      },
+      "gravedad_ms2": 0.28823328867540216,
+      "densidad_kg_m3": 1701.3618926231943
     },
     {
       "id": "sol",

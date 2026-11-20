@@ -4,6 +4,20 @@
 
 ### Cambiado
 
+- **`review/yue.csv` sin rangos de frecuencia**: la planilla del cantonés usaba la lista de chino tradicional
+  (`zh_tw`) como aproximación, y de ella salían 113 rangos y 27 filas «frecuente» que no eran cantonés. Ahora se
+  genera sin lista, como `swa.csv` (179 filas, sin respuestas perdidas: no había ninguna rellenada).
+- **Turco, posesivos y sus casos** (`TurkishInflection`): «kitap» → «kitabım», «kitabın», «kitabı»,
+  «kitabımız», «kitabınız», «kitapları», más los casos sobre cada uno («kitabımı», «kitabına», «kitabından»,
+  «kitabıyla»; con «n» de unión tras la 3.ª persona). Contra UniMorph, la cobertura pasa de 23 % a 81 % y la
+  precisión de 79 % a 54 % (de 14 a 71 formas por lema). Con `bin/false-positives.php`: +57 formas marcadas en
+  las 50.000 palabras más frecuentes, casi todas de insultos del diccionario; las tres que eran palabras
+  corrientes («katılım» —participación—, «kadınsın», «kadınsınız») pasan a `everyday` de `config/chat-topics/tur.php`.
+  Los adjetivos turcos llevan solo plural y casos, sin posesivos.
+- **Húngaro, casos del plural y casos menos comunes** (`HungarianInflection`): «barmoknak», «barmokkal» y los
+  casos ilativo («baromba»), adesivo («baromnál»), translativo («barommá»), terminativo («baromig») y formal
+  («baromként»). Sustantivos: cobertura de 24 % a 59 % (precisión de 80 % a 70 %); adjetivos: de 29 % a 70 %
+  (de 79 % a 68 %). +17 formas marcadas, todas de insultos del diccionario (`bűnözőknek`, `gyilkosokkal`…).
 - **Alemán, sustantivos por terminación** (`GermanInflection`): plural y genitivo según la terminación
   («Hund» → «Hunds», «Hunde», «Hundes»; «Beziehung» → «Beziehungen»; «Wagen» → «Wagens»; «Arsch» →
   «Arsches», «Arsche»). Contra UniMorph, la cobertura pasa de 17 % a 67 % (precisión de 90 % a 81 %) y los

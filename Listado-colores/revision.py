@@ -1,5 +1,9 @@
 """Revisión por hablantes nativos de Listado-colores: validación de revisiones.csv, el informe revisiones.md y el visor HTML.
 
+@deprecated desde el 2026-11-12: la persona decidió que no habrá revisión por hablantes nativos, así que este flujo (este módulo,
+revisiones.csv, revisiones.md y visor-plantilla.html) no se mantiene ni se amplía. Sigue funcionando, lo ejecuta generar-tabla.py y
+lo cubren las pruebas; se conserva por si alguien quiere usarlo, no se borra.
+
 Solo biblioteca estándar. Lo usa generar-tabla.py. Casi todo el contenido del proyecto lo escribió un asistente de IA sin
 revisión de hablantes nativos; revisiones.csv es el registro de quién ha revisado qué. Cada fila dice que una persona
 revisó un elemento (el nombre de un color en un idioma, sus significados, un concepto del léxico o las categorías

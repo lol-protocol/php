@@ -12,6 +12,7 @@ declare(strict_types=1);
  *   php scripts/cache-texts.php --force            refetch even if the page did not change
  *   php scripts/cache-texts.php --format=txt       plain text instead of Markdown
  *   php scripts/cache-texts.php --field-sources    also the pages cited in field_sources.csv for single fields (named {law}--{hash}.md)
+ *   php scripts/cache-texts.php --browser         render with headless Chrome the pages that have no text without JavaScript (see leyes-comunes/README.md)
  *   php scripts/cache-texts.php --allow-private-hosts   also fetch loopback/private addresses (refused by default)
  *   php scripts/cache-texts.php --max-kb=400 --delay=1 --timeout=20
  *   php scripts/cache-texts.php --convert < page.html     HTML on stdin → Markdown on stdout
@@ -22,7 +23,7 @@ declare(strict_types=1);
  *
  * One GET per reference URL, with a pause between requests. robots.txt is honoured
  * (RFC 9309, including Crawl-delay up to 30 s). PDFs are converted with pdftotext (poppler-utils) when it is
- * installed, and skipped otherwise. Pages that need JavaScript and
+ * installed, and skipped otherwise. Pages that need JavaScript (unless --browser) and
  * other non-text content are skipped and reported.
  */
 

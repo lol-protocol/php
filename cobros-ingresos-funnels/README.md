@@ -701,7 +701,9 @@ src/
 database/
   migraciones/          el esquema, el catálogo de ~240 países y sus monedas
                         (ISO 4217), los índices y la regla de mayoría de edad,
-                        en cambios numerados (001 = esquema inicial, 005 =
+                        en cambios numerados (001 = esquema inicial, 002 =
+                        el envío único de los formularios, 003 = la vista
+                        boletas_con_saldo, 004 = valores cerrados, 005 =
                         catálogo, 006 y 008 = índices, 007 = mayoría de edad,
                         009 = origen de las tasas de cambio, 010 = mayoría de
                         edad de cada país, 011 = la tasa de cambio de cada día,
@@ -710,7 +712,7 @@ database/
                         del catálogo de países y monedas, 015 = email único sin
                         importar mayúsculas, 016 = monedas reemplazadas, 017 =
                         mayoría de edad de Puerto Rico, 018 = el historial de las
-                        tasas de cambio)
+                        tasas de cambio, 019 = montos con tres decimales)
 bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
