@@ -46,9 +46,21 @@ final class EvasionCleaner
     public static function clean(string $text, string $language = ''): string
     {
         $text = self::unmarkup(mb_scrub($text, 'UTF-8')); // un byte inválido apagaba todas las expresiones regulares
-        if (preg_match('/[^\x00-\x7F]/', $text) !== 1) {
-            return $text; // ASCII puro: nada que deshacer
+        if (preg_match('/[^\x00-\x7F]/', $text) !== 1 || PlainLatin::matches($text)) {
+            return $text; // ASCII puro, o letras latinas que el camino largo no toca: nada que deshacer
         }
+
+        return self::deepClean($text, $language);
+    }
+
+    /**
+     * El camino largo, para texto con algo que no es ASCII ni PlainLatin. Interno: es público para que
+     * `PlainLatinTest` compruebe que el atajo de `clean()` da lo mismo.
+     *
+     * @internal
+     */
+    public static function deepClean(string $text, string $language = ''): string
+    {
         $text = preg_replace_callback(self::RIGHT_TO_LEFT, fn(array $m): string => implode('', array_reverse(mb_str_split($m[1]))), $text) ?? $text;
         $text = StyledLetters::plain(str_replace('İ', 'I', UpsideDown::flip($text))); // «İBNE» en minúsculas sería «i» + punto combinante
         if (class_exists(\Normalizer::class) && !\Normalizer::isNormalized($text, \Normalizer::FORM_KC)) {

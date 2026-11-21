@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 /** IcelandicInflection y RomanianInflection (medidas contra UniMorph con bin/inflection-check.php) y ArabicPlurals. */
 class IcelandicRomanianTest extends TestCase
 {
+    use AssertsInflectedForms;
+
     /** @return array<string,array{string,string,string,list<string>}> idioma, lema, tipo, formas que deben estar */
     public static function forms(): array
     {
@@ -31,11 +33,7 @@ class IcelandicRomanianTest extends TestCase
     #[DataProvider('forms')]
     public function testForms(string $language, string $lemma, string $kind, array $expected): void
     {
-        $forms = array_keys(TopicInflector::tagged($language, $lemma, $kind));
-
-        $this->assertSame([], array_diff($expected, $forms), "{$language} {$lemma}");
-        $this->assertSame($lemma, $forms[0]);
-        $this->assertSame($forms, array_values(array_unique($forms)));
+        $this->assertFormsInclude($language, $lemma, $kind, $expected, true);
     }
 
     public function testIcelandicAdjectivesAndVerbsStayLiteral(): void

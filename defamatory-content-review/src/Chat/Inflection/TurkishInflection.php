@@ -90,10 +90,8 @@ final class TurkishInflection implements TopicInflection
         [$four, $two] = [self::FOUR[$v], self::TWO[$v]];
         $vowelFinal = mb_strpos(self::VOWELS, mb_substr($word, -1)) !== false;
         $voiceless = preg_match('/[çfhkpsşt]$/u', $word) === 1;
-        $stems = [$word];
-        if (!$vowelFinal && isset(self::SOFTEN[mb_substr($word, -1)]) && preg_match_all('/[' . self::VOWELS . ']/u', $word) > 1) { // solo las polisílabas: «top» → «topu»
-            $stems[] = mb_substr($word, 0, -1) . (str_ends_with($word, 'nk') ? 'g' : self::SOFTEN[mb_substr($word, -1)]); // kitap → kitab-, pezevenk → pezevengi
-        }
+        $softened = $this->softened($word); // «kitap» → «kitab-»: solo polisílabas
+        $stems = $softened === null ? [$word] : [$word, $softened];
         $forms = [];
         foreach ($stems as $stem) {
             $glide = $vowelFinal ? 'y' : '';
