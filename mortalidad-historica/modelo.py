@@ -101,3 +101,42 @@ def esperanzas_por_edad(q5_por_mil, e0, edades, sexo="T"):
         return None
     l, e = tabla(q5, k, sexo)
     return {edad: (e[EDADES.index(edad)], l[EDADES.index(edad)]) for edad in edades}
+
+
+EDAD_MAXIMA = 110  # el último grupo de edad del modelo es 110+; más allá de ahí no se interpola
+
+
+def perfil(q5_por_mil, e0, sexo="T"):
+    """(l, e): proporción de sobrevivientes y esperanza restante en los 24 grupos de edad (l(0) = 1) para esa mortalidad
+    de 0 a 5 años (por mil) y esa esperanza al nacer, o None si el modelo no puede cuadrarlas."""
+    q5 = q5_por_mil / 1000.0
+    if not 0 < q5 < 1:
+        return None
+    k = resolver_k(q5, e0, sexo)
+    return None if k is None else tabla(q5, k, sexo)
+
+
+def supervivencia_en(l, edad):
+    """Proporción de los recién nacidos que llega con vida a `edad` (0 a 110), por interpolación lineal entre los
+    grupos de edad del modelo (se supone que las muertes se reparten parejo dentro de cada grupo)."""
+    if not 0 <= edad <= EDAD_MAXIMA:
+        raise ValueError(f"edad fuera de 0 a {EDAD_MAXIMA}: {edad}")
+    for i in range(len(EDADES) - 1):
+        if edad <= EDADES[i + 1]:
+            fraccion = (edad - EDADES[i]) / (EDADES[i + 1] - EDADES[i])
+            return l[i] + fraccion * (l[i + 1] - l[i])
+    return l[-1]
+
+
+def edad_de_supervivencia(l, objetivo):
+    """La edad a la que la proporción de sobrevivientes baja a `objetivo` (0 < objetivo <= 1): inversa de
+    `supervivencia_en`. Si el modelo no llega tan abajo, devuelve 110."""
+    if not 0 < objetivo <= 1:
+        raise ValueError(f"proporción fuera de (0, 1]: {objetivo}")
+    for i in range(len(EDADES) - 1):
+        if l[i + 1] <= objetivo <= l[i]:
+            if l[i] == l[i + 1]:
+                return float(EDADES[i])
+            return EDADES[i] + (l[i] - objetivo) / (l[i] - l[i + 1]) * (EDADES[i + 1] - EDADES[i])
+    return float(EDAD_MAXIMA)
+
