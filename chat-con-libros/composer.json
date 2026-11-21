@@ -1,0 +1,23 @@
+{
+    "name": "lol-protocol/chat-con-libros",
+    "description": "Chat personal con un libro: busca en el texto y responde citando los pasajes; con un modelo de lenguaje opcional.",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.1",
+        "ext-json": "*",
+        "ext-mbstring": "*"
+    },
+    "suggest": {
+        "anthropic-ai/sdk": "Solo para el modo con IA (--ia y la casilla de la web): respuestas en lenguaje natural con Claude.",
+        "guzzlehttp/guzzle": "El SDK de Anthropic necesita un cliente HTTP PSR-18; Guzzle es el más común."
+    },
+    "scripts": {
+        "test": "php pruebas/ejecutar.php",
+        "comprobar": "php bin/vectores.php --comprobar",
+        "web": "php -S 127.0.0.1:8080 -t web"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

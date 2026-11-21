@@ -1,0 +1,6 @@
+# Dependencias opcionales del modo con IA (composer require anthropic-ai/sdk guzzlehttp/guzzle).
+vendor/
+composer.lock
+
+# Los libros que uses de verdad se quedan aquí, fuera del repositorio (la mayoría tiene derechos de autor).
+mis-libros/
