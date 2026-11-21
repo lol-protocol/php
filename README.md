@@ -12,6 +12,8 @@ términos de uso, que ningún abogado ha revisado), [`RECLAMOS.md`](RECLAMOS.md)
 paso, cuando alguien reclama), [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md) (lo que
 el equipo no puede decidir solo), [`CUMPLIMIENTO-LEY-21719.md`](CUMPLIMIENTO-LEY-21719.md) (qué
 hace el sitio frente a la ley chilena de datos y qué falta antes del 1 de diciembre de 2026),
+[`POLITICA-DE-PRIVACIDAD.md`](POLITICA-DE-PRIVACIDAD.md) (el borrador de la política de privacidad,
+con huecos), [`SI-HAY-UNA-FUGA.md`](SI-HAY-UNA-FUGA.md) (qué hacer el día que haya una fuga de datos),
 [`CONTRIBUTING.md`](CONTRIBUTING.md) (cómo abrir un PR a mano)
 y [`SECURITY.md`](SECURITY.md) (cómo avisar de una fuga de datos sin publicarla).
 
