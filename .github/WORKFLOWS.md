@@ -28,6 +28,7 @@ se regenera con `python3 .github/scripts/listar-workflows.py`, y `estructura.yml
 | [`pruebas-mortalidad-historica.yml`](workflows/pruebas-mortalidad-historica.yml) | Pruebas mortalidad-historica | `push`, `pull_request`, `workflow_dispatch` | `mortalidad-historica`, `php`, `js`, `reproducir` |
 | [`pruebas-musica-infinita.yml`](workflows/pruebas-musica-infinita.yml) | Pruebas musica-infinita | `push`, `pull_request`, `workflow_dispatch` | `pruebas`, `lint`, `navegador` |
 | [`pruebas-parsing-fb-in-mas.yml`](workflows/pruebas-parsing-fb-in-mas.yml) | Pruebas Parsing-fb-in-mas | `push`, `pull_request`, `workflow_dispatch` | `pruebas` |
+| [`pruebas-personas-especiales.yml`](workflows/pruebas-personas-especiales.yml) | Pruebas personas-especiales | `push`, `pull_request`, `workflow_dispatch` | `personas-especiales`, `migraciones`, `analisis-estatico` |
 | [`pruebas-phone-directory.yml`](workflows/pruebas-phone-directory.yml) | Pruebas phone-directory | `push`, `pull_request`, `workflow_dispatch` | `phone-directory`, `phone-directory-ports` |
 | [`pruebas-portadas-svg.yml`](workflows/pruebas-portadas-svg.yml) | Pruebas portadas SVG | `push`, `pull_request`, `workflow_dispatch` | `pruebas` |
 | [`pruebas-signos-zodiacales.yml`](workflows/pruebas-signos-zodiacales.yml) | Pruebas signos-zodiacales | `push`, `pull_request`, `workflow_dispatch` | `signos-zodiacales`, `galeria`, `php` |
