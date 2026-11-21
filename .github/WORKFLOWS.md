@@ -18,6 +18,7 @@ se regenera con `python3 .github/scripts/listar-workflows.py`, y `estructura.yml
 | [`marcalibros-b.yml`](workflows/marcalibros-b.yml) | Marcalibros (generar catalogo y pruebas) | `push`, `pull_request`, `workflow_dispatch` | `catalogo` |
 | [`pruebas-astros-3d.yml`](workflows/pruebas-astros-3d.yml) | Pruebas astros-3d | `push`, `pull_request`, `workflow_dispatch` | `astros-3d` |
 | [`pruebas-backoffice.yml`](workflows/pruebas-backoffice.yml) | Pruebas backoffice | `push`, `pull_request`, `workflow_dispatch` | `analisis-estatico`, `pruebas` |
+| [`pruebas-chat-con-libros.yml`](workflows/pruebas-chat-con-libros.yml) | Pruebas chat-con-libros | `push`, `pull_request`, `workflow_dispatch` | `php`, `java` |
 | [`pruebas-citas-pos.yml`](workflows/pruebas-citas-pos.yml) | Pruebas citas POS | `push`, `pull_request`, `workflow_dispatch` | `pruebas`, `navegador` |
 | [`pruebas-cobros-ingresos-funnels.yml`](workflows/pruebas-cobros-ingresos-funnels.yml) | Pruebas cobros, ingresos y funnels | `push`, `pull_request`, `workflow_dispatch` | `tests` |
 | [`pruebas-defamatory-content-review.yml`](workflows/pruebas-defamatory-content-review.yml) | Pruebas defamatory-content-review | `push`, `pull_request`, `workflow_dispatch` | `phpunit`, `chat-front-guard` |
