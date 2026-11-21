@@ -152,7 +152,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 07_A | `07_A-install-fail2ban-autoupdates.sh` | Instala fail2ban y actualizaciones automáticas de seguridad (sin reinicio automático). Jails: SSH, Nginx (bots que barren rutas como `wp-login.php`, fuerza bruta a `auth_basic` y peticiones malformadas, en los logs de **todos** los dominios) y `recidive` (una semana fuera a quien reincide) |
 | 07_B | `07_B-nginx-security-headers.sh` | Agrega HSTS, X-Frame-Options, X-Content-Type-Options y Referrer-Policy a todos los dominios, oculta la versión de Nginx (`server_tokens off`) y define un vhost por defecto que corta el tráfico por IP o con un Host ajeno (archivos en `conf.d/`) |
 | 07_C | `07_C-harden-ssh.sh` | *(Opcional, requiere tu llave pública)* Autoriza tu llave y desactiva login por contraseña y de root. Exige confirmar que ya probaste la llave; `--revert` lo deshace |
-| 07_D | `07_D-setup-logrotate.sh` | Rota los logs de Nginx por dominio (`/var/log/nginx/<dominio>/*.log`), que el logrotate del paquete no cubre |
+| 07_D | `07_D-setup-logrotate.sh` | Rota los logs de Nginx por dominio (`/var/log/nginx/<dominio>/*.log`), que el logrotate del paquete no cubre. También limita el journal de systemd (los logs de gunicorn, PHP-FPM, fail2ban…) a `JOURNAL_MAX_USE` (200M por defecto) con un drop-in propio en `/etc/systemd/journald.conf.d/` |
 | 07_E | `07_E-nginx-performance.sh` | Amplía gzip (CSS/JS/JSON/XML/SVG, también respuestas de apps tras proxy) y activa `open_file_cache` para todos los dominios. Si `nginx -t` rechaza la config, quita su archivo |
 | 08 | `08-healthcheck.sh` | Solo lectura: revisa servicios, UFW, puertos, DNS, HTTPS, certificado y headers. Sale con código 1 si algo falla. Uso: `./08-healthcheck.sh tudominio.com` |
 | 09_A | `09_A-setup-monitoring.sh` | *(Opcional)* Monitoreo cada 15 min (disco, RAM, carga, certificados, servicios) con alertas a webhook (Slack/Discord/Mattermost) y/o correo. Solo avisa cuando cambia el estado |
@@ -243,6 +243,7 @@ sin argumentos muestran el uso y salen con código 2.
 |----------|-------------|----------|
 | `MAX_UPLOAD` | `20M` | Tamaño máximo de una petición/subida en las apps (`06_A`, `06_B`, `06_D`, y `10_A` que los llama; `06_E` usa 6M). En PHP el límite es global y solo sube |
 | `PROXY_TIMEOUT` | `120s` | Cuánto espera Nginx a una app Python/Tomcat (y el `--timeout` de gunicorn) |
+| `JOURNAL_MAX_USE` | `200M` | Tope del journal de systemd (`07_D`): evita que los logs llenen un disco chico. Se ve con `journalctl --disk-usage` |
 | `WHISPER_VERSION` / `WHISPER_MIN_GB` | `20250625` / `8` | Versión fija de `openai-whisper` y GB libres mínimos para instalar (`02_I`); `WHISPER_FORCE=1` salta la comprobación de disco |
 | `GUNICORN_WORKERS` | según CPU y RAM | Workers de gunicorn por app Python (`06_B`). Por defecto 2×CPU+1, acotado a RAM÷512 MB (mínimo 2): 1 GB → 2, 2 GB → 3 |
 | `PHP_WWW_MAX_CHILDREN` | `2` | Procesos máximos del pool `www` por defecto de PHP-FPM, que `02_B` deja en `ondemand` (las apps llevan su propio pool) |
