@@ -30,6 +30,24 @@ const API_RUTAS = [
 ];
 
 /**
+ * Qué interruptor lleva cada función de la API (ver api/interruptores.php). Además, todo cuelga de `gen.backoffice`.
+ * Las funciones que no figuran aquí (usuarios, grupos y tipos de acción) son la base del backoffice: solo las apaga
+ * `gen.backoffice`. pruebas/php/interruptores-test.php exige decidirlo para cada función nueva.
+ *
+ * `gen.backoffice:comparacion` no apaga una ruta: la comparación con el universo viaja dentro de la respuesta de api_timeline.
+ * Apagada, esa respuesta sale sin cohorte y con los deltas en null (api_timeline_con_cohortes, api_funcion_encendida).
+ */
+const API_INTERRUPTORES = [
+    'api_timeline' => 'gen.backoffice:flujo',
+    'api_kpis' => 'gen.backoffice:kpis',
+    'api_alerts' => 'gen.backoffice:alertas',
+    'api_alertas_config' => 'gen.backoffice:alertas',
+    'api_filtros' => 'gen.backoffice:filtros',
+    'api_filtros_delete' => 'gen.backoffice:filtros',
+    'api_notas' => 'gen.bak-notas',
+];
+
+/**
  * La ruta de la tabla que corresponde a $path (idéntica, sin nada antes ni después), o null si no hay ninguna.
  *
  * @return array{handler:string,args:int[],sesion:bool}|null

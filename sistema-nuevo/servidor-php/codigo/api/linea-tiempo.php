@@ -51,7 +51,7 @@ function api_timeline(): void
     $porPagina = api_por_pagina_desde_query();
 
     $paginaAcciones = $acciones->pagina($userId, $tipo, $pagina, $porPagina);
-    $cohortes = api_timeline_con_cohortes($paginaAcciones['items'], $user['country'], $universo);
+    $cohortes = api_timeline_con_cohortes($paginaAcciones['items'], $user['country'], $universo, api_funcion_encendida('gen.backoffice:comparacion'));
 
     api_responder([
         'user' => $user + ['country_name' => $groups['countries'][$user['country']] ?? $user['country']],
