@@ -55,9 +55,15 @@ final class SingleLineEntrySplitter
         ?callable $streetStart = null
     ): ?array
     {
+        // Text that is not UTF-8 cannot be split into fields; the unicode patterns below would fail on it.
+        if (!mb_check_encoding($line, 'UTF-8')) {
+            return null;
+        }
+
         // A phone the scan misread ("555-l23-4567") would otherwise pass for a street starting with a digit.
         $line = PhonePattern::repairOcrDigits($line);
-        $fields = array_map('trim', preg_split(self::FIELD_DELIMITER, $line, -1, PREG_SPLIT_NO_EMPTY));
+        // A pathologically long line can exceed the regex engine's limits (preg_split gives false): no fields then.
+        $fields = array_map('trim', preg_split(self::FIELD_DELIMITER, $line, -1, PREG_SPLIT_NO_EMPTY) ?: []);
 
         if (count($fields) >= 2) {
             $result = self::splitByFields($fields, $looksLikeStreet, $language);
@@ -225,8 +231,15 @@ final class SingleLineEntrySplitter
         return preg_match('/\p{L}/u', $text) === 1;
     }
 
+    /**
+     * Trims the leaders from both ends by character, not by byte: the en dash and em dash are three bytes each,
+     * and trim() on the bytes also cut the first two of a character like the typographic apostrophe (E2 80 99),
+     * leaving invalid UTF-8 that crashed the name split.
+     */
     private static function trimLeaders(string $text): string
     {
-        return trim($text, self::LEADER_CHARS);
+        $trimmed = preg_replace('/^[\s\0.,\-\x{2013}\x{2014}]+|[\s\0.,\-\x{2013}\x{2014}]+$/u', '', $text);
+
+        return $trimmed ?? trim($text, self::LEADER_CHARS);
     }
 }

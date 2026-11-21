@@ -687,7 +687,8 @@ class MultiLanguagePhoneDirectoryParser:
                                   'type': business}, start_line + record['offset'], language)
 
     def _finalize_entry(self, data: Dict, start_line: int, language: str):
-        if not data['name'] or not data['street']:
+        # A name needs a letter (as in the PHP parser).
+        if not data['name'] or not re.search(_L, data['name']) or not data['street']:
             self.errors.append({'line': start_line, 'reason': 'Missing name or street', 'data': data})
             return
 

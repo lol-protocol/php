@@ -558,6 +558,12 @@
             "idioma": "en",
             "entrada": "SMITH, John\r\n12 Oak Street\r\n555-123-4567\r\n",
             "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-numero-pegado-a-una-letra-no-es-telefono",
+            "idioma": "en",
+            "entrada": "SMITH, John\n12 Oak Street\né555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": null}]
         }
     ]
 }
