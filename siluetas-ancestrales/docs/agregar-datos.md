@@ -47,9 +47,12 @@ A('sierra-hombre', 'Campesino de sierra', 'andes', [1700, 1950], 'm', 'baja',
 - **Región** (`REGIONES`, en `atuendos.js`), **época** `[desde, hasta]` en años (negativos = antes de nuestra era), **sexo** `'f'` o `'m'`, **clase** `'baja'`, `'media'` o `'alta'`.
 - **Prendas:** ids separados por espacios. Debe haber **una de `calzado`** (aunque sea `descalzo`) y al menos dos prendas.
 - **Paleta:** una lista de tintes por letra; el generador elige uno por letra y por persona. Debe existir la letra `A`. Elige tintes que existieran en la época del traje.
-- **Extras:** `peinados`, `barbas`, `tocados` (ids de `src/cabeza.js`; `ninguna`/`ninguno` valen), `pieles` (ids de `PIELES`), `conf`, `nota` y `fuente`.
+- **Extras:** `peinados`, `barbas`, `tocados` (ids de `src/cabeza.js`; `ninguna`/`ninguno` valen), `pieles` (ids de `PIELES`), `edades`, `conf`, `nota` y `fuente`.
+- **Edades:** `edades: [6, 18]` limita el traje a esas edades (ropa escolar, trajes infantiles `[2, 12]`). Sin `edades` sirve de los 2 a los 100 años, salvo que lleve una prenda solo de adulto (armadura, toga, hábito, sotana…), que es desde los 16. Hasta los 12 años se prefieren los trajes infantiles de la región si los hay. Si agregas ropa de colegio, de estudiante o de adolescente, **declara `edades`**: una prueba lo exige.
+- **`conf: 'baja'` sin `nota`** recibe una nota por defecto; escribe una propia si sabes qué se pierde.
 - **El nombre no se repite** dentro del mismo sexo, y el `id` va en ASCII.
 - Hay una pareja de atuendos (mujer y hombre) por pueblo: ver abajo.
+- **Los tintes de la paleta deben haber existido en la época del traje** (`desde` y `hasta` del tinte): una prueba falla si listas uno que no existía.
 
 ## 4. Una etnia (`src/datos/etnias*.js`)
 

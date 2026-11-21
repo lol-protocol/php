@@ -1,0 +1,11 @@
+# pregunta	pasajes aceptables (números de pasaje, separados por comas; el primero es el 0)
+# Cada fila es una pregunta que una persona haría y los pasajes de ejemplos/muestra.txt que la responden.
+# Las pruebas miden en cuántas el primer o el segundo resultado es uno de los aceptables, con y sin sinónimos.
+¿Qué decía el mensaje que recibió Tomás?	3,4
+¿Por qué se detenía el reloj?	1
+¿Cómo era el aguacero?	4,7
+¿Dónde estaba el muelle?	7
+¿Qué sintió Tomás al mirar el agua?	9
+¿Quién esperaba a Tomás en el café?	7
+¿Cómo fue la travesía?	6
+¿Quién estaba enfermo?	4

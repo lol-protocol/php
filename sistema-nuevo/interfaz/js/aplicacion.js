@@ -6,6 +6,7 @@ import { leerFiltros } from "./controles-filtro.js";
 import { renderRespuestaTimeline } from "./respuesta-timeline.js";
 import { renderAlerts } from "./alertas.js";
 import { renderKpis } from "./kpis.js";
+import { esFuncionApagada } from "./errores.js";
 
 let ultimaPeticionTimeline = 0;
 
@@ -49,8 +50,17 @@ export function selectUser(userId) {
   return loadTimelineFromStart();
 }
 
+/** Una sección que el servidor tiene apagada (interruptores) no es un error de carga: llega null y se omite. */
+function sinFuncionApagada(peticion) {
+  return peticion.catch((err) => {
+    if (esFuncionApagada(err)) return null;
+    throw err;
+  });
+}
+
 export async function reloadAlerts() {
-  const alerts = await fetchJson("/api/alerts");
+  const alerts = await sinFuncionApagada(fetchJson("/api/alerts"));
+  if (alerts === null) return;
   state.lastAlerts = alerts;
   renderAlerts(alerts, selectUser);
 }
@@ -59,7 +69,7 @@ export async function loadAppData() {
   try {
     const [groups, actionTypes, users, alerts, kpis] = await Promise.all([
       fetchJson("/api/groups"), fetchJson("/api/action-types"), fetchJson("/api/users?per_page=100"),
-      fetchJson("/api/alerts"), fetchJson("/api/kpis"),
+      sinFuncionApagada(fetchJson("/api/alerts")), sinFuncionApagada(fetchJson("/api/kpis")),
     ]);
     state.groups = groups;
     state.actionTypes = actionTypes;
@@ -70,8 +80,8 @@ export async function loadAppData() {
     populateScopeSelect();
     populateTypeSelect();
     renderUserOptions("", () => {}); // el bloque de abajo ya dispara la carga inicial; duplicaba el pedido
-    renderAlerts(alerts, selectUser);
-    renderKpis(kpis);
+    if (alerts !== null) renderAlerts(alerts, selectUser);
+    if (kpis !== null) renderKpis(kpis);
 
     if (state.users.length > 0) {
       state.selectedUserId = document.getElementById("user-select").value || state.users[0].id;

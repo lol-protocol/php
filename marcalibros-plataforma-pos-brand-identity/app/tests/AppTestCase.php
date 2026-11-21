@@ -5,6 +5,7 @@ namespace MarcalibrosApp\Tests;
 use MarcalibrosApp\Application;
 use MarcalibrosApp\BookmarkStore;
 use MarcalibrosApp\Config;
+use MarcalibrosApp\FuncionesApagables;
 use MarcalibrosApp\RateLimiter;
 use MarcalibrosApp\Request;
 use MarcalibrosApp\Response;
@@ -82,7 +83,7 @@ abstract class AppTestCase extends TestCase
         return $root;
     }
 
-    protected function app(?Config $config = null, int $serverUploadLimit = PHP_INT_MAX): Application
+    protected function app(?Config $config = null, int $serverUploadLimit = PHP_INT_MAX, ?FuncionesApagables $funciones = null): Application
     {
         $config ??= $this->config();
         $limits = new Limits();
@@ -91,7 +92,7 @@ abstract class AppTestCase extends TestCase
 
         return new Application(
             $config,
-            new Catalog($config->projectRoot . '/catalog/manifest.json'),
+            new Catalog($config->projectRoot . '/catalog/manifest.json', $funciones === null ? null : $funciones->categoryAllowed(...)),
             $library,
             new BookmarkMaker($bookmarks, $library, $limits),
             new BookmarkStore($bookmarks),
@@ -101,6 +102,7 @@ abstract class AppTestCase extends TestCase
             fn (): int => $this->now,
             fn (string $path): bool => $this->uploaded[$path] ?? false,
             $serverUploadLimit,
+            funciones: $funciones,
         );
     }
 

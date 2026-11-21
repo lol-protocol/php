@@ -2,3 +2,6 @@ parameters:
     level: 6
     paths:
         - src
+    # FuncionesApagables usa la clase Interruptores de ../../interruptores, que se carga en tiempo de ejecucion.
+    scanDirectories:
+        - ../../interruptores/src

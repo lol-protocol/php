@@ -8,7 +8,7 @@ Trae un **catálogo grande de ropa** organizado por región, época, sexo y clas
 
 | | |
 |---|---|
-| Atuendos completos | 509, por región, época, sexo y clase social, **de la Antigüedad a 1985**: mundo antiguo, Europa medieval, moderna y del siglo XX, pueblos de todos los continentes y, para genealogía, la ropa de abuelos y bisabuelos (Chile, Latinoamérica, Estados Unidos y Europa de 1850 a 1980: jeans, overoles, ternos, vestidos de cada década, uniformes, oficios, novias y luto) |
+| Atuendos completos | 529, por región, época, sexo y clase social, **de la Antigüedad a 1985**: mundo antiguo, Europa medieval, moderna y del siglo XX, pueblos de todos los continentes y, para genealogía, la ropa de abuelos y bisabuelos (Chile, Latinoamérica, Estados Unidos y Europa de 1850 a 1980: jeans, overoles, ternos, vestidos de cada década, uniformes, oficios, novias y luto) |
 | Prendas | 485 (túnicas, mantos, faldas, pantalones, chaquetas, calzado, joyas…) sobre 16 plantillas paramétricas con decenas de variantes (escotes, mangas, formas, bolsillos, capuchas, pieles…), cada una con su **catálogo de colores y la probabilidad de cada color** |
 | Tintes con nombre | 110, con época y costo aproximados (índigo, cochinilla, púrpura de Tiro, denim, anilinas…) y 70 perfiles de color reutilizables |
 | Etnias y culturas | 124, con los que se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura |
@@ -72,6 +72,7 @@ En el navegador, sin módulos: `<script src="dist/siluetas-ancestrales.js">` exp
 | `anio` | año (negativo = antes de nuestra era): filtra atuendos por época y tintes por disponibilidad, y ajusta un poco la estatura |
 | `pose` | `casual` (por defecto, distinta con cada semilla), `'firme'` (simétrica, como las primeras versiones), `'infantil'` (pies abiertos, sin cargar el peso, brazos separados), `'mayor'` (carga el peso en una pierna, brazos pegados, a veces una mano en el pecho), `'segun-edad'` (la infantil hasta los 12 años, la de mayor desde los 65 y la casual en medio) o un objeto parcial para fijar partes: `{ brazoLibre: 'abajo'\|'cintura'\|'bolsillo'\|'pecho', manos: 'juntas'\|'cruzados' (los dos brazos al frente; solo sin saludo), carga: -1\|0\|1 (la pierna que carga el peso, vista de frente), cabeza: grados, inclinacion: grados, abre: 0,85 a 1,5 (apertura de los pies), giro: grados de los pies, saludo: { codo, antebrazo, mano } }`; la pose casual sale en `persona.cuerpo.pose` |
 | `vestir` | lista de ids de prenda o `{ ranura: id }`: viste prenda por prenda (ver «Vestir prenda por prenda») |
+| `vista` | `'frente'` (por defecto) o `'espalda'` (ver «Vista de espalda») |
 | `contorno` | `'ninguno'` (por defecto: sin bordes) o `'suave'` (un borde fino y tenue, por si se prefiere) |
 | `saludo` | `derecha` (por defecto), `izquierda` o `ninguno`: la mano levantada es la de la persona; de frente, la derecha queda a la izquierda de quien mira |
 | `sexo` (`f`/`m`), `edad` (2–100), `corpulencia` (`delgada`, `media`, `robusta`, `corpulenta` o un número), `altura` (cm), `postura` (`firme`, `relajada`, `abierta`) | cuerpo; los niños tienen otras proporciones |
@@ -81,6 +82,7 @@ En el navegador, sin módulos: `<script src="dist/siluetas-ancestrales.js">` exp
 | `variacion` | 0 a 1: cuánto se varían holguras, vuelos y pliegues respecto al catálogo |
 | `detalle` | `minimo` (plano, sin degradados ni sombras), `medio` (degradados y sombras proyectadas), `alto` (más contraste y luz) |
 | `rasgos` | `true` insinúa ojos, cejas, nariz y boca |
+| `fondo`, `compacto` | color de fondo (`#rrggbb`; sin él, transparente) y `true` para un SVG un 8 % más liviano (coordenadas con un decimal) |
 | `ropaNueva`, `estilo`, `esquema` | ropa inventada (`sobrio`, `trabajo`, `festivo`, `ceremonial`) con un esquema de color (`analogo`, `complementario`, `triada`, `monocromo`, `tierra`, `festivo`) |
 
 ## Árbol de ascendencia
@@ -148,7 +150,13 @@ Al dibujar, `renderizar` también revisa cada prenda contra `src/tipos-de-ropa.j
 - `src/cabeza.js`: cabeza, orejas, peinados, barbas y tocados, dibujados en unidades de la cabeza.
 - `src/prendas.js` y `src/prendas/`: las plantillas de prenda, una por archivo (`tunica.js`, `pantalon.js`…) con lo que comparten en `comun.js`; `prendas.js` las reúne en `PLANTILLAS`. Cada una se **ancla a las medidas del cuerpo**, así que la misma túnica sirve para un niño y para un anciano corpulento.
 - `src/datos/`: los datos. `prendas.js` (cada prenda es una plantilla con sus parámetros), `atuendos.js` (combinaciones por región y época, con su paleta de tintes), `colores.js` (tintes, pieles, cabellos).
+- `src/util.js` y `src/patrones.js`: el azar con semilla, el color (mezclas, tono, luminosidad), las curvas y los patrones de tela.
 - `src/generador.js`: elige atuendo, colores y rasgos; inventa ropa nueva; arma paletas.
+- `src/validacion.js` y `src/tipos-de-ropa.js`: comprueban las opciones y las prendas (qué parámetros lee cada plantilla y qué valores admite cada uno) y lanzan un error claro si algo no vale.
+- `src/espalda.js`: la vista de espalda (qué prendas y detalles se ven por detrás).
+- `src/familia.js`: el árbol de ascendencia (`generarFamilia`).
+- `src/cobertura.js`: el informe de cobertura por país (`bin/cobertura.js`).
+- `src/datos/` también trae `atuendos-*.js`, `prendas-*.js`, `etnias-*.js` (el catálogo en varios archivos por tema), `colores-prendas.js` (los perfiles de color de cada prenda) y `ayuda.js` (los ayudantes `A`, `E`, `P` y las paletas compartidas).
 - `src/svg.js`: capas, degradados, patrones y sombras. Cada forma se define una vez y se reutiliza con `<use>`; todos los `id` de una figura llevan un prefijo propio, así que se pueden poner varias figuras en una misma página sin que choquen. El SVG resultante no lleva scripts, imágenes ni enlaces externos.
 
 ### Catálogo de colores por prenda y probabilidad de cada color
@@ -235,5 +243,5 @@ Para un proyecto de genealogía conviene tratar la etnia como una **pista estad�
 - Algunas prendas son una **simplificación de forma** (por ejemplo la toga, el sari o el kimono se resuelven con plantillas generales de manto, falda y túnica cruzada).
 - Los atuendos de pueblos vivos o con comunidades vivas (mapuche, selk'nam, rapanui, maasái, pueblos de las llanuras, maoríes, aborígenes australianos, himba, wixárika…) son una representación genérica; antes de usarlos en algo publicado conviene revisarlos con personas de esos pueblos o con fuentes de su propia mano. Los objetos y adornos ceremoniales o de rango (por ejemplo los tocados de plumas) se usan aquí como elementos de ilustración y no sustituyen su significado.
 - No hay siluetas de pueblos de los que no existan trajes en el catálogo: si una etnia no tiene atuendo propio para el año pedido, el generador usa el más cercano y lo avisa en `persona.avisos`.
-- Solo vista frontal, de pie, con una mano levantada. La pose casual varía lo que se puede ver de frente (inclinación, apoyo, brazo libre); no hay giros de torso ni perfiles.
+- Solo vistas de frente y de espalda, de pie. La pose casual varía lo que se puede ver de frente (inclinación, apoyo, brazo libre) y hay poses con la mano en el pecho, las manos juntas o los brazos cruzados, pero no hay giros de torso, sentados ni perfiles (vista lateral).
 - La **etnia** es una estimación estadística: sirve para ilustrar un linaje probable, no para afirmar cómo era una persona concreta.

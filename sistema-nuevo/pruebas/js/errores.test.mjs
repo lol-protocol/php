@@ -65,3 +65,13 @@ test("no quedan traducciones de errores que el backend ya no manda, y es y en ti
   assert.deepEqual(claves(ES), codigos);
   assert.deepEqual(claves(EN), codigos);
 });
+
+test("esFuncionApagada: solo los dos códigos de una función apagada, no un interruptor ilegible ni otro error", async () => {
+  const { esFuncionApagada } = await import("../../interfaz/js/errores.js");
+  assert.equal(esFuncionApagada({ codigo: "funcion_apagada" }), true);
+  assert.equal(esFuncionApagada({ codigo: "funcion_no_disponible" }), true);
+  assert.equal(esFuncionApagada({ codigo: "interruptores_ilegibles" }), false);
+  assert.equal(esFuncionApagada({ codigo: "no_autenticado" }), false);
+  assert.equal(esFuncionApagada(new Error("sin código")), false);
+  assert.equal(esFuncionApagada(undefined), false);
+});

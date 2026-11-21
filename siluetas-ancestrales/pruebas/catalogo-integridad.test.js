@@ -67,3 +67,17 @@ test('persona.fuentes reúne las del atuendo y de las etnias, sin repetir', () =
   assert.ok(Array.isArray(p.fuentes));
   assert.equal(new Set(p.fuentes).size, p.fuentes.length);
 });
+
+test('todo lo de confianza baja trae una nota que lo explica', () => {
+  for (const x of [...ATUENDOS, ...ETNIAS].filter((e) => e.confianza === 'baja')) assert.ok(x.nota && x.nota.length >= 30, `${x.id}: confianza baja sin nota`);
+});
+
+test('ningún tinte de la paleta de un atuendo es imposible en su época, y cada letra tiene al menos uno posible', () => {
+  for (const a of ATUENDOS) {
+    for (const [letra, ids] of Object.entries(a.paleta)) {
+      const posibles = ids.filter((id) => { const t = TINTES_POR_ID[id]; return t.desde <= a.epoca[1] && t.hasta >= a.epoca[0]; });
+      assert.ok(posibles.length > 0, `${a.id} ${letra}: ningún tinte existía en ${a.epoca.join(' a ')}`);
+      assert.deepEqual(ids.filter((id) => !posibles.includes(id)), [], `${a.id} ${letra}: tintes que no existían en ${a.epoca.join(' a ')}`);
+    }
+  }
+});

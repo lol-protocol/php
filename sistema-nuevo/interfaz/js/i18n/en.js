@@ -130,6 +130,9 @@ export default {
   err_user_id_requerido: "user_id is required",
   err_usuario_no_encontrado: "user not found",
   err_ruta_no_encontrada: "route not found",
+  err_funcion_apagada: "this feature is turned off",
+  err_funcion_no_disponible: "this feature is not available right now",
+  err_interruptores_ilegibles: "could not read the switches state",
   err_no_autenticado: "not authenticated",
   err_error_interno: "internal server error",
 
