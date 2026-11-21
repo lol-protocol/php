@@ -955,7 +955,8 @@ php bin/inflection-check.php rus rus.tsv ru_50k.txt 400 --ends
 
 Da, por idioma y por tipo (sustantivo, adjetivo), la **precisión** (qué parte de lo generado existe),
 la **cobertura** (qué parte de lo que existe se genera) y, con `--ends`, la precisión por última
-letra del lema, para ver qué clase falla. Una precisión baja no es en sí un problema (una forma
+letra del lema, para ver qué clase falla. Con `--min-precision=50` sale con código 1 si algún tipo baja de
+ese porcentaje: es el umbral que se exige a una regla nueva de flexión. Una precisión baja no es en sí un problema (una forma
 inventada rara vez coincide con otra palabra; eso lo mide `bin/false-positives.php`), pero un fallo
 sistemático se ve enseguida: con ella se vio que los adjetivos búlgaros en «-ен» pierden la «е»
 («тъжен» → «тъжна») y que el turco necesitaba los casos. Resultado con 400 lemas frecuentes por tipo:
@@ -970,8 +971,8 @@ sistemático se ve enseguida: con ella se vio que los adjetivos búlgaros en «-
 | alemán | 81 % / 67 % | 99 % / 81 % |
 | neerlandés | — | 78 % / 96 % |
 | búlgaro | 50 % / 64 % | 57 % / 26 % |
-| húngaro | 80 % / 24 % | 79 % / 29 % |
-| turco | 79 % / 23 % | — |
+| húngaro | 70 % / 59 % | 68 % / 70 % |
+| turco | 54 % / 81 % | — |
 | noruego | 48 % / 88 % | 51 % / 62 % |
 | danés | 42 % / 33 % | 59 % / 53 % |
 | sueco | 46 % / 39 % | 53 % / 27 % |

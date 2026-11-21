@@ -3,8 +3,11 @@
 # SOLO INFORMA: no borra ni toca ninguna rama.
 #
 #   - vacía:      no tiene ningún commit que master no tenga.
-#   - fusionada:  tiene commits, pero los archivos que cambió están idénticos en master (los PR se
-#                 fusionan con squash, así que `git branch --merged` no las reconoce).
+#   - con PR fusionado: tiene commits, y su último commit es justo el que se fusionó en un PR (los PR se
+#                 fusionan con squash, así que `git branch --merged` no las reconoce). Es el caso de la
+#                 mayoría de las ramas viejas: master pudo cambiar después esos archivos, y entonces la
+#                 comparación de archivos de abajo ya no las ve.
+#   - fusionada:  tiene commits, pero los archivos que cambió están idénticos en master.
 #
 # No lista las ramas con un PR abierto, ni las que tienen un último commit de menos de MIN_DIAS días
 # (una sesión puede estar empezando a trabajar en ellas). Una rama con commits propios que no
@@ -12,8 +15,8 @@
 #
 # Necesita un clon con todas las ramas (fetch-depth: 0) y `gh` con permiso de leer pull requests.
 # Variables: BASE_REF (origin/master), MIN_DIAS (3), GITHUB_REPOSITORY (lol-protocol/php).
-# Con GITHUB_OUTPUT escribe `sobrantes=N` (vacías + fusionadas) para el paso que decide si abre una issue.
-# Con LISTA_RAMAS=<archivo> escribe además «rama sha» (una por línea) de las vacías y fusionadas, para
+# Con GITHUB_OUTPUT escribe `sobrantes=N` (vacías + con PR fusionado + fusionadas) para el paso que decide si abre una issue.
+# Con LISTA_RAMAS=<archivo> escribe además «rama sha» (una por línea) de las tres clases, para
 # borrar-ramas-fusionadas.yml; este script sigue sin borrar nada.
 set -euo pipefail
 
@@ -23,11 +26,16 @@ repo="${GITHUB_REPOSITORY:-lol-protocol/php}"
 ahora=$(date +%s)
 
 abiertas=$(gh api "repos/$repo/pulls?state=open&per_page=100" --paginate --jq '.[].head.ref')
+# «rama sha» del último commit de cada PR fusionado: una rama que sigue en ese commit no tiene nada más.
+pr_fusionados=$(gh api "repos/$repo/pulls?state=closed&per_page=100" --paginate \
+  --jq '.[] | select(.merged_at != null) | "\(.head.ref) \(.head.sha)"')
 
 if [ -n "${LISTA_RAMAS:-}" ]; then : >"$LISTA_RAMAS"; fi
 vacias=""
+con_pr=""
 fusionadas=""
 n_vacias=0
+n_con_pr=0
 n_fusionadas=0
 total=0
 while IFS='|' read -r rama fecha; do
@@ -40,6 +48,13 @@ while IFS='|' read -r rama fecha; do
     vacias+="- \`$rama\` (último commit: $dia)"$'\n'
     if [ -n "${LISTA_RAMAS:-}" ]; then echo "$rama $(git rev-parse "origin/$rama")" >>"$LISTA_RAMAS"; fi
     n_vacias=$((n_vacias + 1))
+    continue
+  fi
+  punta=$(git rev-parse "origin/$rama")
+  if grep -qxF -- "$rama $punta" <<<"$pr_fusionados"; then
+    con_pr+="- \`$rama\` (último commit: $dia)"$'\n'
+    if [ -n "${LISTA_RAMAS:-}" ]; then echo "$rama $punta" >>"$LISTA_RAMAS"; fi
+    n_con_pr=$((n_con_pr + 1))
     continue
   fi
   # Una rama sin ancestro común con la base (huérfana, como datos/leyes-textos-*) nunca es «fusionada»: sin
@@ -62,6 +77,10 @@ informe() {
   echo
   echo "${vacias:-_Ninguna._}"
   echo
+  echo "**Con su PR fusionado** (la rama sigue en el commit con el que se fusionó su PR; los PR se fusionan con squash y $base pudo cambiar esos archivos después):"
+  echo
+  echo "${con_pr:-_Ninguna._}"
+  echo
   echo "**Fusionadas** (sus archivos ya están iguales en $base):"
   echo
   echo "${fusionadas:-_Ninguna._}"
@@ -76,5 +95,5 @@ fi
 
 # Para el paso que decide si abre la issue: cuántas ramas sobran en total.
 if [ -n "${GITHUB_OUTPUT:-}" ]; then
-  echo "sobrantes=$((n_vacias + n_fusionadas))" >>"$GITHUB_OUTPUT"
+  echo "sobrantes=$((n_vacias + n_con_pr + n_fusionadas))" >>"$GITHUB_OUTPUT"
 fi

@@ -236,6 +236,11 @@
               const m = muestraEsfera(u, v, 1.6, semilla + 7, 3);
               if (m > 0.55) c = mezclar(c, paleta[0], 0.45 * suavizar((m - 0.55) / 0.2));
             }
+            if (tx.dicotomia) {
+              // Un hemisferio oscuro y otro claro, como Jápeto: el oscuro está centrado en u = 0 y el claro en u = 0,5.
+              const oscuridad = 0.5 + 0.5 * Math.cos(u * 2 * Math.PI);
+              c = mezclar(c, hexARgb(tx.dicotomia), suavizar(clamp((oscuridad - 0.35) / 0.3, 0, 1)) * 0.92);
+            }
             if (tx.casquetes && lat > 0.8) {
               c = mezclar(c, hexARgb(tx.casquetes), 0.9 * suavizar((lat - 0.8) / 0.12));
             }

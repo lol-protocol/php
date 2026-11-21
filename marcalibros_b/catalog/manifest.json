@@ -40353,14 +40353,14 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "बुरा जो देखन मैं चला बुरा न मिलिया कोय",
-        "autor": "Kabir",
-        "obra": "Sakhi",
-        "idioma": "hi",
+        "texto": "Where the mind is without fear and the head is held high",
+        "autor": "Rabindranath Tagore",
+        "obra": "Gitanjali",
+        "idioma": "en",
         "firmada": true
       },
-      "sha256_2x": "f6622821f7b0e18cf1fbf2f13d0a3d0ca51a335e9832a939c51ec0eadf7fce00",
-      "sha256": "11b3eabfbc2c51cb55dc7629045f5e6dc5caeb7c9df6cead601b3353b2e7c5f8"
+      "sha256_2x": "eb0a72437326cd65911cfe9e7a8da58ad50cbc40ff9b488fdb1324d1fb036039",
+      "sha256": "2128bf1ec1ffae937ff245b58f0fa50822bb0a7466f9670bcb680340c487eb7f"
     },
     {
       "id": "oriente-basho-02",
@@ -40398,13 +40398,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "الخيل والليل والبيداء تعرفني",
-        "autor": "Al-Mutanabbi",
-        "obra": "Diván",
-        "idioma": "ar",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "4c0fb990e76b7f0cf2bf516b5687d238c7a87f7e832871318ef7c28b32520f1d"
+      "sha256": "b7664ebec4f2dc25ff64edd66a675e730cff0e3282a9c7fdea219635802fbda0"
     },
     {
       "id": "oriente-basho-03",
@@ -40481,13 +40481,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "床前明月光，疑是地上霜。",
-        "autor": "Li Bai",
-        "obra": "Pensamientos en una noche tranquila",
-        "idioma": "zh",
+        "texto": "古池や蛙飛びこむ水の音",
+        "autor": "Matsuo Bashō",
+        "obra": "El viejo estanque",
+        "idioma": "ja",
         "firmada": true
       },
-      "sha256": "3daac39de652fa8407c44f69ae4919dcf9717d73ab33cf4ad00d1b6903872c77"
+      "sha256": "87b350d1543d0117035022db4d6171ffee00d5ac163bc961b1f1050886d5151a"
     },
     {
       "id": "oriente-basho-05",
@@ -40525,13 +40525,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "ढाई आखर प्रेम का पढ़े सो पंडित होय",
-        "autor": "Kabir",
-        "obra": "Sakhi",
-        "idioma": "hi",
+        "texto": "Where the mind is without fear and the head is held high",
+        "autor": "Rabindranath Tagore",
+        "obra": "Gitanjali",
+        "idioma": "en",
         "firmada": true
       },
-      "sha256": "3133016f2684bac7be8511cdfc83215364f4ee1baa15bd6d9db7279e0ae7b063"
+      "sha256": "a8a3af27e524c4c965d214a714d4578c98e58f035547913f88981edfd7b90f02"
     },
     {
       "id": "oriente-basho-06",
@@ -40648,13 +40648,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "بشنو از نی چون حکایت میکند",
-        "autor": "Rumi",
-        "obra": "Masnavi",
-        "idioma": "fa",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "404fd1ac07a2c7661ddf8b9c8256040e81386e32f4ff3fc140143a3a9c4d2e5c"
+      "sha256": "4cdaca0f0b87417448fc930c9e7ff6d2dc4d59be469ac4a0c913fa77e0f74903"
     },
     {
       "id": "oriente-basho-09",
@@ -40732,13 +40732,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "بشنو از نی چون حکایت میکند",
-        "autor": "Rumi",
-        "obra": "Masnavi",
-        "idioma": "fa",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "2d1696057fd3b9ef5c1e9eca46a444eddd2a68c859b2e0e3914e5a6fdda2c491"
+      "sha256": "5d3b288455133a67e8ff3736908f0271dc54b32e06ee89dea0c73f8bd304cb86"
     },
     {
       "id": "oriente-du-fu-01",
@@ -40826,13 +40826,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "بشنو از نی چون حکایت میکند",
-        "autor": "Rumi",
-        "obra": "Masnavi",
-        "idioma": "fa",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "c05e66bb38a2e415dba9e72593ed05fcd634724dc4ee210e1e5befc8ab894954"
+      "sha256": "0bfa0698ec39065f14440ba36e1cb04bb94dbeef1d0d254f04fbde5b1df9df45"
     },
     {
       "id": "oriente-du-fu-03",
@@ -41105,13 +41105,13 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": {
-        "texto": "على قدر أهل العزم تأتي العزائم",
-        "autor": "Al-Mutanabbi",
-        "obra": "Diván",
-        "idioma": "ar",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "ac7c830c4732fd0fae240754f63cbccd753b395c650ee2acff2cd4b99b0db59b"
+      "sha256": "f8e35e9903d3f0b1d263877f4df35f6d7a2b4be2e806766533ce1d505631c4d0"
     },
     {
       "id": "oriente-du-fu-10",
@@ -41198,8 +41198,8 @@
         "idioma": "zh",
         "firmada": true
       },
-      "sha256_2x": "1c1637c2c9d1754f1e86b51524aab293356e227835f24fa3344b856615934d8e",
-      "sha256": "01c5b761a42c6850a202adf01fb0d7718c2348f9672147be8210c66c922af91e"
+      "sha256_2x": "effbed628347ea26a5da07985277e4df39e933bf06fdb2173820a25cd4a84981",
+      "sha256": "23a6aa82f6460f2f3fedbf2c42103a92958dc3784b3a9f177f26f074acad8abd"
     },
     {
       "id": "oriente-kabir-02",
@@ -41237,13 +41237,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "بشنو از نی چون حکایت میکند",
-        "autor": "Rumi",
-        "obra": "Masnavi",
-        "idioma": "fa",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "bbf15bc71c3a7bf2214d5642eb5f13c6d0d0f0ed3bf8a78686b1412497574190"
+      "sha256": "9822e2d0b4eb9433fac568661cc49e97344cc4f46ac08218b502b2ad7633a2ed"
     },
     {
       "id": "oriente-kabir-03",
@@ -41321,13 +41321,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "الخيل والليل والبيداء تعرفني",
-        "autor": "Al-Mutanabbi",
-        "obra": "Diván",
-        "idioma": "ar",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "22e87bfed4ee541b343eaedac41e6715161a8e1a0a1e17ea091656ab94f6c1da"
+      "sha256": "2014277352b8ba02eed97dcecc252cbceda0f967b57860c8b116bfb77497119d"
     },
     {
       "id": "oriente-kabir-05",
@@ -41405,13 +41405,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "بشنو از نی چون حکایت میکند",
-        "autor": "Rumi",
-        "obra": "Masnavi",
-        "idioma": "fa",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "f9b155779d161e4c9820097fef07eb308c269a6db8bf5ec0ec425b71d7eab098"
+      "sha256": "73b5c4391836bde0086c7534ae7aca03fabd1795497df71e5d766f7d61738221"
     },
     {
       "id": "oriente-kabir-07",
@@ -41456,7 +41456,7 @@
         "idioma": "ja",
         "firmada": true
       },
-      "sha256": "6985a4cdb2b78f7a329b314f705e01011074c9a9430735373b514910f1de085f"
+      "sha256": "9b0d875106b4282ca0f62ff8e64d9ce882234dea198167daef21e0daceb6cc05"
     },
     {
       "id": "oriente-kabir-08",
@@ -41501,7 +41501,7 @@
         "idioma": "ja",
         "firmada": true
       },
-      "sha256": "59be16f26ae027fbc7e4f3c3d23a8e38ad389a3f66c09feb1794513f336e2c46"
+      "sha256": "e7bd50d4bd0a07401a9cc965a7e11bf2045c1ce632e59b8ddcd9b694069d26d2"
     },
     {
       "id": "oriente-kabir-09",
@@ -41585,13 +41585,13 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": {
-        "texto": "ढाई आखर प्रेम का पढ़े सो पंडित होय",
-        "autor": "Kabir",
-        "obra": "Sakhi",
-        "idioma": "hi",
+        "texto": "Where the mind is without fear and the head is held high",
+        "autor": "Rabindranath Tagore",
+        "obra": "Gitanjali",
+        "idioma": "en",
         "firmada": true
       },
-      "sha256": "5b9f89c138e958e83d6afc6eb666c55cf452887bce44c0c51c14c7645fa92d28"
+      "sha256": "fd1b3d7d0964a5543431238ab229a2e6227136670eaf602e666cf7de03f592d3"
     },
     {
       "id": "oriente-khayyam-01",
@@ -41633,14 +41633,14 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "على قدر أهل العزم تأتي العزائم",
-        "autor": "Al-Mutanabbi",
-        "obra": "Diván",
-        "idioma": "ar",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256_2x": "2e09f3f4956d424f41bb17b4c15d1ca560ee727767987e8fe28d556253774165",
-      "sha256": "1b948e2b0f35eb2080de05b1a68c2d6d2b5ff627151f63e89ebe1b2b2d429c1e"
+      "sha256_2x": "f5b517d8b1b800915ce87aae9c02bd515d3ee3b6ce103dc0477bfbbf39de1db2",
+      "sha256": "4d705fb17c6e19097d5321fa4fb9015e5b8cc26b87dc7b20ccdfc67510e48cc8"
     },
     {
       "id": "oriente-khayyam-02",
@@ -41679,13 +41679,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "الخيل والليل والبيداء تعرفني",
-        "autor": "Al-Mutanabbi",
-        "obra": "Diván",
-        "idioma": "ar",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "c4e60f5f0894ef22bd7a9f8248af26feef21ee63949440ea014779da63bf93d5"
+      "sha256": "f6497762474300b8b7c6a081916403bf22cb6250d8e9240c65a156036b0006f5"
     },
     {
       "id": "oriente-khayyam-03",
@@ -41730,7 +41730,7 @@
         "idioma": "ja",
         "firmada": true
       },
-      "sha256": "130dbad3249aefec63b0174a3ae2b38ecd15a0746444a55bae79bbd7b8abf64b"
+      "sha256": "e8f63e049aa7a031199f28b59210c350f37ca17fa8554dee748e6f3f062ee1a1"
     },
     {
       "id": "oriente-khayyam-04",
@@ -41769,13 +41769,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "على قدر أهل العزم تأتي العزائم",
-        "autor": "Al-Mutanabbi",
-        "obra": "Diván",
-        "idioma": "ar",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "cde7a2f3d4b343302c062ccb833844a5d6763fb9cc0497af2f553ddc88a4936e"
+      "sha256": "2790fd82adb72477d089ad9ba25baa7d17b5fb401b49d993a531ac43918dbc2b"
     },
     {
       "id": "oriente-khayyam-05",
@@ -41897,13 +41897,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "بشنو از نی چون حکایت میکند",
-        "autor": "Rumi",
-        "obra": "Masnavi",
-        "idioma": "fa",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "c4265abb8da9fb7eb38384b4be0771de9c5e3016b5ca37493f203b50db4e62d0"
+      "sha256": "ce9516319511e4c5aa76bca24226130118944c99099101a83f6f60703481f42d"
     },
     {
       "id": "oriente-khayyam-08",
@@ -41981,13 +41981,13 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": {
-        "texto": "الخيل والليل والبيداء تعرفني",
-        "autor": "Al-Mutanabbi",
-        "obra": "Diván",
-        "idioma": "ar",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "0edd678db73ef3188ad74cdc57ebc594f799c706e0cb2c8b4efaf1243486c426"
+      "sha256": "b3ca00aa9f668ffb91fe59d9a78fbcf04db377831d1cc6bac219a411ce8772e8"
     },
     {
       "id": "oriente-khayyam-10",
@@ -42026,13 +42026,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "बुरा जो देखन मैं चला बुरा न मिलिया कोय",
-        "autor": "Kabir",
-        "obra": "Sakhi",
-        "idioma": "hi",
+        "texto": "Where the mind is without fear and the head is held high",
+        "autor": "Rabindranath Tagore",
+        "obra": "Gitanjali",
+        "idioma": "en",
         "firmada": true
       },
-      "sha256": "b1a98c36d5de2b4957d7750b98f601cf4c0b023e8e07c98fe9a526de95efca2d"
+      "sha256": "41c5f3d5e34e4bace4b2fd0a70d96a56be925f0038a8b2321b185f61fa5a5234"
     },
     {
       "id": "oriente-li-bai-01",
@@ -42073,14 +42073,14 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "国破山河在，城春草木深。",
-        "autor": "Du Fu",
-        "obra": "Primavera en la ciudad arruinada",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
         "idioma": "zh",
         "firmada": true
       },
-      "sha256_2x": "16843c9605ac355f90165d48ab6edd867d9570eacd55a553a458c0d3cdb407da",
-      "sha256": "14df1b19c17c7b7262e33106c0e98c0e0c29d5b74009eaa6bf504a4c70889bbe"
+      "sha256_2x": "50a69681368c9a6b4c36d1bb013a71dc9a314674a116b9e21cbdb2a27b2f59ba",
+      "sha256": "441cf64dd1b7d9745c14f645a5ed40028573279362f5a274bb642113a076e4b6"
     },
     {
       "id": "oriente-li-bai-02",
@@ -42157,13 +42157,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "希望本是无所谓有，无所谓无的。",
-        "autor": "Lu Xun",
-        "obra": "Mi tierra natal",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
         "idioma": "zh",
         "firmada": true
       },
-      "sha256": "24f215eafd6e1bba704e0b52afbe209ced5f1451cbfd4fb8b696b2f621aaac2e"
+      "sha256": "46849f20fcbe58f64cf7e58d99602db0e6bc306376dfc1b4d681cc894dc674c6"
     },
     {
       "id": "oriente-li-bai-04",
@@ -42202,13 +42202,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "على قدر أهل العزم تأتي العزائم",
-        "autor": "Al-Mutanabbi",
-        "obra": "Diván",
-        "idioma": "ar",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "db6a635beb393bf01d41611a49598055cba44b7113e2ad23b826bf01a6a3346a"
+      "sha256": "5416624c6463876de9a555fcd956d76bd06f6b261c0faf9024e3eccba9c6343c"
     },
     {
       "id": "oriente-li-bai-05",
@@ -42247,13 +42247,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "希望本是无所谓有，无所谓无的。",
-        "autor": "Lu Xun",
-        "obra": "Mi tierra natal",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
         "idioma": "zh",
         "firmada": true
       },
-      "sha256": "309d70f4fe0f84826e9283f718fc7a9245f1f94a04b5ffe56759510681daedc4"
+      "sha256": "eecaa824ad84f3d07dd68c13136d8828e6e66fa9fcbd415868fafaa341d768c9"
     },
     {
       "id": "oriente-li-bai-06",
@@ -42370,13 +42370,13 @@
       "velo": 0.0,
       "calma_cielo": 0.2,
       "frase": {
-        "texto": "بشنو از نی چون حکایت میکند",
-        "autor": "Rumi",
-        "obra": "Masnavi",
-        "idioma": "fa",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "8553df66a7f1f3f49e9eb3887da5c5648118675d8588d17d56870476d6c466a2"
+      "sha256": "aedc2f46917661c5488be0a3762736ded2147fa7c2c33e7f3aafc026535884e1"
     },
     {
       "id": "oriente-li-bai-09",
@@ -42421,7 +42421,7 @@
         "idioma": "ja",
         "firmada": true
       },
-      "sha256": "f568d52e38fcc5a5a14878a87a708dd11e4f8a45d24fa4971d6d5e788bab6826"
+      "sha256": "f848db0436c5af6c47cffa6642698d24e591948d66ef5f163544ed1348b2de24"
     },
     {
       "id": "oriente-li-bai-10",
@@ -42460,13 +42460,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "床前明月光，疑是地上霜。",
-        "autor": "Li Bai",
-        "obra": "Pensamientos en una noche tranquila",
-        "idioma": "zh",
+        "texto": "古池や蛙飛びこむ水の音",
+        "autor": "Matsuo Bashō",
+        "obra": "El viejo estanque",
+        "idioma": "ja",
         "firmada": true
       },
-      "sha256": "ffc960ec978a286d4d5f8d4d92e5084b50334e79996c6032dd3cfc3e2643fa57"
+      "sha256": "97b088a14ce94e9132f3e608152ad0cfa6399043c5e1582ca3f00990db28e104"
     },
     {
       "id": "oriente-lu-xun-01",
@@ -42507,14 +42507,14 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "希望本是无所谓有，无所谓无的。",
-        "autor": "Lu Xun",
-        "obra": "Mi tierra natal",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
         "idioma": "zh",
         "firmada": true
       },
-      "sha256_2x": "352f4187fba61c06cc944a1642117dfc86db693c95b0be835090eec67516f328",
-      "sha256": "3c4b10816f15b185aaa8b7f8b967eb30895872f1217ba57ed77f855ead267c7a"
+      "sha256_2x": "2cc1174bcec8eb82d7bae850e472e6f4384d31b0442cedefc85a9d5065e81c94",
+      "sha256": "3a1a586d82a82e4f98118998025cd1dc3296921aa4c0e9e084b0411bf036fea9"
     },
     {
       "id": "oriente-lu-xun-02",
@@ -42592,13 +42592,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "على قدر أهل العزم تأتي العزائم",
-        "autor": "Al-Mutanabbi",
-        "obra": "Diván",
-        "idioma": "ar",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "73990fdfe8a60eab62fa4ed713842e2ba444d36d33c8db2cfb41cfbf91d94a56"
+      "sha256": "197c8219a9247f4349fd76037cdd9b5166682dadece6baaa888e78627409396e"
     },
     {
       "id": "oriente-lu-xun-04",
@@ -42682,7 +42682,7 @@
         "idioma": "ja",
         "firmada": true
       },
-      "sha256": "ccff69edece266e6a58f3d9f7574ee75acad7332bd08181dc9d2df1df9080036"
+      "sha256": "6b1dc3bb44d897be0419ec658da479932afb0ffd0ec01a7c743a30adf3c1b445"
     },
     {
       "id": "oriente-lu-xun-06",
@@ -42721,13 +42721,13 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": {
-        "texto": "国破山河在，城春草木深。",
-        "autor": "Du Fu",
-        "obra": "Primavera en la ciudad arruinada",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
         "idioma": "zh",
         "firmada": true
       },
-      "sha256": "c7d251f55b3bf789480cd57166a313c0e0f7cb397ca62f8f118f5d7ee91ac0c3"
+      "sha256": "fdb683e18924d6b7cd3ca7cd9beb6059042816f86e57c71e57af5bfec8fdbc83"
     },
     {
       "id": "oriente-lu-xun-07",
@@ -43094,13 +43094,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "بشنو از نی چون حکایت میکند",
-        "autor": "Rumi",
-        "obra": "Masnavi",
-        "idioma": "fa",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "5b046ec2b37a01ad99ae265466156c817c7c106c39ccc5c795d44461a465520d"
+      "sha256": "f40bdb837f0e894b0e58e3df40ef894d250165158d07a8b8a47cfad8f954f6d1"
     },
     {
       "id": "oriente-murasaki-06",
@@ -43139,13 +43139,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "国破山河在，城春草木深。",
-        "autor": "Du Fu",
-        "obra": "Primavera en la ciudad arruinada",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
         "idioma": "zh",
         "firmada": true
       },
-      "sha256": "d297f005c5d40e6297e8d72f7f791ab73f6914da369424afc08b7a70778c689d"
+      "sha256": "4f99a84d5c3b8a61419d7adbccdd25ad807b28c4c2057a281b5f1d3eea7a8b55"
     },
     {
       "id": "oriente-murasaki-07",
@@ -43223,13 +43223,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "いづれの御時にか、女御、更衣あまたさぶらひたまひけるなかに",
-        "autor": "Murasaki Shikibu",
-        "obra": "La historia de Genji",
+        "texto": "古池や蛙飛びこむ水の音",
+        "autor": "Matsuo Bashō",
+        "obra": "El viejo estanque",
         "idioma": "ja",
         "firmada": true
       },
-      "sha256": "a40d0d4a469a3a23e39794cdfef0b7ddf4226fb17c97194ef2e0c4cd4bba4645"
+      "sha256": "99862e5962e040428c8b416f3d8eb8af31abb6b8fb1b0c6af4155372ddec5c27"
     },
     {
       "id": "oriente-murasaki-09",
@@ -43268,13 +43268,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "国破山河在，城春草木深。",
-        "autor": "Du Fu",
-        "obra": "Primavera en la ciudad arruinada",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
         "idioma": "zh",
         "firmada": true
       },
-      "sha256": "eedb5b65ce71f17c4854ecb518a8cce7ad4d8d96d064ed42e2da1ffa0d641db6"
+      "sha256": "c7651ccb861cd17ef4d558c9527725f621d12799c4e456568f585781671f510e"
     },
     {
       "id": "oriente-murasaki-10",
@@ -43313,13 +43313,13 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": {
-        "texto": "国破山河在，城春草木深。",
-        "autor": "Du Fu",
-        "obra": "Primavera en la ciudad arruinada",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
         "idioma": "zh",
         "firmada": true
       },
-      "sha256": "734a578d17ef139ab945b76ad31a5550ad79cec73746c8083e06b412ae26b009"
+      "sha256": "e57a5e1b8e9389f7d7cea1905b575a3915669c05f3399789f391264ee6dab762"
     },
     {
       "id": "oriente-mutanabbi-01",
@@ -43361,14 +43361,14 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": {
-        "texto": "बुरा जो देखन मैं चला बुरा न मिलिया कोय",
-        "autor": "Kabir",
-        "obra": "Sakhi",
-        "idioma": "hi",
+        "texto": "Where the mind is without fear and the head is held high",
+        "autor": "Rabindranath Tagore",
+        "obra": "Gitanjali",
+        "idioma": "en",
         "firmada": true
       },
-      "sha256_2x": "f9d9436e2140af75d3c67e886bc8c619c5807751a671f1d612d79b48d03b502e",
-      "sha256": "dee0fab2b4073cd531138372cf96abf48f81800ee6abacc18abf2df65bf59138"
+      "sha256_2x": "8ddf6366ec63ed32cd07561be86b2372c373de793fa0873444d1693508a66ab1",
+      "sha256": "cf99e9febb53b0a26c033e46f6fb600c7874d7dadf47ae000885b65276b5356e"
     },
     {
       "id": "oriente-mutanabbi-02",
@@ -43407,13 +43407,13 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": {
-        "texto": "希望本是无所谓有，无所谓无的。",
-        "autor": "Lu Xun",
-        "obra": "Mi tierra natal",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
         "idioma": "zh",
         "firmada": true
       },
-      "sha256": "21a7510c46f7409bdf5743e9e27eb76afc9c000998dfcd92916b22577cf12569"
+      "sha256": "7481f4fd772ae8d792c1da78874657c866439550caa136fccc7bad43fd12c416"
     },
     {
       "id": "oriente-mutanabbi-03",
@@ -43452,13 +43452,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "الخيل والليل والبيداء تعرفني",
-        "autor": "Al-Mutanabbi",
-        "obra": "Diván",
-        "idioma": "ar",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "265462a6ec603bc00f0a7c01bfce84241e6122adb2e7c0bacfea97e6842dbbf7"
+      "sha256": "406e82f5f84a3f95cc90c28d7a553576ba09a65724b7dd01541f68922d2f0d7f"
     },
     {
       "id": "oriente-mutanabbi-04",
@@ -43497,13 +43497,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "希望本是无所谓有，无所谓无的。",
-        "autor": "Lu Xun",
-        "obra": "Mi tierra natal",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
         "idioma": "zh",
         "firmada": true
       },
-      "sha256": "580504c739b8cc54086d93dcdf56539dcd215d1aa201a3909c1450b74e2cb5c5"
+      "sha256": "fc19103f9bf9b049d7fe179df69720c0f1b5c0f75475eb9e0f2910790770a3d7"
     },
     {
       "id": "oriente-mutanabbi-05",
@@ -43581,13 +43581,13 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": {
-        "texto": "ढाई आखर प्रेम का पढ़े सो पंडित होय",
-        "autor": "Kabir",
-        "obra": "Sakhi",
-        "idioma": "hi",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "2cb67a90c8b9a69867d1c117e26815070f6b00f94816dc5b363af2a711c9c30a"
+      "sha256": "5a8486a9c35c4c001b26e74d432462fbbdf34771816ad9a4caf04e0b3b5aa9f8"
     },
     {
       "id": "oriente-mutanabbi-07",
@@ -43710,13 +43710,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "ढाई आखर प्रेम का पढ़े सो पंडित होय",
-        "autor": "Kabir",
-        "obra": "Sakhi",
-        "idioma": "hi",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "f1829c536a49f4e44cdc63e10645f7d92fae8cdbbf0de6fe8b9403aa6ec87f6c"
+      "sha256": "ffb2967c63c2da175324ff5f0bdcbc0e7334c020d34bf55dab36f69aec444812"
     },
     {
       "id": "oriente-mutanabbi-10",
@@ -43837,13 +43837,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "بشنو از نی چون حکایت میکند",
-        "autor": "Rumi",
-        "obra": "Masnavi",
-        "idioma": "fa",
+        "texto": "国破山河在，城春草木深。",
+        "autor": "Du Fu",
+        "obra": "Primavera en la ciudad arruinada",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "5ec39589c0093ec91424c50e0256c5ad7e3d9d50b653d25525f0cd390d85ddf2"
+      "sha256": "2a8ce682dbf2a5bfca68fe61456e7c531a02dc44c2c2e8b7548e5e56bf4b73c4"
     },
     {
       "id": "oriente-rumi-03",
@@ -43881,13 +43881,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "बुरा जो देखन मैं चला बुरा न मिलिया कोय",
-        "autor": "Kabir",
-        "obra": "Sakhi",
-        "idioma": "hi",
+        "texto": "Where the mind is without fear and the head is held high",
+        "autor": "Rabindranath Tagore",
+        "obra": "Gitanjali",
+        "idioma": "en",
         "firmada": true
       },
-      "sha256": "f5046a8e585d02168d9f25ad5f1cc42e1a1ccb3ee0e662890736183893084e03"
+      "sha256": "8febf9e1f1eebd8a0c972ac426bbf9db6121a23c6f94b660bf2d96f762e0a9be"
     },
     {
       "id": "oriente-rumi-04",
@@ -43926,13 +43926,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "いづれの御時にか、女御、更衣あまたさぶらひたまひけるなかに",
-        "autor": "Murasaki Shikibu",
-        "obra": "La historia de Genji",
+        "texto": "古池や蛙飛びこむ水の音",
+        "autor": "Matsuo Bashō",
+        "obra": "El viejo estanque",
         "idioma": "ja",
         "firmada": true
       },
-      "sha256": "f3168bc7e8e6b7285fcc45c2b4427062eb80fa3a5ff18fb097392bab92ded11f"
+      "sha256": "899bc11f7e89d2c2bc01446a932583278590e2741e4a8e874bf781e597402799"
     },
     {
       "id": "oriente-rumi-05",
@@ -44016,7 +44016,7 @@
         "idioma": "ja",
         "firmada": true
       },
-      "sha256": "aa07f5880838445bf20b77023ddd1c342cf03cdada292a175fecbcb94892cee8"
+      "sha256": "36db9849acdea025f38ee559b1a0251aa232312f40ed7a2b465a6c60c1a5a40a"
     },
     {
       "id": "oriente-rumi-07",
@@ -44094,13 +44094,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "बुरा जो देखन मैं चला बुरा न मिलिया कोय",
-        "autor": "Kabir",
-        "obra": "Sakhi",
-        "idioma": "hi",
+        "texto": "Where the mind is without fear and the head is held high",
+        "autor": "Rabindranath Tagore",
+        "obra": "Gitanjali",
+        "idioma": "en",
         "firmada": true
       },
-      "sha256": "c29b4b2f291a08604789b7ba44f2baacc8db40933adf4a254899df0d04e55dcf"
+      "sha256": "daeecbecf0361658dc022d766283279979999492ff6ea02892aa23d74710e8f2"
     },
     {
       "id": "oriente-rumi-09",
@@ -44139,13 +44139,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "いづれの御時にか、女御、更衣あまたさぶらひたまひけるなかに",
-        "autor": "Murasaki Shikibu",
-        "obra": "La historia de Genji",
+        "texto": "古池や蛙飛びこむ水の音",
+        "autor": "Matsuo Bashō",
+        "obra": "El viejo estanque",
         "idioma": "ja",
         "firmada": true
       },
-      "sha256": "c9ca4eea47eb9bd330782260e8e673db89491f56778a07b4a5fbc2e23468c6bd"
+      "sha256": "c495bf7fb55749d723dac9e7c8cb0800b6dc76c09d48c590eb34dcf3364ff4ee"
     },
     {
       "id": "oriente-rumi-10",
@@ -44225,14 +44225,14 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "希望本是无所谓有，无所谓无的。",
-        "autor": "Lu Xun",
-        "obra": "Mi tierra natal",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
         "idioma": "zh",
         "firmada": true
       },
-      "sha256_2x": "1c46fe5baf0aab7b7519fdbd73136da0b2bdf9e8c15991e9ae311a2bab7d9f19",
-      "sha256": "32ef99886304c35a42f610e242b4256a70125f496aa76f87bca26e85aff427e2"
+      "sha256_2x": "a769cf5abb2535a0eb0bbf80a8f8fa8c755c6cca573ddadc3f7e047c61342ecc",
+      "sha256": "519d9b76ba27fcb1d99e5d5d307c77b5053216c32244ad5cb5411db839269cd8"
     },
     {
       "id": "oriente-tagore-02",
@@ -44322,7 +44322,7 @@
         "idioma": "ja",
         "firmada": true
       },
-      "sha256": "a85efbef1cd71d5c1c75f657f98e13887e8e6d9020a74b7627e7facd04581856"
+      "sha256": "fe0f13bf46509accf05fa8a0c85fc879c5214e6cd120673ec8845fde1fa5baa3"
     },
     {
       "id": "oriente-tagore-04",
@@ -44439,13 +44439,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "الخيل والليل والبيداء تعرفني",
-        "autor": "Al-Mutanabbi",
-        "obra": "Diván",
-        "idioma": "ar",
+        "texto": "床前明月光，疑是地上霜。",
+        "autor": "Li Bai",
+        "obra": "Pensamientos en una noche tranquila",
+        "idioma": "zh",
         "firmada": true
       },
-      "sha256": "b30e8563f36f4d845a777a6f5bfd4f9bf425ced4b53deb2f52f460b7925e1a3a"
+      "sha256": "d2c449885e2e99e7b1aeaaf45d4657dd390e8b75cdb6edf85e321947a5670b00"
     },
     {
       "id": "oriente-tagore-07",
@@ -44523,13 +44523,13 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
-        "texto": "いづれの御時にか、女御、更衣あまたさぶらひたまひけるなかに",
-        "autor": "Murasaki Shikibu",
-        "obra": "La historia de Genji",
+        "texto": "古池や蛙飛びこむ水の音",
+        "autor": "Matsuo Bashō",
+        "obra": "El viejo estanque",
         "idioma": "ja",
         "firmada": true
       },
-      "sha256": "6b72a6c4f75ddf1a3593659fe18bc31055fae5aa98ab72498e155110ea982b9f"
+      "sha256": "f7c4b1ed8a6c4f48f77141664bab88976b583ee907b0a9ebb290ea5438b4a818"
     },
     {
       "id": "oriente-tagore-09",

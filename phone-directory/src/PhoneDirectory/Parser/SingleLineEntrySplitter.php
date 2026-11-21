@@ -12,7 +12,9 @@ namespace PhoneDirectory\Parser;
  * 1. Field splitting: the line has strong delimiters (commas, dot leaders, tabs, or runs of spaces/dashes),
  *    common in CSV-like exports and OCR output. Splitting on those gives clean fields, and the one that
  *    looks like a street (via $looksLikeStreet) can be anywhere in the line — first or last, since street
- *    number placement varies by convention ("12 Oak Street" vs "Calle Mayor 12").
+ *    number placement varies by convention ("12 Oak Street" vs "Calle Mayor 12"). When the commas are only
+ *    around the surname ("GARCÍA LÓPEZ, Juan Calle Mayor 12 91 234 56 78"), the street field still holds the
+ *    rest of the name and the phone: it hands the phone over and, where the number comes last, a lone first word.
  * 2. Digit-boundary splitting: no such delimiters (fields run together with single spaces, e.g.
  *    "SMITH John 12 Oak Street 555-123-4567"). Here the first digit in the line, once any phone number is
  *    removed, is assumed to start the street — true for the number-first convention this covers, since
@@ -53,9 +55,15 @@ final class SingleLineEntrySplitter
         ?callable $streetStart = null
     ): ?array
     {
+        // Text that is not UTF-8 cannot be split into fields; the unicode patterns below would fail on it.
+        if (!mb_check_encoding($line, 'UTF-8')) {
+            return null;
+        }
+
         // A phone the scan misread ("555-l23-4567") would otherwise pass for a street starting with a digit.
         $line = PhonePattern::repairOcrDigits($line);
-        $fields = array_map('trim', preg_split(self::FIELD_DELIMITER, $line, -1, PREG_SPLIT_NO_EMPTY));
+        // A pathologically long line can exceed the regex engine's limits (preg_split gives false): no fields then.
+        $fields = array_map('trim', preg_split(self::FIELD_DELIMITER, $line, -1, PREG_SPLIT_NO_EMPTY) ?: []);
 
         if (count($fields) >= 2) {
             $result = self::splitByFields($fields, $looksLikeStreet, $language);
@@ -138,9 +146,27 @@ final class SingleLineEntrySplitter
         $name = implode(', ', $nameFields);
         $street = $fields[$streetIndex];
 
-        // A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name.
-        if (!self::hasLetter($name) || $street === '') {
+        // A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name; nor
+        // is one with only a number and its suffix ("12 bis, rue de la Paix").
+        if (!self::hasLetter($name) || preg_match('/^\d+\s*(?:bis|ter|quater)?$/iu', $name) === 1 || $street === '') {
             return null;
+        }
+
+        // A phone at the end of the street field ("Calle Mayor 12 91 234 56 78", after "GARCÍA LÓPEZ, Juan"):
+        // the line had commas, but not around the phone.
+        if ($phone === null && preg_match(PhonePattern::regexFor($language), $street, $m, PREG_OFFSET_CAPTURE) === 1
+            && $m[0][1] + strlen($m[0][0]) === strlen($street) && trim(substr($street, 0, $m[0][1])) !== '') {
+            $phone = $m[0][0];
+            $street = trim(substr($street, 0, $m[0][1]));
+        }
+
+        // Where the house number comes last, a lone word before the street word ("Juan Calle Mayor 12", after
+        // "GARCÍA LÓPEZ,") is the rest of the name.
+        if (in_array($language, StreetRules::NUMBER_LAST_LANGUAGES, true)
+            && preg_match('/^(\p{L}+)\s+(\S.*)$/u', $street, $parts) === 1
+            && !$looksLikeStreet($parts[1]) && StreetRules::hasStreetWord($parts[2], $language)) {
+            $name .= ', ' . $parts[1];
+            $street = $parts[2];
         }
 
         // Where the house number comes first, a "street" field that opens with words before its number
@@ -205,8 +231,15 @@ final class SingleLineEntrySplitter
         return preg_match('/\p{L}/u', $text) === 1;
     }
 
+    /**
+     * Trims the leaders from both ends by character, not by byte: the en dash and em dash are three bytes each,
+     * and trim() on the bytes also cut the first two of a character like the typographic apostrophe (E2 80 99),
+     * leaving invalid UTF-8 that crashed the name split.
+     */
     private static function trimLeaders(string $text): string
     {
-        return trim($text, self::LEADER_CHARS);
+        $trimmed = preg_replace('/^[\s\0.,\-\x{2013}\x{2014}]+|[\s\0.,\-\x{2013}\x{2014}]+$/u', '', $text);
+
+        return $trimmed ?? trim($text, self::LEADER_CHARS);
     }
 }

@@ -2,7 +2,7 @@ import { after, before, test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -402,6 +402,35 @@ test("--field-sources: a row without law_name belongs to the only law of its cou
     assert.equal((plan.match(/\[plan\] xs\//g) ?? []).length, 2); // main page + plain.txt once (two fields, one URL)
     assert.match(plan, /\[plan\] xm\/ley-dos--[0-9a-f]{8}\.md/); // the named row is matched by name
     assert.equal((plan.match(/\[plan\] xm\//g) ?? []).length, 2); // main page of "Ley uno" + "Ley dos"; the nameless row is ambiguous, so skipped
+  } finally {
+    rmSync(isolated, { recursive: true, force: true });
+  }
+});
+
+// The same search as findBrowser() in leyes-comunes/cache-texts-core.php; with none installed the test is skipped.
+const shells = ["/opt/pw-browsers"].flatMap((root) => (existsSync(root) ? readdirSync(root).filter((name) => name.startsWith("chromium_headless_shell-")).map((name) => join(root, name, "chrome-headless-shell-linux64", "chrome-headless-shell")) : []));
+const browserCandidates = [process.env.CHROMIUM, ...shells, "/usr/bin/google-chrome", "/usr/bin/chromium", "/usr/bin/chromium-browser", "/opt/pw-browsers/chromium"].filter(Boolean);
+const hasBrowser = browserCandidates.some((path) => existsSync(path));
+
+test("--browser renders a page that needs JavaScript; without it the page is skipped", { skip: skip || (hasBrowser ? false : "no Chrome/Chromium found") }, () => {
+  const isolated = mkdtempSync(join(tmpdir(), "laws-browser-"));
+  try {
+    const bundle = { jurisdictions: [{ code: "XJ", tld: "xj", name: "J", region: "europe", lawCount: 1, laws: [
+      { law_name: "Ley con JS", linked_resources: `${server.url}/js.html` },
+    ] }] };
+    writeFileSync(join(isolated, "index.json"), JSON.stringify(bundle));
+    const env = { LAWS_DATA_DIR: isolated, CHROMIUM: browserCandidates.find((path) => existsSync(path)) };
+    const common = ["--delay=0", "--timeout=10", "--allow-private-hosts"];
+
+    const plain = php(common, { env });
+    assert.match(plain.stdout, /\[skip\] xj\/ley-con-js {2}no readable text \(the page probably needs JavaScript\)/);
+
+    const rendered = php([...common, "--browser", "--force"], { env });
+    assert.match(rendered.stdout, /\[ok\] xj\/ley-con-js/, rendered.stdout);
+    const md = readFileSync(join(isolated, "xj", "texts", "ley-con-js.md"), "utf-8");
+    assert.match(md, /# Articulo 1/);
+    assert.match(md, /El plazo de proteccion dura toda la vida del autor y setenta anos mas\./);
+    assert.ok(!md.includes("<script"), "no script is stored");
   } finally {
     rmSync(isolated, { recursive: true, force: true });
   }

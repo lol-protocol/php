@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 /** Comparativo y superlativo del neerlandés (DutchInflection) y los adjetivos búlgaros en «-ски» (BulgarianInflection). */
 class DutchBulgarianTest extends TestCase
 {
+    use AssertsInflectedForms;
+
     /** @return array<string,array{string,string,list<string>}> idioma, lema, formas que deben estar */
     public static function adjectives(): array
     {
@@ -25,11 +27,7 @@ class DutchBulgarianTest extends TestCase
     #[DataProvider('adjectives')]
     public function testAdjectiveForms(string $language, string $lemma, array $expected): void
     {
-        $forms = TopicInflector::forms($language, $lemma, 'adj');
-
-        $this->assertSame([], array_diff($expected, $forms), $lemma);
-        $this->assertSame($lemma, $forms[0]);
-        $this->assertSame($forms, array_values(array_unique($forms)));
+        $this->assertFormsInclude($language, $lemma, 'adj', $expected);
     }
 
     public function testDutchNounsKeepTheirPluralOnly(): void

@@ -4,4 +4,4 @@ Pillow==12.3.0
 PyYAML==6.0.3
 numpy==2.5.4
 fonttools==4.68.0
-uharfbuzz==0.43.0
+uharfbuzz==0.57.0

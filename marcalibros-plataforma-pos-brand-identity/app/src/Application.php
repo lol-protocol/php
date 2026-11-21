@@ -62,10 +62,11 @@ final class Application
         private readonly \Closure $isUploadedFile,
         private readonly int $serverUploadLimit = PHP_INT_MAX,
         private readonly LabelPolicy $labels = new LabelPolicy(),
+        private readonly ?FuncionesApagables $funciones = null,
     ) {
     }
 
-    public static function create(Config $config, string $appDirectory): self
+    public static function create(Config $config, string $appDirectory, ?FuncionesApagables $funciones = null): self
     {
         $limits = new Limits();
         $bookmarks = $config->storageDirectory . '/marcalibros';
@@ -73,7 +74,7 @@ final class Application
 
         return new self(
             $config,
-            new Catalog($config->projectRoot . '/catalog/manifest.json'),
+            new Catalog($config->projectRoot . '/catalog/manifest.json', $funciones === null ? null : $funciones->categoryAllowed(...)),
             $library,
             new BookmarkMaker($bookmarks, $library, $limits),
             new BookmarkStore($bookmarks),
@@ -83,6 +84,7 @@ final class Application
             static fn (): int => time(),
             static fn (string $path): bool => is_uploaded_file($path),
             self::serverUploadLimitFromIni(),
+            funciones: $funciones,
         );
     }
 
@@ -124,6 +126,13 @@ final class Application
     {
         $method = $request->method === 'HEAD' ? 'GET' : $request->method;
         $path = $request->path;
+
+        // Aplicación apagada con los interruptores (opcional, ver FuncionesApagables): no se atiende nada.
+        if ($this->funciones !== null && !$this->funciones->appEnabled()) {
+            return $this->funciones->whenOff() === 'no_disponible'
+                ? $this->errorPage(503, 'No disponible por ahora', 'Los marcalibros no están disponibles por ahora. Vuelve a intentarlo más tarde.')
+                : $this->notFound();
+        }
 
         if ($path === '/') {
             return $method === 'GET' ? $this->catalogPage($request) : $this->notAllowed('GET, HEAD');

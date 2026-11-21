@@ -14,3 +14,6 @@ catalog/.cache/
 
 # Miniaturas de las plantillas del editor: las genera generator/editor_datos.py --sprites (y la CI)
 editor/plantillas/
+
+# Sprites y escenas de las plantillas del editor: salida de `python generator/editor_datos.py --sprites`; la CI los genera.
+editor/plantillas/

@@ -30,7 +30,7 @@ existe pero se hizo a mano (sin marca).
 | App PHP | `06_A <app> <dominio>` | `/var/www/<app>/` (750, del usuario `app-<app>`, grupo `www-data`) | pool PHP-FPM propio (`/run/php/app-<app>.sock`) |
 | App Python | `06_B <app> <dominio> [puerto]` | `/var/www/<app>/` (750, del usuario `app-<app>`) con su `venv/` y su `.env` | servicio systemd `<app>` como `app-<app>` (gunicorn en `127.0.0.1:<puerto>`) |
 | App Java | `06_D <dominio> [context]` | `.war` en `/var/lib/tomcat10/webapps/` | Tomcat en `127.0.0.1:8080`; `/manager` da 404 si la app va en la raíz |
-| Marcalibros | `06_E <dominio> [--png]` | `/var/www/marcalibros/` (código) y `/var/lib/marcalibros` (datos) | PHP-FPM; limpieza diaria en `/etc/cron.d/marcalibros`; `10_A --type marcalibros` |
+| Marcalibros | `06_E <dominio> [--png]` | `/var/www/marcalibros/` (código, de root) y `/var/lib/marcalibros` (datos, 750 del usuario `app-marcalibros`) | pool PHP-FPM propio como `app-marcalibros`; limpieza diaria en `/etc/cron.d/marcalibros`; `10_A --type marcalibros` |
 
 Los logs de cada dominio van en `/var/log/nginx/<dominio>/{access,error}.log` y rotan a diario
 (`07_D`). Los headers de seguridad, gzip y el vhost por defecto (que corta peticiones por IP o con un
@@ -39,7 +39,8 @@ Host ajeno) son globales, en `/etc/nginx/conf.d/` (`07_B`, `07_E`): valen para t
 **Re-correr es seguro para tu código.** `06_A` y `06_B` solo crean la página de prueba (`index.php`,
 `app.py`) en una carpeta vacía o con solo el `venv/`; si ya subiste tu app, la conservan y solo actualizan
 la configuración (límite de subida, puerto, timeouts, vhost). Tampoco hacen `chown -R` sobre una app con
-código: solo ajustan el dueño de la carpeta, para no cambiar los permisos de tus archivos. Ojo con `06_B`:
+código: si la carpeta ya es del usuario de la app solo le ponen modo 750, y si es de otro dueño se detienen y te dicen
+el `chown -R` (ver «Aislamiento»). Ojo con `06_B`:
 si tu app escucha en un puerto fijo propio, el servicio y el proxy usan el que pasaste al script, no el de tu código.
 
 **Aislamiento de las apps Python y PHP.** Cada una tiene: su usuario de sistema `app-<nombre>` (sin login; el nombre
@@ -59,6 +60,13 @@ y `08` da `[FALLA]`.
 vhost en HTTP y vuelve a instalar su certificado con `certbot install` (no pide otro a Let's Encrypt). Si eso
 falla, avisa y el sitio queda en HTTP hasta que corras `04`.
 
+**Qué sirve Nginx de una app PHP (`06_A`).** Por defecto la raíz web es la carpeta de la app, así que el vhost devuelve
+404 para archivos y carpetas ocultas (`.git`, `.env.example`, `.svn`…), para `vendor/` y `node_modules/`, y para
+`composer.json`, `composer.lock` y `package.json`. La excepción es `/.well-known/` (la validación de certbot). Si tu
+framework tiene su raíz web en una subcarpeta (Laravel, Symfony: `public/`), usa `--docroot public`: Nginx solo sirve
+esa subcarpeta y nada de lo de fuera es alcanzable. Re-correr sin la opción conserva el docroot del vhost;
+`--docroot .` vuelve a la carpeta de la app.
+
 Cada app Python necesita **su propio puerto** (por defecto 8000). `06_B` rechaza uno que ya use otra
 app o en el que algo ya escuche.
 
@@ -71,6 +79,7 @@ variables: `MAX_UPLOAD=100M ./10_A-add-domain.sh fotos.com --type php --name fot
 ```bash
 ./10_A-add-domain.sh nuevo.com --ssl --email tu@email.com                    # landing + HTTPS
 ./10_A-add-domain.sh tienda.nuevo.com --type php --name tienda --ssl         # app PHP
+./10_A-add-domain.sh shop.nuevo.com --type php --name shop --docroot public  # Laravel/Symfony: se sirve solo public/
 ./10_A-add-domain.sh api.nuevo.com --type python --name api --port 8001      # app Python, SSL después
 ./10_A-add-domain.sh java.nuevo.com --type tomcat --context miapp            # app Java
 ./10_A-add-domain.sh marcalibros.nuevo.com --type marcalibros --ssl          # Marcalibros

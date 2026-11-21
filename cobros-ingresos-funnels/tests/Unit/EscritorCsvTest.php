@@ -87,6 +87,9 @@ final class EscritorCsvTest extends TestCase
         self::assertSame(0, CeldaNumerica::monto(1500.0, 'JPY')->decimales);
         self::assertSame(2, CeldaNumerica::monto(1500.0, 'USD')->decimales);
         self::assertSame(2, CeldaNumerica::monto(1500.5, 'JPY')->decimales, 'un monto viejo con centavos no se redondea');
+        self::assertSame(3, CeldaNumerica::monto(1.505, 'KWD')->decimales, 'el dinar kuwaiti lleva sus tres decimales (migracion 019)');
+        self::assertSame('1.505', EscritorCsv::celda(CeldaNumerica::monto(1.505, 'KWD')));
+        self::assertSame('1.500', EscritorCsv::celda(CeldaNumerica::monto(1.5, 'KWD')), 'y no se recortan los ceros');
     }
 
     public function testNullEsUnaCeldaVacia(): void

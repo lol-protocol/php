@@ -2,8 +2,42 @@
 
 ## [Sin publicar]
 
+### Corregido
+
+- **Turco y húngaro: formas corrientes que se marcaban como insulto** (comprobado con las 400.000 palabras más
+  frecuentes de cada idioma, no solo las 50.000): `katılımı` y `katılımın` («participación»), `kadinsin` y `kadinsiniz`
+  pasan a `everyday` de `config/chat-topics/tur.php`; `sértésekkel`, `sértésként` y `tettükért` (colisionaban con
+  formas de «sertés» y «tetű» al plegar acentos), a las de `config/chat-topics/hun.php`. Aviso: `sertésekkel`
+  (plural de «cerdo», sin acento) también deja de marcarse, porque el plegado no distingue «sértés» de «sertés».
+
 ### Cambiado
 
+- **`EvasionCleaner::clean()` salta el camino largo en el texto hecho solo de letras latinas que no cambia**
+  (`PlainLatin`: 631 letras de Latin-1, Latin Extendida-A y -B y Latin Extendida Adicional, comprobadas una a una). Antes, cualquier letra
+  no ASCII —`ı`, `ğ`, `ő`, `é`— corría varias expresiones regulares y NFKC. La primera revisión baja ~22 % en turco
+  (64,6 → 50,4 ms) y ~25 % en húngaro (42,9 → 32,4 ms), y cada búsqueda en texto con acentos también es más rápida.
+  `PlainLatinTest` comprueba que da lo mismo que el camino largo (`EvasionCleaner::deepClean()`) en todo el
+  vocabulario de los 33 diccionarios y en 2.000 cadenas al azar.
+- **`bin/inflection-check.php --min-precision=N`**: sale con código 1 si la precisión de algún tipo baja de N %
+  (el umbral de 50 % que pide `CLAUDE.md` para una regla nueva de flexión); antes solo imprimía cifras.
+- `TurkishInflection::cases()` usa `softened()` (el sonorizado estaba escrito dos veces) y `HungarianInflection`
+  declara una sola vez la lista de casos del singular y del plural.
+- Las pruebas de flexión comparten `AssertsInflectedForms` (siete archivos repetían la misma comprobación).
+
+- **`review/yue.csv` sin rangos de frecuencia**: la planilla del cantonés usaba la lista de chino tradicional
+  (`zh_tw`) como aproximación, y de ella salían 113 rangos y 27 filas «frecuente» que no eran cantonés. Ahora se
+  genera sin lista, como `swa.csv` (179 filas, sin respuestas perdidas: no había ninguna rellenada).
+- **Turco, posesivos y sus casos** (`TurkishInflection`): «kitap» → «kitabım», «kitabın», «kitabı»,
+  «kitabımız», «kitabınız», «kitapları», más los casos sobre cada uno («kitabımı», «kitabına», «kitabından»,
+  «kitabıyla»; con «n» de unión tras la 3.ª persona). Contra UniMorph, la cobertura pasa de 23 % a 81 % y la
+  precisión de 79 % a 54 % (de 14 a 71 formas por lema). Con `bin/false-positives.php`: +57 formas marcadas en
+  las 50.000 palabras más frecuentes, casi todas de insultos del diccionario; las tres que eran palabras
+  corrientes («katılım» —participación—, «kadınsın», «kadınsınız») pasan a `everyday` de `config/chat-topics/tur.php`.
+  Los adjetivos turcos llevan solo plural y casos, sin posesivos.
+- **Húngaro, casos del plural y casos menos comunes** (`HungarianInflection`): «barmoknak», «barmokkal» y los
+  casos ilativo («baromba»), adesivo («baromnál»), translativo («barommá»), terminativo («baromig») y formal
+  («baromként»). Sustantivos: cobertura de 24 % a 59 % (precisión de 80 % a 70 %); adjetivos: de 29 % a 70 %
+  (de 79 % a 68 %). +17 formas marcadas, todas de insultos del diccionario (`bűnözőknek`, `gyilkosokkal`…).
 - **Alemán, sustantivos por terminación** (`GermanInflection`): plural y genitivo según la terminación
   («Hund» → «Hunds», «Hunde», «Hundes»; «Beziehung» → «Beziehungen»; «Wagen» → «Wagens»; «Arsch» →
   «Arsches», «Arsche»). Contra UniMorph, la cobertura pasa de 17 % a 67 % (precisión de 90 % a 81 %) y los

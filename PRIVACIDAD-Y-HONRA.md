@@ -143,7 +143,7 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
    `bin/solicitudes.php` (que, hecho para cron, no dice quién pidió ni qué
    escribió, y puede avisar en cuanto llega una con `--solo-nuevas`) hasta que
    quien administra comprueba quién pide. Se contesta con un resumen legible
-   escrito a mano; lo que el sitio oculta a un visitante solo se entrega con
+   (`persona.php resumen` da el borrador, que se revisa a mano); lo que el sitio oculta a un visitante solo se entrega con
    una **entrega con clave** (`bin/persona.php entrega`): un enlace y una clave
    que se mandan por dos medios, con 7 días de vida, 3 aperturas y 5 claves
    malas, y de las que solo se guardan los hashes. Corregir un dato lo hace
