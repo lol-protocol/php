@@ -109,7 +109,7 @@ test('generarTextura: cada astro tiene algo de contraste (no es un color plano)'
   }
 });
 
-test('las estrellas toman el color de su temperatura: Sirio azulado, Betelgeuse rojizo', () => {
+test('las estrellas toman su color propio: Sirio azulado, Betelgeuse rojizo', () => {
   const sirio = ASTROS.find(a => a.id === 'sirio');
   const betel = ASTROS.find(a => a.id === 'betelgeuse');
   const bs = T.generarTextura(sirio, ANCHO, ALTO);

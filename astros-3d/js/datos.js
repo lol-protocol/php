@@ -1,7 +1,7 @@
 // Generado por generar.js desde datos/astros.json: no lo edites a mano.
 window.ASTROS_DATOS = {
-  "version": "1.0.0",
-  "nota": "Valores de referencia redondeados (NASA Planetary Fact Sheet y fichas de satélites; estrellas, valores aproximados de la literatura). Las estrellas de radio incierto llevan incertidumbre «alta». Las texturas son procedurales: colores aproximados, no fotografías ni mapas científicos.",
+  "version": "1.1.0",
+  "nota": "Valores de referencia redondeados (NASA Planetary Fact Sheet y fichas de satélites; estrellas, valores aproximados de la literatura). El radio de cada estrella trae su incertidumbre (baja, media o alta). Las texturas son procedurales: colores aproximados, no fotografías ni mapas científicos.",
   "categorias": {
     "planeta": "Planetas y planetas enanos (Plutón, Ceres, Eris y Makemake)",
     "luna": "Lunas del Sistema Solar (con su cuerpo padre)",
@@ -216,7 +216,7 @@ window.ASTROS_DATOS = {
       "temperatura_media_k": 134,
       "atmosfera": "Hidrógeno y helio, con bandas suaves",
       "anillos": true,
-      "lunas": 146,
+      "lunas": 274,
       "textura": {
         "tipo": "bandas",
         "colores": [
@@ -448,10 +448,10 @@ window.ASTROS_DATOS = {
       "radio_km": 715,
       "masa_kg": 3.1e+21,
       "periodo_rotacion_h": 22.8,
-      "periodo_orbital_dias": 40590,
+      "periodo_orbital_dias": 111850,
       "inclinacion_eje_grados": null,
       "distancia_media": {
-        "valor": 6850,
+        "valor": 6796,
         "unidad": "millones de km",
         "referencia": "Sol"
       },

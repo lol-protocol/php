@@ -93,7 +93,7 @@ function generarMarkdown(datos) {
   lineas.push('|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|');
   for (const a of por('planeta')) lineas.push(filaPlaneta(a));
   lineas.push('');
-  lineas.push('Rotación negativa = sentido retrógrado. Las densidades y gravedades salen de la masa y el radio con G = 6,674 × 10⁻¹¹. Plutón, Ceres, Eris y Makemake son planetas enanos. La inclinación del eje de Eris y Makemake no se conoce bien («—»), y la rotación de Eris es poco precisa.');
+  lineas.push('Rotación negativa = sentido retrógrado. Las densidades y gravedades salen de la masa y el radio con G = 6,674 × 10⁻¹¹. Plutón, Ceres, Eris y Makemake son planetas enanos. La inclinación del eje de Eris y Makemake no se conoce bien («—»), y la rotación de Eris es poco precisa. Venus, Urano y Plutón traen la inclinación del eje mayor de 90° y, además, la rotación negativa: son dos maneras de decir lo mismo (giro retrógrado). «Lunas conocidas» son las cifras de NASA de abril de 2025 (Júpiter 95, Saturno 274, Urano 28 y Neptuno 16); el recuento sigue creciendo y la prensa de 2026 habla de más de 100 lunas en Júpiter y cerca de 290 en Saturno (sin confirmar).');
   lineas.push('');
   lineas.push('## Lunas');
   lineas.push('');
@@ -101,7 +101,7 @@ function generarMarkdown(datos) {
   lineas.push('|---|---|---:|---:|---:|---:|---:|---:|---:|---|');
   for (const a of por('luna')) lineas.push(filaLuna(a, padres));
   lineas.push('');
-  lineas.push('Las lunas de Marte son pequeñas e irregulares; las temperaturas de las lunas pequeñas son aproximadas. Mimas, Tetis, Dione, Rea, Jápeto, las cinco lunas de Urano y Caronte giran sincronizadas con su órbita (salvo Caronte, que gira a la par de Plutón: ambos de forma retrógrada). La Luna gira sincronizada con su órbita: su rotación es igual a su periodo orbital (el valor de la tabla es el de rotación, no el de la órbita).');
+  lineas.push('Las lunas de Marte son pequeñas e irregulares. Todas las lunas de la tabla giran sincronizadas con su órbita: su rotación es igual a su periodo orbital (la tabla muestra las dos columnas, y una prueba comprueba que coincidan). Tritón orbita en sentido retrógrado, y Caronte gira a la par de Plutón, que gira de forma retrógrada: por eso su rotación sale negativa. Las temperaturas de las lunas pequeñas son aproximadas.');
   lineas.push('');
   lineas.push('## Soles');
   lineas.push('');
@@ -129,7 +129,15 @@ function leer(ruta) {
   }
 }
 
+const ARGUMENTOS_VALIDOS = ['--comprobar'];
+
 function main() {
+  // Un flag mal escrito no debe pasar por «escribir»: en la CI escondería que algo no está al día.
+  const desconocidos = process.argv.slice(2).filter(a => !ARGUMENTOS_VALIDOS.includes(a));
+  if (desconocidos.length > 0) {
+    console.error('Argumento desconocido: ' + desconocidos.join(', ') + '. Uso: node generar.js [--comprobar]');
+    process.exit(2);
+  }
   const comprobar = process.argv.includes('--comprobar');
   const datos = JSON.parse(fs.readFileSync(RUTA_DATOS, 'utf8'));
   const salidas = [
