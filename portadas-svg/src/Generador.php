@@ -21,10 +21,12 @@ final class Generador
 
     /**
      * Con `$textoATrazos`, el texto sale como contornos en vez de con la fuente incrustada (ver Plantilla).
+     * Con `$ocultas` (archivos de pieza, p. ej. `lomo.svg`), esas piezas no se escriben; sin ellas, sale todo.
      *
+     * @param list<string> $ocultas
      * @return list<string> nombres de los archivos escritos
      */
-    public static function escribir(Libro $libro, string $directorio, bool $textoATrazos = false): array
+    public static function escribir(Libro $libro, string $directorio, bool $textoATrazos = false, array $ocultas = []): array
     {
         if (!is_dir($directorio) && !mkdir($directorio, 0777, true)) {
             throw new \RuntimeException("No se pudo crear la carpeta $directorio.");
@@ -39,6 +41,9 @@ final class Generador
         $plantilla->textoATrazos = $textoATrazos;
         $contenidos = [];
         foreach (self::piezas($libro) as $archivo => [$vista, $nombre]) {
+            if (in_array($archivo, $ocultas, true)) {
+                continue;
+            }
             $cuerpo = $plantilla->dibujar($libro, $medidas, $vista);
             $contenidos[$archivo] = Svg::documento($medidas->vista($vista), "{$libro->textos->titulo} · $nombre", self::descripcion($libro, $vista, $nombre), $libro->idioma, $cuerpo);
         }
@@ -52,7 +57,7 @@ final class Generador
         foreach ($contenidos as $archivo => $contenido) {
             self::guardar("$directorio/$archivo", $contenido);
         }
-        self::guardar("$directorio/" . self::HUELLA, self::huella($libro, $textoATrazos));
+        self::guardar("$directorio/" . self::HUELLA, self::huella($libro, $textoATrazos, $ocultas));
 
         return array_keys($contenidos);
     }
@@ -64,21 +69,30 @@ final class Generador
      * Una huella de todo lo que decide cómo sale un libro: sus datos, el modo (fuente o trazos), las fuentes extra y
      * el código y los datos del propio generador. Sirve para no volver a escribir un libro que no cambió.
      */
-    public static function huella(Libro $libro, bool $textoATrazos): string
+    public static function huella(Libro $libro, bool $textoATrazos, array $ocultas = []): string
     {
         $externos = implode(',', array_map(static fn (string $ruta): string => is_file($ruta) ? (string) md5_file($ruta) : 'falta', $libro->archivosExternos()));
+        $base = serialize($libro) . $externos . ($textoATrazos ? 'trazos' : 'fuente') . Fuentes::huellaExtras() . self::versionDelCodigo();
+        // Sin piezas ocultas, la huella es la de siempre: las carpetas ya escritas siguen valiendo.
+        if ($ocultas !== []) {
+            $base .= '|ocultas:' . implode(',', $ocultas);
+        }
 
-        return md5(serialize($libro) . $externos . ($textoATrazos ? 'trazos' : 'fuente') . Fuentes::huellaExtras() . self::versionDelCodigo());
+        return md5($base);
     }
 
     /** Si la carpeta del libro ya tiene todas sus piezas y fueron escritas con esta misma huella. */
-    public static function sinCambios(Libro $libro, string $directorio, bool $textoATrazos): bool
+    /** @param list<string> $ocultas */
+    public static function sinCambios(Libro $libro, string $directorio, bool $textoATrazos, array $ocultas = []): bool
     {
         $archivo = "$directorio/" . self::HUELLA;
-        if (!is_file($archivo) || file_get_contents($archivo) !== self::huella($libro, $textoATrazos)) {
+        if (!is_file($archivo) || file_get_contents($archivo) !== self::huella($libro, $textoATrazos, $ocultas)) {
             return false;
         }
         foreach ([...array_keys(self::piezas($libro)), 'medidas.txt'] as $archivo) {
+            if (in_array($archivo, $ocultas, true)) {
+                continue;
+            }
             if (!is_file("$directorio/$archivo")) {
                 return false;
             }
