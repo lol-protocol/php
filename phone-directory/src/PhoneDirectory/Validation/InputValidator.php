@@ -8,7 +8,7 @@ trait InputValidator
 {
     protected function validateCountryCode(string $countryCode): void
     {
-        if (empty(trim($countryCode))) {
+        if (trim($countryCode) === '') {
             throw new InvalidCountryCodeException('Country code cannot be empty');
         }
 
@@ -19,14 +19,14 @@ trait InputValidator
 
     protected function validateNotEmpty(string $value, string $fieldName): void
     {
-        if (empty(trim($value))) {
+        if (trim($value) === '') {
             throw new \InvalidArgumentException("{$fieldName} cannot be empty");
         }
     }
 
     protected function validateOptionalNotEmpty(?string $value, string $fieldName): void
     {
-        if ($value !== null && empty(trim($value))) {
+        if ($value !== null && trim($value) === '') {
             throw new \InvalidArgumentException("{$fieldName} cannot be empty string when provided");
         }
     }

@@ -509,7 +509,12 @@ class MultiLanguagePhoneDirectoryParser
     /** @param RawEntry $data */
     private function validateEntry(array $data): bool
     {
-        return !empty($data['name']) && !empty($data['street']);
+        // Strict comparisons: empty("0") is true in PHP, which made the ports (they take "0") disagree. A name
+        // needs a letter; text that is not UTF-8 is left for the encoding check that follows.
+        $name = trim((string) ($data['name'] ?? ''));
+
+        return $name !== '' && (preg_match('/\p{L}/u', $name) === 1 || !mb_check_encoding($name, 'UTF-8'))
+            && trim((string) ($data['street'] ?? '')) !== '';
     }
 
     /** @return list<ParsedEntry> */
