@@ -87,6 +87,28 @@ def filas_csv(nombre):
     return leer_csv(DATOS / f"{nombre}.csv")[1]
 
 
+# Escritura en que se escribe cada idioma del glosario: prefijos del nombre Unicode de sus letras. Una comprobación
+# mecánica (no sustituye a una persona que hable el idioma): un término ruso escrito con letras latinas, o uno
+# japonés en cirílico, es un error de etiquetado.
+ESCRITURAS = {
+    **{c: ("LATIN",) for c in ("spa", "eng", "por", "fra", "ita", "deu", "lat", "nld", "swe", "dan", "pol", "ces", "tur")},
+    "rus": ("CYRILLIC",), "ukr": ("CYRILLIC",), "ell": ("GREEK",), "ara": ("ARABIC",), "heb": ("HEBREW",),
+    "zho": ("CJK",), "jpn": ("CJK", "HIRAGANA", "KATAKANA"),
+}
+_SIGNOS_PERMITIDOS = " -'’.·"
+
+
+def escritura_coherente(termino, idioma):
+    """True si todas las letras de `termino` son de la escritura de `idioma` (los espacios, guiones y apóstrofos valen)."""
+    escrituras = ESCRITURAS[idioma]
+    for caracter in termino:
+        if caracter in _SIGNOS_PERMITIDOS or unicodedata.category(caracter).startswith("M"):
+            continue
+        if not unicodedata.name(caracter, "").startswith(escrituras):
+            return False
+    return True
+
+
 def normalizar(texto):
     """Forma para comparar términos: sin tildes ni diacríticos, en minúsculas y con espacios simples.
 
