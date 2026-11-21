@@ -6,19 +6,28 @@
 // («тъжен» → «тъжна», no «тъжена») se ve aquí. Los datos de UniMorph no están en el repositorio: descárgalos de
 // https://github.com/unimorph/<código>.
 //
-// Uso: php bin/inflection-check.php <código> <unimorph.tsv> [lista de frecuencias] [lemas por tipo] [--ends]
+// Uso: php bin/inflection-check.php <código> <unimorph.tsv> [lista de frecuencias] [lemas por tipo] [--ends] [--min-precision=N]
 //   <código>  ISO 639-3 de config/ (nor, aunque UniMorph lo llame «nob»)
 //   [lista]   una palabra por línea (hermitdave/FrequencyWords): solo se prueban lemas entre las 50.000 más usadas
 //   --ends    precisión por última letra del lema, para ver qué clase falla
+//   --min-precision=N  sale con código 1 si la precisión de algún tipo (sustantivo, adjetivo) es menor que N %: el umbral
+//             de 50 % que pide CLAUDE.md para una regla nueva de flexión
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use DefamatoryContentReview\Chat\Inflection\TopicInflector;
 
-$args = array_values(array_filter(array_slice($argv, 1), fn(string $a): bool => $a !== '--ends'));
+$args = array_values(array_filter(array_slice($argv, 1), fn(string $a): bool => $a !== '--ends' && !str_starts_with($a, '--min-precision=')));
+$minPrecision = 0.0;
+foreach ($argv as $a) {
+    if (str_starts_with($a, '--min-precision=')) {
+        $minPrecision = (float) substr($a, strlen('--min-precision='));
+    }
+}
+$below = [];
 [$language, $file] = [$args[0] ?? '', $args[1] ?? ''];
 if ($language === '' || !is_file($file)) {
-    fwrite(STDERR, "Uso: php bin/inflection-check.php <código> <unimorph.tsv> [lista de frecuencias] [lemas por tipo] [--ends]\n");
+    fwrite(STDERR, "Uso: php bin/inflection-check.php <código> <unimorph.tsv> [lista de frecuencias] [lemas por tipo] [--ends] [--min-precision=N]\n");
     exit(2);
 }
 $common = [];
@@ -56,6 +65,9 @@ foreach (['N' => 'noun', 'ADJ' => 'adj'] as $pos => $kind) {
         foreach (['n' => 1, 'generated' => count($generated), 'hit' => $hit, 'attested' => count($attested), 'none' => (int) ($generated === [])] as $k => $v) { $t[$k] += $v; }
     }
     if ($t['n'] > 0) {
+        if ($t['generated'] > 0 && 100 * $t['hit'] / $t['generated'] < $minPrecision) {
+            $below[] = sprintf('%s %s %.0f%%', $language, $pos, 100 * $t['hit'] / $t['generated']);
+        }
         printf("%s %-3s lemas=%d formas/lema=%.1f precisión=%.0f%% cobertura=%.0f%% sin reglas=%d%%\n", $language, $pos, $t['n'], $t['generated'] / $t['n'],
             $t['generated'] ? 100 * $t['hit'] / $t['generated'] : 0, $t['attested'] ? 100 * $t['hit'] / $t['attested'] : 0, 100 * $t['none'] / $t['n']);
     }
@@ -65,4 +77,8 @@ foreach (in_array('--ends', $argv, true) ? $byEnd : [] as $pos => $ends) {
     foreach (array_slice($ends, 0, 12, true) as $end => [$n, $generated, $hit]) {
         printf("   %s -%s n=%d precisión=%.0f%%\n", $pos, $end, $n, $generated ? 100 * $hit / $generated : 0);
     }
+}
+if ($below !== []) {
+    fwrite(STDERR, sprintf("Precisión por debajo del mínimo de %s %%: %s\n", $minPrecision, implode('; ', $below)));
+    exit(1);
 }
