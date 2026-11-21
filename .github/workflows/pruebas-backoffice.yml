@@ -8,6 +8,8 @@ on:
       # las notas pasan por su filtro (servidor-php/codigo/FiltroNotas.php)
       - "defamatory-content-review/src/**"
       - "defamatory-content-review/config/**"
+      # las funciones de la API se pueden apagar con interruptores (servidor-php/codigo/api/interruptores.php)
+      - "interruptores/**"
       - ".github/workflows/pruebas-backoffice.yml"
   pull_request:
     paths:
@@ -15,6 +17,8 @@ on:
       # las notas pasan por su filtro (servidor-php/codigo/FiltroNotas.php)
       - "defamatory-content-review/src/**"
       - "defamatory-content-review/config/**"
+      # las funciones de la API se pueden apagar con interruptores (servidor-php/codigo/api/interruptores.php)
+      - "interruptores/**"
       - ".github/workflows/pruebas-backoffice.yml"
   workflow_dispatch:
 

@@ -3,12 +3,15 @@
 namespace Tests\Chat\Inflection;
 
 use DefamatoryContentReview\Chat\Inflection\TopicInflector;
+use DefamatoryContentReview\Chat\ChatLineReviewer;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /** Casos del plural y casos menos comunes del húngaro (HungarianInflection), medidos contra UniMorph. */
 class HungarianCasesTest extends TestCase
 {
+    use AssertsInflectedForms;
+
     /** @return array<string,array{string,list<string>}> lema, formas que deben estar */
     public static function nouns(): array
     {
@@ -26,11 +29,17 @@ class HungarianCasesTest extends TestCase
     #[DataProvider('nouns')]
     public function testCaseForms(string $lemma, array $expected): void
     {
-        $forms = TopicInflector::forms('hun', $lemma, 'noun');
+        $this->assertFormsInclude('hun', $lemma, 'noun', $expected);
+    }
 
-        $this->assertSame([], array_diff($expected, $forms), $lemma);
-        $this->assertSame($lemma, $forms[0]);
-        $this->assertSame($forms, array_values(array_unique($forms)));
+    public function testEverydayWordsThatCollideWithCasesPassThrough(): void
+    {
+        $chat = ChatLineReviewer::create(__DIR__ . '/../../../config', 'hun');
+
+        foreach (['sértésekkel', 'sértésként', 'tettükért'] as $word) {
+            $this->assertSame('approve', $chat->review("ez $word jó")->getDecision(), $word);
+        }
+        $this->assertSame('review', $chat->review('ez bolondokkal jó')->getDecision());
     }
 
     public function testVerbsStayLiteral(): void

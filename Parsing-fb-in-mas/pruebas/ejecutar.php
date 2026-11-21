@@ -468,6 +468,162 @@ igual('esqueleto: enmascara dígitos y conserva la puntuación', 'xxx-99 (xx) 9'
 igual('esqueleto: enmascara también letras con tilde y eñes', 'xxxxx xxxxx', Diagnostico::enmascarar('María Muñoz'));
 igual('esqueleto: de una persona fallecida enmascara también sus fechas y lugares', true, str_contains(Diagnostico::esqueleto(muestra('billiongraves')), 'persona.muerte = 9999-99-99') && !str_contains(Diagnostico::esqueleto(muestra('billiongraves')), '1921'));
 
+// --- Auditoría: la lista de exclusión no puede dejar pasar a la misma persona ---
+$mismaPagina = [
+    'con barra final' => 'https://www.facebook.com/ana.ejemplo/',
+    'sin www' => 'https://facebook.com/ana.ejemplo',
+    'versión móvil' => 'https://m.facebook.com/ana.ejemplo',
+    'con mobile.' => 'https://mobile.facebook.com/ana.ejemplo',
+    'con parámetro ref' => 'https://www.facebook.com/ana.ejemplo?ref=bookmarks',
+    'con fbclid' => 'https://www.facebook.com/ana.ejemplo/?fbclid=ABC123',
+    'con utm_*' => 'https://www.facebook.com/ana.ejemplo?utm_source=x&utm_medium=y',
+    'con fragmento' => 'https://www.facebook.com/ana.ejemplo#about',
+    'con mayúsculas' => 'https://www.facebook.com/Ana.Ejemplo',
+    'con http' => 'http://www.facebook.com/ana.ejemplo',
+];
+$listaFb = Exclusiones::desdeTexto("https://www.facebook.com/ana.ejemplo\n");
+foreach ($mismaPagina as $que => $url) {
+    igual("exclusión: la misma página $que", true, $listaFb->contiene(['url' => $url, 'red' => 'otra', 'usuario' => 'otro']));
+}
+igual('claveUrl: profile.php?id=1 y ?id=2 son personas distintas', true, Lote::claveUrl('https://www.facebook.com/profile.php?id=1') !== Lote::claveUrl('https://www.facebook.com/profile.php?id=2'));
+igual('claveUrl: el id de profile.php se conserva aunque haya rastreo', Lote::claveUrl('https://facebook.com/profile.php?id=7'), Lote::claveUrl('https://m.facebook.com/profile.php?utm_source=x&id=7&fbclid=Z'));
+igual('claveUrl: dos páginas distintas no se confunden', true, Lote::claveUrl('https://x.com/ana') !== Lote::claveUrl('https://x.com/ana2'));
+$cuentas = ['twitter:danaejemplo', 'twitter:@danaejemplo', 'Twitter:@DanaEjemplo', "twitter:@danaejemplo\r\n"];
+foreach ($cuentas as $entrada) {
+    igual('exclusión: «' . trim($entrada) . '» excluye a la cuenta', true,
+        Exclusiones::desdeTexto($entrada . "\n")->contiene(['url' => 'https://x.com/danaejemplo', 'red' => 'twitter', 'usuario' => 'danaejemplo']));
+}
+$conBom = Exclusiones::desdeTexto("\xEF\xBB\xBFhttps://www.facebook.com/ana.ejemplo\r\ntwitter:@dana\r\n");
+igual('exclusión: un archivo con BOM y fin de línea de Windows se lee entero', [2, true], [$conBom->cantidad(), $conBom->contiene(['url' => 'https://facebook.com/ana.ejemplo', 'red' => 'x', 'usuario' => 'y'])]);
+igual('exclusión: una lista solo con comentarios está vacía', [true, false], [Exclusiones::desdeTexto("# nada\n\n")->estaVacia(), $conBom->estaVacia()]);
+$vistos = [];
+igual('repetida: la primera vez no, la segunda (con otra forma de la URL) sí', [false, true, true], [
+    Lote::repetida('https://www.instagram.com/ana/', $vistos),
+    Lote::repetida('https://instagram.com/ana?igshid=XYZ', $vistos),
+    Lote::repetida('https://m.instagram.com/Ana#x', $vistos),
+]);
+igual('repetida: una URL nula nunca es repetida', [false, false], [Lote::repetida(null, $vistos), Lote::repetida(null, $vistos)]);
+
+// --- Auditoría: una publicación no es un perfil ---
+$conTexto = static fn (string $url, string $titulo): Perfil => Detector::analizar(
+    '<link rel="canonical" href="' . $url . '"><meta property="og:title" content="' . $titulo . '"><meta property="og:description" content="TEXTO DE LA PAGINA">',
+    null,
+    false
+);
+foreach ([
+    ['twitter', 'https://x.com/ana/status/123', 'Ana (@ana) on X'],
+    ['facebook /posts/', 'https://www.facebook.com/ana.ejemplo/posts/998877', 'Ana'],
+    ['facebook photo.php', 'https://www.facebook.com/photo.php', 'Ana'],
+    ['instagram /p/', 'https://www.instagram.com/p/ABC123/', 'Ana (@ana) • Instagram'],
+    ['tiktok video', 'https://www.tiktok.com/@ana/video/1234567890', 'Ana (@ana) | TikTok'],
+    ['youtube watch', 'https://www.youtube.com/watch', 'Un video'],
+    ['linkedin posts', 'https://www.linkedin.com/posts/ana-ejemplo_algo-123', 'Ana - Cargo | LinkedIn'],
+    ['threads post', 'https://www.threads.net/@ana/post/Cxyz', 'Ana (@ana) • Threads'],
+    ['bluesky post', 'https://bsky.app/profile/ana.bsky.social/post/3k', 'Ana (@ana.bsky.social)'],
+    ['pinterest pin', 'https://www.pinterest.com/pin/12345/', 'Un pin'],
+] as [$red, $url, $titulo]) {
+    $pub = $conTexto($url, $titulo);
+    igual("publicación ($red): no se guarda su texto y se avisa", [null, true], [
+        $pub->descripcion,
+        in_array('la dirección es de una publicación, no de un perfil: su texto no se guarda (ni descripción, ni nombre, ni titular, ni lugar)', $pub->avisos, true),
+    ]);
+}
+foreach ([
+    ['twitter', 'https://x.com/ana', 'Ana (@ana) / X'],
+    ['facebook', 'https://www.facebook.com/ana.ejemplo', 'Ana'],
+    ['tiktok', 'https://www.tiktok.com/@ana', 'Ana (@ana) | TikTok'],
+    ['youtube', 'https://www.youtube.com/@ana', 'Ana'],
+    ['linkedin', 'https://www.linkedin.com/in/ana-ejemplo', 'Ana - Cargo | LinkedIn'],
+    ['bluesky', 'https://bsky.app/profile/ana.bsky.social', 'Ana (@ana.bsky.social)'],
+] as [$red, $url, $titulo]) {
+    igual("perfil ($red): sí conserva su descripción", 'TEXTO DE LA PAGINA', $conTexto($url, $titulo)->descripcion);
+}
+igual('publicación: el nombre tampoco se guarda (el título puede ser el texto), pero el usuario sí', [null, 'ana'], [$conTexto('https://x.com/ana/status/123', 'Ana (@ana) on X')->nombre, $conTexto('https://x.com/ana/status/123', 'Ana (@ana) on X')->usuario]);
+
+// --- Auditoría: sin texto no se llama al filtro ni se avisa de su falta ---
+$filtroAntes = getenv('FILTRO_DIFAMACION_DIR');
+putenv('FILTRO_DIFAMACION_DIR=/no/existe/el/filtro');
+$sinFiltroSinTexto = Detector::analizar('<link rel="canonical" href="https://x.com/uno"><meta property="og:title" content="Uno (@uno) / X">')->avisos;
+$sinFiltroConTexto = Detector::analizar('<link rel="canonical" href="https://x.com/uno"><meta property="og:title" content="Uno (@uno) / X"><meta property="og:description" content="Algo">')->avisos;
+putenv($filtroAntes === false ? 'FILTRO_DIFAMACION_DIR' : 'FILTRO_DIFAMACION_DIR=' . $filtroAntes);
+$avisoFiltro = 'sin filtro de difamación (falta ../defamatory-content-review/): solo se marcan términos sensibles';
+igual('revisión: un perfil sin texto no avisa de que falta el filtro (ni lo llama)', false, in_array($avisoFiltro, $sinFiltroSinTexto, true));
+igual('revisión: un perfil con texto sí avisa de que falta el filtro', true, in_array($avisoFiltro, $sinFiltroConTexto, true));
+
+// --- Revisión independiente (code-review) del PR: ocho hallazgos ---
+// 1) más formas de publicación, y un perfil real con pestaña de fotos NO es una publicación
+$avisoPublicacion = 'la dirección es de una publicación, no de un perfil: su texto no se guarda (ni descripción, ni nombre, ni titular, ni lugar)';
+foreach ([
+    ['youtu.be', 'https://youtu.be/dQw4w9WgXcQ', 'Un video'],
+    ['youtube /clip/', 'https://www.youtube.com/clip/UgkxABC', 'Un clip'],
+    ['youtube /playlist', 'https://www.youtube.com/playlist', 'Una lista'],
+    ['instagram /usuario/p/', 'https://www.instagram.com/ana/p/ABC123/', 'Ana (@ana) • Instagram'],
+    ['instagram /usuario/reel/', 'https://www.instagram.com/ana/reel/ABC123/', 'Ana (@ana) • Instagram'],
+    ['facebook /usuario/photos/ID', 'https://www.facebook.com/ana.ejemplo/photos/123456', 'Ana'],
+    ['facebook /groups/…/posts/', 'https://www.facebook.com/groups/12345/posts/678', 'Un grupo'],
+    ['facebook /watch', 'https://www.facebook.com/watch/?v=123', 'Un video'],
+] as [$red, $url, $titulo]) {
+    $pub = $conTexto($url, $titulo);
+    igual("publicación ($red): sin descripción y con aviso", [null, true], [$pub->descripcion, in_array($avisoPublicacion, $pub->avisos, true)]);
+}
+foreach (['https://www.facebook.com/ana.ejemplo/photos', 'https://www.facebook.com/ana.ejemplo/videos', 'https://youtu.be/', 'https://www.instagram.com/ana/reels/', 'https://www.facebook.com/p/Ana-Ejemplo-100000000000001/'] as $perfilReal) {
+    igual("no es una publicación: $perfilReal", false, in_array($avisoPublicacion, $conTexto($perfilReal, 'Ana')->avisos, true));
+}
+// 4) el título de una publicación puede ser su texto: no llega ni al nombre ni a las marcas
+$fuga = Detector::analizar('<link rel="canonical" href="https://www.facebook.com/ana.ejemplo/posts/998877"><meta property="og:title" content="Mi número es 912345678, llámame">');
+igual('publicación: el teléfono del título no llega al nombre ni a las marcas', [null, []], [$fuga->nombre, $fuga->marcas]);
+igual('publicación: no avisa «sin nombre» (no es un perfil)', false, str_starts_with(implode('|', $fuga->avisos), 'sin nombre') || in_array('sin nombre: la página no trae las etiquetas que se leen; quizá pide iniciar sesión', $fuga->avisos, true));
+// 2) enlaces antiguos con #!/ : cada perfil con su clave
+igual('claveUrl: dos perfiles con #!/ no se confunden con el dominio', true, Lote::claveUrl('https://twitter.com/#!/ana') !== Lote::claveUrl('https://twitter.com/#!/beto') && Lote::claveUrl('https://twitter.com/#!/ana') !== 'twitter.com');
+igual('claveUrl: un fragmento normal sigue ignorándose', Lote::claveUrl('https://x.com/ana'), Lote::claveUrl('https://x.com/ana#about'));
+$vistosHash = [];
+igual('repetida: dos perfiles con #!/ distintos no son repetidos', [false, false, true], [Lote::repetida('https://twitter.com/#!/ana', $vistosHash), Lote::repetida('https://twitter.com/#!/beto', $vistosHash), Lote::repetida('https://twitter.com/#!/ana', $vistosHash)]);
+// 3) los parámetros de rastreo se descartan solo donde lo son
+igual('claveUrl: ?t= o ?s= en otro sitio elige la página: no se descarta', true, Lote::claveUrl('https://example.org/perfil?t=ana') !== Lote::claveUrl('https://example.org/perfil?t=beto'));
+igual('claveUrl: en X, ?s= y ?t= sí son de rastreo', Lote::claveUrl('https://x.com/ana'), Lote::claveUrl('https://x.com/ana?s=20&t=AbCdEf'));
+igual('claveUrl: en Facebook, ?ref= es de rastreo; en otro sitio no', [true, false], [
+    Lote::claveUrl('https://www.facebook.com/ana?ref=bookmarks') === Lote::claveUrl('https://facebook.com/ana'),
+    Lote::claveUrl('https://example.org/ana?ref=1') === Lote::claveUrl('https://example.org/ana'),
+]);
+igual('claveUrl: en YouTube, ?si= es de rastreo', Lote::claveUrl('https://youtube.com/@ana'), Lote::claveUrl('https://youtube.com/@ana?si=XYZ'));
+// 8) los identificadores que distinguen mayúsculas no se confunden al deduplicar; la exclusión sigue siendo de más
+$vistosYt = [];
+igual('repetida: dos videos cuyo id solo difiere en mayúsculas no son repetidos', [false, false], [Lote::repetida('https://youtube.com/watch?v=aBcDeFgHiJk', $vistosYt), Lote::repetida('https://youtube.com/watch?v=ABCDEFGHIJK', $vistosYt)]);
+igual('repetida: el usuario (primer tramo) sí ignora mayúsculas', [false, true], [Lote::repetida('https://www.instagram.com/Ana/p/AbC/', $vistosYt), Lote::repetida('https://instagram.com/ana/p/AbC', $vistosYt)]);
+igual('exclusión: sigue ignorando mayúsculas (excluir de más antes que de menos)', true, Exclusiones::desdeTexto("https://youtube.com/watch?v=abcdefghijk\n")->contiene(['url' => 'https://youtube.com/watch?v=ABCDEFGHIJK', 'red' => 'a', 'usuario' => 'b']));
+// 6) «twitter:@» sin usuario falla en voz alta
+foreach (['twitter:@', 'twitter:@@', "x:@\n"] as $mala) {
+    try {
+        Exclusiones::desdeTexto($mala);
+        igual("exclusión: «" . trim($mala) . "» lanza", true, false);
+    } catch (RuntimeException $e) {
+        igual("exclusión: «" . trim($mala) . "» lanza y dice que falta el usuario", true, str_contains($e->getMessage(), 'falta el usuario'));
+    }
+}
+// 7) un objeto vacío {} no es una línea ilegible
+igual('purga: «{}» no es ilegible y se conserva tal cual', [false, '{}'], [Purga::linea('{}', $excluirPurga)['ilegible'], Purga::linea('{}', $excluirPurga)['linea']]);
+igual('purga: un arreglo con datos sigue siendo ilegible', true, Purga::linea('[1]', $excluirPurga)['ilegible']);
+
+// --- Validado contra entidades reales de Wikidata: la etiqueta universal es «mul», no «la primera que haya» ---
+$conMul = [
+    'id' => 'Q9001', 'type' => 'item',
+    // como una entidad real de hoy: sin «es» ni «en», con «mul» y otras escrituras (la primera por orden alfabético es la árabe)
+    'labels' => ['ar' => ['language' => 'ar', 'value' => 'ماريا فيكتيسيا'], 'ja' => ['language' => 'ja', 'value' => 'マリア'], 'mul' => ['language' => 'mul', 'value' => 'Maria Ficticia']],
+    'descriptions' => ['ar' => ['language' => 'ar', 'value' => 'وصف'], 'en' => ['language' => 'en', 'value' => 'invented person']],
+    'claims' => [
+        'P31' => [['mainsnak' => ['datavalue' => ['value' => ['id' => 'Q5']]], 'rank' => 'normal']],
+        'P570' => [['mainsnak' => ['datavalue' => ['value' => ['time' => '+1900-05-05T00:00:00Z', 'precision' => 11]]], 'rank' => 'normal']],
+    ],
+];
+$perfilMul = Wikidata::persona($conMul);
+igual('wikidata: sin etiqueta es ni en, usa mul y no la primera (árabe)', ['Maria Ficticia', 'invented person'], [$perfilMul?->nombre, $perfilMul?->descripcion]);
+$conEs = $conMul;
+$conEs['labels']['es'] = ['language' => 'es', 'value' => 'María Ficticia'];
+igual('wikidata: si hay etiqueta en español, esa gana sobre mul', 'María Ficticia', Wikidata::persona($conEs)?->nombre);
+$soloOtras = $conMul;
+unset($soloOtras['labels']['mul']);
+igual('wikidata: sin es, en ni mul, cae a la primera que haya', 'ماريا فيكتيسيا', Wikidata::persona($soloOtras)?->nombre);
+
 // CLI: no descarga de la red
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' https://www.facebook.com/alguien 2>&1', $salida, $codigo);
@@ -697,6 +853,38 @@ exec('php ' . escapeshellarg(__DIR__ . '/../bin/diagnostico.php') . ' https://x.
 igual('diagnostico.php: rechaza una URL', 2, $codigo);
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/diagnostico.php') . ' ' . escapeshellarg("$tmp/no-existe.html") . ' 2>&1', $salida, $codigo);
 igual('diagnostico.php: un archivo que no existe sale con 1', 1, $codigo);
+
+// --- Auditoría: los programas hablan igual ---
+file_put_contents("$tmp/vacia.txt", "# nadie por ahora\n\n");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --jsonl --excluir=' . escapeshellarg("$tmp/vacia.txt") . ' ' . escapeshellarg(__DIR__ . '/muestras/twitter.html') . ' 2>&1 >/dev/null', $salida, $codigo);
+igual('analizar.php: una lista de exclusión sin entradas avisa y no falla', [0, true], [$codigo, str_contains(implode("\n", $salida), 'no tiene ninguna entrada')]);
+foreach (['purgar' => "$tmp/generado.jsonl", 'cruzar' => "$tmp/a.jsonl"] as $programa => $entrada) {
+    $salida = [];
+    $extra = $programa === 'cruzar' ? ' ' . escapeshellarg("$tmp/b.jsonl") : '';
+    exec('php ' . escapeshellarg(__DIR__ . "/../bin/$programa.php") . ' ' . escapeshellarg($entrada) . $extra . ' --excluir=' . escapeshellarg("$tmp/vacia.txt") . ' 2>&1 >/dev/null', $salida, $codigo);
+    igual("$programa.php: la lista sin entradas avisa", true, str_contains(implode("\n", $salida), 'no tiene ninguna entrada'));
+}
+file_put_contents("$tmp/con-ilegibles.jsonl", "esto no es json\n" . (string) file_get_contents("$tmp/a.jsonl") . "[1,2,3]\n");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/con-ilegibles.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' 2>&1 >/dev/null', $salida, $codigo);
+igual('cruzar.php: cuenta y avisa las líneas que no son un objeto JSON (2), como purgar.php', true, str_contains(implode("\n", $salida), '2 líneas que no son un objeto JSON'));
+// analizar.php: la misma página en dos formas de la URL sale una vez
+$variantes = ['https://www.facebook.com/ana.ejemplo/', 'https://m.facebook.com/ana.ejemplo?ref=bookmarks#about'];
+mkdir("$tmp/variantes");
+foreach ($variantes as $n => $urlVariante) {
+    file_put_contents("$tmp/variantes/p$n.html", '<link rel="canonical" href="' . $urlVariante . '"><meta property="og:title" content="Ana Ejemplo">');
+}
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --jsonl ' . escapeshellarg("$tmp/variantes") . ' 2>/dev/null', $salida, $codigo);
+igual('analizar.php: la misma página con dos formas de URL sale una vez', [0, 1], [$codigo, count($salida)]);
+array_map('unlink', glob("$tmp/variantes/*") ?: []);
+rmdir("$tmp/variantes");
+
+file_put_contents("$tmp/con-vacios.jsonl", "{}\n" . (string) file_get_contents("$tmp/a.jsonl"));
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/con-vacios.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' 2>&1 >/dev/null', $salida, $codigo);
+igual('cruzar.php: un «{}» no se cuenta como línea que no es un objeto JSON', false, str_contains(implode("\n", $salida), 'no son un objeto JSON') || str_contains(implode("\n", $salida), 'no es un objeto JSON'));
 array_map('unlink', glob("$tmp/*") ?: []);
 rmdir($tmp);
 

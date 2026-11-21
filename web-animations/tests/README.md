@@ -6,12 +6,19 @@ Suite completa de tests automáticos para validación de calidad del proyecto.
 
 ```
 tests/
-├── index.html                  # Interfaz web para ejecutar tests
-├── animation-validation.js     # Suite de validación de animaciones
-├── accessibility-tests.js      # Suite de tests de accesibilidad
-├── test-results.html          # Resultados generados
-├── test-results.json          # Resultados en JSON
-└── README.md                  # Este archivo
+├── index.html                  # Interfaz web para ejecutar las suites manuales
+├── animation-validation.js     # Suite manual de validación de animaciones
+├── accessibility-tests.js      # Suite manual de tests de accesibilidad
+├── performance-tests.js        # Suite manual de rendimiento
+├── gallery-metadata.mjs        # Automático (npm test): galería, páginas y README cuentan lo mismo
+├── smoke.mjs                   # Automático: abre cada animación en Chromium
+├── particles-in-bounds.mjs     # Automático: las partículas de G no salen de la ventana
+├── physics-object.mjs          # Automático: PhysicsObject
+├── toggles-y-red.mjs           # Automático: alternadores, red radial, plantilla y AnimationManager
+├── dashboard-modal.mjs         # Automático: el modal de la galería
+├── test-results.html           # Resultados generados al correr las suites manuales
+├── test-results.json           # Resultados en JSON (también generados)
+└── README.md                   # Este archivo
 ```
 
 ## 🚀 Inicio Rápido

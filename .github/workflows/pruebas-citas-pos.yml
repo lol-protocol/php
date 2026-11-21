@@ -5,10 +5,12 @@ on:
     branches: [master]
     paths:
       - "citas-pos/**"
+      - "interruptores/**"
       - ".github/workflows/pruebas-citas-pos.yml"
   pull_request:
     paths:
       - "citas-pos/**"
+      - "interruptores/**"
       - ".github/workflows/pruebas-citas-pos.yml"
   workflow_dispatch:
 

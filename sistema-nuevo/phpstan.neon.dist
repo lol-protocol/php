@@ -19,3 +19,5 @@ parameters:
     # ejecucion desde la carpeta hermana (no es una dependencia de composer): se las damos a PHPStan.
     scanDirectories:
         - ../defamatory-content-review/src
+        # api/interruptores.php usa la clase Interruptores de la carpeta hermana, que tambien se carga en tiempo de ejecucion.
+        - ../interruptores/src

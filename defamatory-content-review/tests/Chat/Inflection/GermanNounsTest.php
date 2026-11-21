@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 /** Plural y genitivo de los sustantivos alemanes por terminación (GermanInflection), medidos contra UniMorph. */
 class GermanNounsTest extends TestCase
 {
+    use AssertsInflectedForms;
+
     /** @return array<string,array{string,list<string>}> lema, formas que deben estar */
     public static function nouns(): array
     {
@@ -33,11 +35,7 @@ class GermanNounsTest extends TestCase
     #[DataProvider('nouns')]
     public function testNounForms(string $lemma, array $expected): void
     {
-        $forms = TopicInflector::forms('deu', $lemma, 'noun');
-
-        $this->assertSame([], array_diff($expected, $forms), $lemma);
-        $this->assertSame($lemma, $forms[0]);
-        $this->assertSame($forms, array_values(array_unique($forms)));
+        $this->assertFormsInclude('deu', $lemma, 'noun', $expected);
     }
 
     public function testAdjectivesAndVerbsKeepTheirRules(): void

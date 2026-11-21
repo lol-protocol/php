@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/../src/cargar.php';
 
+use ParsingFbInMas\Cli;
 use ParsingFbInMas\Exclusiones;
 use ParsingFbInMas\Lote;
 use ParsingFbInMas\Perfil;
@@ -33,12 +34,7 @@ foreach (array_slice($argv, 1) as $arg) {
     } elseif ($arg === '--progreso') {
         $progreso = true;
     } elseif (str_starts_with($arg, '--excluir=')) {
-        try {
-            $exclusiones = Exclusiones::desdeArchivo(substr($arg, 10));
-        } catch (RuntimeException $e) {
-            fwrite(STDERR, $e->getMessage() . "\n");
-            exit(2);
-        }
+        $exclusiones = Cli::exclusiones(substr($arg, 10));
     } else {
         $ruta = $arg;
     }
