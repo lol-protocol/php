@@ -1,0 +1,20 @@
+# Grupos de sinónimos para ampliar las preguntas. Una línea por grupo, palabras separadas por comas.
+# Las palabras pasan por la misma normalización que el texto (con o sin acento, singular o plural).
+# Para un libro concreto, pon un archivo «<nombre-del-libro>.sinonimos.tsv» junto al .txt: se suma a este.
+carta, mensaje, misiva, epístola
+puerto, muelle, embarcadero, bahía
+lluvia, aguacero, chubasco, tormenta, llovizna
+reloj, cronómetro, péndulo
+hermana, hermano, hermanos
+enferma, enfermo, enfermedad, dolencia
+viaje, viajar, viajó, trayecto, travesía, recorrido
+casa, hogar, vivienda
+padre, papá, progenitor
+madre, mamá, progenitora
+niño, chico, muchacho, crío
+anciano, viejo, abuelo
+miedo, temor, pavor, susto
+tristeza, pena, melancolía, nostalgia
+alegría, felicidad, dicha, gozo
+muerte, fallecimiento, defunción
+dinero, plata, monedas

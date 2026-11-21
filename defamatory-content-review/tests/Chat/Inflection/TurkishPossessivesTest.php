@@ -10,6 +10,8 @@ use PHPUnit\Framework\TestCase;
 /** Posesivos del turco y los casos que se les añaden (TurkishInflection), medidos contra UniMorph. */
 class TurkishPossessivesTest extends TestCase
 {
+    use AssertsInflectedForms;
+
     /** @return array<string,array{string,list<string>}> lema, formas que deben estar */
     public static function nouns(): array
     {
@@ -28,18 +30,14 @@ class TurkishPossessivesTest extends TestCase
     #[DataProvider('nouns')]
     public function testPossessiveForms(string $lemma, array $expected): void
     {
-        $forms = TopicInflector::forms('tur', $lemma, 'noun');
-
-        $this->assertSame([], array_diff($expected, $forms), $lemma);
-        $this->assertSame($lemma, $forms[0]);
-        $this->assertSame($forms, array_values(array_unique($forms)));
+        $this->assertFormsInclude('tur', $lemma, 'noun', $expected);
     }
 
     public function testEverydayWordsThatCollideWithPossessivesPassThrough(): void
     {
         $chat = ChatLineReviewer::create(__DIR__ . '/../../../config', 'tur');
 
-        foreach (['katılım', 'kadınsın', 'kadınsınız'] as $word) {
+        foreach (['katılım', 'katılımı', 'katılımın', 'kadınsın', 'kadınsınız', 'kadinsin', 'kadinsiniz'] as $word) {
             $this->assertSame('approve', $chat->review("bu $word iyi")->getDecision(), $word);
         }
         $this->assertSame('review', $chat->review('bu götüm iyi')->getDecision());

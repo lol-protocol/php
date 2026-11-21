@@ -38,10 +38,22 @@ como `phone-directory/`).
 
   **Es una ayuda, no una garantía:** las listas son cortas y de palabras sueltas, así que pueden marcar de más y,
   sobre todo, no marcar de menos. Que no salga ninguna marca no quiere decir que el texto esté limpio.
-  `--sin-revision` la desactiva.
+  **Cuesta:** unos 5 ms por texto (20.000 páginas con descripción: 90 s con revisión y 2,7 s con `--sin-revision`). Un
+  perfil sin titular ni descripción no se revisa. Para lotes grandes, `--sin-revision` y revisar después solo lo que
+  importe (por ejemplo, los candidatos del cruce).
+- **Una publicación no es un perfil.** Si la dirección es de una publicación (`…/status/123`, `…/posts/…`,
+  `/usuario/p/…`, `…/video/…`, `/pin/…`, `/watch`, un enlace `youtu.be/…`), no se guarda **ningún texto** de la página:
+  ni la descripción, ni el nombre, ni el titular, ni el lugar, porque el título suele ser el texto de la publicación.
+  Quedan la URL y el usuario, y sale un aviso. Una pestaña de un perfil (`/usuario/photos`, `/usuario/reels/`) no cuenta
+  como publicación; una con identificador (`/usuario/photos/123`) sí.
 - **Lista de exclusión (`--excluir=lista.txt`)** en `analizar.php`, `wikidata.php`, `wikidata-nombres.php` y
   `cruzar.php`: una entrada por línea, una URL o `red:usuario` (`twitter:ana`, `wikidata:Q42`, `wikitree:Ejemplo-1`);
-  `#` es comentario. Sirve para que alguien que pidió retirarse no vuelva a salir al reprocesar
+  `#` es comentario. Una URL vale también para su versión móvil (`m.`), con barra final, con parámetros de rastreo
+  (`utm_*`, `fbclid`, y `ref` solo en Facebook, `s` y `t` solo en X…) o con fragmento (menos el de los enlaces
+  antiguos `#!/usuario`, que cuenta), y `twitter:@ana` es lo mismo que `twitter:ana` (`twitter:@` sin usuario falla en
+  voz alta); en la exclusión todo va en minúsculas (se excluye de más antes que de menos), mientras que al quitar
+  páginas repetidas se respetan las mayúsculas de los identificadores (`watch?v=AbC` no es `watch?v=abc`); un archivo con BOM de
+  Windows se lee bien, y una lista sin ninguna entrada avisa. Sirve para que alguien que pidió retirarse no vuelva a salir al reprocesar
   (ver `RECLAMOS.md`). **No está conectada a la cola de pedidos de retiro del sitio** (`url-routing/`): se
   mantiene a mano, y quien decide un retiro tiene que agregar la entrada. `--excluir` solo evita que alguien
   vuelva a salir al reprocesar; para quitarlo de un JSONL ya generado está `bin/purgar.php` (línea por línea; las
@@ -57,10 +69,18 @@ como `phone-directory/`).
   Twitter Cards), `<link rel="canonical">`, JSON-LD y microdatos, no clases CSS. Si la red pide
   iniciar sesión para ver el perfil, la página guardada no trae nada y el resultado sale sin
   nombre y con un aviso: funciona sobre todo con páginas públicas.
-- **Sin probar contra páginas reales.** Los formatos de título y descripción de cada red, y los
-  microdatos de WikiTree y Find a Grave, están escritos de memoria y probados solo con muestras
-  inventadas (`pruebas/muestras/`, de personas que no existen). Antes de confiar en uno, guarda
-  una página real y compáralo. Revisa también los términos de cada sitio.
+- **Qué está validado contra datos reales y qué no.**
+  - **Wikidata: sí, parcialmente.** El lector se probó el 20 de noviembre de 2026 contra 6 entidades reales de
+    personajes históricos (la API pública de Wikidata, CC0; los datos no se guardan en el repo). Funcionan las
+    fechas con su precisión, los identificadores de lugares y parientes y la regla de fallecidos, y la prueba
+    **encontró un error**: Wikidata guarda hoy el nombre universal bajo el código `mul`, y sin él el nombre de
+    «Douglas Adams» salía en árabe. Sigue sin probarse un volcado completo (más de 100 GB) ni la velocidad real.
+  - **Todo lo demás, no.** Los formatos de título y descripción de cada red, los microdatos de WikiTree, Find a
+    Grave y BillionGraves y la API de WikiTree están escritos de memoria y probados solo con muestras inventadas
+    (`pruebas/muestras/`, de personas que no existen). WikiTree (desafío anti-robots), Find a Grave y BillionGraves
+    (403) rechazan a los clientes automáticos, así que las páginas hay que guardarlas desde un navegador y revisarlas
+    con `bin/diagnostico.php`. Antes de confiar en un formato, compáralo con una página real, y revisa los términos
+    de cada sitio.
 
 ## Uso
 
@@ -69,7 +89,8 @@ como `phone-directory/`).
 php bin/analizar.php --capturado=2026-11-04 --jsonl carpeta-con-paginas/ otra.html > perfiles.jsonl
 
 # un volcado de Wikidata, solo personas fallecidas, de Chile (Q298); lee en streaming
-php bin/wikidata.php latest-all.json.gz --pais=Q298 --capturado=2026-11-04 > wikidata.jsonl
+# (--max=N se detiene tras N personas; --progreso avisa por stderr cada millón de líneas)
+php bin/wikidata.php latest-all.json.gz --pais=Q298 --capturado=2026-11-04 --progreso > wikidata.jsonl
 
 # lo mismo, con una lista de personas excluidas y sin la revisión de texto
 php bin/analizar.php --jsonl --excluir=retiros.txt --sin-revision carpeta-con-paginas/ > perfiles.jsonl
@@ -100,7 +121,8 @@ segundo recorrido del volcado, lee solo las líneas que se pidieron y se detiene
 lugares ganan `lugar_nacimiento_nombre` y `lugar_muerte_nombre`. **El nombre de un pariente solo se resuelve si
 el propio volcado lo da por fallecido**: un hijo o una hija de alguien que murió puede estar vivo, y de una
 persona viva no se saca el nombre; esos parientes quedan con su identificador, `nombre` en null y un aviso. Los
-parientes que están en la lista de exclusión se quitan del perfil.
+parientes que están en la lista de exclusión se quitan del perfil. **Límite:** carga en memoria todos los perfiles de
+`wikidata.jsonl` (necesita recorrerlos dos veces), a diferencia del resto de los programas, que leen línea por línea.
 
 ## La API de WikiTree
 

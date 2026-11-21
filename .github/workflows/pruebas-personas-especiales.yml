@@ -1,0 +1,177 @@
+name: Pruebas personas-especiales
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "personas-especiales/**"
+      - ".github/workflows/pruebas-personas-especiales.yml"
+  pull_request:
+    paths:
+      - "personas-especiales/**"
+      - ".github/workflows/pruebas-personas-especiales.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  personas-especiales:
+    name: personas-especiales / PHP ${{ matrix.php-version }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: personas-especiales
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.1', '8.2', '8.3', '8.4']
+
+    # RegistroPdoTest corre contra PostgreSQL de verdad (TEST_PG_DSN); sin él se omitiría.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: pe_test
+          POSTGRES_PASSWORD: pe_test
+          POSTGRES_DB: pe_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U pe_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      TEST_PG_DSN: pgsql:host=127.0.0.1;port=5432;dbname=pe_test
+      TEST_PG_USER: pe_test
+      TEST_PG_PASSWORD: pe_test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, pdo_pgsql
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      # --fail-on-skipped: sin TEST_PG_DSN las pruebas de PostgreSQL se omiten, y una omisión
+      # silenciosa pasaría en verde. Aquí tiene que fallar.
+      - name: Run tests (PostgreSQL)
+        run: ./vendor/bin/phpunit --fail-on-skipped
+
+  # Las migraciones de database/migraciones/ se aplican con bin/migrar.php en PostgreSQL de verdad,
+  # dos veces (la segunda no debe encontrar nada pendiente), y la base tiene que rechazar lo que las
+  # reglas del esquema prohiben (una exclusion activa sin prueba, un motivo de texto libre).
+  migraciones:
+    name: personas-especiales / migraciones PostgreSQL
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: personas-especiales
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: pe_test
+          POSTGRES_PASSWORD: pe_test
+          POSTGRES_DB: pe_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U pe_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      PE_DSN: pgsql:host=127.0.0.1;port=5432;dbname=pe_test
+      PE_USER: pe_test
+      PE_PASSWORD: pe_test
+      PGPASSWORD: pe_test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_pgsql
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Aplicar las migraciones
+        run: php bin/migrar.php
+
+      - name: Una segunda vez no encuentra nada pendiente
+        run: php bin/migrar.php | grep -q 'sin migraciones pendientes'
+
+      # Cada rechazo lleva su control positivo: la misma fila, corregida solo en lo que se prueba, tiene
+      # que entrar. Sin él, una fila con dos defectos pasaría por el defecto equivocado.
+      - name: Una exclusion activa sin prueba se rechaza
+        run: |
+          if psql -h 127.0.0.1 -U pe_test -d pe_test -q -c "INSERT INTO exclusion VALUES ('a1', 'p', 'persona', 'otro', NULL, 'activa', now(), now())" 2>/dev/null; then
+            echo "::error::La base aceptó una exclusión activa sin prueba"
+            exit 1
+          fi
+          psql -h 127.0.0.1 -U pe_test -d pe_test -v ON_ERROR_STOP=1 -q -c "INSERT INTO exclusion VALUES ('a2', 'p', 'persona', 'otro', 'una prueba', 'activa', now(), now())"
+          echo "Sin prueba se rechaza; con prueba entra."
+
+      - name: Un motivo de texto libre se rechaza
+        run: |
+          if psql -h 127.0.0.1 -U pe_test -d pe_test -q -c "INSERT INTO exclusion VALUES ('m1', 'p', 'persona', 'texto libre', NULL, 'pendiente', now(), now())" 2>/dev/null; then
+            echo "::error::La base aceptó un motivo de texto libre"
+            exit 1
+          fi
+          psql -h 127.0.0.1 -U pe_test -d pe_test -v ON_ERROR_STOP=1 -q -c "INSERT INTO exclusion VALUES ('m2', 'p', 'persona', 'seguridad', NULL, 'pendiente', now(), now())"
+          echo "Texto libre se rechaza; uno de la lista entra."
+
+  # PHPStan (personas-especiales/phpstan.neon.dist): nivel max sobre src/. La 2.1.x mas reciente
+  # del momento, como en los demas proyectos; una sola version de PHP basta (la configuracion fija
+  # phpVersion en 8.1, el piso de composer.json).
+  analisis-estatico:
+    name: personas-especiales / análisis estático
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: personas-especiales
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_pgsql
+          coverage: none
+          tools: phpstan:2.1
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: PHPStan
+        run: phpstan analyse --no-progress

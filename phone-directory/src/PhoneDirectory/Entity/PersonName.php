@@ -66,7 +66,7 @@ class PersonName
      */
     public function __construct(string $fullName, ?string $language = null)
     {
-        if (empty(trim($fullName))) {
+        if (trim($fullName) === '') {
             throw new \InvalidArgumentException('Full name cannot be empty');
         }
 
