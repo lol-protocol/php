@@ -121,6 +121,9 @@ final class Lote
      * Deja el primer perfil de cada URL (según {@see claveUrl()}). Los que no tienen URL se conservan todos:
      * no hay con qué compararlos.
      *
+     * @deprecated desde 2026-11-15: `analizar.php` deduplica de a uno con {@see repetida()}, en streaming; este
+     *             método carga todos los perfiles en memoria. Se conserva como referencia y por sus pruebas.
+     *
      * @param list<array<string, mixed>> $perfiles
      * @return array{perfiles: list<array<string, mixed>>, repetidos: int}
      */

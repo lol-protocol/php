@@ -63,15 +63,18 @@ $exclusiones = Exclusiones::vacia();
 $umbral = 0.6;
 $anios = 5;
 $palabras = 2;
+$uso = "Uso: php bin/cruzar.php a.jsonl b.jsonl [--idioma=spa] [--excluir=lista.txt] [--umbral=0.6] [--anios=5] [--palabras=2]\n";
+Cli::validar(array_slice($argv, 1), ['--idioma=', '--umbral=', '--anios=', '--palabras=', '--excluir='], $uso);
+
 foreach (array_slice($argv, 1) as $arg) {
     if (str_starts_with($arg, '--idioma=')) {
         $idioma = substr($arg, 9);
     } elseif (str_starts_with($arg, '--umbral=')) {
-        $umbral = (float) substr($arg, 9);
+        $umbral = Cli::decimal('--umbral', substr($arg, 9));
     } elseif (str_starts_with($arg, '--anios=')) {
-        $anios = (int) substr($arg, 8);
+        $anios = Cli::entero('--anios', substr($arg, 8), 0);
     } elseif (str_starts_with($arg, '--palabras=')) {
-        $palabras = (int) substr($arg, 11);
+        $palabras = Cli::entero('--palabras', substr($arg, 11), 1);
     } elseif (str_starts_with($arg, '--excluir=')) {
         $exclusiones = Cli::exclusiones(substr($arg, 10));
     } else {
@@ -79,8 +82,14 @@ foreach (array_slice($argv, 1) as $arg) {
     }
 }
 if (count($archivos) !== 2 || !PhoneticFolderRegistry::isSupported($idioma)) {
-    fwrite(STDERR, "Uso: php bin/cruzar.php a.jsonl b.jsonl [--idioma=spa] [--excluir=lista.txt] [--umbral=0.6] [--anios=5] [--palabras=2]\n");
+    fwrite(STDERR, $uso);
     exit(2);
+}
+foreach ($archivos as $archivo) {
+    if (Lote::esUrl($archivo)) {
+        fwrite(STDERR, "$archivo: esto no descarga archivos; guárdalo y pásame el archivo.\n");
+        exit(2);
+    }
 }
 try {
     $opciones = new OpcionesCruce($umbral, $anios, $palabras);

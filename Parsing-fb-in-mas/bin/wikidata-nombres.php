@@ -15,6 +15,9 @@ use ParsingFbInMas\Wikidata;
 
 $archivos = [];
 $exclusiones = null;
+$uso = "Uso: php bin/wikidata-nombres.php volcado.json[.gz] perfiles.jsonl [--excluir=lista.txt]\nEsto no descarga el volcado: bájalo tú.\n";
+Cli::validar(array_slice($argv, 1), ['--excluir='], $uso);
+
 foreach (array_slice($argv, 1) as $arg) {
     if (str_starts_with($arg, '--excluir=')) {
         $exclusiones = Cli::exclusiones(substr($arg, 10));
@@ -23,7 +26,7 @@ foreach (array_slice($argv, 1) as $arg) {
     }
 }
 if (count($archivos) !== 2 || Lote::esUrl($archivos[0]) || Lote::esUrl($archivos[1])) {
-    fwrite(STDERR, "Uso: php bin/wikidata-nombres.php volcado.json[.gz] perfiles.jsonl [--excluir=lista.txt]\nEsto no descarga el volcado: bájalo tú.\n");
+    fwrite(STDERR, $uso);
     exit(2);
 }
 
