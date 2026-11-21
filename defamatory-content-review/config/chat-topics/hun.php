@@ -8,7 +8,7 @@ return [
         'before' => ['te', 'ti', 'vagy', 'vagytok', 'te hülye', 'te mocskos', 'mocskos', 'büdös', 'kövér', 'hülye', 'rohadt', 'vén', 'ez a'],
         'after' => ['vagy', 'vagytok'],
     ],
-    'everyday' => ['szemet', 'örült', 'santa', 'sértés'],
+    'everyday' => ['szemet', 'örült', 'santa', 'sértés', 'sértésekkel', 'sértésként', 'tettükért'],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high', 'also' => ['pornót', 'pornók', 'pornóra', 'pornófilm']],

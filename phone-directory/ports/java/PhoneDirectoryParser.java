@@ -253,7 +253,7 @@ final class PhonePattern {
             for (String format : LANGUAGE_FORMATS.getOrDefault(k, List.of())) {
                 regex.append('|').append(BEFORE).append("(?:").append(format).append(')').append(AFTER);
             }
-            return Pattern.compile(regex.toString());
+            return Pattern.compile(regex.toString(), Pattern.UNICODE_CHARACTER_CLASS);
         });
     }
 
@@ -998,7 +998,8 @@ class MultiLanguagePhoneDirectoryParser {
     }
 
     private void finalizeEntry(String name, String phone, String street, String type, int startLine, String language) {
-        if (name == null || name.isEmpty() || street == null || street.isEmpty()) {
+        // A name needs a letter (as in the PHP parser).
+        if (name == null || name.isEmpty() || !PhonePattern.LETTER.matcher(name).find() || street == null || street.isEmpty()) {
             Map<String, Object> error = new HashMap<>();
             error.put("line", startLine);
             error.put("reason", "Missing name or street");

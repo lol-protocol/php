@@ -16,6 +16,11 @@ final class TikTok extends Analizador
         return ['tiktok.com'];
     }
 
+    protected function patronesDePublicacion(): array
+    {
+        return ['/(video|photo)/\\d+'];
+    }
+
     protected function extraer(array $d, ?string $url): array
     {
         // «Ana Ejemplo (@ana.ejemplo) Official | TikTok»

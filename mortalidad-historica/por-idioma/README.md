@@ -2,7 +2,7 @@
 
 <!-- Generado por generar_tabla.py: no lo edites a mano. -->
 
-Una página por idioma, con el código ISO 639-3. Los términos son un **borrador sin revisión nativa**.
+Una página por idioma, con el código ISO 639-3. Los términos son un **borrador de IA sin revisión humana, y no se prevé una revisión nativa**.
 
 | Idioma | Código | Términos |
 |---|---|---|

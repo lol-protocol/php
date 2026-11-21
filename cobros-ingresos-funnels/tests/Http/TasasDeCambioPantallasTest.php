@@ -19,7 +19,7 @@ use PDO;
  */
 final class TasasDeCambioPantallasTest extends HttpTestCase
 {
-    private const PANTALLAS_EN_USD = ['dashboard', 'cobros', 'pagos', 'cohortes'];
+    private const PANTALLAS_EN_USD = ['dashboard', 'cobros', 'pagos', 'cohortes', 'funnel'];
 
     protected function setUp(): void
     {
@@ -104,7 +104,7 @@ final class TasasDeCambioPantallasTest extends HttpTestCase
     {
         $this->nuncaActualizadas();
 
-        foreach (['funnel', 'clientes', 'auditoria'] as $pantalla) {
+        foreach (['clientes', 'auditoria'] as $pantalla) {
             $cuerpo = $this->get("page={$pantalla}")['cuerpo'];
 
             self::assertStringNotContainsString('tasas de cambio', $cuerpo, $pantalla);

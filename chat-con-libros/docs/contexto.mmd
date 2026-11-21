@@ -1,0 +1,40 @@
+%% Contexto del sistema: quién lo usa y con qué datos trabaja.
+flowchart LR
+    persona(["Persona<br/>(lectora o lector)"])
+
+    subgraph sistema["chat-con-libros (en tu computador)"]
+        direction TB
+        web["Página web local<br/>php -S 127.0.0.1:8080"]
+        php["Chat en PHP<br/>bin/chat.php"]
+        java["Chat en Java<br/>(solo sin IA)"]
+        nucleo["Núcleo: búsqueda en el libro<br/>(mismo algoritmo en PHP y en Java)"]
+        ia["Modo con IA (solo PHP, opcional)<br/>GeneradorClaude"]
+        web --> nucleo
+        php --> nucleo
+        java --> nucleo
+        web -. "casilla «IA»" .-> ia
+        php -. "--ia" .-> ia
+        ia --> nucleo
+    end
+
+    libro[("Libro en texto plano<br/>.txt, UTF-8")]
+    muestra[("ejemplos/muestra.txt<br/>cuento inventado")]
+    personales[("mis-libros/<br/>fuera del repositorio")]
+    sin[("datos/sinonimos.tsv")]
+    anthropic{{"API de Anthropic<br/>(Claude)"}}
+
+    persona -- "pregunta" --> web
+    persona -- "pregunta" --> php
+    persona -- "pregunta" --> java
+    nucleo -- "pasajes citados con su capítulo" --> persona
+    libro -. "se lee al arrancar" .-> nucleo
+    muestra -. "libro por defecto" .-> libro
+    personales -. "libros propios" .-> libro
+    sin -. "amplía las preguntas" .-> nucleo
+    ia -- "solo la pregunta, los últimos turnos<br/>y los pasajes encontrados" --> anthropic
+    anthropic -- "respuesta redactada" --> ia
+
+    nota["Sin IA: sin internet, sin modelo de lenguaje, sin base de datos.<br/>Con IA: el único dato que sale son esos pasajes."]:::nota
+    sistema --- nota
+
+    classDef nota fill:#fff8dc,stroke:#c9a400,color:#333;
