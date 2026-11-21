@@ -33,14 +33,15 @@ final class HungarianInflection implements TopicInflection
         foreach ($vowelFinal ? [''] : $links as $link) {
             array_push($forms, $base . $link . 'k', $base . $link . 't', $base . $link . 'k' . $plural . 't');
         }
-        foreach ([$dat, $for, $in, $from, $onto, $about, $away, $to, $into, $at, 'ig', 'ként'] as $suffix) {
+        $cases = [$dat, $for, $in, $from, $onto, $about, $away, $to, $into, $at, 'ig', 'ként']; // los de la lista, iguales en singular y plural
+        foreach ($cases as $suffix) {
             $forms[] = $base . $suffix;
         }
         array_push($forms, $vowelFinal ? $base . 'n' : $lemma . $on, $vowelFinal ? $base . 'v' . $with : $this->doubled($lemma) . $with);
         $forms[] = ($vowelFinal ? $base . 'v' : $this->doubled($lemma)) . $becoming; // «kurvává», «barommá»
         foreach ($vowelFinal ? [''] : $links as $link) { // los casos del plural: «barmoknak», «barmokkal»
             $pluralStem = $base . $link . 'k';
-            foreach ([$dat, $for, $in, $from, $onto, $about, $away, $to, $on, $into, $at, 'ig', 'ként'] as $suffix) {
+            foreach ([...$cases, $on] as $suffix) {
                 $forms[] = $pluralStem . $suffix;
             }
             array_push($forms, $pluralStem . 'k' . $with, $pluralStem . 'k' . $becoming);

@@ -2,7 +2,27 @@
 
 ## [Sin publicar]
 
+### Corregido
+
+- **Turco y húngaro: formas corrientes que se marcaban como insulto** (comprobado con las 400.000 palabras más
+  frecuentes de cada idioma, no solo las 50.000): `katılımı` y `katılımın` («participación»), `kadinsin` y `kadinsiniz`
+  pasan a `everyday` de `config/chat-topics/tur.php`; `sértésekkel`, `sértésként` y `tettükért` (colisionaban con
+  formas de «sertés» y «tetű» al plegar acentos), a las de `config/chat-topics/hun.php`. Aviso: `sertésekkel`
+  (plural de «cerdo», sin acento) también deja de marcarse, porque el plegado no distingue «sértés» de «sertés».
+
 ### Cambiado
+
+- **`EvasionCleaner::clean()` salta el camino largo en el texto hecho solo de letras latinas que no cambia**
+  (`PlainLatin`: 631 letras de Latin-1, Latin Extendida-A y -B y Latin Extendida Adicional, comprobadas una a una). Antes, cualquier letra
+  no ASCII —`ı`, `ğ`, `ő`, `é`— corría varias expresiones regulares y NFKC. La primera revisión baja ~22 % en turco
+  (64,6 → 50,4 ms) y ~25 % en húngaro (42,9 → 32,4 ms), y cada búsqueda en texto con acentos también es más rápida.
+  `PlainLatinTest` comprueba que da lo mismo que el camino largo (`EvasionCleaner::deepClean()`) en todo el
+  vocabulario de los 33 diccionarios y en 2.000 cadenas al azar.
+- **`bin/inflection-check.php --min-precision=N`**: sale con código 1 si la precisión de algún tipo baja de N %
+  (el umbral de 50 % que pide `CLAUDE.md` para una regla nueva de flexión); antes solo imprimía cifras.
+- `TurkishInflection::cases()` usa `softened()` (el sonorizado estaba escrito dos veces) y `HungarianInflection`
+  declara una sola vez la lista de casos del singular y del plural.
+- Las pruebas de flexión comparten `AssertsInflectedForms` (siete archivos repetían la misma comprobación).
 
 - **`review/yue.csv` sin rangos de frecuencia**: la planilla del cantonés usaba la lista de chino tradicional
   (`zh_tw`) como aproximación, y de ella salían 113 rangos y 27 filas «frecuente» que no eran cantonés. Ahora se

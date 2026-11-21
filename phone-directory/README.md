@@ -407,6 +407,7 @@ php bin/phonedir search --surname-sound=valdez --language=es --dsn=sqlite:madrid
 php bin/phonedir stats --dsn=sqlite:madrid.sqlite
 php bin/phonedir link --sources=es_1930_madrid,es_1975_national --dsn=sqlite:madrid.sqlite
 php bin/phonedir catalog list --country=ES
+php bin/phonedir catalog show es_1930_madrid
 php bin/phonedir help
 ```
 

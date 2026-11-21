@@ -2,6 +2,10 @@
 
 export const L = (s) => s.split(/\s+/).filter(Boolean);
 
+/** Notas por defecto de lo que se marca con confianza baja y no trae una propia: así ninguna entrada de confianza baja queda sin explicación. */
+export const NOTA_BAJA_ATUENDO = 'Traje simplificado: varía por región, época y condición social, y las fuentes de este son escasas o indirectas.';
+export const NOTA_BAJA_ETNIA = 'Pueblo representado de forma genérica: las estimaciones de piel, cabello y estatura son promedios aproximados de poblaciones, no reglas sobre una persona.';
+
 const COL = { principal: 'A', secundario: 'B', ribete: 'C', detalle: 'D' };
 /** Prenda: id, nombre, ranura, plantilla, parámetros y papeles de color (A principal, B secundario, C ribete, D detalle). */
 export const P = (id, nombre, ranura, plantilla, params = {}, col = {}) => ({ id, nombre, ranura, plantilla, params, col: { ...COL, ...col } });
@@ -19,7 +23,7 @@ export const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra
   barbas: L(extra.barbas ?? 'ninguna'),
   tocados: L(extra.tocados ?? 'ninguno'),
   pieles: extra.pieles ? L(extra.pieles) : null,
-  nota: extra.nota ?? '',
+  nota: extra.nota ?? (extra.conf === 'baja' ? NOTA_BAJA_ATUENDO : ''),
   fuente: extra.fuente ?? '',
   edades: extra.edades ?? null,
   confianza: extra.conf ?? 'media',
@@ -29,7 +33,7 @@ export const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra
 export const E = (id, nombre, d) => ({
   id, nombre, grupo: d.grupo, regiones: L(d.regiones), prefijos: d.prefijos ? L(d.prefijos) : null,
   pieles: L(d.pieles), cabellos: d.cabellos, peinados: L(d.peinados ?? ''), barba: d.barba ?? 0.3,
-  altura: d.altura, corpulencia: d.corpulencia ?? [['delgada', 1], ['media', 4], ['robusta', 1.5]], nota: d.nota ?? '', fuente: d.fuente ?? '',
+  altura: d.altura, corpulencia: d.corpulencia ?? [['delgada', 1], ['media', 4], ['robusta', 1.5]], nota: d.nota ?? (d.conf === 'baja' ? NOTA_BAJA_ETNIA : ''), fuente: d.fuente ?? '',
   confianza: d.conf ?? 'media',
 });
 
