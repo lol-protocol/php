@@ -13,15 +13,18 @@ Registradas también en docs/00-inconsistencias.md.
 7. **Letra N** (18-nov-2026): el máximo de envíos por ventana conserva N; el mínimo de títulos del perfil coleccionista pasa a M.
 8. **POS** (18-nov-2026): el perfil solo segmenta contenido. El primer envío no tiene fecha firme.
 9. **Clasificación de cambios sensibles** (20-nov-2026): el host guarda el resultado de `defamatory-content-review/` y lo pasa con el evento. El plugin no llama al revisor ni ve el valor del dato.
+10. **Validación de la lista sensible** (21-nov-2026): la valida Conce junto con el contrato del carril.
+11. **Contrato del carril** (21-nov-2026): lo envía el usuario a Conce, con un resumen de una página.
 
 ## Decisiones pendientes
 
 Necesarias antes de implementar.
 
 1. **El abuelo que avisa a familiares:** diferido; se decide al implementar el carril. Propuesta: fuera del alcance del plugin.
-2. **Contrato del carril de notificaciones:** propuesta de firmas en docs/02, pendiente de validación con Conce. Incluye `clasificacion` en el evento (decisión 9).
-3. **Lista de campos sensibles:** validar la lista ampliada, que ya incluye opiniones políticas (decisión 6).
-4. **Ley 21.719:** no está en el diseño. Pendiente de revisión.
+2. **Contrato del carril de notificaciones:** propuesta de firmas en docs/02, pendiente de validación con Conce (decisión 11). Incluye `clasificacion` en el evento (decisión 9).
+3. **Lista de campos sensibles:** la valida Conce junto con el contrato (decisión 10).
+4. **Ley 21.719 aplicada al newsletter:** revisada en docs/06 el 21-nov-2026. Falta cotejarla con el texto oficial y decidir las bases, plazos y encargados que señala.
+5. **Versión mínima de PHP:** se fija al implementar. No bloquea los documentos.
 
 ## Riesgos
 
@@ -29,17 +32,18 @@ Necesarias antes de implementar.
 - **Submódulo de difamación:** identificado como `defamatory-content-review/`. El host le pasa los textos y guarda el resultado (decisión 9); falta documentar el contrato del host. Si el resultado no llega o viene incompleto, se trata como sensible (fail-closed).
 - **Umbrales de perfil sin datos reales:** los 7, 14 y 30 días son supuestos. Calibrar con datos de uso.
 - **Carril de notificaciones sin documentar:** el adaptador concentra el riesgo. Si cambia la firma, solo cambia el adaptador.
-- **Ley 21.719 fuera del diseño:** rige desde el 1-dic-2026 según PRIVACIDAD-Y-HONRA.md. Pendiente de revisión (pendiente 4).
+- **Ley 21.719 y el newsletter:** el boletín no estaba en el registro de tratamientos del repo. docs/06 lo cubre. Rige desde el 1-dic-2026 según las fuentes del repo; falta el texto oficial (pendiente 4).
 - **Carga de pruebas:** las pruebas suman entre 35 % y 45 % adicional a la estimación de LOC.
 
 ## Supuestos sin validar
 
 Marcados como **[SUPUESTO]** en los documentos:
-- Lista de campos sensibles (ampliada, sin validar).
+- Lista de campos sensibles (ampliada, sin validar; la valida Conce).
 - Umbrales de perfil: valores iniciales (decisión 5).
 - Umbral de colección para el perfil coleccionista (M a definir).
 - Reintentos de correo: máximo 3.
 - Envío POS el día 15 a las 09:00 hora de Santiago, sin fecha firme para el primer envío.
+- Plazos de conservación propuestos en docs/06, sección 3 (punto 4).
 - Casos típicos de los diagramas Gantt (docs/gantt/), ilustrativos.
 
 ## Estado de madurez

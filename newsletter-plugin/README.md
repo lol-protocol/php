@@ -15,6 +15,7 @@ Plugin reutilizable que envía el boletín de cada plataforma. Se integra a una 
 | [`docs/03-arquitectura.md`](docs/03-arquitectura.md) | Vista general y flujos de cada carril. |
 | [`docs/04-mockups.md`](docs/04-mockups.md) | Plantillas de correo en texto. |
 | [`docs/05-riesgos-y-pendientes.md`](docs/05-riesgos-y-pendientes.md) | Decisiones pendientes, riesgos y supuestos sin validar. |
+| [`docs/06-ley-21719.md`](docs/06-ley-21719.md) | Cómo afecta la Ley 21.719 al newsletter: datos que trata, obligaciones y preguntas para el texto oficial. No es asesoría legal. |
 | [`docs/gantt/`](docs/gantt/) | Escenarios de uso de Conce y POS, y el calendario de implementación de Conce. |
 
 Los supuestos van marcados como **[SUPUESTO]** en los documentos. Ninguno debe implementarse como definitivo sin validación.
