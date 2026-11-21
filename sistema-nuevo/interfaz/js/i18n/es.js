@@ -130,6 +130,9 @@ export default {
   err_user_id_requerido: "user_id es requerido",
   err_usuario_no_encontrado: "usuario no encontrado",
   err_ruta_no_encontrada: "ruta no encontrada",
+  err_funcion_apagada: "esta función está apagada",
+  err_funcion_no_disponible: "esta función no está disponible por ahora",
+  err_interruptores_ilegibles: "no se pudo leer el estado de los interruptores",
   err_no_autenticado: "no autenticado",
   err_error_interno: "error interno del servidor",
 
