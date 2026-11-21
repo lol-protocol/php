@@ -64,6 +64,8 @@ try {
         api_not_found();
     } elseif (!$ruta['sesion'] && !auth_esta_autenticado()) {
         api_unauthorized();
+    } elseif (!$ruta['sesion'] && !api_exigir_funcion($ruta['handler'])) {
+        // api_exigir_funcion() ya respondió: la función de esta ruta está apagada (ver api/interruptores.php).
     } else {
         ($ruta['handler'])(...$ruta['args']);
     }
