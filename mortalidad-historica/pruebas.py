@@ -71,6 +71,10 @@ class ValidadorTest(Plantilla):
         self.cambiar("causas_historicas", 0, "idioma", "es")
         self.assertTrue(any("ISO 639-3" in e for e in self.errores()))
 
+    def test_un_termino_en_otra_escritura_es_un_error(self):
+        self.cambiar("causas_historicas", 0, "termino", "чахотка")   # cirílico en una fila de español
+        self.assertTrue(any("escritura de su idioma" in e for e in self.errores()))
+
     def test_causa_inexistente(self):
         self.cambiar("causas_historicas", 0, "causa_id", "peste_inventada")
         self.assertTrue(any("no está en causas_modernas.csv" in e for e in self.errores()))
@@ -546,6 +550,20 @@ class GlosarioAmpliadoTest(unittest.TestCase):
                     ("dysenteria", "lat"): "disenteria", ("Scharlach", "deu"): "escarlatina", ("bloody flux", "eng"): "disenteria"}
         for (termino, idioma), causa in esperado.items():
             self.assertIn(causa, [r["causa_id"] for r in consultas.causa_moderna(termino, idioma)], (termino, idioma))
+
+    def test_todo_termino_esta_en_la_escritura_de_su_idioma(self):
+        for f in self.filas:
+            self.assertTrue(comun.escritura_coherente(f["termino"], f["idioma"]), (f["idioma"], f["termino"]))
+
+    def test_la_comprobacion_de_escritura_distingue_las_escrituras(self):
+        for termino, idioma, esperado in (("tisis", "spa", True), ("çiçek hastalığı", "tur", True), ("King's evil", "eng", True),
+                                          ("чахотка", "rus", True), ("чахотка", "spa", False), ("tisis", "rus", False),
+                                          ("コレラ", "jpn", True), ("老衰", "jpn", True), ("コレラ", "zho", False),
+                                          ("سل", "ara", True), ("שחפת", "heb", True), ("υδρωπικία", "ell", True), ("υδρωπικία", "ara", False)):
+            self.assertEqual(comun.escritura_coherente(termino, idioma), esperado, (termino, idioma))
+
+    def test_todo_idioma_tiene_su_escritura(self):
+        self.assertEqual(set(comun.ESCRITURAS), set(comun.IDIOMAS))
 
     def test_los_terminos_sensibles_son_de_vocabulario_no_de_personas(self):
         # El suicidio y la locura están en el glosario para leer un registro, y salen con su confianza, no como juicio.

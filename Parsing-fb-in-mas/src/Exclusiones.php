@@ -11,8 +11,9 @@ use RuntimeException;
  * cuyo retiro se decidió (ver RECLAMOS.md en la raíz). Es un archivo de texto que los programas de
  * `bin/` respetan con `--excluir=archivo`, una entrada por línea:
  *
- *     https://www.facebook.com/ana.ejemplo     una página (sin importar mayúsculas, `www.` ni la barra final)
- *     twitter:anaejemplo                       una cuenta: red y usuario, como salen en el perfil
+ *     https://www.facebook.com/ana.ejemplo     una página: vale también su versión móvil, con barra final, con
+ *                                              parámetros de rastreo o con fragmento (ver {@see Lote::claveUrl()})
+ *     twitter:anaejemplo                       una cuenta: red y usuario, con o sin arroba (`twitter:@anaejemplo`)
  *     wikidata:Q42                             vale también para Wikidata
  *     # un comentario                          las líneas vacías y las que empiezan por # se ignoran
  *
@@ -46,6 +47,8 @@ final class Exclusiones
     public static function desdeTexto(string $texto): self
     {
         $claves = [];
+        // Un archivo guardado desde Windows puede empezar con la marca BOM de UTF-8: sin quitarla, la primera línea no se entiende.
+        $texto = (string) preg_replace('/^\xEF\xBB\xBF/', '', $texto);
         foreach (preg_split('/\R/', $texto) ?: [] as $n => $linea) {
             $linea = trim($linea);
             if ($linea === '' || str_starts_with($linea, '#')) {
@@ -54,13 +57,24 @@ final class Exclusiones
             if (Lote::esUrl($linea)) {
                 $claves['url:' . Lote::claveUrl($linea)] = true;
             } elseif (preg_match('/^([a-z][a-z0-9_-]*):(\S+)$/i', $linea, $m) === 1) {
-                $claves['cuenta:' . strtolower($m[1]) . ':' . strtolower($m[2])] = true;
+                // «twitter:@ana» y «twitter:ana» son la misma cuenta: el perfil guarda el usuario sin arroba.
+                $usuario = strtolower(ltrim($m[2], '@'));
+                if ($usuario === '') {
+                    throw new RuntimeException('Lista de exclusión, línea ' . ($n + 1) . ': falta el usuario después de «' . $m[1] . ':»');
+                }
+                $claves['cuenta:' . strtolower($m[1]) . ':' . $usuario] = true;
             } else {
                 // Fallar en voz alta: una línea mal escrita no puede dejar a alguien sin excluir en silencio.
                 throw new RuntimeException('Lista de exclusión, línea ' . ($n + 1) . ': no es una URL ni «red:usuario»');
             }
         }
         return new self($claves);
+    }
+
+    /** Si la lista no tiene ninguna entrada (todo comentado, o vacía): casi seguro un error de quien la escribió. */
+    public function estaVacia(): bool
+    {
+        return $this->claves === [];
     }
 
     public function cantidad(): int
