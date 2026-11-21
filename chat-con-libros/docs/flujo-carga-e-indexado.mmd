@@ -1,0 +1,22 @@
+%% Qué pasa al arrancar: del .txt al índice.
+flowchart TD
+    inicio(["Arranque: bin/chat.php o Chat.java"]) --> leer["Leer el archivo en UTF-8<br/>(quita el BOM)"]
+    leer --> lineas["Recorrer línea por línea"]
+    lineas --> tipo{"Tipo de línea"}
+    tipo -- "en blanco" --> cerrar["Cerrar el párrafo en curso<br/>como un Pasaje"]
+    tipo -- "Título: / Autor:" --> meta["Guardar título o autor"]
+    tipo -- "# … o Capítulo …" --> cap["Cerrar párrafo y<br/>cambiar de capítulo"]
+    tipo -- "texto" --> acum["Agregar al párrafo en curso"]
+    cerrar --> lineas
+    meta --> lineas
+    cap --> lineas
+    acum --> lineas
+    lineas -- "fin del archivo" --> pasajes[("Lista de pasajes<br/>(capítulo + texto)")]
+
+    pasajes --> vacio{"¿Hay pasajes?"}
+    vacio -- "no" --> error(["Error: el archivo no tiene texto"])
+    vacio -- "sí" --> norm["Normaliza.terminos de cada pasaje<br/>minúsculas, sin acentos,<br/>sin palabras vacías, raíz"]
+    norm --> df["Contar en cuántos pasajes<br/>aparece cada término (df)"]
+    df --> idf["idf = ln((N+1)/(df+1)) + 1"]
+    idf --> vec["Vector por pasaje:<br/>frecuencia × idf, normalizado a longitud 1"]
+    vec --> listo(["Índice listo + temas<br/>(palabras más repetidas)"])

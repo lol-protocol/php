@@ -156,6 +156,9 @@ public final class EvaluationSetCheck {
                 switch (e) {
                     case 'n' -> sb.append('\n');
                     case 't' -> sb.append('\t');
+                    case 'r' -> sb.append('\r');
+                    case 'b' -> sb.append('\b');
+                    case 'f' -> sb.append('\f');
                     case 'u' -> {
                         sb.append((char) Integer.parseInt(text.substring(pos, pos + 4), 16));
                         pos += 4;

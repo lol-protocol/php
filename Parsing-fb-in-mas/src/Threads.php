@@ -16,6 +16,11 @@ final class Threads extends Analizador
         return ['threads.net', 'threads.com'];
     }
 
+    protected function patronesDePublicacion(): array
+    {
+        return ['/post/'];
+    }
+
     protected function extraer(array $d, ?string $url): array
     {
         // «Ana Ejemplo (@ana.ejemplo) • Threads, Say more»

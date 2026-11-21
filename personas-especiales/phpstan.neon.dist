@@ -1,0 +1,8 @@
+# Análisis estático del código del módulo (no de las pruebas ni de bin/).
+# Nivel max: lo más estricto. phpVersion en el piso de composer.json (8.1), para que no use
+# nada que una versión más nueva de PHP permita y la 8.1 no.
+parameters:
+    level: max
+    phpVersion: 80100
+    paths:
+        - src
