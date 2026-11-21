@@ -140,6 +140,37 @@ test('cada astro trae una textura con tipo válido y colores hexadecimales', () 
   }
 });
 
+// Parámetros que exige cada tipo de textura y los que se admiten en total. Un astro al que le falte
+// uno dibujaría mal o rompería el visor; uno desconocido suele ser un nombre mal escrito.
+const EXIGE = {
+  rocoso: ['colores'],
+  bandas: ['colores', 'bandas', 'contraste'],
+  nubes: ['colores'],
+  tierra: ['oceano', 'tierra', 'hielo', 'nubes'],
+  volcanico: ['colores'],
+  hielo: ['colores'],
+  estrella: ['color', 'granulos', 'escala']
+};
+const ADMITIDOS = new Set([
+  'tipo', 'colores', 'oceano', 'tierra', 'hielo', 'nubes', 'bandas', 'bandas_amplitud',
+  'contraste', 'deformacion', 'grano', 'mancha', 'halo', 'anillos', 'craters', 'escala',
+  'maria', 'casquetes', 'lineas', 'dicotomia', 'volcanes', 'granulos', 'color'
+]);
+
+test('cada tipo de textura trae los parámetros que necesita y ninguno desconocido', () => {
+  for (const a of ASTROS) {
+    const tx = a.textura;
+    for (const k of EXIGE[tx.tipo]) assert.notEqual(tx[k], undefined, `${a.id} (${tx.tipo}): falta ${k}`);
+    for (const k of Object.keys(tx)) assert.ok(ADMITIDOS.has(k), `${a.id}: parámetro de textura desconocido «${k}»`);
+  }
+});
+
+test('las texturas volcánicas traen los cinco colores que usa su dibujo', () => {
+  for (const a of ASTROS.filter(x => x.textura.tipo === 'volcanico')) {
+    assert.ok(a.textura.colores.length >= 5, `${a.id}: necesita 5 colores`);
+  }
+});
+
 test('las paletas que se interpolan tienen al menos dos colores', () => {
   for (const a of ASTROS.filter(x => x.categoria !== 'sol')) {
     const tx = a.textura;

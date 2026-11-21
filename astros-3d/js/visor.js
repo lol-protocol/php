@@ -544,6 +544,8 @@ void main() {
       dl.appendChild(dd);
     }
     ficha.replaceChildren();
+    // El nombre accesible del lienzo dice qué astro se ve, igual que la ficha.
+    canvas.setAttribute('aria-label', 'Vista 3D de ' + a.nombre);
     const h = document.createElement('h2');
     h.textContent = a.nombre;
     const p = document.createElement('p');

@@ -17,7 +17,7 @@ Visor WebGL de 52 astros: 12 planetas (8 planetas y 4 planetas enanos: Plutón, 
 | `datos/astros.json` | La fuente de verdad: nombre, tipo, radio, masa, rotación, órbita, temperatura, atmósfera, anillos y la textura de cada astro. |
 | `caracteristicas.md` | La tabla de características, por categoría. **Generada.** |
 | `generar.js` | Lee `datos/astros.json` y genera `js/datos.js` y `caracteristicas.md`. Solo usa Node. |
-| `pruebas/` | `datos.test.js` (coherencia del catálogo, incluida la física: la tercera ley de Kepler debe cuadrar para cada planeta y cada luna), `texturas.test.js` (texturas y colores), `ajustes.test.js` (comodidad del visor), `orientacion.test.js` (sentido de giro) y `generar.test.js` (valores derivados y que lo generado esté al día). |
+| `pruebas/` | `datos.test.js` (coherencia del catálogo, incluida la física: la tercera ley de Kepler debe cuadrar para cada planeta y cada luna), `texturas.test.js` (texturas y colores), `ajustes.test.js` (comodidad del visor), `orientacion.test.js` (sentido de giro) y `generar.test.js` (valores derivados, que lo generado esté al día y la línea de comandos). |
 
 ## Uso
 
@@ -43,7 +43,7 @@ node --test 'pruebas/*.test.js'
 node generar.js --comprobar
 ```
 
-La CI corre las dos. `--comprobar` falla si `js/datos.js` o `caracteristicas.md` no coinciden con el JSON.
+La CI corre las dos. `--comprobar` falla si `js/datos.js` o `caracteristicas.md` no coinciden con el JSON. Cualquier otro argumento (por ejemplo, un `--comprobr` mal escrito) falla con código 2 en vez de escribir los archivos sin avisar.
 
 La revisión visual (que el visor compile y pinte en Chromium) se hizo a mano con Chromium headless y WebGL por software: no está en la CI. Si cambias un shader o una textura, abre `index.html` y recorre los 52 astros.
 

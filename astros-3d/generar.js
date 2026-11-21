@@ -129,7 +129,15 @@ function leer(ruta) {
   }
 }
 
+const ARGUMENTOS_VALIDOS = ['--comprobar'];
+
 function main() {
+  // Un flag mal escrito no debe pasar por «escribir»: en la CI escondería que algo no está al día.
+  const desconocidos = process.argv.slice(2).filter(a => !ARGUMENTOS_VALIDOS.includes(a));
+  if (desconocidos.length > 0) {
+    console.error('Argumento desconocido: ' + desconocidos.join(', ') + '. Uso: node generar.js [--comprobar]');
+    process.exit(2);
+  }
   const comprobar = process.argv.includes('--comprobar');
   const datos = JSON.parse(fs.readFileSync(RUTA_DATOS, 'utf8'));
   const salidas = [
