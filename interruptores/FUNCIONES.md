@@ -742,8 +742,8 @@ Carpetas: `marcalibros-plataforma-pos-brand-identity/`.
 | `pos.mb-h-movimientos:romanticismo` | Romanticismo | encendida |
 | `pos.mb-h-movimientos:realismo` | Realismo | encendida |
 | `pos.mb-h-movimientos:naturalismo` | Naturalismo | encendida |
-| `pos.mb-h-movimientos:modernismo-hispano` | Modernismo hispanoamericano | encendida |
-| `pos.mb-h-movimientos:modernismo-anglo` | Modernismo anglosajón | encendida |
+| `pos.mb-h-movimientos:modernismo` | Modernismo hispanoamericano | encendida |
+| `pos.mb-h-movimientos:modernismo-anglosajon` | Modernismo anglosajón | encendida |
 | `pos.mb-h-movimientos:vanguardias` | Vanguardias | encendida |
 | `pos.mb-h-movimientos:gotico` | Gótico | encendida |
 | `pos.mb-h-movimientos:barroco` | Barroco | encendida |
@@ -764,12 +764,12 @@ Carpetas: `marcalibros-plataforma-pos-brand-identity/`.
 | `pos.mb-h-tipos-texto:leyes` | Leyes | encendida |
 | `pos.mb-h-tipos-texto:cartas` | Cartas | encendida |
 | `pos.mb-h-tipos-texto:diarios` | Diarios | encendida |
-| `pos.mb-h-tipos-texto:tratados-cientificos` | Tratados científicos | encendida |
-| `pos.mb-h-tipos-texto:recetas` | Recetas | encendida |
+| `pos.mb-h-tipos-texto:ciencia` | Tratados científicos | encendida |
+| `pos.mb-h-tipos-texto:cocina` | Recetas | encendida |
 | `pos.mb-h-tipos-texto:filosofia` | Filosofía | encendida |
 | `pos.mb-h-tipos-texto:teatro` | Teatro | encendida |
 | `pos.mb-h-tipos-texto:viajes` | Viajes | encendida |
-| `pos.mb-h-tipos-texto:cuentos-leyendas` | Cuentos y leyendas | encendida |
+| `pos.mb-h-tipos-texto:cuentos` | Cuentos y leyendas | encendida |
 | `pos.mb-h-tipos-texto:poesia` | Poesía | encendida |
 | `pos.mb-h-tipos-texto:historia` | Historia | encendida |
 | `pos.mb-h-tipos-texto:periodismo` | Periodismo | encendida |

@@ -89,6 +89,7 @@ if ($int->activo('gen.vistas:abanico')) {
 |---|---|---|---|
 | POS | `portadas-svg/` | `--interruptores=../interruptores` | las piezas de `pos.portadas`: portada, contratapa, lomo, cubierta completa |
 | POS | `citas-pos/` | `render.php --interruptores=… --salida=<otra carpeta>` | los canales de `pos.citas`: sitio, correo, juego |
+| POS | `marcalibros-plataforma-pos-brand-identity/app/` | `MARCALIBROS_INTERRUPTORES=../../interruptores` | la aplicación entera (`pos.mb-h-app`) y cada una de sus 27 categorías (`pos.mb-h-movimientos:<slug>`, `pos.mb-h-tipos-texto:<slug>`) |
 | Genealogía | `sistema-nuevo/` | `BACKOFFICE_INTERRUPTORES=../interruptores` | rutas de la API: `gen.backoffice` (todo), `flujo`, `kpis`, `alertas`, `filtros` y `gen.bak-notas` |
 
 La aplicación de genealogía y POS vive en otro repositorio que no se comparte: para ella está [`CONTRATO.md`](CONTRATO.md) (archivo de estado efectivo, `bin/estado.php`, y reglas de consumo). Las vistas del árbol, los medios de pago y los asistentes (vistas del árbol, medios de pago, asistentes…) todavía no lo usan: tienen que llamar a `activo()` como en el ejemplo de arriba.

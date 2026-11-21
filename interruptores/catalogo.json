@@ -1867,11 +1867,11 @@
           "nombre": "Naturalismo"
         },
         {
-          "id": "modernismo-hispano",
+          "id": "modernismo",
           "nombre": "Modernismo hispanoamericano"
         },
         {
-          "id": "modernismo-anglo",
+          "id": "modernismo-anglosajon",
           "nombre": "Modernismo anglosajón"
         },
         {
@@ -1936,11 +1936,11 @@
           "nombre": "Diarios"
         },
         {
-          "id": "tratados-cientificos",
+          "id": "ciencia",
           "nombre": "Tratados científicos"
         },
         {
-          "id": "recetas",
+          "id": "cocina",
           "nombre": "Recetas"
         },
         {
@@ -1956,7 +1956,7 @@
           "nombre": "Viajes"
         },
         {
-          "id": "cuentos-leyendas",
+          "id": "cuentos",
           "nombre": "Cuentos y leyendas"
         },
         {
