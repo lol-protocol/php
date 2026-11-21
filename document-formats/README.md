@@ -386,8 +386,8 @@ node --test 'document-formats/tests/*.test.js'
 ```
 
 Run from the repository root with Node 22 (`document-formats/.nvmrc`); CI runs the same command, and
-also imports everything into MySQL 8 and checks it with
-`tests/database_check.php`. The Node tests cover
+also imports everything into MySQL 8.0 and MariaDB 10.11 and checks it with
+`tests/database_check.php`, and runs the Chromium test of the demo (below). The Node tests cover
 the CSV parser, HTML escaping, the loaders and converters in `document-formats.js`,
 and checks every CSV file for rows with the wrong number of fields (usually
 an unquoted comma), duplicate entries, and mm/inch values that disagree.

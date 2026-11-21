@@ -3,73 +3,95 @@
 What changed in `document-formats/`, newest first. Each entry names the pull request that
 carries the details. Dates are those of the merge.
 
-## Unreleased
+## 2026-11-15
+
+- Test: `tests/pruebas_navegador.py` opens the demo in Chromium and checks the 30 languages (`lang`, `dir`, no
+  empty or untranslated text, no console errors), **Copy link**, searching with translated words, the
+  converter's arrow in Arabic and the two Half Letter sheets, and that no tab overflows at 320 px. CI runs it in
+  its own job (#559).
+
+## 2026-11-14
+
+- Demo: a **Copy link** button copies the address of the page, which holds the tab, the language, the searches
+  and the filters (2 new strings per language, 184 in all). (#508)
+- Library: `DocumentFormats.load({basePath})` and `loadFormatCatalogs(files, basePath)` look every file up from
+  the address of the `app/` folder, so the library works from a page that isn't served there. (#508)
+- `api_reference.json` says in its description that it is only a specification. (#508)
+
+## 2026-11-06
 
 - Fixed: `findEquivalents('A4')` listed "A4 ISO" about 30 times (one per country) and, for a name with two
   sizes, looked up only one of them; it now works on rows like `closestTo()` and lists each sheet once.
-  `calculateSimilarity()` and `_calcSimilarity()` are marked `@deprecated` (nothing uses them now).
+  `calculateSimilarity()` and `_calcSimilarity()` are marked `@deprecated` (nothing uses them now). (#389)
 - Fixed: `convert()` / `compare()` reported 152.4 mm of difference between Ledger and Tabloid, the same sheet
-  turned, next to 100 % alike; the turned sheet is compared in the orientation of the first (`rotated` says so).
+  turned, next to 100 % alike; the turned sheet is compared in the orientation of the first (`rotated` says so). (#389)
 - Fixed: `validateDimensions(297, 210)` did not find A4, and a unit it didn't know (`'in'`, `'inches'`, a typo)
-  was taken for millimetres. It ignores orientation, knows `in` / `inches`, and reports an unknown unit.
+  was taken for millimetres. It ignores orientation, knows `in` / `inches`, and reports an unknown unit. (#389)
 - Fixed: the search index kept punctuation on the words (`(letter)`, `letter,`), so searching `letter` missed
-  "Carta (Letter)"; the index and the query now strip it.
+  "Carta (Letter)"; the index and the query now strip it. (#389)
 - Fixed: `generatePrintCSS()` printed `3.4000000000000004cm` for an A7 and put 2 cm of padding inside a 2 cm page
-  margin; both outputs now use `getRecommendedMargins()` and the print body takes the printable area.
+  margin; both outputs now use `getRecommendedMargins()` and the print body takes the printable area. (#389)
 - Fixed: `exportAsHTML()` returned a broken table when nothing matched, and cells could sit under another
-  column's header when rows had their keys in a different order.
+  column's header when rows had their keys in a different order. (#389)
 - Faster: `translateElement()` applied every descendant once per ancestor (an element five levels deep was
-  translated five times on each language change); it now applies each once.
+  translated five times on each language change); it now applies each once. (#389)
 - Demo: one helper for the `lang="en"` mark, `fillSheetSelect()` built on `fillLabelledSelect()`, and the sheet
   list built once and shared by the Browser and Paper Types tabs. `ScreenDeviceManager`'s unused `devices`
-  parameter is marked `@deprecated`.
+  parameter is marked `@deprecated`. (#389)
+
+## 2026-11-05
 
 - Fixed: the tagline of the 30 languages said "more than 300 countries and territories"; the data has 197,
-  and now the tagline says so (a test compares it with `countries_200_complete.csv`).
+  and now the tagline says so (a test compares it with `countries_200_complete.csv`). (#363)
 - Fixed: Mexico, Brazil and China had no primary format in `country_compatibility`, because the guide
   wrote "Carta/Oficio", "Carta" and "16K" and the catalog calls them "Carta (Letter)", "Letter" and
   "16K (Chinese)". The guide now uses the catalog names, the importer reports a name it cannot find in
-  `skipped`, and a test checks all of them.
+  `skipped`, and a test checks all of them. (#363)
+
+## 2026-10-31
+
 - Fixed: picking two languages quickly could leave the page in the first one when its file arrived
-  last; `loadLanguage()` now ignores a stale answer.
+  last; `loadLanguage()` now ignores a stale answer. (#323)
 - Fixed: `getStats().totalTypes` was always 1, because the catalogs have no type column; the type now
-  follows from the category, as in `import_database.php` (a test compares both).
+  follows from the category, as in `import_database.php` (a test compares both). (#323)
 - Fixed: three names mean two sizes in two countries (Half Letter, Index Card 3x5, Index Card 4x6),
   and the size lists offered one of them at random. `formatChoices()` lists each size, with the
-  country, and `FormatConverter.compare()` / `closestTo()` work on rows.
+  country, and `FormatConverter.compare()` / `closestTo()` work on rows. (#323)
 - i18n: plural forms (`translateCount()`, `key_one`… next to each key; 15 languages add forms),
   numbers and units in the language of the page, country names from `Intl.DisplayNames`, searching
-  by the translated words, and the converter's arrow reversed in right-to-left pages.
+  by the translated words, and the converter's arrow reversed in right-to-left pages. (#323)
+
+## 2026-10-26
 
 - Fixed: with browser storage blocked (some private modes, sandboxed frames, blocked cookies) the demo
   showed nothing, because `LocalizationManager` read `localStorage` without guarding it; and a
   language switch was undone when the choice couldn't be saved. `LocalizationManager.savedLanguage()`
-  and `saveLanguage()` now guard both, and the page only stops remembering the choice.
+  and `saveLanguage()` now guard both, and the page only stops remembering the choice. (#288)
 - Fixed: on a 320 px screen the Paper Types tab was wider than the screen (a long size name in the
   select, then a long category badge). The grids use `minmax(min(…, 100%), …)` / `minmax(0, 1fr)`
-  and the card header wraps.
+  and the card header wraps. (#288)
+
+## 2026-10-25
 
 - Demo: `index.html` keeps no inline CSS or JavaScript (now `app/demo.css` and `app/demo.js`), the
   Paper Types categories are translated (`paperCategories.*`), the comparison says when it cuts the
   list at 100 rows, **Reverse order** next to **Sort by**, and the converter lists the five closest
-  formats to the one chosen. 13 new strings per language, 182 in all.
+  formats to the one chosen. 13 new strings per language, 182 in all. (#279)
 - `docs/frontend_implementation_guide.md` no longer defines its own `FormatConverter`: it uses the
-  library's, and a test stops a guide from redeclaring a library class.
-
+  library's, and a test stops a guide from redeclaring a library class. (#279)
 - Demo: searching ignores case and Latin accents (`normalizeText()`, also used by `FormatSearcher`),
   the Browser tab's search also looks in country, category and region, the category and region
   filters and the card badges are translated (24 new strings per language: `regions.international`,
   17 more `categories.*`, and the sort labels), and a **Sort by** menu (name, width, height, area)
-  orders the cards and is kept in the address. 169 strings per language now.
-
+  orders the cards and is kept in the address. 169 strings per language now. (#234)
 - The 24 languages that translated only the title, the tabs and the units now have all 145 UI
   strings (Portuguese, Russian, Arabic, Korean, Italian, Dutch, Turkish, Hindi, Thai, Vietnamese,
   Polish, Swedish, Norwegian, Danish, Finnish, Greek, Czech, Hungarian, Romanian, Bulgarian,
   Serbian, Croatian, Slovak, Ukrainian). The tab names and subtitle of those files, which were
-  English text, are translated too. None has been reviewed by a native speaker.
+  English text, are translated too. None has been reviewed by a native speaker. (#234)
 - The name of the downloaded CSV may use any letters, not only ASCII: Chromium saves non-ASCII
   names correctly once the system has a UTF-8 locale (the `download` name seen before came from a
-  container without one). Japanese and Chinese now use their own names.
+  container without one). Japanese and Chinese now use their own names. (#234)
 
 ## 2026-10-22
 
@@ -78,7 +100,7 @@ carries the details. Dates are those of the merge.
   `description` / `color-scheme` meta tags; `LocalizationManager.isRtl()` replaces the lists of
   right-to-left languages; `COUNTRIES_FILE` names the countries file once; statistics of an
   empty catalog are zeros instead of `NaN`; `FormatLoader` no longer writes to the console.
-  `.nvmrc` pins Node 22, the version CI uses.
+  `.nvmrc` pins Node 22, the version CI uses (#201).
 
 ## 2026-10-21
 
