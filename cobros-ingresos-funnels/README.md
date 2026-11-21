@@ -12,11 +12,14 @@ Pequeño sistema en PHP (sin framework) para analizar:
   registrar su pago. Se ve por defecto a los que tienen saldo vencido, o todo el saldo abierto, y se
   ordena por monto vencido, antigüedad, saldo o nombre. Sus totales son los del Dashboard: las dos
   pantallas salen de la misma consulta (`IngresosYCobrosRepository::saldosAbiertosSql()`).
-- **Flujo de caja esperado** (`?page=flujo`): lo que falta cobrar, repartido por el mes en que vence
-  cada boleta abierta, en USD a la tasa de hoy: lo ya vencido aparte, un mes por cada uno de los
+- **Flujo de caja esperado** (`?page=flujo`): lo que falta cobrar, repartido por el mes en que se
+  espera cobrarlo, en USD a la tasa de hoy: lo ya vencido aparte, un mes por cada uno de los
   próximos 3, 6 (por defecto) o 12, y «Más adelante». La suma de las filas es exactamente la cartera
-  pendiente del Dashboard (sale de la misma consulta). Supone que cada boleta se cobra el día de su
-  vencimiento: no predice cuándo va a pagar cada cliente, y por eso lo vencido no se reparte.
+  pendiente del Dashboard (sale de la misma consulta). **Cuándo se espera cada cobro** lo elige el
+  selector «Cobro esperado» (`?supuesto=`): con **el atraso habitual de cada cliente** (por defecto)
+  cada boleta por vencer se corre según cuánto suele atrasarse ese cliente; con **el día del
+  vencimiento** se supone que todos pagan a tiempo. Es una estimación, no una promesa de pago, y lo
+  vencido no se reparte en ninguno de los dos (ver «Atraso habitual» en las notas de diseño).
 - **Tasas de cambio** (`?page=tasas`): una fila por moneda con su tasa de hoy (cuántos dólares vale una
   unidad y cuántas unidades vale un dólar), la fecha de su cotización y cuánto cambió en 30 días; con
   `?moneda=CLP`, el historial de esa moneda, paginado, con el cambio de cada fila frente a la anterior.
@@ -77,8 +80,8 @@ Pequeño sistema en PHP (sin framework) para analizar:
   email de los clientes): valen las mismas precauciones de acceso que el resto de la app
   (ver «Antes de exponerlo»), y se mandan con `Cache-Control: no-store`.
   El **Flujo de caja** también se exporta (`?page=flujo-csv`): las filas de la pantalla con el
-  horizonte elegido (el vencimiento como «Ya vencido», «Más adelante» o el mes `AAAA-MM`, y el
-  saldo como número en dólares). No lleva fila de totales: los clientes de una fila se repiten en
+  horizonte y el supuesto elegidos (el cobro esperado como «Ya vencido», «Más adelante» o el mes
+  `AAAA-MM`, y el saldo como número en dólares). No lleva fila de totales: los clientes de una fila se repiten en
   otra y no se pueden sumar. Las **Tasas de cambio** también (`?page=tasas-csv`): sin moneda, el
   resumen de todas; con `?moneda=CLP`, **todo** el historial de esa moneda, no solo la página que
   se ve. Las tasas van como números con sus decimales (ocho el valor en dólares, seis las unidades
@@ -907,6 +910,18 @@ antes de enviarlo, y el servidor lo vuelve a validar.
 
 ## Notas de diseño
 
+- **Atraso habitual** (flujo de caja): para cada cliente, el promedio de días que se atrasó en pagar
+  sus boletas **ya saldadas** (vigentes y pagadas por completo, con el saldo en cero o a un centavo),
+  contado desde el vencimiento hasta su **último** pago vigente. Un pago anticipado cuenta cero y no
+  compensa los atrasos de otras boletas: no se espera cobrar antes de tiempo. Hacen falta **3 boletas
+  pagadas** (`FlujoDeCajaRepository::BOLETAS_MINIMAS_DE_HISTORIAL`); con menos, o sin ninguna, se
+  espera el día del vencimiento. Una boleta anulada, una pagada a medias o una cuyo pago se anuló no
+  cuentan: de su atraso no se sabe nada. El promedio es por boleta (no ponderado por monto) y se
+  redondea al día. Cada boleta **por vencer** se espera el día de su vencimiento más ese atraso; la
+  pantalla dice cuánto de lo que falta se movió así. Lo ya vencido va aparte en los dos supuestos.
+  **La suma no cambia con el supuesto**, solo en qué mes cae cada boleta (lo prueba
+  `FlujoDeCajaConAtrasoTest`). Con 120 mil boletas y 90 mil pagos la consulta tarda unos 205 ms
+  (unos 105 ms con el supuesto del vencimiento).
 - **Ingresos por canal** (funnel): la cohorte es la de las visitas del período (los mismos usuarios que
   cuenta «Conversión por canal», con el mismo orden) y el ingreso es lo que sus clientes **llevan cobrado
   hasta hoy**, no lo cobrado dentro del período: pagos vigentes menos notas de crédito, cada uno en USD a
