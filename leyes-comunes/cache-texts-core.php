@@ -58,10 +58,10 @@ function usage(string $message = ''): never
     exit($message === '' ? 0 : 2);
 }
 
-/** @return array{only: list<string>, dryRun: bool, force: bool, format: string, maxKb: int, delay: float, timeout: int, convert: bool, allowPrivate: bool, fieldSources: bool} */
+/** @return array{only: list<string>, dryRun: bool, force: bool, format: string, maxKb: int, delay: float, timeout: int, convert: bool, allowPrivate: bool, fieldSources: bool, browser: bool} */
 function parseOptions(array $argv): array
 {
-    $options = ['only' => [], 'dryRun' => false, 'force' => false, 'format' => 'md', 'maxKb' => 400, 'delay' => 1.0, 'timeout' => 20, 'convert' => false, 'allowPrivate' => false, 'fieldSources' => false];
+    $options = ['only' => [], 'dryRun' => false, 'force' => false, 'format' => 'md', 'maxKb' => 400, 'delay' => 1.0, 'timeout' => 20, 'convert' => false, 'allowPrivate' => false, 'fieldSources' => false, 'browser' => false];
     foreach (array_slice($argv, 1) as $arg) {
         if ($arg === '--help' || $arg === '-h') {
             usage();
@@ -71,6 +71,8 @@ function parseOptions(array $argv): array
             $options['force'] = true;
         } elseif ($arg === '--convert') {
             $options['convert'] = true;
+        } elseif ($arg === '--browser') {
+            $options['browser'] = true;
         } elseif ($arg === '--field-sources') {
             $options['fieldSources'] = true;
         } elseif ($arg === '--allow-private-hosts') {
@@ -320,6 +322,84 @@ function pdfToText(string $pdf): ?string
     } finally {
         @unlink($file);
     }
+}
+
+/** The first headless browser found: $CHROMIUM, chrome-headless-shell (Playwright's or on the PATH), then Chrome/Chromium. */
+function findBrowser(): ?string
+{
+    $candidates = [getenv('CHROMIUM') ?: ''];
+    foreach (glob('/opt/pw-browsers/chromium_headless_shell-*/chrome-headless-shell-linux64/chrome-headless-shell') ?: [] as $shell) {
+        $candidates[] = $shell;
+    }
+    array_push($candidates, 'chrome-headless-shell', 'google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser', '/opt/pw-browsers/chromium');
+    foreach (array_filter($candidates) as $candidate) {
+        if (str_contains($candidate, '/')) {
+            if (is_file($candidate) && is_executable($candidate)) {
+                return $candidate;
+            }
+            continue;
+        }
+        foreach (explode(PATH_SEPARATOR, (string) getenv('PATH')) as $dir) {
+            if ($dir !== '' && is_file("$dir/$candidate") && is_executable("$dir/$candidate")) {
+                return "$dir/$candidate";
+            }
+        }
+    }
+    return null;
+}
+
+/**
+ * HTML of a page after its JavaScript ran, through headless Chrome (`--dump-dom`), without a shell and with a
+ * time limit. Only used (with --browser) for a URL fetchUrl() already vetted (robots.txt included), when its plain
+ * HTML had no text. It runs with the browser's own User-Agent: any --user-agent makes this Chrome hang with
+ * --dump-dom. The window is very tall so that viewers which load their text as you scroll (leychile.cl) load more
+ * of it. The browser follows the page's own requests, so use it on a network with no internal services (a runner).
+ * Null when there is no browser, it fails, times out, or prints nothing.
+ */
+function renderWithBrowser(string $url, int $timeout): ?string
+{
+    $browser = findBrowser();
+    if ($browser === null || !preg_match('#^https?://#i', $url)) {
+        return null;
+    }
+    $profile = sys_get_temp_dir() . '/laws-browser-' . bin2hex(random_bytes(6));
+    $command = [$browser, str_ends_with($browser, 'chrome-headless-shell') ? '--headless' : '--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage', '--no-first-run',
+        '--disable-extensions', '--window-size=1280,40000', '--user-data-dir=' . $profile, '--virtual-time-budget=' . (max(5, $timeout) * 1000), '--dump-dom', $url];
+    $process = @proc_open($command, [0 => ['file', '/dev/null', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+    if (!is_resource($process)) {
+        return null;
+    }
+    stream_set_blocking($pipes[1], false);
+    stream_set_blocking($pipes[2], false);
+    $html = '';
+    $deadline = microtime(true) + max(30, $timeout * 2);
+    $finished = false;
+    while (microtime(true) < $deadline) {
+        $html .= (string) stream_get_contents($pipes[1]);
+        stream_get_contents($pipes[2]);
+        if (!proc_get_status($process)['running']) {
+            $html .= (string) stream_get_contents($pipes[1]);
+            $finished = true;
+            break;
+        }
+        if (strlen($html) > 4 * MAX_DOWNLOAD_BYTES) {
+            break;
+        }
+        usleep(50_000);
+    }
+    if (!$finished) {
+        proc_terminate($process, 9);
+    }
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    proc_close($process);
+    if (is_dir($profile)) {
+        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($profile, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $item) {
+            $item->isDir() && !$item->isLink() ? @rmdir($item->getPathname()) : @unlink($item->getPathname());
+        }
+        @rmdir($profile);
+    }
+    return $finished && trim($html) !== '' ? $html : null;
 }
 
 /** @return array{text: string, title: string}|string  the text, or the reason it was skipped */
@@ -697,8 +777,16 @@ function main(array $argv): int
                 } else {
                     $text = limitText($extracted['text'], $options['maxKb']);
                     $title = $extracted['title'];
+                    if (mb_strlen($text) < MIN_TEXT_CHARS && $options['browser']) {
+                        $rendered = renderWithBrowser($response['finalUrl'], $options['timeout']);
+                        $again = $rendered === null ? null : extractText($rendered, ['content-type' => 'text/html; charset=utf-8']);
+                        if (is_array($again)) {
+                            $text = limitText($again['text'], $options['maxKb']);
+                            $title = $again['title'];
+                        }
+                    }
                     if (mb_strlen($text) < MIN_TEXT_CHARS) {
-                        $skipReason = 'no readable text (the page probably needs JavaScript)';
+                        $skipReason = 'no readable text (the page probably needs JavaScript' . ($options['browser'] ? ', and the browser found none either' : '') . ')';
                     }
                 }
             }

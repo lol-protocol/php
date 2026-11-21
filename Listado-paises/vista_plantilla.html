@@ -361,7 +361,7 @@ function dibujarResumen() {
 
 function todo() {
   const m = MODOS[modo];
-  maximo = Math.max(...DATOS.filter((d) => !m.excluido(d)).map(m.prioridad));
+  maximo = Math.max(1, ...DATOS.filter((d) => !m.excluido(d)).map(m.prioridad));  // 1: nunca dividir entre 0
   dibujarResumen(); dibujarTabla();
 }
 

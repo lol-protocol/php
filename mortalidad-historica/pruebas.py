@@ -4,6 +4,7 @@
 
 Los datos de prueba son inventados y viven en directorios temporales: no tocan datos/.
 """
+import collections
 import csv
 import tempfile
 import unittest
@@ -33,11 +34,12 @@ class Plantilla(unittest.TestCase):
         self._tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self._tmp.cleanup)
         self.datos = Path(self._tmp.name)
+        escribir(self.datos, "revisiones", [])
         escribir(self.datos, "paises", [("CL", "Chile", "América"), ("GB", "Reino Unido", "Europa")])
         escribir(self.datos, "causas_modernas", [("tuberculosis", "Tuberculosis", "Tuberculosis", "A15;A16", "infecciosa")])
         escribir(self.datos, "causas_historicas", [("tisis", "spa", "tuberculosis", "alta", "", "", "", "borrador", "")])
         escribir(self.datos, "epidemias", [("peste", "Peste", "Y. pestis", "", "1346", "1353", "Europa;Asia", "", "", "", "", "media", "", "borrador", "")])
-        escribir(self.datos, "hereditarias", [("fq", "Fibrosis quística", "Cystic fibrosis", "autosómica recesiva", "219700", "todas las poblaciones", "infancia", "", "borrador", "")])
+        escribir(self.datos, "hereditarias", [("fq", "Fibrosis quística", "Cystic fibrosis", "autosómica recesiva", "219700", "MONDO:0009061", "todas las poblaciones", "infancia", "", "borrador", "")])
         escribir(self.datos, "hitos_registro", [("CL", "civil", "1885", "", "borrador", "")])
         escribir(self.datos, "modelo_logcuadratico", [(sexo, str(e), "-1", "1", "0", "0") for sexo in modelo.SEXOS for e in modelo.EDADES])
         escribir(self.datos, "londres_muertes", [("1665", "97306", "655", "verificado", "londres-owid")])
@@ -104,6 +106,14 @@ class ValidadorTest(Plantilla):
     def test_omim_de_seis_digitos(self):
         self.cambiar("hereditarias", 0, "omim", "123")
         self.assertTrue(any("omim" in e for e in self.errores()))
+
+    def test_mondo_con_forma_valida(self):
+        self.cambiar("hereditarias", 0, "mondo", "MONDO:12")
+        self.assertTrue(any("mondo" in e for e in self.errores()))
+
+    def test_un_omim_sin_su_mondo_no_esta_verificado(self):
+        self.cambiar("hereditarias", 0, "mondo", "")
+        self.assertTrue(any("sin su término MONDO" in e for e in self.errores()))
 
     def test_hereditaria_exige_donde_es_mas_frecuente(self):
         self.cambiar("hereditarias", 0, "frecuencia_mayor_en", "")
@@ -223,7 +233,7 @@ class GeneracionTest(unittest.TestCase):
     def test_las_hereditarias_son_de_poblacion_no_de_personas(self):
         # Ninguna columna habla de una persona, y toda fila dice dónde es mayor la frecuencia.
         self.assertEqual(g.COLUMNAS["hereditarias"], [
-            "id", "nombre_spa", "nombre_eng", "herencia", "omim", "frecuencia_mayor_en", "inicio_tipico",
+            "id", "nombre_spa", "nombre_eng", "herencia", "omim", "mondo", "frecuencia_mayor_en", "inicio_tipico",
             "nota", "estado", "fuente"])
         self.assertTrue(all(f["frecuencia_mayor_en"] for f in self.datos["hereditarias"]))
 
@@ -371,6 +381,175 @@ class PrepararDatosTest(unittest.TestCase):
         self.assertEqual(len(set(pd.ALIAS_OWID.values())), len(pd.ALIAS_OWID))
         self.assertEqual(set(pd.ALIAS_OWID) & pd.OMITIDOS_OWID, set())
         self.assertEqual(set(pd.ALIAS_GAPMINDER) & pd.OMITIDOS_GAPMINDER, set())
+
+
+class RevisionesTest(Plantilla):
+    """revisiones.csv: el validador y el informe, sobre un glosario de un solo término."""
+
+    def revision(self, **cambios):
+        fila = {"idioma": "spa", "termino": "tisis", "causa_id": "tuberculosis",
+                "huella": comun.huella("tisis", "spa", "tuberculosis", "alta"), "resultado": "correcto",
+                "revisor": "Ana", "fecha": "2026-11-20", "nota": ""}
+        fila.update(cambios)
+        return [fila[c] for c in g.COLUMNAS["revisiones"]]
+
+    def estado(self, *revisiones):
+        escribir(self.datos, "revisiones", list(revisiones))
+        errores, datos = g.validar()
+        self.assertEqual(errores, [])
+        return g.estado_de_revision(datos), datos
+
+    def test_vacio_es_valido_y_todo_sin_revisar(self):
+        (contadores, abiertas, caducadas, desacuerdos, huerfanas), _ = self.estado()
+        self.assertEqual((contadores["spa"]["total"], contadores["spa"]["revisado"]), (1, 0))
+        self.assertEqual((abiertas, caducadas, desacuerdos, huerfanas), ([], [], [], []))
+
+    def test_una_revision_correcta_con_la_huella_vigente_cuenta(self):
+        (contadores, *_), _ = self.estado(self.revision())
+        self.assertEqual(contadores["spa"]["revisado"], 1)
+
+    def test_si_el_dato_cambia_la_revision_caduca(self):
+        (contadores, _, caducadas, *_), _ = self.estado(self.revision(huella="00000000"))
+        self.assertEqual((contadores["spa"]["revisado"], contadores["spa"]["caducado"], len(caducadas)), (0, 1, 1))
+
+    def test_una_duda_deja_el_termino_abierto(self):
+        (contadores, abiertas, *_), _ = self.estado(self.revision(resultado="dudoso", nota="¿no será otra cosa?"))
+        self.assertEqual((contadores["spa"]["revisado"], contadores["spa"]["abierto"], len(abiertas)), (0, 1, 1))
+
+    def test_dos_personas_en_desacuerdo(self):
+        (contadores, _, _, desacuerdos, _), _ = self.estado(self.revision(), self.revision(revisor="Luis", resultado="corregir", nota="mejor otra causa"))
+        self.assertEqual(len(desacuerdos), 1)
+        self.assertEqual(contadores["spa"]["revisado"], 0)   # con una duda abierta no cuenta como revisado
+
+    def test_una_revision_de_un_termino_que_ya_no_existe_es_huerfana_no_un_error(self):
+        (_, _, _, _, huerfanas), _ = self.estado(self.revision(termino="consunción inventada"))
+        self.assertEqual(len(huerfanas), 1)
+
+    def test_el_informe_dice_cuanto_esta_revisado(self):
+        _, datos = self.estado(self.revision())
+        texto = g.informe_revisiones(datos)
+        self.assertIn("**1 de 1 términos revisados** (100 %)", texto)
+        self.assertIn("Nada por ahora.", texto)
+
+    def test_validador(self):
+        casos = {"idioma": ("es", "ISO 639-3"), "resultado": ("quizá", "resultado"), "revisor": ("", "falta el revisor"),
+                 "fecha": ("20/11/2026", "AAAA-MM-DD"), "huella": ("xyz", "huella")}
+        for campo, (valor, mensaje) in casos.items():
+            escribir(self.datos, "revisiones", [self.revision(**{campo: valor})])
+            self.assertTrue(any(mensaje in e for e in self.errores()), campo)
+        for resultado in ("corregir", "dudoso", "corregido"):
+            escribir(self.datos, "revisiones", [self.revision(resultado=resultado)])
+            self.assertTrue(any("necesita su nota" in e for e in self.errores()), resultado)
+
+    def test_un_revisor_no_revisa_dos_veces_lo_mismo(self):
+        escribir(self.datos, "revisiones", [self.revision(), self.revision(fecha="2026-11-21")])
+        self.assertTrue(any("ya revisó este término" in e for e in self.errores()))
+
+
+class HuellaTest(unittest.TestCase):
+    def test_valor_conocido(self):
+        # FNV-1a de 32 bits de «|||»; el port a JS (js/mortalidad.test.js) da lo mismo con su propia implementación.
+        self.assertEqual(comun.huella("", "", "", ""), "13fe3a3b")
+        self.assertEqual(len(comun.huella("tisis", "spa", "tuberculosis", "alta")), 8)
+
+    def test_cambia_con_cualquiera_de_los_cuatro_datos(self):
+        base = comun.huella("tisis", "spa", "tuberculosis", "alta")
+        for otra in (("Tisis", "spa", "tuberculosis", "alta"), ("tisis", "por", "tuberculosis", "alta"),
+                     ("tisis", "spa", "viruela", "alta"), ("tisis", "spa", "tuberculosis", "media")):
+            self.assertNotEqual(comun.huella(*otra), base)
+
+    def test_las_revisiones_reales_son_validas_y_estan_al_dia_con_el_glosario(self):
+        errores, datos = g.validar()
+        self.assertEqual(errores, [])
+        contadores, abiertas, caducadas, desacuerdos, huerfanas = g.estado_de_revision(datos)
+        self.assertEqual((caducadas, huerfanas), ([], []))   # nadie debe dejar revisiones que ya no corresponden
+
+
+class OmimTest(unittest.TestCase):
+    OBO = ("format-version: 1.2\n\n"
+           "[Term]\nid: MONDO:0009061\nname: cystic fibrosis\nxref: OMIM:219700\nxref: Orphanet:586\n\n"
+           "[Term]\nid: MONDO:0000001\nname: viejo\nis_obsolete: true\nxref: OMIM:111111\n\n"
+           "[Term]\nid: MONDO:0009861\nname: phenylketonuria\nxref: OMIM:261600\n")
+
+    def con_obo(self):
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        ruta = Path(d.name) / "m.obo"
+        ruta.write_text(self.OBO, encoding="utf-8")
+        return ruta
+
+    def test_lee_los_xref_de_omim(self):
+        mondo = pd.omim_de_mondo(self.con_obo())
+        self.assertEqual(mondo["MONDO:0009061"], (["219700"], False))
+        self.assertEqual(mondo["MONDO:0000001"], (["111111"], True))
+
+    def test_un_omim_que_es_xref_de_su_mondo_pasa(self):
+        pd.comprobar_omim(self.con_obo(), [{"id": "fq", "omim": "219700", "mondo": "MONDO:0009061"}, {"id": "sin", "omim": "", "mondo": ""}])
+
+    def test_un_omim_que_no_es_xref_de_su_mondo_falla(self):
+        for fila in ({"id": "x", "omim": "305900", "mondo": "MONDO:0009061"},      # otro código
+                     {"id": "x", "omim": "219700", "mondo": "MONDO:9999999"},      # término que no existe
+                     {"id": "x", "omim": "111111", "mondo": "MONDO:0000001"}):     # término obsoleto
+            with self.assertRaises(SystemExit):
+                pd.comprobar_omim(self.con_obo(), [fila])
+
+    def test_todo_omim_de_los_datos_trae_su_mondo(self):
+        for f in comun.filas_csv("hereditarias"):
+            if f["omim"]:
+                self.assertRegex(f["mondo"], r"^MONDO:\d{7}$", f["id"])
+
+
+class GlosarioAmpliadoTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.filas = comun.filas_csv("causas_historicas")
+        cls.causas = {c["id"]: c for c in comun.filas_csv("causas_modernas")}
+
+    def test_hay_mas_de_quinientos_terminos_y_cincuenta_causas(self):
+        self.assertGreater(len(self.filas), 500)
+        self.assertGreater(len(self.causas), 45)
+
+    def test_toda_causa_se_usa_y_todo_idioma_principal_tiene_mucho(self):
+        usadas = {f["causa_id"] for f in self.filas}
+        self.assertEqual(set(self.causas) - usadas, set())
+        por_idioma = collections.Counter(f["idioma"] for f in self.filas)
+        for idioma in ("spa", "lat", "eng", "deu", "fra", "ita", "por"):
+            self.assertGreater(por_idioma[idioma], 40, idioma)
+
+    def test_ningun_idioma_queda_con_unos_pocos_terminos(self):
+        por_idioma = collections.Counter(f["idioma"] for f in self.filas)
+        self.assertEqual(set(por_idioma), set(comun.IDIOMAS))
+        self.assertGreaterEqual(min(por_idioma.values()), 15, por_idioma)
+
+    def test_los_idiomas_pequenos_cubren_las_causas_mas_comunes(self):
+        comunes = {"disenteria", "tos_ferina", "neumonia", "cancer", "sifilis", "lepra", "epilepsia"}
+        for idioma in ("swe", "dan", "pol", "rus", "ukr", "ces", "ell", "tur", "ara", "heb", "zho", "jpn"):
+            cubiertas = {f["causa_id"] for f in self.filas if f["idioma"] == idioma}
+            self.assertGreaterEqual(len(cubiertas & comunes), 5, idioma)
+
+    def test_un_termino_ambiguo_sale_con_todas_sus_causas(self):
+        causas = {r["causa_id"] for r in consultas.causa_moderna("dolor de costado", "spa")}
+        self.assertEqual(causas, {"neumonia", "pleuresia"})
+        causas = {r["causa_id"] for r in consultas.causa_moderna("Typhus", "deu")}
+        self.assertEqual(causas, {"fiebre_tifoidea", "tifus"})
+
+    def test_la_fiebre_sin_mas_es_baja_confianza(self):
+        for termino, idioma in (("calentura", "spa"), ("fever", "eng"), ("Fieber", "deu")):
+            r = consultas.causa_moderna(termino, idioma)
+            self.assertEqual([x["causa_id"] for x in r], ["fiebre_inespecifica"])
+            self.assertEqual(r[0]["confianza"], "baja")
+
+    def test_terminos_comunes_de_los_registros(self):
+        esperado = {("de parto", "spa"): "muerte_de_parto", ("gefallen", "deu"): "guerra", ("mort pour la France", "fra"): "guerra",
+                    ("pulmonía", "spa"): "neumonia", ("raquitismo", "spa"): "raquitismo", ("in childbed", "eng"): "muerte_de_parto",
+                    ("dysenteria", "lat"): "disenteria", ("Scharlach", "deu"): "escarlatina", ("bloody flux", "eng"): "disenteria"}
+        for (termino, idioma), causa in esperado.items():
+            self.assertIn(causa, [r["causa_id"] for r in consultas.causa_moderna(termino, idioma)], (termino, idioma))
+
+    def test_los_terminos_sensibles_son_de_vocabulario_no_de_personas(self):
+        # El suicidio y la locura están en el glosario para leer un registro, y salen con su confianza, no como juicio.
+        self.assertEqual(self.causas["suicidio"]["grupo"], "externa")
+        self.assertEqual(self.causas["locura"]["grupo"], "mental")
 
 
 class BandasYRileyTest(unittest.TestCase):

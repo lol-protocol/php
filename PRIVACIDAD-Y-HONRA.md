@@ -91,8 +91,11 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
    pasar por la vista de visitante**. Se puede marcar a una persona fallecida
    entrada por entrada para mostrar una guía reciente (`markDeceased`): pide el
    comprobante y un año verosímil, solo la hace quien tiene la base, y el
-   comprobante no sale con la entrada. Eso no resuelve a los parientes que
-   siguen viviendo en esa dirección o con ese teléfono. Las razones sociales
+   comprobante no sale con la entrada. Esa entrada no se muestra mientras
+   otra que pueda estar viva (un pariente) tenga el mismo teléfono o la misma
+   dirección exacta; se muestra cuando esa otra también está marcada o es de una
+   guía lo bastante antigua. No mira el apellido, y oculta de más antes que de
+   menos. Las razones sociales
    que llevan un nombre de pila («Panadería Juan Pérez») se ocultan igual que
    una persona (#233): se reconocen por una lista de los nombres más comunes
    entre 1930 y 1975 en los seis idiomas y por una lista corta de los apellidos

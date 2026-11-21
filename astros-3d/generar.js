@@ -60,7 +60,7 @@ function horas(valor) {
 }
 
 function filaPlaneta(a) {
-  return `| ${a.nombre} | ${a.tipo} | ${numero(a.radio_km, 1)} | ${cientifico(a.masa_kg)} | ${numero(a.densidad_kg_m3, 0)} | ${numero(a.gravedad_ms2, 2)} | ${horas(a.periodo_rotacion_h)} | ${numero(a.inclinacion_eje_grados, 2)} | ${numero(a.periodo_orbital_dias, 2)} | ${numero(a.temperatura_media_k, 0)} | ${a.lunas} | ${a.anillos ? 'Sí' : 'No'} | ${a.atmosfera} |`;
+  return `| ${a.nombre} | ${a.tipo} | ${numero(a.radio_km, 1)} | ${cientifico(a.masa_kg)} | ${numero(a.densidad_kg_m3, 0)} | ${numero(a.gravedad_ms2, 2)} | ${horas(a.periodo_rotacion_h)} | ${a.inclinacion_eje_grados == null ? '—' : numero(a.inclinacion_eje_grados, 2)} | ${numero(a.periodo_orbital_dias, 2)} | ${numero(a.temperatura_media_k, 0)} | ${a.lunas} | ${a.anillos ? 'Sí' : 'No'} | ${a.atmosfera} |`;
 }
 
 function filaLuna(a, padres) {
@@ -93,7 +93,7 @@ function generarMarkdown(datos) {
   lineas.push('|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|');
   for (const a of por('planeta')) lineas.push(filaPlaneta(a));
   lineas.push('');
-  lineas.push('Rotación negativa = sentido retrógrado. Las densidades y gravedades salen de la masa y el radio con G = 6,674 × 10⁻¹¹.');
+  lineas.push('Rotación negativa = sentido retrógrado. Las densidades y gravedades salen de la masa y el radio con G = 6,674 × 10⁻¹¹. Plutón, Ceres, Eris y Makemake son planetas enanos. La inclinación del eje de Eris y Makemake no se conoce bien («—»), y la rotación de Eris es poco precisa.');
   lineas.push('');
   lineas.push('## Lunas');
   lineas.push('');
@@ -101,7 +101,7 @@ function generarMarkdown(datos) {
   lineas.push('|---|---|---:|---:|---:|---:|---:|---:|---:|---|');
   for (const a of por('luna')) lineas.push(filaLuna(a, padres));
   lineas.push('');
-  lineas.push('Las lunas de Marte son pequeñas e irregulares; sus temperaturas son aproximadas. La Luna gira sincronizada con su órbita: su rotación es igual a su periodo orbital (el valor de la tabla es el de rotación, no el de la órbita).');
+  lineas.push('Las lunas de Marte son pequeñas e irregulares; las temperaturas de las lunas pequeñas son aproximadas. Mimas, Tetis, Dione, Rea, Jápeto, las cinco lunas de Urano y Caronte giran sincronizadas con su órbita (salvo Caronte, que gira a la par de Plutón: ambos de forma retrógrada). La Luna gira sincronizada con su órbita: su rotación es igual a su periodo orbital (el valor de la tabla es el de rotación, no el de la órbita).');
   lineas.push('');
   lineas.push('## Soles');
   lineas.push('');

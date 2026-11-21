@@ -2,9 +2,10 @@
 # `muestra` es un verso conocido de dominio público: se usa en las pruebas y siempre entra en el
 # subconjunto de la fuente (generator/subconjuntos.py añade además las frases de ese idioma).
 # `corte`: «palabra» parte por espacios; «caracter» parte entre cualquier par de caracteres (CJK).
+# `tam` (opcional): tamaño de la frase en px; sin él, 15 como el latín. El CJK va a 17 porque a 15 se lee peor.
 fuentes:
-  ja: {archivo: NotoSerifJP-subset.otf, origen: NotoSerifJP-Regular.otf, sentido: ltr, corte: caracter}
-  zh: {archivo: NotoSerifSC-subset.otf, origen: NotoSerifSC-Regular.otf, sentido: ltr, corte: caracter}
+  ja: {archivo: NotoSerifJP-subset.otf, origen: NotoSerifJP-Regular.otf, sentido: ltr, corte: caracter, tam: 17}
+  zh: {archivo: NotoSerifSC-subset.otf, origen: NotoSerifSC-Regular.otf, sentido: ltr, corte: caracter, tam: 17}
   ar: {archivo: NotoNaskhArabic-subset.ttf, origen: NotoNaskhArabic-Regular.ttf, sentido: rtl, corte: palabra}
   hi: {archivo: NotoSerifDevanagari-subset.ttf, origen: NotoSerifDevanagari-Regular.ttf, sentido: ltr, corte: palabra}
 idiomas:  # idioma de la frase -> clave de `fuentes` (el persa comparte la fuente del árabe)

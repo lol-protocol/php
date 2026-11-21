@@ -22,7 +22,7 @@ import {
   writeCsv,
   writeSources,
 } from "../scripts/lib/dataset.js";
-import { recordChanges, unrecorded } from "../scripts/record-changes.js";
+import { recordChanges, unrecorded, writeRecorded } from "../scripts/record-changes.js";
 
 // "Today" for the row checks: rows researched today must not look like they were checked in the future.
 const TODAY = todayIso();
@@ -128,6 +128,24 @@ test("record-changes appends the diff and moves history and sources to a renamed
   ]);
   assert.equal(side.rows[0].law_name, "New Act");
   assert.equal(loadSide(master, "missing.csv", ["a"]).rows.length, 0, "a missing side file is an empty table");
+});
+
+test("writeRecorded saves changes.csv and moves field_sources.csv to the renamed law (the step the CLI runs after a rename)", () => {
+  const dir = mkdtempSync(join(tmpdir(), "changes-write-"));
+  const master = join(dir, "master.csv");
+  const before = [{ ...base, country_code: "AA", law_name: "Old Act", fair_use_exceptions: "1" }];
+  writeCsv(master, COLUMNS, before);
+  const committed = readFileSync(master, "utf-8");
+  writeCsv(master, COLUMNS, [{ ...before[0], law_name: "New Act" }]);
+  writeCsv(join(dir, "changes.csv"), CHANGE_COLUMNS, []);
+  writeSources(master, [
+    { country_code: "AA", law_name: "Old Act", field: "notes", url: "https://example.org/", confidence: "low", checked: "2026-01-01" },
+  ]);
+  writeRecorded(recordChanges({ since: "HEAD", date: "2026-10-15", masterPath: master, gitShow: () => committed }));
+  assert.match(readFileSync(join(dir, "changes.csv"), "utf-8"), /New Act,law_name,Old Act,New Act/);
+  const sourcesFile = readFileSync(join(dir, "field_sources.csv"), "utf-8");
+  assert.match(sourcesFile, /AA,New Act,notes,/);
+  assert.doesNotMatch(sourcesFile, /Old Act/);
 });
 
 test("--check names the differences that changes.csv does not record", () => {

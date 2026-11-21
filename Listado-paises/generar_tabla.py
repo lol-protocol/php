@@ -492,8 +492,8 @@ def main(comprobar=False):
         "Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Población "
         f"{anios['poblacion_millones']} de Our World in Data; PIB nominal del Banco Mundial; PIB PPA "
         f"(Banco Mundial), IDH {anios['idh']} (PNUD), libertad (Freedom House {anios['libertad_fh']}), "
-        f"democracia (EIU {anios['democracia_eiu']}) y corrupción (Transparencia Internacional "
-        f"{anios['corrupcion_cpi']}) vía Gapminder. El año de cada dato está en `datos_detalle.csv`. "
+        f"democracia (EIU {anios['democracia_eiu']}) vía Gapminder y corrupción (Transparencia "
+        f"Internacional {anios['corrupcion_cpi']}) vía Our World in Data. El año de cada dato está en `datos_detalle.csv`. "
         "Ver `README.md`, «Estado de los datos».",
         ["País", "Tipo", "Región", f"Población {anios['poblacion_millones']} (M)", "Nacidos en la historia (M)",
          f"IDH {anios['idh']}", f"PIB pc nominal {anios['pib_per_capita_usd']} (USD)",

@@ -77,6 +77,8 @@ jobs:
       # verde sin probar nada: aqui un skip o menos de 25 tests ejecutados es un fallo.
       - name: Tests con herramientas reales (bats)
         run: |
+          # pipefail: sin el, "bats | tee" salia siempre con el codigo de tee y un "not ok" no ponia el job en rojo
+          set -o pipefail
           sudo -E env "PATH=$PATH" REAL_TESTS=1 bats --tap vps-setup/tests/real | tee real.tap
           if grep -q '# skip' real.tap; then echo "::error::hay tests reales saltados"; exit 1; fi
           test "$(grep -c '^ok ' real.tap)" -ge 25

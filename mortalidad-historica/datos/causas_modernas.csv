@@ -16,3 +16,40 @@ fiebre_amarilla,Fiebre amarilla,Yellow fever,A95,infecciosa
 sarampion,Sarampión,Measles,B05,infecciosa
 poliomielitis,Poliomielitis («parálisis infantil»),Poliomyelitis (infantile paralysis),A80,infecciosa
 gripe,Gripe (influenza),Influenza,J09;J10;J11,respiratoria
+disenteria,"Disentería (flujo de sangre, «cámaras»)",Dysentery (bloody flux),A03;A09,infecciosa
+diarrea_infantil,"Diarrea (gastroenteritis, sobre todo infantil)","Diarrhoea (gastroenteritis, mostly infant)",A09,digestiva
+escarlatina,Escarlatina,Scarlet fever,A38,infecciosa
+tos_ferina,Tos ferina (coqueluche),Whooping cough,A37,infecciosa
+neumonia,Neumonía (pulmonía),Pneumonia,J18,respiratoria
+pleuresia,Pleuresía,Pleurisy,R09;J90,respiratoria
+cancer,Cáncer o tumor,Cancer or tumour,C80;D49,cancer
+diabetes,Diabetes,Diabetes,E14,otra
+enfermedad_cardiaca,Enfermedad del corazón,Heart disease,I51;I25,cardiovascular
+mortinato,Nacido muerto (mortinato),Stillbirth,P95,perinatal_infantil
+muerte_de_parto,Muerte en el parto o el puerperio,Death in childbirth or the puerperium,O75;O95,materna
+debilidad_congenita,Debilidad congénita o prematuridad,Congenital debility or prematurity,P05;P07,perinatal_infantil
+denticion,"Dentición («teething», tal como la anotaban)",Teething (as the records listed it),K00.7,mal_definida
+ahogamiento,Ahogamiento,Drowning,W74;T75.1,externa
+muerte_violenta,"Muerte violenta, herida u homicidio","Violent death, wound or homicide",X99;Y09;T14,externa
+suicidio,Suicidio,Suicide,X70;X84,externa
+accidente,"Accidente (caída, quemadura, atropello…)","Accident (fall, burn, being run over…)",X59;W19,externa
+guerra,Muerte en guerra,Death in war (killed in action),Y36,externa
+inanicion,Hambre o inanición,Starvation,E43;E46;T73.0,desnutricion
+fiebre_tifoidea,Fiebre tifoidea,Typhoid fever,A01,infecciosa
+lepra,Lepra,Leprosy,A30,infecciosa
+sifilis,Sífilis,Syphilis,A50;A53,infecciosa
+epilepsia,Epilepsia,Epilepsy,G40,neurologica
+locura,"Demencia, locura o enfermedad mental","Insanity, dementia or mental illness",F03;F29;F99,mental
+ictericia,Ictericia (un síntoma),Jaundice (a symptom),R17,mal_definida
+hernia,Hernia («quebradura»),Hernia (rupture),K46,digestiva
+piedra,Cálculos urinarios («mal de piedra»),Urinary stones,N20,otra
+meningitis,Meningitis («fiebre cerebral»),Meningitis (brain fever),G00;G03,neurologica
+clorosis,Clorosis (anemia de las jóvenes),Chlorosis (green sickness),D50,otra
+raquitismo,Raquitismo,Rickets,E55,desnutricion
+escrofula,Escrófula (tuberculosis de los ganglios),Scrofula (King's evil),A18.2,infecciosa
+muerte_subita,Muerte repentina,Sudden death,R96;R98,mal_definida
+gota,Gota,Gout,M10,otra
+apendicitis,"Apendicitis (tiflitis, perityphlitis)",Appendicitis,K35,digestiva
+erisipela,Erisipela,Erysipelas,A46,infecciosa
+gangrena,Gangrena,Gangrene,R02,otra
+fiebre_inespecifica,"Fiebre, sin decir de qué","Fever, with no cause given",R50,mal_definida

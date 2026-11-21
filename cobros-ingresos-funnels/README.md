@@ -618,7 +618,7 @@ src/
   EnvioUnico.php        token de un solo uso de los formularios de alta: un doble
                         clic no crea dos pagos ni dos boletas, testeado
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
-  Dinero.php            montos en centavos enteros, para compararlos sin el ruido de
+  Dinero.php            montos en milésimas enteras, para compararlos sin el ruido de
                         la coma flotante, y el monto de un texto de formulario
                         (solo digitos y punto decimal) (testeado)
   MayoriaDeEdad.php     la regla de que no se admiten clientes que no hayan cumplido
@@ -677,7 +677,7 @@ src/
                         como la anulación) y lo que falta devolver
   FechaDeDevolucion.php el día en que se devolvió la plata: devuelve la fecha
                         ya validada o lanza una excepción con el mensaje para
-                        la pantalla (entre la nota y hoy), como Dinero::centavos()
+                        la pantalla (entre la nota y hoy), como Dinero::milesimas()
   RangoEdad.php         el tramo de edad (Menor de 18, 18-24, 25-34, ...)
                         como expresion SQL, con age(); lo comparten
                         segmentacion y funnel. Una fecha de nacimiento
@@ -696,7 +696,9 @@ src/
 database/
   migraciones/          el esquema, el catálogo de ~240 países y sus monedas
                         (ISO 4217), los índices y la regla de mayoría de edad,
-                        en cambios numerados (001 = esquema inicial, 005 =
+                        en cambios numerados (001 = esquema inicial, 002 =
+                        el envío único de los formularios, 003 = la vista
+                        boletas_con_saldo, 004 = valores cerrados, 005 =
                         catálogo, 006 y 008 = índices, 007 = mayoría de edad,
                         009 = origen de las tasas de cambio, 010 = mayoría de
                         edad de cada país, 011 = la tasa de cambio de cada día,
@@ -705,7 +707,7 @@ database/
                         del catálogo de países y monedas, 015 = email único sin
                         importar mayúsculas, 016 = monedas reemplazadas, 017 =
                         mayoría de edad de Puerto Rico, 018 = el historial de las
-                        tasas de cambio)
+                        tasas de cambio, 019 = montos con tres decimales)
 bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
@@ -863,7 +865,7 @@ quinientos» de quien usa el punto de miles), y leerlo como `1.5` es el mismo er
 `10.005` se rechaza por lo mismo. Con uno o dos decimales, o con cuatro o más, no hay
 ambigüedad: se lee y se redondea al centavo (a la milésima en las monedas de tres decimales).
 Lo que no es un monto vale 0 y el formulario vuelve con «monto válido»; el navegador
-(`type="number"`, `step="0.01"`) siempre manda punto y a lo sumo dos decimales.
+(`type="number"`, con `step` de la unidad menor de la moneda: `0.01`, `0.001` o `1`) siempre manda punto y a lo sumo los decimales de la moneda.
 
 Otra cosa es la regla deliberada de que **un centavo o menos cuenta como cero**, para que
 un residuo de redondeo no deje una boleta pendiente para siempre: una boleta con saldo de
@@ -874,7 +876,7 @@ Ese 0,01 está escrito en un solo lugar, `Dinero::UN_CENTAVO` (y `Dinero::cuenta
 compararlo): lo leen el PHP, las consultas SQL y las vistas. Es también el monto mínimo que
 acepta `Validacion::montoEnRango()`, y el HTML de los cuatro formularios de monto (alta y
 edición de boletas y de pagos) sale de `campo_monto()`, que le pone `min`, `max` y `step` desde
-`Dinero::UN_CENTAVO` y `Validacion::MONTO_MAXIMO`: el navegador rechaza un monto fuera de rango
+los decimales de la moneda (`MonedaRepository::decimales()`) y `Validacion::MONTO_MAXIMO`: el navegador rechaza un monto fuera de rango
 antes de enviarlo, y el servidor lo vuelve a validar.
 
 ## Notas de diseño

@@ -129,18 +129,18 @@ CG,"Law No. 24-82 of July 7, 1982 on Copyright and Related Rights",enforcement_b
 CG,"Law No. 24-82 of July 7, 1982 on Copyright and Related Rights",treaties_signatory,a75774f430,medium,2026-10-25
 CI,,moral_rights,ad79b2eba7,medium,2026-10-15
 CI,,fair_use_exceptions,6447b30f5e,medium,2026-10-14
-CL,,term_of_protection,dd00cb540f,medium,2026-10-14
+CL,,term_of_protection,73ff9ed5b1,high,2026-11-20
 CM,,digital_protection,0bcefcdb77,medium,2026-10-14
 CO,,enforcement_body,2256c48aaa,high,2026-10-14
 CR,,digital_protection,ba69719c96,medium,2026-10-14
-CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",law_name,cb2df80cf1,medium,2026-10-16
-CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",protection_type,cb2df80cf1,medium,2026-10-16
-CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",term_of_protection,2bf8613fc1,medium,2026-10-16
-CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",moral_rights,880450e18d,medium,2026-10-16
-CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",orphan_works,6cf0e77999,low,2026-10-16
-CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",fair_use_exceptions,6cf0e77999,low,2026-10-16
-CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",enforcement_body,646da490b0,high,2026-10-16
-CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",treaties_signatory,fc87dbd3c2,medium,2026-10-16
+CU,Law No. 154 on the Copyright of the Author and the Performing Artist (2022),law_name,06babdf574,high,2026-11-16
+CU,Law No. 154 on the Copyright of the Author and the Performing Artist (2022),protection_type,cb2df80cf1,medium,2026-10-16
+CU,Law No. 154 on the Copyright of the Author and the Performing Artist (2022),term_of_protection,06babdf574,high,2026-11-16
+CU,Law No. 154 on the Copyright of the Author and the Performing Artist (2022),moral_rights,06babdf574,high,2026-11-16
+CU,Law No. 154 on the Copyright of the Author and the Performing Artist (2022),orphan_works,6cf0e77999,low,2026-10-16
+CU,Law No. 154 on the Copyright of the Author and the Performing Artist (2022),fair_use_exceptions,6cf0e77999,low,2026-10-16
+CU,Law No. 154 on the Copyright of the Author and the Performing Artist (2022),enforcement_body,646da490b0,high,2026-10-16
+CU,Law No. 154 on the Copyright of the Author and the Performing Artist (2022),treaties_signatory,fc87dbd3c2,medium,2026-10-16
 CV,Decree-Law No. 1/2009 of 27 April 2009 on the Revision of Copyright Law (amended by Decree-Law No. 2/2017),law_name,225bc54c00,high,2026-10-22
 CV,Decree-Law No. 1/2009 of 27 April 2009 on the Revision of Copyright Law (amended by Decree-Law No. 2/2017),protection_type,225bc54c00,medium,2026-10-22
 CV,Decree-Law No. 1/2009 of 27 April 2009 on the Revision of Copyright Law (amended by Decree-Law No. 2/2017),term_of_protection,153c59f91c,medium,2026-10-22
@@ -715,3 +715,4 @@ MH,,registration_required,f622f29f5b,low,2026-11-12
 MH,,linked_resources,f622f29f5b,low,2026-11-12
 MH,,notes,f622f29f5b,low,2026-11-12
 BR,,term_of_protection,2dbbcf6e94,high,2026-11-15
+CU,,digital_protection,06babdf574,medium,2026-11-16
