@@ -20,13 +20,12 @@ $jsonl = false;
 $revisar = true;
 $exclusiones = Exclusiones::vacia();
 $rutas = [];
+$uso = "Uso: php bin/analizar.php [--capturado=AAAA-MM-DD] [--jsonl] [--excluir=lista.txt] [--sin-revision] pagina.html|carpeta …\n";
+Cli::validar(array_slice($argv, 1), ['--capturado=', '--jsonl', '--excluir=', '--sin-revision'], $uso);
+
 foreach (array_slice($argv, 1) as $arg) {
     if (str_starts_with($arg, '--capturado=')) {
-        $capturado = substr($arg, 12);
-        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $capturado) !== 1) {
-            fwrite(STDERR, "--capturado pide AAAA-MM-DD\n");
-            exit(2);
-        }
+        $capturado = Cli::fecha('--capturado', substr($arg, 12));
     } elseif ($arg === '--jsonl') {
         $jsonl = true;
     } elseif ($arg === '--sin-revision') {
@@ -38,7 +37,7 @@ foreach (array_slice($argv, 1) as $arg) {
     }
 }
 if ($rutas === []) {
-    fwrite(STDERR, "Uso: php bin/analizar.php [--capturado=AAAA-MM-DD] [--jsonl] [--excluir=lista.txt] [--sin-revision] pagina.html|carpeta …\n");
+    fwrite(STDERR, $uso);
     exit(2);
 }
 
@@ -68,12 +67,15 @@ $emitir = static function (array $datos) use ($exclusiones, $jsonl, &$salida, &$
     }
 };
 
-foreach (Lote::archivos($rutas) as $archivo) {
-    if (Lote::esUrl($archivo)) {
-        fwrite(STDERR, "$archivo: esto no descarga páginas; guarda el HTML y pásame el archivo.\n");
-        $fallos++;
-        continue;
+// Una URL en la línea de comandos es un error de uso (como en los demás programas), no una página que no se pudo leer.
+foreach ($rutas as $ruta) {
+    if (Lote::esUrl($ruta)) {
+        fwrite(STDERR, "$ruta: esto no descarga páginas; guarda el HTML y pásame el archivo.\n");
+        exit(2);
     }
+}
+
+foreach (Lote::archivos($rutas) as $archivo) {
     $html = is_file($archivo) ? file_get_contents($archivo) : false;
     if ($html === false) {
         fwrite(STDERR, "$archivo: no se pudo leer\n");

@@ -16,6 +16,9 @@ use ParsingFbInMas\Purga;
 $entrada = null;
 $exclusiones = null;
 $enSitio = false;
+$uso = "Uso: php bin/purgar.php entrada.jsonl --excluir=lista.txt [--en-sitio] [> salida.jsonl]\n";
+Cli::validar(array_slice($argv, 1), ['--excluir=', '--en-sitio'], $uso);
+
 foreach (array_slice($argv, 1) as $arg) {
     if (str_starts_with($arg, '--excluir=')) {
         $exclusiones = Cli::exclusiones(substr($arg, 10));
@@ -26,7 +29,7 @@ foreach (array_slice($argv, 1) as $arg) {
     }
 }
 if ($entrada === null || $exclusiones === null || Lote::esUrl($entrada)) {
-    fwrite(STDERR, "Uso: php bin/purgar.php entrada.jsonl --excluir=lista.txt [--en-sitio] [> salida.jsonl]\n");
+    fwrite(STDERR, $uso);
     exit(2);
 }
 $origen = is_file($entrada) ? @fopen($entrada, 'rb') : false;
