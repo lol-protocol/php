@@ -220,6 +220,7 @@ button{background:#d9a441;color:#15110e;font-weight:600;cursor:pointer}
 }
 
 $cat = new Interruptores($rutaCat, $rutaEst);
+$cat->congelar(); // el panel calcula las dependencias de cada botón: una sola lectura del estado
 $propios = $cat->interruptores();
 $aviso = (string) ($_SESSION['aviso'] ?? '');
 unset($_SESSION['aviso']);

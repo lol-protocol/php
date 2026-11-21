@@ -3,7 +3,7 @@
 > Generado desde [`catalogo.json`](catalogo.json) con `php interruptores/bin/generar.php`. **No lo edites a mano**: cambia el catálogo y vuelve a generar.
 
 - **62 funciones** (41 de genealogía y 21 de POS).
-- **225 opciones** (sub-interruptores), y **287 interruptores** en total.
+- **315 opciones** (sub-interruptores), y **377 interruptores** en total.
 - **2 funciones supuestas**, marcadas con *(supuesto)*: no vienen de la lista de la persona, las propuse a partir de sus respuestas. Hay que confirmarlas o quitarlas.
 
 Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: una opción está encendida solo si su función también lo está. «Mínimo de opciones» dice cuántas tienen que quedar encendidas mientras la función esté encendida.
@@ -70,7 +70,7 @@ Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: u
 | `gen.estimacion` | Estimación de fechas y lugares | 2 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
 | `gen.pasarela` | Pasarela de pagos | 1 | producto | `fuera_del_repo` | encendida | — |
 | `gen.busqueda-fuentes` | Tipos de fuente de las búsquedas externas *(supuesto)* | 5 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
-| `gen.busqueda-paises` | Países de las búsquedas externas *(supuesto)* | 11 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.busqueda-paises` | Países de las búsquedas externas *(supuesto)* | 101 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
 
 ### `gen.vistas` · Modos de visualización del árbol
 
@@ -551,7 +551,7 @@ Qué tipos de fuente se consultan al buscar, deducir o estimar: cada uno se pued
 
 ### `gen.busqueda-paises` · Países de las búsquedas externas
 
-País de origen de la fuente consultada. Las opciones son los 11 países de prioridad máxima para genealogía en Listado-paises/ (sin excluidos); se pueden agregar más.
+País de origen de la fuente consultada. Las 101 opciones son los 100 países de mayor prioridad para genealogía en Listado-paises/ (sin excluidos), más los hispanohablantes y Chile que no entraban. Se regeneran con ese archivo.
 
 | Opción (ref) | Nombre | Por defecto |
 |---|---|---|
@@ -566,6 +566,96 @@ País de origen de la fuente consultada. Las opciones son los 11 países de prio
 | `gen.busqueda-paises:pt` | Portugal | encendida |
 | `gen.busqueda-paises:gb` | Reino Unido | encendida |
 | `gen.busqueda-paises:se` | Suecia | encendida |
+| `gen.busqueda-paises:it` | Italia | encendida |
+| `gen.busqueda-paises:de` | Alemania | encendida |
+| `gen.busqueda-paises:at` | Austria | encendida |
+| `gen.busqueda-paises:fi` | Finlandia | encendida |
+| `gen.busqueda-paises:nz` | Nueva Zelanda | encendida |
+| `gen.busqueda-paises:ch` | Suiza | encendida |
+| `gen.busqueda-paises:be` | Bélgica | encendida |
+| `gen.busqueda-paises:cw` | Curazao | encendida |
+| `gen.busqueda-paises:es` | España | encendida |
+| `gen.busqueda-paises:fr` | Francia | encendida |
+| `gen.busqueda-paises:gr` | Grecia | encendida |
+| `gen.busqueda-paises:gg` | Guernsey | encendida |
+| `gen.busqueda-paises:im` | Isla de Man | encendida |
+| `gen.busqueda-paises:is` | Islandia | encendida |
+| `gen.busqueda-paises:fo` | Islas Feroe | encendida |
+| `gen.busqueda-paises:je` | Jersey | encendida |
+| `gen.busqueda-paises:pl` | Polonia | encendida |
+| `gen.busqueda-paises:pr` | Puerto Rico | encendida |
+| `gen.busqueda-paises:re` | Reunión | encendida |
+| `gen.busqueda-paises:za` | Sudáfrica | encendida |
+| `gen.busqueda-paises:ee` | Estonia | encendida |
+| `gen.busqueda-paises:jp` | Japón | encendida |
+| `gen.busqueda-paises:lu` | Luxemburgo | encendida |
+| `gen.busqueda-paises:sg` | Singapur | encendida |
+| `gen.busqueda-paises:ar` | Argentina | encendida |
+| `gen.busqueda-paises:br` | Brasil | encendida |
+| `gen.busqueda-paises:il` | Israel | encendida |
+| `gen.busqueda-paises:mx` | México | encendida |
+| `gen.busqueda-paises:bs` | Bahamas | encendida |
+| `gen.busqueda-paises:bb` | Barbados | encendida |
+| `gen.busqueda-paises:bz` | Belice | encendida |
+| `gen.busqueda-paises:bm` | Bermudas | encendida |
+| `gen.busqueda-paises:bg` | Bulgaria | encendida |
+| `gen.busqueda-paises:cv` | Cabo Verde | encendida |
+| `gen.busqueda-paises:cz` | Chequia | encendida |
+| `gen.busqueda-paises:cl` | Chile | encendida |
+| `gen.busqueda-paises:cy` | Chipre | encendida |
+| `gen.busqueda-paises:cr` | Costa Rica | encendida |
+| `gen.busqueda-paises:hr` | Croacia | encendida |
+| `gen.busqueda-paises:sk` | Eslovaquia | encendida |
+| `gen.busqueda-paises:si` | Eslovenia | encendida |
+| `gen.busqueda-paises:gi` | Gibraltar | encendida |
+| `gen.busqueda-paises:jm` | Jamaica | encendida |
+| `gen.busqueda-paises:lv` | Letonia | encendida |
+| `gen.busqueda-paises:lt` | Lituania | encendida |
+| `gen.busqueda-paises:my` | Malasia | encendida |
+| `gen.busqueda-paises:mt` | Malta | encendida |
+| `gen.busqueda-paises:mu` | Mauricio | encendida |
+| `gen.busqueda-paises:na` | Namibia | encendida |
+| `gen.busqueda-paises:ro` | Rumania | encendida |
+| `gen.busqueda-paises:tw` | Taiwán | encendida |
+| `gen.busqueda-paises:tt` | Trinidad y Tobago | encendida |
+| `gen.busqueda-paises:uy` | Uruguay | encendida |
+| `gen.busqueda-paises:cn` | China | encendida |
+| `gen.busqueda-paises:li` | Liechtenstein | encendida |
+| `gen.busqueda-paises:mc` | Mónaco | encendida |
+| `gen.busqueda-paises:am` | Armenia | encendida |
+| `gen.busqueda-paises:ba` | Bosnia y Herzegovina | encendida |
+| `gen.busqueda-paises:co` | Colombia | encendida |
+| `gen.busqueda-paises:ph` | Filipinas | encendida |
+| `gen.busqueda-paises:ge` | Georgia | encendida |
+| `gen.busqueda-paises:gl` | Groenlandia | encendida |
+| `gen.busqueda-paises:gt` | Guatemala | encendida |
+| `gen.busqueda-paises:hk` | Hong Kong | encendida |
+| `gen.busqueda-paises:hu` | Hungría | encendida |
+| `gen.busqueda-paises:in` | India | encendida |
+| `gen.busqueda-paises:md` | Moldavia | encendida |
+| `gen.busqueda-paises:pa` | Panamá | encendida |
+| `gen.busqueda-paises:py` | Paraguay | encendida |
+| `gen.busqueda-paises:pe` | Perú | encendida |
+| `gen.busqueda-paises:do` | República Dominicana | encendida |
+| `gen.busqueda-paises:rs` | Serbia | encendida |
+| `gen.busqueda-paises:to` | Tonga | encendida |
+| `gen.busqueda-paises:ad` | Andorra | encendida |
+| `gen.busqueda-paises:ag` | Antigua y Barbuda | encendida |
+| `gen.busqueda-paises:dm` | Dominica | encendida |
+| `gen.busqueda-paises:gd` | Granada | encendida |
+| `gen.busqueda-paises:me` | Montenegro | encendida |
+| `gen.busqueda-paises:kn` | San Cristóbal y Nieves | encendida |
+| `gen.busqueda-paises:sm` | San Marino | encendida |
+| `gen.busqueda-paises:vc` | San Vicente y las Granadinas | encendida |
+| `gen.busqueda-paises:lc` | Santa Lucía | encendida |
+| `gen.busqueda-paises:sc` | Seychelles | encendida |
+| `gen.busqueda-paises:bo` | Bolivia | encendida |
+| `gen.busqueda-paises:lb` | Líbano | encendida |
+| `gen.busqueda-paises:ua` | Ucrania | encendida |
+| `gen.busqueda-paises:vn` | Vietnam | encendida |
+| `gen.busqueda-paises:al` | Albania | encendida |
+| `gen.busqueda-paises:ao` | Angola | encendida |
+| `gen.busqueda-paises:ec` | Ecuador | encendida |
 
 ## B) Librería y etiquetado POS
 

@@ -64,7 +64,7 @@ $i = $nuevo();
 $funciones = $i->catalogo();
 comprobar('hay 41 funciones de genealogía', count(array_filter($funciones, fn ($f) => $f['plataforma'] === 'genealogia')) === 41);
 comprobar('hay 21 funciones de POS', count(array_filter($funciones, fn ($f) => $f['plataforma'] === 'pos')) === 21);
-comprobar('hay 287 interruptores en total (62 funciones + 225 opciones)', $i->totalInterruptores() === 287);
+comprobar('hay 377 interruptores en total (62 funciones + 315 opciones)', $i->totalInterruptores() === 377);
 
 $carpetasInexistentes = [];
 foreach ($funciones as $id => $f) {
@@ -406,6 +406,59 @@ $i->cambiar('gen.pasarela', true);
 $i->cambiar('gen.pagos:tarjeta', true);
 comprobar('con Stripe encendido, la tarjeta vuelve', $i->activo('gen.pagos:tarjeta') === true);
 
+
+// --- bin/estado.php: el estado efectivo para quien no es PHP ------------------------------------------------------
+
+$var = $tmp . '/estado-efectivo';
+mkdir($var, 0775, true);
+file_put_contents($var . '/estado.json', json_encode(['gen.vistas:abanico' => false, 'gen.mascotas' => false]));
+$volcar = function (array $args) use ($raiz, $var): array {
+    $orden = 'INTERRUPTORES_VAR=' . escapeshellarg($var) . ' ' . escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($raiz . '/bin/estado.php');
+    foreach ($args as $a) {
+        $orden .= ' ' . escapeshellarg($a);
+    }
+    exec($orden . ' 2>&1', $lineas, $codigo);
+    return [$codigo, implode("\n", $lineas)];
+};
+[$codigo, $texto] = $volcar([]);
+$vol = json_decode($texto, true);
+comprobar('estado.php imprime JSON con versión y un interruptor por referencia', $codigo === 0 && ($vol['version'] ?? 0) === 1 && count($vol['interruptores']) === $i->totalInterruptores());
+comprobar('una opción apagada sale inactiva', $vol['interruptores']['gen.vistas:abanico']['activo'] === false);
+comprobar('una opción de una función apagada sale inactiva aunque su interruptor esté encendido', $vol['interruptores']['gen.mascotas:perritos']['activo'] === false);
+comprobar('lo no tocado sale activo, con la política de su función', $vol['interruptores']['gen.pagos']['activo'] === true && $vol['interruptores']['gen.pagos']['al_apagar'] === 'no_disponible');
+[$codigo] = $volcar(['--salida=' . $var . '/efectivo.json']);
+comprobar('--salida escribe el archivo y no deja temporales', $codigo === 0 && is_file($var . '/efectivo.json') && glob($var . '/*.tmp') === []);
+comprobar('una opción desconocida da código 2', $volcar(['--x'])[0] === 2);
+
+// --- Instantánea del estado (congelar) y rendimiento --------------------------------------------------------------
+
+@unlink($estado);
+$i = $nuevo();
+$otroProceso = $nuevo(); // otra instancia hace de «otro proceso» que cambia el archivo
+$i->congelar();
+comprobar('congelado, se lee el estado de fábrica', $i->activo('gen.mascotas:gatitos') === true);
+$otroProceso->cambiar('gen.mascotas:gatitos', false);
+comprobar('congelado, un cambio de otro proceso no se ve', $i->activo('gen.mascotas:gatitos') === true);
+$i->descongelar();
+comprobar('al descongelar se ve', $i->activo('gen.mascotas:gatitos') === false);
+$i->congelar();
+$i->cambiar('gen.mascotas:perritos', false);
+comprobar('cambiar() ve el estado real aunque estuviera congelado, y descongela',
+    $i->activo('gen.mascotas:perritos') === false && $i->activo('gen.mascotas:gatitos') === false);
+$otroProceso->cambiar('gen.mascotas:gatitos', true);
+$otroProceso->cambiar('gen.mascotas:perritos', true);
+
+// El panel calcula, para cada botón, lo que falta y lo que depende: con todos los interruptores debe ser rápido.
+file_put_contents($estado, json_encode(['gen.mascotas:gatitos' => false]));
+$rapido = $nuevo();
+$rapido->congelar();
+$inicio = microtime(true);
+foreach (array_keys($rapido->interruptores()) as $ref) {
+    $rapido->faltanParaEncender($ref);
+    $rapido->dependientesActivos($ref);
+}
+$segundos = microtime(true) - $inicio;
+comprobar('calcular las dependencias de todos los botones tarda menos de 3 s', $segundos < 3.0, sprintf('%.2f s', $segundos));
 
 // Limpieza de la carpeta temporal.
 foreach (glob($tmp . '/*') ?: [] as $archivo) {

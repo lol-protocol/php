@@ -1290,7 +1290,7 @@
       "tipo": "interno",
       "origen": "fuera_del_repo",
       "carpetas": [],
-      "descripcion": "País de origen de la fuente consultada. Las opciones son los 11 países de prioridad máxima para genealogía en Listado-paises/ (sin excluidos); se pueden agregar más.",
+      "descripcion": "País de origen de la fuente consultada. Las 101 opciones son los 100 países de mayor prioridad para genealogía en Listado-paises/ (sin excluidos), más los hispanohablantes y Chile que no entraban. Se regeneran con ese archivo.",
       "depende_de": [
         "gen.privacidad"
       ],
@@ -1341,6 +1341,366 @@
         {
           "id": "se",
           "nombre": "Suecia"
+        },
+        {
+          "id": "it",
+          "nombre": "Italia"
+        },
+        {
+          "id": "de",
+          "nombre": "Alemania"
+        },
+        {
+          "id": "at",
+          "nombre": "Austria"
+        },
+        {
+          "id": "fi",
+          "nombre": "Finlandia"
+        },
+        {
+          "id": "nz",
+          "nombre": "Nueva Zelanda"
+        },
+        {
+          "id": "ch",
+          "nombre": "Suiza"
+        },
+        {
+          "id": "be",
+          "nombre": "Bélgica"
+        },
+        {
+          "id": "cw",
+          "nombre": "Curazao"
+        },
+        {
+          "id": "es",
+          "nombre": "España"
+        },
+        {
+          "id": "fr",
+          "nombre": "Francia"
+        },
+        {
+          "id": "gr",
+          "nombre": "Grecia"
+        },
+        {
+          "id": "gg",
+          "nombre": "Guernsey"
+        },
+        {
+          "id": "im",
+          "nombre": "Isla de Man"
+        },
+        {
+          "id": "is",
+          "nombre": "Islandia"
+        },
+        {
+          "id": "fo",
+          "nombre": "Islas Feroe"
+        },
+        {
+          "id": "je",
+          "nombre": "Jersey"
+        },
+        {
+          "id": "pl",
+          "nombre": "Polonia"
+        },
+        {
+          "id": "pr",
+          "nombre": "Puerto Rico"
+        },
+        {
+          "id": "re",
+          "nombre": "Reunión"
+        },
+        {
+          "id": "za",
+          "nombre": "Sudáfrica"
+        },
+        {
+          "id": "ee",
+          "nombre": "Estonia"
+        },
+        {
+          "id": "jp",
+          "nombre": "Japón"
+        },
+        {
+          "id": "lu",
+          "nombre": "Luxemburgo"
+        },
+        {
+          "id": "sg",
+          "nombre": "Singapur"
+        },
+        {
+          "id": "ar",
+          "nombre": "Argentina"
+        },
+        {
+          "id": "br",
+          "nombre": "Brasil"
+        },
+        {
+          "id": "il",
+          "nombre": "Israel"
+        },
+        {
+          "id": "mx",
+          "nombre": "México"
+        },
+        {
+          "id": "bs",
+          "nombre": "Bahamas"
+        },
+        {
+          "id": "bb",
+          "nombre": "Barbados"
+        },
+        {
+          "id": "bz",
+          "nombre": "Belice"
+        },
+        {
+          "id": "bm",
+          "nombre": "Bermudas"
+        },
+        {
+          "id": "bg",
+          "nombre": "Bulgaria"
+        },
+        {
+          "id": "cv",
+          "nombre": "Cabo Verde"
+        },
+        {
+          "id": "cz",
+          "nombre": "Chequia"
+        },
+        {
+          "id": "cl",
+          "nombre": "Chile"
+        },
+        {
+          "id": "cy",
+          "nombre": "Chipre"
+        },
+        {
+          "id": "cr",
+          "nombre": "Costa Rica"
+        },
+        {
+          "id": "hr",
+          "nombre": "Croacia"
+        },
+        {
+          "id": "sk",
+          "nombre": "Eslovaquia"
+        },
+        {
+          "id": "si",
+          "nombre": "Eslovenia"
+        },
+        {
+          "id": "gi",
+          "nombre": "Gibraltar"
+        },
+        {
+          "id": "jm",
+          "nombre": "Jamaica"
+        },
+        {
+          "id": "lv",
+          "nombre": "Letonia"
+        },
+        {
+          "id": "lt",
+          "nombre": "Lituania"
+        },
+        {
+          "id": "my",
+          "nombre": "Malasia"
+        },
+        {
+          "id": "mt",
+          "nombre": "Malta"
+        },
+        {
+          "id": "mu",
+          "nombre": "Mauricio"
+        },
+        {
+          "id": "na",
+          "nombre": "Namibia"
+        },
+        {
+          "id": "ro",
+          "nombre": "Rumania"
+        },
+        {
+          "id": "tw",
+          "nombre": "Taiwán"
+        },
+        {
+          "id": "tt",
+          "nombre": "Trinidad y Tobago"
+        },
+        {
+          "id": "uy",
+          "nombre": "Uruguay"
+        },
+        {
+          "id": "cn",
+          "nombre": "China"
+        },
+        {
+          "id": "li",
+          "nombre": "Liechtenstein"
+        },
+        {
+          "id": "mc",
+          "nombre": "Mónaco"
+        },
+        {
+          "id": "am",
+          "nombre": "Armenia"
+        },
+        {
+          "id": "ba",
+          "nombre": "Bosnia y Herzegovina"
+        },
+        {
+          "id": "co",
+          "nombre": "Colombia"
+        },
+        {
+          "id": "ph",
+          "nombre": "Filipinas"
+        },
+        {
+          "id": "ge",
+          "nombre": "Georgia"
+        },
+        {
+          "id": "gl",
+          "nombre": "Groenlandia"
+        },
+        {
+          "id": "gt",
+          "nombre": "Guatemala"
+        },
+        {
+          "id": "hk",
+          "nombre": "Hong Kong"
+        },
+        {
+          "id": "hu",
+          "nombre": "Hungría"
+        },
+        {
+          "id": "in",
+          "nombre": "India"
+        },
+        {
+          "id": "md",
+          "nombre": "Moldavia"
+        },
+        {
+          "id": "pa",
+          "nombre": "Panamá"
+        },
+        {
+          "id": "py",
+          "nombre": "Paraguay"
+        },
+        {
+          "id": "pe",
+          "nombre": "Perú"
+        },
+        {
+          "id": "do",
+          "nombre": "República Dominicana"
+        },
+        {
+          "id": "rs",
+          "nombre": "Serbia"
+        },
+        {
+          "id": "to",
+          "nombre": "Tonga"
+        },
+        {
+          "id": "ad",
+          "nombre": "Andorra"
+        },
+        {
+          "id": "ag",
+          "nombre": "Antigua y Barbuda"
+        },
+        {
+          "id": "dm",
+          "nombre": "Dominica"
+        },
+        {
+          "id": "gd",
+          "nombre": "Granada"
+        },
+        {
+          "id": "me",
+          "nombre": "Montenegro"
+        },
+        {
+          "id": "kn",
+          "nombre": "San Cristóbal y Nieves"
+        },
+        {
+          "id": "sm",
+          "nombre": "San Marino"
+        },
+        {
+          "id": "vc",
+          "nombre": "San Vicente y las Granadinas"
+        },
+        {
+          "id": "lc",
+          "nombre": "Santa Lucía"
+        },
+        {
+          "id": "sc",
+          "nombre": "Seychelles"
+        },
+        {
+          "id": "bo",
+          "nombre": "Bolivia"
+        },
+        {
+          "id": "lb",
+          "nombre": "Líbano"
+        },
+        {
+          "id": "ua",
+          "nombre": "Ucrania"
+        },
+        {
+          "id": "vn",
+          "nombre": "Vietnam"
+        },
+        {
+          "id": "al",
+          "nombre": "Albania"
+        },
+        {
+          "id": "ao",
+          "nombre": "Angola"
+        },
+        {
+          "id": "ec",
+          "nombre": "Ecuador"
         }
       ]
     },

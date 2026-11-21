@@ -6,9 +6,9 @@ Es una mesa de mezclas: cada **canal** es una función, y cada canal puede tener
 
 | | Funciones | Opciones | Interruptores |
 |---|---|---|---|
-| A) Genealogía | 41 | 161 | 202 |
+| A) Genealogía | 41 | 251 | 292 |
 | B) Librería y etiquetado POS | 21 | 64 | 85 |
-| **Total** | **62** | **225** | **287** |
+| **Total** | **62** | **315** | **377** |
 
 Cifras de `FUNCIONES.md`, que es el listado completo: cada función, sus opciones, su origen y sus dependencias. **2 de las 62 funciones son supuestas** (marcadas *(supuesto)* en el listado y en el panel): las dos de búsquedas por tipo de fuente y por país. Las otras 8 que se habían propuesto se dieron por buenas.
 
@@ -35,7 +35,7 @@ Estado que usa el sitio:
 ## Probar
 
 ```bash
-php pruebas/ejecutar.php            # 110 pruebas: catálogo, dependencias, mínimos, estado, registros, usuarios y bloqueo
+php pruebas/ejecutar.php            # 121 pruebas: catálogo, dependencias, mínimos, estado, registros, usuarios y bloqueo
 php pruebas/panel.php               # 37 pruebas: el panel en vivo, con php -S
 php bin/generar.php --comprobar     # FUNCIONES.md al día
 ```
@@ -51,6 +51,7 @@ No necesita Composer ni base de datos. El estado se guarda en `var/estado.json`,
 - `src/Usuarios.php`: usuarios del panel, con contraseña hasheada, rol y bloqueo tras fallos.
 - `panel/index.php`: el panel interno.
 - `bin/generar.php`: genera `FUNCIONES.md`.
+- `bin/estado.php`: vuelca el estado efectivo en JSON para aplicaciones que no son PHP. El contrato para quien lo consume está en [`CONTRATO.md`](CONTRATO.md).
 - `bin/usuarios.php`: alta, baja, cambio de rol y de clave.
 - `pruebas/ejecutar.php` y `pruebas/panel.php`: las pruebas.
 - `var/`: estado (`estado.json`), registro de cambios (`cambios.jsonl`) y usuarios (`usuarios.json`). Fuera de git.
@@ -80,7 +81,7 @@ if ($int->activo('gen.vistas:abanico')) {
 
 - `activo(ref)`: lo que el sitio debe usar. Una opción solo está activa si su función también lo está.
 - `alApagar(ref)`: qué hacer cuando está apagada. `ocultar` (por defecto) o `no_disponible`. Una opción usa la política de su función. Cada función la define en `catalogo.json` con el campo `al_apagar`. Con `no_disponible` hoy: `gen.pagos`, `gen.pasarela`, `pos.pasarela`, `gen.exportar` y `gen.retiros` (esta última es una política supuesta: ocultar un pedido de retiro de datos sería peor que avisar que no está disponible).
-- Crea una instancia por petición: el estado es un archivo pequeño y se lee al crearla y en cada `activo()`.
+- Crea una instancia por petición: el estado es un archivo pequeño y se lee en cada consulta. Para recorrer muchos interruptores seguidos (un panel, un volcado) llama antes a `congelar()`: lee el estado una sola vez (bajó de 7,3 s a 0,35 s con todo el catálogo) y no ve cambios de otro proceso hasta `descongelar()`. `cambiar()` siempre trabaja con el estado real y descongela.
 
 **Consumidores hoy** (todos opcionales: sin su opción no leen nada de fuera, y cada uno es su propio PR):
 
@@ -90,7 +91,7 @@ if ($int->activo('gen.vistas:abanico')) {
 | POS | `citas-pos/` | `render.php --interruptores=… --salida=<otra carpeta>` | los canales de `pos.citas`: sitio, correo, juego |
 | Genealogía | `sistema-nuevo/` | `BACKOFFICE_INTERRUPTORES=../interruptores` | rutas de la API: `gen.backoffice` (todo), `flujo`, `kpis`, `alertas`, `filtros` y `gen.bak-notas` |
 
-La aplicación de genealogía y POS vive en otro repositorio que todavía no está en la sesión (hace falta su nombre y acceso). Las vistas del árbol, los medios de pago y los asistentes (vistas del árbol, medios de pago, asistentes…) todavía no lo usan: tienen que llamar a `activo()` como en el ejemplo de arriba.
+La aplicación de genealogía y POS vive en otro repositorio que no se comparte: para ella está [`CONTRATO.md`](CONTRATO.md) (archivo de estado efectivo, `bin/estado.php`, y reglas de consumo). Las vistas del árbol, los medios de pago y los asistentes (vistas del árbol, medios de pago, asistentes…) todavía no lo usan: tienen que llamar a `activo()` como en el ejemplo de arriba.
 
 ## Registros
 
@@ -141,7 +142,7 @@ Las pruebas rechazan un catálogo con ids repetidos, con `:` en un id, con una d
 
 ## Lo que falta
 
-- **Confirmar las 2 funciones supuestas** (`gen.busqueda-fuentes` y `gen.busqueda-paises`). Los países son los 11 de prioridad máxima para genealogía en `Listado-paises/` (Australia, Canadá, Corea del Sur, Dinamarca, Estados Unidos, Irlanda, Noruega, Países Bajos, Portugal, Reino Unido y Suecia): falta decidir si van otros, p. ej. los de habla hispana.
+- **Confirmar las 2 funciones supuestas** (`gen.busqueda-fuentes` y `gen.busqueda-paises`). Los países son los 100 de mayor prioridad en `Listado-paises/` más los hispanohablantes y Chile (101 opciones; Venezuela figura excluida en esos datos y no entra): falta decidir si va alguno más.
 - **Límites conocidos.** El bloqueo de archivo sirve con un solo servidor; con varios hace falta una base de datos. Un proxy comparte la IP entre sus usuarios. `sistema-nuevo/` lee el estado en cada petición. Los registros apartados al rotar quedan en `var/` sin borrarse.
 - **A confirmar de plataforma:** `document-formats` está fuera del interruptor; no se sabe si va en A o en B.
 - **Candidatos desde PR abiertos:** `newsletter-plugin` (#613, documentación de diseño) y `personas-especiales` (#614, registro de exclusiones) podrían ser funciones nuevas cuando se fusionen. `chat-con-libros` (#603) no está en `master`, y `pos.colores-revision` depende de la decisión del PR #595.

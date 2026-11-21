@@ -38,6 +38,10 @@ final class Interruptores
     /** @var array<string, string> */
     private array $plataformas = [];
 
+    /** Instantánea del estado mientras está congelado (ver congelar()); null si no hay o aún no se leyó. */
+    private ?array $instantanea = null;
+    private bool $congelado = false;
+
     public function __construct(
         private readonly string $rutaCatalogo,
         private readonly string $rutaEstado,
@@ -55,6 +59,23 @@ final class Interruptores
     public function plataformas(): array
     {
         return $this->plataformas;
+    }
+
+    /**
+     * Congela el estado: se lee una sola vez y las consultas siguientes usan esa instantánea, en vez de releer el archivo
+     * en cada una. Hace falta para recorrer todos los interruptores (el panel, bin/estado.php): cada uno calcula sus
+     * dependencias con cientos de consultas. Un cambio de otro proceso no se ve hasta descongelar(); cambiar() descongela.
+     */
+    public function congelar(): void
+    {
+        $this->congelado = true;
+        $this->instantanea = null;
+    }
+
+    public function descongelar(): void
+    {
+        $this->congelado = false;
+        $this->instantanea = null;
     }
 
     /** Número de interruptores: funciones más opciones. */
@@ -156,6 +177,8 @@ final class Interruptores
         // Todo el cambio (validar, escribir y anotar) va con el estado bloqueado:
         // dos cambios a la vez no se pisan ni se saltan una dependencia.
         $bloqueo = $this->bloquear();
+        // Con el estado bloqueado nadie más lo cambia: las validaciones usan una sola lectura.
+        $this->congelar();
         try {
             $antes = $this->propio($ref);
             $this->validarCambio($ref, $encendido);
@@ -164,6 +187,7 @@ final class Interruptores
             $this->escribirEstado($estado);
             $this->anotar($ref, $antes, $encendido, $quien);
         } finally {
+            $this->descongelar();
             $this->desbloquear($bloqueo);
         }
     }
@@ -459,6 +483,19 @@ final class Interruptores
 
     /** @return array<string, bool> */
     private function leerEstado(): array
+    {
+        if ($this->congelado && $this->instantanea !== null) {
+            return $this->instantanea;
+        }
+        $estado = $this->leerEstadoDelArchivo();
+        if ($this->congelado) {
+            $this->instantanea = $estado;
+        }
+        return $estado;
+    }
+
+    /** @return array<string, bool> */
+    private function leerEstadoDelArchivo(): array
     {
         if (!is_file($this->rutaEstado)) {
             return [];
