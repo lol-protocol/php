@@ -14,7 +14,7 @@ final class Cli
         Uso:
           php bin/generar.php libro.json [más.json ...] [--salida=carpeta]
           php bin/generar.php --lista=libros.csv [--lista=otra.csv ...] [libro.json ...] [--omitir-errores] [--trazos] [--extra=carpeta]
-                              [--incremental] [--manifiesto] [--json] [--indice] [--salida=carpeta]
+                              [--incremental] [--manifiesto] [--json] [--indice] [--salida=carpeta] [--interruptores=carpeta]
           php bin/generar.php --comprobar
           php bin/generar.php --help
 
@@ -33,6 +33,8 @@ final class Cli
         --indice escribe <salida>/indice.svg, una hoja con la portada de cada libro en miniatura (con su título y autor).
         --json imprime ese mismo manifiesto por la salida estándar, en lugar de una línea por libro: para usar el
         generador desde otro programa. Los avisos y los errores siguen saliendo como texto por la salida de errores.
+        --interruptores=carpeta no escribe las piezas que el interruptor pos.portadas (de interruptores/) tiene apagadas.
+        Sin esta opción no se lee nada de fuera; con ella, un error al leer el interruptor corta antes de escribir.
         --comprobar regenera ejemplos/*.json y falla si no coincide con ejemplos/salida/ (y con ejemplos/salida-trazos/).
 
         Códigos de salida: 0 bien; 1 error al escribir; 2 uso incorrecto; 3 datos no válidos (un libro o una lista).
@@ -52,6 +54,7 @@ final class Cli
         $comprobar = false;
         $omitir = false;
         $trazos = false;
+        $interruptores = null;
         $extra = null;
         $opciones = ['incremental' => false, 'manifiesto' => false, 'json' => false, 'indice' => false];
         foreach ($argumentos as $argumento) {
@@ -62,6 +65,11 @@ final class Cli
             }
             if ($argumento === '--comprobar') {
                 $comprobar = true;
+            } elseif (str_starts_with($argumento, '--interruptores=')) {
+                $interruptores = substr($argumento, strlen('--interruptores='));
+                if ($interruptores === '') {
+                    return self::uso($errores, '--interruptores necesita una carpeta: --interruptores=../interruptores');
+                }
             } elseif ($argumento === '--omitir-errores') {
                 $omitir = true;
             } elseif ($argumento === '--trazos') {
@@ -101,7 +109,19 @@ final class Cli
         try {
             Fuentes::usarExtras($extra ?? $raiz . '/fuentes/extra');
 
-            return $comprobar ? self::comprobar($raiz, $salida, $errores) : self::generar($rutas, $listas, $omitir, $trazos, $opciones, $carpeta, $salida, $errores);
+            if ($comprobar && $interruptores !== null) {
+                return self::uso($errores, '--comprobar no admite --interruptores: compara la salida guardada, que no depende del estado.');
+            }
+            // Las piezas ocultas se calculan antes de escribir nada: un interruptor ilegible no deja la salida a medias.
+            $ocultas = [];
+            if ($interruptores !== null) {
+                try {
+                    $ocultas = PiezasSegunInterruptores::ocultas($interruptores);
+                } catch (\Throwable $error) {
+                    return self::uso($errores, '--interruptores: ' . $error->getMessage());
+                }
+            }
+            return $comprobar ? self::comprobar($raiz, $salida, $errores) : self::generar($rutas, $listas, $omitir, $trazos, $opciones, $carpeta, $salida, $errores, $ocultas);
         } catch (\InvalidArgumentException $error) {
             // Datos que no valen (un libro, una lista, una opción): se pueden corregir sin tocar el programa.
             $errores('Error: ' . $error->getMessage() . "\n");
@@ -129,7 +149,7 @@ final class Cli
      * @param callable(string): void $salida
      * @param callable(string): void $errores
      */
-    private static function generar(array $rutas, array $listas, bool $omitir, bool $trazos, array $opciones, string $carpeta, callable $salida, callable $errores): int
+    private static function generar(array $rutas, array $listas, bool $omitir, bool $trazos, array $opciones, string $carpeta, callable $salida, callable $errores, array $ocultas = []): int
     {
         $inicio = microtime(true);
         // Se leen todos antes de escribir: un libro roto o repetido no deja la salida a medias.
@@ -166,8 +186,8 @@ final class Cli
         $bytes = 0;
         foreach ($libros as [$libro]) {
             $directorio = "$carpeta/{$libro->id}";
-            $igual = $opciones['incremental'] && Generador::sinCambios($libro, $directorio, $trazos);
-            $archivos = $igual ? array_map('basename', glob("$directorio/*.{svg,txt}", GLOB_BRACE) ?: []) : Generador::escribir($libro, $directorio, $trazos);
+            $igual = $opciones['incremental'] && Generador::sinCambios($libro, $directorio, $trazos, $ocultas);
+            $archivos = $igual ? array_map('basename', glob("$directorio/*.{svg,txt}", GLOB_BRACE) ?: []) : Generador::escribir($libro, $directorio, $trazos, $ocultas);
             $escritos += $igual ? 0 : 1;
             $tamanos = [];
             foreach ($archivos as $archivo) {
