@@ -1,9 +1,13 @@
 <?php
 
+use App\Config;
 use App\Etiquetas;
 
 /** @var array $resumen */
 /** @var array $porCanal */
+/** @var array{filas: list<array{etiqueta: ?string, visitantes: int, clientes: int, con_cliente: int, cobrado_usd: float, ltv_usd: ?float, por_visitante_usd: ?float}>, total: array{etiqueta: ?string, visitantes: int, clientes: int, con_cliente: int, cobrado_usd: float, ltv_usd: ?float, por_visitante_usd: ?float}} $ingresosPorCanal */
+/** @var int $clientesSinRecorrido */
+/** @var array{ultima: ?DateTimeImmutable, fuente: ?string, pendientes: list<string>} $tasas */
 /** @var array $porPais */
 /** @var array $porGenero */
 /** @var array $porRangoEdad */
@@ -27,7 +31,8 @@ $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visi
 ?>
 
 <h1>Funnel de conversión</h1>
-<p class="subtitulo">De visitante a cliente: dónde se pierden usuarios y qué tan rápido convierten.</p>
+<p class="subtitulo">De visitante a cliente: dónde se pierden usuarios y qué tan rápido convierten, y cuánto valen los que llegan por cada canal.</p>
+<?php include __DIR__ . '/../_tasas_de_cambio.php'; ?>
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="funnel">
@@ -121,6 +126,54 @@ $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visi
             </table>
         </div>
     </div>
+</div>
+
+<?php
+$sinEnlace = $ingresosPorCanal['total']['clientes'] - $ingresosPorCanal['total']['con_cliente'];
+$usd = static fn (?float $monto): string => $monto === null ? '—' : Config::dinero($monto);
+?>
+<div class="panel">
+    <h2>Ingresos por canal de adquisición</h2>
+    <p class="subtitulo">Lo que ya cobraron los clientes que llegaron en el período, por el canal por el que llegaron: pagos menos notas de crédito, en USD, <strong>hasta hoy</strong>. No es lo cobrado dentro del período sino lo que vale esa cohorte. «Por visitante» reparte ese cobrado entre todos los que visitaron, hayan comprado o no; los visitantes y los clientes de cada canal son los de la tabla de conversión.</p>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr><th>Canal</th><th class="num">Cobrado (USD)</th><th class="num">LTV por cliente</th><th class="num">Por visitante</th><th class="num">Clientes</th><th class="num">Visitantes</th></tr>
+            </thead>
+            <tbody>
+            <?php foreach ($ingresosPorCanal['filas'] as $c): ?>
+                <tr>
+                    <td><?= e(Etiquetas::canal((string) $c['etiqueta'])) ?></td>
+                    <td class="num"><?= $usd($c['cobrado_usd']) ?></td>
+                    <td class="num"><?= $usd($c['ltv_usd']) ?></td>
+                    <td class="num"><?= $usd($c['por_visitante_usd']) ?></td>
+                    <td class="num"><?= $c['clientes'] ?></td>
+                    <td class="num"><?= $c['visitantes'] ?></td>
+                </tr>
+            <?php endforeach; ?>
+            <?php if (!$ingresosPorCanal['filas']): ?>
+                <tr><td colspan="6">Sin datos para este período.</td></tr>
+            <?php else: $t = $ingresosPorCanal['total']; ?>
+                <tr>
+                    <td><strong>Todos los canales</strong></td>
+                    <td class="num"><strong><?= $usd($t['cobrado_usd']) ?></strong></td>
+                    <td class="num"><strong><?= $usd($t['ltv_usd']) ?></strong></td>
+                    <td class="num"><strong><?= $usd($t['por_visitante_usd']) ?></strong></td>
+                    <td class="num"><strong><?= $t['clientes'] ?></strong></td>
+                    <td class="num"><strong><?= $t['visitantes'] ?></strong></td>
+                </tr>
+            <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($sinEnlace > 0): ?>
+        <p class="subtitulo" style="margin-top:14px;"><?= $sinEnlace === 1 ? 'Uno de los clientes del período no tiene' : "{$sinEnlace} de los clientes del período no tienen" ?> un cliente enlazado en el sistema: su ingreso no se puede atribuir a ningún canal y el LTV se calcula solo con los enlazados.</p>
+    <?php endif; ?>
+    <?php if ($clientesSinRecorrido > 0): ?>
+        <p class="subtitulo" style="margin-top:14px;"><?= $clientesSinRecorrido === 1
+            ? 'Un cliente no tiene recorrido en el funnel (se cargó directo) y no entra aquí.'
+            : "{$clientesSinRecorrido} clientes no tienen recorrido en el funnel (se cargaron directo) y no entran aquí." ?></p>
+    <?php endif; ?>
 </div>
 
 <div class="grid grid-2">

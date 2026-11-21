@@ -58,6 +58,86 @@ final class FunnelRepository
     }
 
     /**
+     * Lo que vale hoy la cohorte del periodo, por canal de adquisicion: los usuarios cuya visita cae en el rango
+     * (los mismos que cuenta porCanal()) y, de los que se volvieron clientes, lo que cada uno lleva cobrado hasta
+     * hoy, neto de sus notas de credito y en USD a la tasa de cada pago (SegmentacionRepository::cobradoNetoPorClienteSql(),
+     * la misma definicion del LTV por cohorte). No es lo facturado ni lo cobrado EN el periodo: es el valor, a la fecha,
+     * de quienes llegaron en el.
+     *
+     * Cada fila: etiqueta (el canal), visitantes, clientes (los convertidos, como en la tabla de conversion),
+     * con_cliente (los que ademas tienen un cliente enlazado: de ellos sale el ingreso, y son el divisor del LTV),
+     * cobrado_usd, ltv_usd (cobrado por cliente enlazado; null si no hay ninguno) y por_visitante_usd (cobrado entre
+     * visitantes: lo que vale cada visita del canal, sea cliente o no). `total` es lo mismo para todos los canales
+     * juntos (etiqueta null). De mas a menos visitantes y, a igual cantidad, por canal: el orden de porCanal().
+     *
+     * Un convertido sin cliente enlazado (clientes > con_cliente) no tiene ingreso que atribuirle: la pantalla lo avisa.
+     *
+     * @return array{filas: list<array{etiqueta: ?string, visitantes: int, clientes: int, con_cliente: int, cobrado_usd: float, ltv_usd: ?float, por_visitante_usd: ?float}>, total: array{etiqueta: ?string, visitantes: int, clientes: int, con_cliente: int, cobrado_usd: float, ltv_usd: ?float, por_visitante_usd: ?float}}
+     */
+    public function ingresosPorCanal(string $desde, string $hasta): array
+    {
+        $filas = $this->filasEnRango(
+            'SELECT uf.canal AS etiqueta,
+                    COUNT(*) AS visitantes,
+                    COUNT(uf.fecha_conversion) AS clientes,
+                    COUNT(uf.cliente_id) AS con_cliente,
+                    COALESCE(SUM(cobrado.cobrado_usd), 0) AS cobrado_usd
+             FROM usuarios_funnel uf
+             LEFT JOIN (' . SegmentacionRepository::cobradoNetoPorClienteSql() . ') cobrado ON cobrado.cliente_id = uf.cliente_id
+             WHERE uf.fecha_visita BETWEEN :desde AND :hasta
+             GROUP BY uf.canal ORDER BY visitantes DESC, etiqueta',
+            $desde,
+            $hasta
+        );
+
+        $porCanal = [];
+        $visitantes = $clientes = $conCliente = 0;
+        $cobrado = 0.0;
+        foreach ($filas as $fila) {
+            $valores = [
+                'visitantes' => (int) $fila['visitantes'],
+                'clientes' => (int) $fila['clientes'],
+                'con_cliente' => (int) $fila['con_cliente'],
+                'cobrado_usd' => (float) $fila['cobrado_usd'],
+            ];
+            $porCanal[] = ['etiqueta' => (string) $fila['etiqueta']] + self::conPromedios($valores);
+            $visitantes += $valores['visitantes'];
+            $clientes += $valores['clientes'];
+            $conCliente += $valores['con_cliente'];
+            $cobrado += $valores['cobrado_usd'];
+        }
+        $total = ['visitantes' => $visitantes, 'clientes' => $clientes, 'con_cliente' => $conCliente, 'cobrado_usd' => $cobrado];
+
+        return ['filas' => $porCanal, 'total' => ['etiqueta' => null] + self::conPromedios($total)];
+    }
+
+    /**
+     * Le agrega a los totales de un canal lo que se saca de ellos: el LTV (cobrado entre clientes enlazados) y lo que
+     * vale cada visita (cobrado entre visitantes), o null si el divisor es cero.
+     *
+     * @param array{visitantes: int, clientes: int, con_cliente: int, cobrado_usd: float} $valores
+     * @return array{visitantes: int, clientes: int, con_cliente: int, cobrado_usd: float, ltv_usd: ?float, por_visitante_usd: ?float}
+     */
+    private static function conPromedios(array $valores): array
+    {
+        return $valores + [
+            'ltv_usd' => $valores['con_cliente'] > 0 ? $valores['cobrado_usd'] / $valores['con_cliente'] : null,
+            'por_visitante_usd' => $valores['visitantes'] > 0 ? $valores['cobrado_usd'] / $valores['visitantes'] : null,
+        ];
+    }
+
+    /**
+     * Cuantos clientes no tienen recorrido en el funnel (se cargaron directo, o antes de que existiera): no estan en
+     * ninguna cohorte de visitas y no entran en los ingresos por canal.
+     */
+    public function clientesSinRecorrido(): int
+    {
+        return (int) $this->db->query(
+            'SELECT COUNT(*) FROM clientes c WHERE NOT EXISTS (SELECT 1 FROM usuarios_funnel uf WHERE uf.cliente_id = c.id)'
+        )->fetchColumn();
+    }
+
+    /**
      * Los PAISES_EN_LA_TABLA con mas visitantes, mas una fila «Otros (N paises)» con la suma de
      * los demas: sin ella la tabla no cuadraba con los visitantes del periodo. Un unico pais
      * sobrante se nombra en vez de esconderlo en «Otros (1 pais)». A igual cantidad de visitantes
