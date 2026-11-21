@@ -10,6 +10,7 @@ require dirname(__DIR__) . '/bootstrap.php';
 
 use MarcalibrosApp\Application;
 use MarcalibrosApp\Config;
+use MarcalibrosApp\FuncionesApagables;
 use MarcalibrosApp\Request;
 
 // El servidor integrado de PHP entrega solo los archivos estáticos que existen.
@@ -23,4 +24,16 @@ if (PHP_SAPI === 'cli-server') {
 $config = Config::fromEnvironment(dirname(__DIR__), getenv() ?: []);
 $request = Request::fromGlobals($config, $_SERVER, $_GET, $_POST, $_FILES);
 
-Application::create($config, dirname(__DIR__))->handle($request)->send($request->method === 'HEAD');
+// Interruptores (opcional): con MARCALIBROS_INTERRUPTORES se pueden apagar la aplicación y categorías del catálogo.
+// Si están configurados y no se pueden leer, no se atiende nada: mejor cortar que mostrar algo que quizá está apagado.
+try {
+    $funciones = FuncionesApagables::fromEnvironment(getenv() ?: []);
+} catch (\Throwable $e) {
+    error_log('marcalibros: interruptores ilegibles: ' . $e->getMessage());
+    http_response_code(503);
+    header('Content-Type: text/plain; charset=utf-8');
+    echo 'No disponible por ahora.';
+    return;
+}
+
+Application::create($config, dirname(__DIR__), $funciones)->handle($request)->send($request->method === 'HEAD');

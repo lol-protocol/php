@@ -6,11 +6,15 @@ on:
     paths:
       - "marcalibros-plataforma-pos-brand-identity/**"
       - "defamatory-content-review/**"
+      # la aplicación puede apagarse con interruptores (app/src/FuncionesApagables.php)
+      - "interruptores/**"
       - ".github/workflows/pruebas-marcalibros.yml"
   pull_request:
     paths:
       - "marcalibros-plataforma-pos-brand-identity/**"
       - "defamatory-content-review/**"
+      # la aplicación puede apagarse con interruptores (app/src/FuncionesApagables.php)
+      - "interruptores/**"
       - ".github/workflows/pruebas-marcalibros.yml"
   workflow_dispatch:
 
