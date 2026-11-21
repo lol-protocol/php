@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/../src/cargar.php';
 
+use ParsingFbInMas\Cli;
 use ParsingFbInMas\Detector;
 use ParsingFbInMas\Exclusiones;
 use ParsingFbInMas\Lote;
@@ -31,12 +32,7 @@ foreach (array_slice($argv, 1) as $arg) {
     } elseif ($arg === '--sin-revision') {
         $revisar = false;
     } elseif (str_starts_with($arg, '--excluir=')) {
-        try {
-            $exclusiones = Exclusiones::desdeArchivo(substr($arg, 10));
-        } catch (RuntimeException $e) {
-            fwrite(STDERR, $e->getMessage() . "\n");
-            exit(2);
-        }
+        $exclusiones = Cli::exclusiones(substr($arg, 10));
     } else {
         $rutas[] = $arg;
     }
@@ -61,13 +57,9 @@ $emitir = static function (array $datos) use ($exclusiones, $jsonl, &$salida, &$
         return;
     }
     $url = $perfil['url'] ?? null;
-    if (is_string($url)) {
-        $clave = Lote::claveUrl($url);
-        if (isset($vistos[$clave])) {
-            $repetidos++;
-            return;
-        }
-        $vistos[$clave] = true;
+    if (Lote::repetida(is_string($url) ? $url : null, $vistos)) {
+        $repetidos++;
+        return;
     }
     if ($jsonl) {
         echo json_encode($perfil, Lote::JSON), "\n";
