@@ -33,6 +33,9 @@ $buscarArchivo = function (string $dir, string $nombre): array {
     }
     $iterador = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS));
     foreach ($iterador as $archivo) {
+        if (!$archivo instanceof SplFileInfo) {
+            continue;
+        }
         if ($archivo->getFilename() === $nombre) {
             $encontrados[] = $archivo->getPathname();
         }

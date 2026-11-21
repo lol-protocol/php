@@ -148,6 +148,7 @@ final class Cli
      * @param array{incremental: bool, manifiesto: bool, json: bool, indice: bool} $opciones
      * @param callable(string): void $salida
      * @param callable(string): void $errores
+     * @param list<string> $ocultas archivos de pieza que no se escriben (los apagados por interruptor)
      */
     private static function generar(array $rutas, array $listas, bool $omitir, bool $trazos, array $opciones, string $carpeta, callable $salida, callable $errores, array $ocultas = []): int
     {

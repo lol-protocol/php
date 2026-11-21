@@ -68,6 +68,8 @@ final class Generador
     /**
      * Una huella de todo lo que decide cómo sale un libro: sus datos, el modo (fuente o trazos), las fuentes extra y
      * el código y los datos del propio generador. Sirve para no volver a escribir un libro que no cambió.
+     *
+     * @param list<string> $ocultas archivos de pieza que no se escriben (los apagados por interruptor)
      */
     public static function huella(Libro $libro, bool $textoATrazos, array $ocultas = []): string
     {
