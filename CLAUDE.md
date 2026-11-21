@@ -36,7 +36,7 @@ Varias sesiones trabajan a la vez, y ya pasó que dos hicieron lo mismo o que do
 - `defamatory-content-review/`: el código de idioma es siempre ISO 639-3, de tres letras (`spa`, `por`, `yue`). Ni la API ni el campo `language` del endpoint aceptan los de dos letras (`es`, `zh`); solo la cabecera `Accept-Language` se traduce, con `LanguageRegistry::fromHeaderTag()`.
 - `defamatory-content-review/`: las traducciones de los mensajes (`defamatory-content-review/config/messages/`) no pasan por revisión de hablante nativo, y no se anuncian como pendientes de ella. La cautela sigue para los diccionarios: no se tocan términos étnicos, religiosos ni de discapacidad, ni las severidades, sin esa revisión.
 - `defamatory-content-review/`: el cantonés es solo `yue`. No se usa chino tradicional, ni el código `zh`, ni listas de frecuencia de otro idioma (`defamatory-content-review/review/yue.csv` sale sin rangos).
-- `defamatory-content-review/`: una regla nueva de flexión (`defamatory-content-review/src/Chat/Inflection/`) entra solo si su precisión contra UniMorph es de al menos 50 % (`php bin/inflection-check.php`) y `php bin/false-positives.php` no añade palabras corrientes (las que salgan van a `everyday`). Vale para las reglas nuevas; no retira las ya fusionadas.
+- `defamatory-content-review/`: una regla nueva de flexión (`defamatory-content-review/src/Chat/Inflection/`) entra solo si su precisión contra UniMorph es de al menos 50 % (`php bin/inflection-check.php <código> <unimorph.tsv> … --min-precision=50`, que sale con 1 si no llega) y `php bin/false-positives.php` no añade palabras corrientes (las que salgan van a `everyday`). Vale para las reglas nuevas; no retira las ya fusionadas.
 
 ## Probar antes de empujar
 
