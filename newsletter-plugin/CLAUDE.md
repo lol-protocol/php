@@ -28,11 +28,12 @@ Están marcados en docs/. No implementarlos como definitivos sin validación.
 
 ## Pendientes [PENDIENTE]
 No implementar hasta resolverse:
-- Contrato del carril de notificaciones (propuesta en docs/02; la valida Conce).
+- Contrato del carril de notificaciones (propuesta en docs/02; la envía el usuario a Conce).
 - Alcance del caso "abuelo avisa a familiares" (se decide al implementar el carril).
-- Validación de la lista de campos sensibles (docs/05, pendiente 3).
+- Validación de la lista de campos sensibles, con el contrato (la valida Conce; docs/05, pendiente 3).
+- Ley 21.719 aplicada al newsletter: cotejar docs/06 con el texto oficial (docs/05, pendiente 4).
 
 Decididos el 18-nov-2026 (ver docs/05): destinatarios, cron en el VPS del host, stack PHP, doble confirmación y umbrales con valores iniciales. Decididos el 20-nov-2026: el host entrega la clasificación con el evento, y la lista sensible incluye opiniones políticas.
 
 ## Stack
-PHP, igual que el resto del repo (decidido el 18-nov-2026).
+PHP, igual que el resto del repo (decidido el 18-nov-2026). La versión mínima se fija al implementar.
