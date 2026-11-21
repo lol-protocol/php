@@ -24,6 +24,20 @@ final class RegistroEnMemoria implements RegistroExclusiones
         return $activas;
     }
 
+    public function conExclusionActiva(array $personaIds): array
+    {
+        $buscadas = array_flip($personaIds);
+        $excluidas = [];
+        foreach ($this->porId as $exclusion) {
+            $persona = $exclusion->personaId();
+            if ($exclusion->estaActiva() && isset($buscadas[$persona])) {
+                $excluidas[$persona] = $persona;
+            }
+        }
+
+        return array_values($excluidas);
+    }
+
     public function porId(string $id): ?Exclusion
     {
         return $this->porId[$id] ?? null;

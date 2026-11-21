@@ -18,12 +18,12 @@ La decisión de no guardar categorías está en
 [`PRIVACIDAD-Y-HONRA.md`](../PRIVACIDAD-Y-HONRA.md) y en el plan que se acordó
 para este módulo.
 
-## Estado: el modelo y su registro
+## Estado: el modelo, su registro y la política de visibilidad
 
-Este trozo cubre la solicitud, su registro en PostgreSQL y las migraciones. **Todavía no
-restringe nada**: la política de visibilidad (no conectar, no mostrar, no exportar) y la
-auditoría llegan en PR siguientes, y la integración con `url-routing` espera a que se
-fusione #611.
+**La política ya restringe** (en este módulo): una persona con una exclusión activa no se
+conecta, no se muestra en listas y no sale en una exportación. La coincidencia por apellido
+existe pero solo marca para revisión. Falta la auditoría (PR siguiente), y la integración con
+`url-routing` espera a que se fusione #611.
 
 | Pieza | Qué hace |
 |---|---|
@@ -31,12 +31,45 @@ fusione #611.
 | `src/Estado.php` | `pendiente`, `activa`, `rechazada`, `revocada`. |
 | `src/Solicitante.php` | `persona`, `familiar_fallecido`, `apoderado`. |
 | `src/Motivo.php` | `privacidad_personal`, `seguridad`, `asociacion_con_familiar`, `otro`. Lista cerrada, **sin texto libre**: lo elige quien pide, y ninguno nombra una religión, un origen ni una organización. |
-| `src/RegistroExclusiones.php` | Interfaz del registro: `activasDe`, `porId`, `insertar` (nunca reemplaza) y `actualizar` (solo lo que cambia una transición, y solo si el estado sigue siendo el leído). |
+| `src/Visibilidad.php` | La política: `esVisible`, `puedeConectar`, `puedeExportar` y `filtrar` (quita excluidas de una lista, sin cambiar el orden). Solo dice sí o no, sin decir por qué. |
+| `src/Coincidencias.php` | Compara apellidos normalizados para revisión humana. No oculta a nadie. |
+| `src/RegistroExclusiones.php` | Interfaz del registro: `activasDe`, `conExclusionActiva` (por lote, para listas largas), `porId`, `insertar` (nunca reemplaza) y `actualizar` (solo lo que cambia una transición, y solo si el estado sigue siendo el leído). |
 | `src/RegistroPdo.php` | Implementación sobre la tabla `exclusion` (PostgreSQL). Dentro de una transacción, `porId` bloquea la fila (`FOR UPDATE`). |
 | `src/RegistroEnMemoria.php` | Implementación sin base de datos, para pruebas. |
 | `src/Fila.php` | Lectura comprobada de lo que devuelve la base: un tipo inesperado falla con un error claro en vez de convertirse en `""`. |
 | `src/Migrador.php`, `bin/migrar.php` | Aplican en orden las migraciones que faltan, cada una en su transacción, con un candado asesor de PostgreSQL para que dos instancias no choquen. |
 | `database/migraciones/` | `001_exclusion.sql`: tabla `exclusion`, con `CHECK` de longitudes, estados y motivos, y de que una activa tenga prueba. |
+
+### Respuesta uniforme
+
+Quien llama a la plataforma debe dar **la misma respuesta** cuando una persona no
+existe y cuando está excluida. `Visibilidad` solo devuelve `true` o `false`, sin
+motivo, para que la respuesta no revele que existe un registro.
+
+### Alcance
+
+- Solo la persona excluida queda fuera de las listas, las conexiones y las exportaciones.
+- **Parientes (decisión de la persona a cargo, 2026-11-20):** en la ficha de un pariente, la persona
+  excluida se muestra con el mismo marcador que `url-routing` usa para una persona viva
+  («Persona viva»), sin nombre ni datos. Así es indistinguible de una persona viva oculta por
+  privacidad y no revela que existe una exclusión. Esto se implementa en la integración con
+  `url-routing` (espera a #611); este módulo hoy solo dice si una persona es visible.
+- Una exclusión pendiente o rechazada no excluye. Una revocada vuelve a verse.
+
+### Coincidencia por apellido: solo para revisión
+
+`src/Coincidencias.php` marca posibles homónimos o familiares. **No oculta a nadie**:
+ocultar por apellido tendría falsos positivos (una familia entera), así que la
+decisión queda en una persona.
+
+- Dos apellidos coinciden si, normalizados, son iguales y tienen al menos 3 letras.
+  La normalización pasa a minúsculas, quita tildes y eñes, borra el apóstrofo
+  («O'Brien» = «OBrien») y separa con espacio el guion y lo demás.
+- Conserva las letras de otros alfabetos (un apellido en cirílico no se vacía).
+- **Límites conocidos**: no hay coincidencia fonética ni difusa, y «Müller» no es
+  «Mueller». Cada una agrega falsos positivos; se decide aparte.
+- No usa la librería de `defamatory-content-review` a propósito: depender de otra
+  carpeta por composer acopla dos proyectos. Si se decide la fonética, se reusa entonces.
 
 ### Concurrencia
 
@@ -62,10 +95,13 @@ Esta lista la decidió la persona a cargo el 2026-11-20 (se dejan los cuatro mot
 
 ### Pendiente
 
-- La política de visibilidad, la revisión por apellido y la auditoría (PR siguientes).
-- Quién puede pedir la exclusión y cómo se verifica: hoy se asumen la persona viva, un
-  familiar directo de una persona fallecida y un apoderado con prueba. Está sin decidir y
-  pasa al abogado.
+- La auditoría (PR siguiente).
+- Conectar la coincidencia con el registro: hoy `Exclusion` guarda el id de la persona, no su
+  apellido, y el apellido lo tiene la plataforma. Quien consulte pasa los apellidos de las excluidas.
+- Mostrar el marcador de `url-routing` donde aparece una persona excluida (ver «Alcance»).
+- Quién puede pedir la exclusión y cómo se verifica: hoy se asumen la persona viva, un familiar
+  directo de una persona fallecida y un apoderado con prueba. Está sin decidir; la pregunta 33 de
+  [`PREGUNTAS-PARA-ABOGADO.md`](../PREGUNTAS-PARA-ABOGADO.md) lo recoge.
 - Guardar las pruebas de forma segura, y el contacto del solicitante.
 
 ## Pruebas
