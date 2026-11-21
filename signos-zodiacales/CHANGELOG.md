@@ -4,6 +4,14 @@ Los cambios de `datos/` y de lo que se calcula con ellos, de lo más reciente a 
 
 Versionado semántico: la **mayor** cambia si se rompe el esquema de `datos/signos.json` o lo que devuelven las consultas; la **menor** cuando se agregan datos, campos o funciones; la **parche** cuando se corrige un texto, una fecha o una figura sin cambiar la forma.
 
+## [1.3.4] - 2026-11-21
+
+### Corregido
+- Cuatro fichas decían dos veces la misma palabra porque dos conceptos distintos caían en una sola traducción: «fidelidad» y «lealtad» en persa, hebreo y urdu (ángel 33, Lehuiah) y «disciplina» y «orden» en urdu (el pino). Ahora «fidelidad» es `پایبندی` (fa), `אמונים` (he) y `وفاشعاری` (ur), y «orden» en urdu es `نظم`. Dos pruebas nuevas vigilan que ninguna ficha repita una cualidad o un rasgo en ningún idioma.
+
+### Documentación
+- El README deja escrito que no habrá revisión de los idiomas con personas nativas; los paquetes de `revision/` se conservan como referencia.
+
 ## [1.3.3] - 2026-11-11
 
 ### Agregado
