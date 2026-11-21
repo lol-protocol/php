@@ -301,10 +301,9 @@ de esas tres columnas no agrega filas.
 - Una fila de ejemplo (`cotizada_en` vacío) no se compara con una real: el «cambio» entre una cifra
   inventada y una verdadera no dice nada. Y mientras el historial real no llegue a 30 días atrás, el
   resumen no muestra cambio en 30 días.
-- **No cambia ninguna cifra**: las boletas, los pagos y las notas de crédito siguen guardando su propia
-  tasa (ver «La tasa de cada día»), y una boleta cargada hoy con fecha de hace tres meses sigue quedando con
-  la tasa de hoy. Cotizarla con la de su fecha, ahora que hay de dónde sacarla, cambiaría los reportes y
-  es una decisión aparte.
+- **No cambia ninguna cifra ya cargada**: las boletas, los pagos y las notas de crédito guardan su propia
+  tasa (ver «La tasa de cada día»). Desde la migración `020` las filas **nuevas** la toman de este
+  historial según su fecha; lo que ya existe no se toca.
 - No se borra ni se limpia solo: es como mucho una fila por moneda por día, y solo se lee el historial de
   una moneda a la vez.
 
@@ -322,9 +321,15 @@ cerrado da siempre la misma cifra, aunque la tasa se mueva después: actualizar 
 no toca lo que ya está cargado. Lo único que se valúa a la tasa de hoy es la **cartera
 pendiente** (lo que todavía se debe), que es plata por cobrar. Cómo se llena:
 
-- Un trigger de la base graba la tasa de `monedas` en cada alta que venga sin una, así
-  que lo mismo da una boleta cargada en la app que un `INSERT` a mano o el seed. Una
-  tasa que se pase explícita se respeta (una importación con su propia cotización).
+- Un trigger de la base graba la tasa en cada alta que venga sin una, así que lo mismo da
+  una boleta cargada en la app que un `INSERT` a mano o el seed. Una tasa que se pase
+  explícita se respeta (una importación con su propia cotización). **Cuál tasa** (migración
+  `020`, solo para filas nuevas): la de la **fecha de la fila** (`fecha_emision`, `fecha_pago`
+  o `fecha` de la nota), es decir, la última cotización del historial hecha ese día o antes;
+  si la fecha es de hoy o futura, o el historial no tiene nada de esa fecha o anterior (empieza
+  con la `018`; una tasa de ejemplo no cuenta), la de `monedas`, la de hoy. Por eso un pago se
+  convierte con la tasa de su fecha de pago y no con la de la boleta: la diferencia es la
+  diferencia de cambio.
 - Editar un monto o una fecha no vuelve a cotizar: la moneda no se puede cambiar.
 - La nota de crédito toma el promedio, ponderado por monto, de las tasas de los pagos
   que devuelve, para que el cobro y la devolución se cancelen en USD aunque la tasa se
@@ -332,11 +337,11 @@ pendiente** (lo que todavía se debe), que es plata por cobrar. Cómo se llena:
 - La primera vez que una moneda recibe una tasa real, las boletas, pagos y notas que se
   habían grabado con la de ejemplo pasan a esa tasa real (`--simular` dice cuántas
   filas son). Desde ahí ya no se mueven.
-- **Límite:** la base no guarda un historial de cotizaciones. Una boleta cargada hoy
-  con fecha de hace tres meses queda con la tasa de hoy, no con la de esa fecha, y lo
-  mismo vale para lo que ya existía cuando se aplicó la migración. Si hace falta la
-  tasa exacta de cada fecha, falta una tabla de cotizaciones por día (y una importación
-  que las use: las filas aceptan una tasa explícita).
+- **Límite:** el historial empieza con la migración `018` y solo guarda las cotizaciones que la
+  base vio (una por corrida de `actualizar_tasas.php`). Una boleta de una fecha anterior a la
+  primera cotización guardada queda con la tasa de hoy, y las filas que ya existían cuando se
+  aplicó la `020` no se recotizan. Si hace falta la tasa exacta de fechas más viejas, falta
+  cargar cotizaciones por día (las filas aceptan una tasa explícita).
 
 ### Pagos con fecha futura
 
@@ -727,7 +732,8 @@ database/
                         del catálogo de países y monedas, 015 = email único sin
                         importar mayúsculas, 016 = monedas reemplazadas, 017 =
                         mayoría de edad de Puerto Rico, 018 = el historial de las
-                        tasas de cambio, 019 = montos con tres decimales)
+                        tasas de cambio, 019 = montos con tres decimales, 020 = la tasa de
+                        la fecha de cada fila nueva)
 bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
