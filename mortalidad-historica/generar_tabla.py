@@ -565,8 +565,8 @@ def vectores(datos):
                 epidemias.append([anio, region, pais, ids])
     paises = sorted(p["codigo"] for p in datos["paises"])
     esperanza = []
-    for codigo in ("CL", "SE", "ES", "GB", "JP", "NG", "AD", "XK", "FI", "ZZ"):
-        for anio in (1545, 1760, 1799, 1800, 1855, 1900, 1949, 1950, 1985, 2009, 2010):
+    for codigo in ("CL", "SE", "ES", "GB", "JP", "NG", "AD", "XK", "FI", "R:Europa", "R:África", "ZZ"):
+        for anio in (1545, 1760, 1775, 1799, 1800, 1855, 1900, 1949, 1950, 1985, 2009, 2010):
             for edad in (0, 5, 15):
                 for sexo in ("T", "F", "M"):
                     banda = consultas.banda_esperanza(codigo, anio, edad, sexo)
@@ -580,8 +580,23 @@ def vectores(datos):
                         consultas.exceso_de_muertes_londres(anio)])
     huellas = [[f["termino"], f["idioma"], f["causa_id"], f["confianza"], huella(f["termino"], f["idioma"], f["causa_id"], f["confianza"])]
                for f in historicas[::25]] + [["", "", "", "", huella("", "", "", "")], ["Schlagfluß", "deu", "ictus", "alta", huella("Schlagfluß", "deu", "ictus", "alta")]]
+    plausibilidad = []
+    for codigo in ("SE", "CL", "ES", "NG", "JP", "GB", "R:Europa", "ZZ"):
+        for anio in (1545, 1775, 1805, 1895, 1955, 1995):
+            for sexo in ("T", "F", "M"):
+                comunes = lambda desde: consultas.edades_de_muerte_comunes(codigo, anio, desde, sexo)
+                plausibilidad.append([codigo, anio, sexo, {
+                    "llegar": [[e, consultas.probabilidad_de_llegar_a(codigo, anio, e, sexo)] for e in (0, 1, 5, 15, 40, 70, 110)],
+                    "esperados": [[6, e, consultas.supervivientes_esperados(codigo, anio, 6, e, sexo)] for e in (5, 15)],
+                    "fraccion": [[d, e, consultas.fraccion_de_muertes_antes_de(codigo, anio, e, d, sexo)]
+                                 for d, e in ((0, 5), (0, 15), (15, 40), (15, 60))],
+                    "percentiles": [[d, q, consultas.edad_de_muerte_percentil(codigo, anio, q, d, sexo)]
+                                    for d, q in ((0, 0.1), (0, 0.5), (0, 0.9), (15, 0.5))],
+                    "comunes": [[0, comunes(0)], [15, comunes(15)]],
+                }])
     return {
         "huellas": huellas,
+        "plausibilidad": plausibilidad,
         "causa_moderna": causa,
         "epidemias_en": epidemias,
         "region_de": [[c, consultas.region_de(c)] for c in paises + ["ZZ", "gb", ""]],
@@ -594,7 +609,7 @@ def vectores(datos):
 def tablas_para_la_vista(datos):
     """Las tablas en columnas que incrusta vista.html: {nombre: {"columnas": [...], "filas": [[...]]}}."""
     tablas = {}
-    for nombre in ("paises", "causas_modernas", "causas_historicas", "epidemias", "hitos_registro", "londres_muertes", "revisiones"):
+    for nombre in ("paises", "causas_modernas", "causas_historicas", "epidemias", "hitos_registro", "londres_muertes", "revisiones", "modelo_logcuadratico"):
         columnas = COLUMNAS[nombre]
         tablas[nombre] = {"columnas": columnas, "filas": [[f[c] for c in columnas] for f in datos[nombre]]}
     # La esperanza de vida es la tabla grande: solo las columnas que usan las consultas, y con números.

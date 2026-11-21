@@ -6,6 +6,7 @@ Los datos de prueba son inventados y viven en directorios temporales: no tocan d
 """
 import collections
 import csv
+import inspect
 import tempfile
 import unittest
 from pathlib import Path
@@ -574,9 +575,9 @@ class BandasYRileyTest(unittest.TestCase):
     def test_banda_de_cada_epoca(self):
         self.assertEqual(pd.banda_de(1950), (0.6, 0.07, "medida"))
         self.assertEqual(pd.banda_de(2000), (0.6, 0.07, "medida"))
-        self.assertEqual(pd.banda_de(1949 - 9), (3.0, 0.15, "supuesto"))
-        self.assertEqual(pd.banda_de(1800), (5.0, 0.20, "supuesto"))
-        self.assertEqual(pd.banda_de(1540), (6.0, 0.25, "supuesto"))
+        self.assertEqual(pd.banda_de(1949 - 9), (5.0, 0.20, "supuesto"))
+        self.assertEqual(pd.banda_de(1800), (8.0, 0.25, "supuesto"))
+        self.assertEqual(pd.banda_de(1540), (10.0, 0.30, "supuesto"))
 
     def test_las_esquinas_no_juntan_mucha_esperanza_con_mucha_mortalidad_infantil(self):
         esquinas = pd._esquinas(100.0, 50.0, 3.0, 0.2)
@@ -624,7 +625,21 @@ class BandasYRileyTest(unittest.TestCase):
         self.assertEqual([(f[0], f[1], f[3], f[4], f[5], f[9], f[11]) for f in filas], [
             ("GB", 1540, "T", 0, "35.0", "C", pd.FUENTE_RILEY),
             ("GB", 1790, "T", 0, "38.0", "C", pd.FUENTE_RILEY)])
-        self.assertEqual((filas[0][7], filas[0][8]), ("29.0", "41.0"))   # ± 6 años: banda supuesta antes de 1800
+        self.assertEqual((filas[0][7], filas[0][8]), ("25.0", "45.0"))   # ± 10 años: banda supuesta antes de 1800
+
+    def test_regiones_antes_de_1800_con_el_valor_previo_a_la_transicion(self):
+        cabecera = ["Entity", "Year", "Life expectancy"]
+        with tempfile.TemporaryDirectory() as tmp:
+            ruta = Path(tmp) / "r.csv"
+            with ruta.open("w", encoding="utf-8", newline="") as f:
+                e = csv.writer(f)
+                e.writerow(cabecera)
+                for fila in (["Europe", 1770, 34.3], ["Europe", 1800, 33.3], ["Americas", 1770, 34.8], ["World", 1770, 28.7], ["Chile", 1770, 1]):
+                    e.writerow(fila)
+            regiones = pd.leer_riley_regiones(ruta)
+        self.assertEqual(regiones, {"R:Europa": {1770: 34.3}, "R:América": {1770: 34.8}})   # solo antes de 1800, sin «World» ni países
+        filas = pd.construir({}, {}, {}, {}, riley_regiones=regiones)
+        self.assertEqual([(f[0], f[1], f[4], f[5], f[9]) for f in filas], [("R:América", 1770, 0, "34.8", "C"), ("R:Europa", 1770, 0, "34.3", "C")])
 
     def test_si_el_modelo_no_cuadra_las_cifras_de_la_fuente_no_se_deriva_nada_de_ellas(self):
         # Gapminder da a Barbados más de 550 por mil de mortalidad de 0 a 5 años con una esperanza de 32 años.
@@ -785,11 +800,16 @@ class EsperanzaDeVidaRealTest(unittest.TestCase):
         self.assertGreater(ancho("SE", 1800), ancho("SE", 1900))
         self.assertGreater(ancho("SE", 1900), ancho("SE", 1950))
         self.assertAlmostEqual(ancho("SE", 1950), 2 * 0.6, places=1)
-        self.assertAlmostEqual(ancho("SE", 1800), 2 * 5.0, places=1)
+        self.assertAlmostEqual(ancho("SE", 1900), 2 * 5.0, places=1)
+        self.assertAlmostEqual(ancho("SE", 1800), 2 * 8.0, places=1)
+        self.assertAlmostEqual(ancho("GB", 1540), 2 * 10.0, places=1)
 
-    def test_antes_de_1800_solo_cuatro_paises_y_solo_la_esperanza_al_nacer(self):
+    def test_antes_de_1800_cuatro_paises_y_cinco_regiones_y_solo_la_esperanza_al_nacer(self):
         previas = [f for f in self.filas if int(f["desde"]) < 1800]
-        self.assertEqual({f["codigo"] for f in previas}, {"GB", "SE", "FI", "DK"})
+        self.assertEqual({f["codigo"] for f in previas}, {"GB", "SE", "FI", "DK", "R:África", "R:América", "R:Asia", "R:Europa", "R:Oceanía"})
+        for f in previas:
+            if f["codigo"].startswith("R:"):
+                self.assertEqual(f["desde"], "1770", f)   # el valor previo a la transición, que Riley fija en 1770
         for f in previas:
             self.assertEqual((f["sexo"], f["edad"], f["fuente"], f["calidad"]), ("T", "0", pd.FUENTE_RILEY, "C"), f)
             self.assertEqual(int(f["desde"]) % 10, 0, f)
@@ -1110,6 +1130,123 @@ class ConsultasEsperanzaTest(unittest.TestCase):
         self.assertIsNotNone(consultas.esperanza_restante("SE", 1955, 15, "F"))
         self.assertGreater(consultas.esperanza_restante("SE", 1955, 15, "F"), consultas.esperanza_restante("SE", 1955, 15, "M"))
         self.assertIsNone(consultas.esperanza_restante("SE", 1905, 15, "F"))
+
+
+class PlausibilidadTest(unittest.TestCase):
+    """Estadística de edades de muerte y supervivencia, por país y década (modelada)."""
+
+    FUNCIONES = ("probabilidad_de_llegar_a", "supervivientes_esperados", "fraccion_de_muertes_antes_de",
+                 "edad_de_muerte_percentil", "edades_de_muerte_comunes")
+
+    @classmethod
+    def setUpClass(cls):
+        cls.muestra = [f for f in comun.filas_csv("esperanza_vida")
+                       if f["sexo"] == "T" and f["edad"] == "5" and f["fuente"] == pd.FUENTE_E5][::13]
+
+    def test_el_contrato_ninguna_funcion_recibe_una_persona(self):
+        # Solo país, año, sexo y edades o cantidades: nunca una ficha, un nombre, un apellido ni un origen.
+        for nombre in self.FUNCIONES:
+            parametros = set(inspect.signature(getattr(consultas, nombre)).parameters)
+            self.assertLessEqual(parametros, consultas.PARAMETROS_PERMITIDOS, nombre)
+
+    def test_llegar_a_los_5_es_la_supervivencia_guardada(self):
+        self.assertGreater(len(self.muestra), 200)
+        for f in self.muestra:
+            anio = int(f["desde"]) + 3
+            self.assertAlmostEqual(consultas.probabilidad_de_llegar_a(f["codigo"], anio, 5), float(f["supervivencia_hasta_edad"]), delta=6e-4, msg=f)
+
+    def test_la_probabilidad_de_llegar_baja_con_la_edad_y_empieza_en_uno(self):
+        for codigo, anio in (("SE", 1805), ("CL", 1895), ("JP", 1985), ("NG", 1955)):
+            valores = [consultas.probabilidad_de_llegar_a(codigo, anio, e) for e in (0, 1, 5, 15, 40, 70, 90, 110)]
+            self.assertEqual(valores[0], 1.0)
+            self.assertTrue(all(a >= b for a, b in zip(valores, valores[1:])), (codigo, valores))
+
+    def test_los_percentiles_estan_en_orden_y_dentro_de_0_a_110(self):
+        for f in self.muestra[::6]:
+            anio = int(f["desde"]) + 3
+            comunes = consultas.edades_de_muerte_comunes(f["codigo"], anio)
+            self.assertEqual(list(comunes), ["p10", "p25", "p50", "p75", "p90"])
+            valores = list(comunes.values())
+            self.assertEqual(valores, sorted(valores), f)
+            self.assertTrue(0 <= valores[0] and valores[-1] <= 110, f)
+
+    def test_percentil_y_fraccion_son_inversas(self):
+        for codigo, anio, desde in (("SE", 1805, 0), ("CL", 1895, 15), ("ES", 1955, 40), ("JP", 1985, 0)):
+            for p in (0.1, 0.5, 0.9):
+                edad = consultas.edad_de_muerte_percentil(codigo, anio, p, desde)
+                self.assertAlmostEqual(consultas.fraccion_de_muertes_antes_de(codigo, anio, edad, desde), p, places=9, msg=(codigo, anio, desde, p))
+
+    def test_la_fraccion_respeta_la_edad_de_partida(self):
+        self.assertEqual(consultas.fraccion_de_muertes_antes_de("SE", 1805, 15, 15), 0.0)
+        self.assertGreater(consultas.fraccion_de_muertes_antes_de("SE", 1805, 110), 0.999)
+        # De quien llegaba a los 15 moría antes de los 40 una fracción distinta de la de todos los nacidos.
+        self.assertNotAlmostEqual(consultas.fraccion_de_muertes_antes_de("SE", 1805, 40, 15), consultas.fraccion_de_muertes_antes_de("SE", 1805, 40, 0), places=3)
+
+    def test_antes_de_los_15_moria_mucha_gente_en_1805_y_poca_en_1995(self):
+        antes = consultas.fraccion_de_muertes_antes_de("SE", 1805, 15)
+        despues = consultas.fraccion_de_muertes_antes_de("SE", 1995, 15)
+        self.assertGreater(antes, 0.3)
+        self.assertLess(despues, 0.02)
+
+    def test_supervivientes_esperados_es_lineal_en_los_nacidos(self):
+        uno = consultas.supervivientes_esperados("SE", 1805, 1, 5)
+        self.assertAlmostEqual(consultas.supervivientes_esperados("SE", 1805, 6, 5), 6 * uno, places=12)
+        self.assertEqual(consultas.supervivientes_esperados("SE", 1805, 0, 5), 0)
+        self.assertAlmostEqual(uno, consultas.probabilidad_de_llegar_a("SE", 1805, 5), places=12)
+
+    def test_la_esperanza_por_trapecios_cuadra_con_la_guardada(self):
+        edades = modelo.EDADES
+        for codigo, anio in (("SE", 1805), ("CL", 1895), ("JP", 1985), ("NG", 1955)):
+            l = [consultas.probabilidad_de_llegar_a(codigo, anio, e) for e in edades]
+            area = sum((edades[i + 1] - edades[i]) * (l[i] + l[i + 1]) / 2 for i in range(len(edades) - 1))
+            self.assertAlmostEqual(area, consultas.esperanza_restante(codigo, anio, 0), delta=0.5, msg=(codigo, anio))
+
+    def test_las_mujeres_mueren_mas_tarde_que_los_hombres_casi_siempre(self):
+        mas, total = 0, 0
+        mujeres = [f for f in comun.filas_csv("esperanza_vida") if f["sexo"] == "F" and f["edad"] == "5" and int(f["desde"]) >= 1950]
+        for f in mujeres[::6]:
+            anio = int(f["desde"]) + 3
+            m = consultas.edad_de_muerte_percentil(f["codigo"], anio, 0.5, 15, "M")
+            w = consultas.edad_de_muerte_percentil(f["codigo"], anio, 0.5, 15, "F")
+            if m is not None and w is not None:
+                total += 1
+                mas += w >= m
+        self.assertGreater(total, 100)
+        self.assertGreater(mas / total, 0.95)
+
+    def test_sin_datos_es_none_no_un_error(self):
+        for codigo, anio in (("GB", 1545), ("R:Europa", 1775), ("XX", 1900), ("SE", 1799), ("SE", 2010)):
+            self.assertIsNone(consultas.probabilidad_de_llegar_a(codigo, anio, 5), (codigo, anio))
+            self.assertIsNone(consultas.edades_de_muerte_comunes(codigo, anio), (codigo, anio))
+        self.assertIsNone(consultas.probabilidad_de_llegar_a("SE", 1805, 5, "F"))   # mujeres, solo desde 1950
+
+    def test_entradas_invalidas(self):
+        for llamada in (lambda: consultas.probabilidad_de_llegar_a("SE", 1805, 111), lambda: consultas.probabilidad_de_llegar_a("SE", 1805, -1),
+                        lambda: consultas.probabilidad_de_llegar_a("SE", 1805, 5, "X"), lambda: consultas.edad_de_muerte_percentil("SE", 1805, 0),
+                        lambda: consultas.edad_de_muerte_percentil("SE", 1805, 1), lambda: consultas.supervivientes_esperados("SE", 1805, -1, 5),
+                        lambda: consultas.fraccion_de_muertes_antes_de("SE", 1805, 10, 20)):
+            with self.assertRaises(ValueError):
+                llamada()
+
+
+class PerfilDelModeloTest(unittest.TestCase):
+    def test_interpolacion_y_su_inversa(self):
+        l, _ = modelo.perfil(100.0, 55.0)
+        for edad in (0, 0.5, 1, 3, 5, 17, 42.5, 80, 110):
+            s = modelo.supervivencia_en(l, edad)
+            if 0 < s <= 1 and edad < 100:
+                self.assertAlmostEqual(modelo.edad_de_supervivencia(l, s), edad, places=6, msg=edad)
+
+    def test_limites(self):
+        l, _ = modelo.perfil(100.0, 55.0)
+        self.assertEqual(modelo.supervivencia_en(l, 0), 1.0)
+        with self.assertRaises(ValueError):
+            modelo.supervivencia_en(l, 111)
+        with self.assertRaises(ValueError):
+            modelo.edad_de_supervivencia(l, 0)
+        self.assertEqual(modelo.edad_de_supervivencia(l, 1.0), 0.0)
+        self.assertIsNone(modelo.perfil(0.0, 55.0))
+        self.assertIsNone(modelo.perfil(400.0, 90.0))
 
 
 class NormalizarTest(unittest.TestCase):

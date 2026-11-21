@@ -24,8 +24,8 @@ Cifras que cambian con los datos. Las escribe `generar_tabla.py` y `--comprobar`
 - **Causas modernas sin ningún término histórico:** ninguna.
 - **Epidemias:** 28 (3 verificadas). **Enfermedades hereditarias:** 12. **Hitos de registro civil:** 6. **Países:** 208.
 - **Muertes en Londres:** 241 años (1629-1902).
-- **Esperanza de vida:** 37488 filas (206 países o regiones).
-- **Filas verificadas contra su fuente:** 37732 de 38588.
+- **Esperanza de vida:** 37493 filas (211 países o regiones).
+- **Filas verificadas contra su fuente:** 37737 de 38593.
 <!-- fin del resumen -->
 
 ## Por qué no basta la esperanza de vida al nacer
@@ -58,7 +58,7 @@ Es una **pista para leer un documento, no un diagnóstico**. Un mismo término p
 | Qué | Edad | Sexo | Años | Cómo se obtiene |
 |---|---|---|---|---|
 | Esperanza de vida al nacer | 0 | T (ambos) | 1800-2009 | Directa de la fuente: Gapminder hasta 1949 y la ONU (revisión 2017) desde 1950. |
-| Esperanza de vida al nacer, antes de 1800 | 0 | T | 1540-1799 | Directa de Riley y Clio Infra, vía Our World in Data, solo para **Reino Unido** (desde 1540), **Suecia**, **Finlandia** (desde 1750) y **Dinamarca** (1770). Sin edades mayores: no hay mortalidad infantil tan atrás. |
+| Esperanza de vida al nacer, antes de 1800 | 0 | T | 1540-1799 | Directa de Riley y Clio Infra, vía Our World in Data, solo para **Reino Unido** (desde 1540), **Suecia**, **Finlandia** (desde 1750) y **Dinamarca** (1770), y, para cada una de las cinco **regiones** (`R:África`, `R:América`, `R:Asia`, `R:Europa`, `R:Oceanía`), el valor «previo a la transición sanitaria» que Riley fija en 1770: no es una medición de esa década, sino el promedio de las estimaciones de los países de la región antes de que empezara su transición. Sin edades mayores: no hay mortalidad infantil tan atrás. |
 | Esperanza restante y supervivencia a los 5 años | 5 | T | 1800-2009 | **Derivada** de la esperanza al nacer y de la mortalidad de 0 a 5 años de Gapminder. |
 | Esperanza de vida al nacer por sexo | 0 | M y F | 1950-2009 | Directa de Gapminder (a partir de la ONU). |
 | Esperanza restante y supervivencia a los 15, 30, 45 y 60 años | 15, 30, 45, 60 | T | 1800-2009 | **Modelada** con el modelo log-cuadrático de Wilmoth et al. (2012), desde la esperanza al nacer y la mortalidad de 0 a 5 años. `calidad` C siempre, también después de 1950. |
@@ -81,11 +81,11 @@ Es una **pista para leer un documento, no un diagnóstico**. Un mismo término p
   | Época | Esperanza al nacer | Mortalidad de 0 a 5 años | De dónde sale |
   |---|---|---|---|
   | 1950-2009 | ±0,6 años | ±7 % | **Medido**: el percentil 80 de lo que discrepan las revisiones de la ONU entre sí (0,59 años) y las dos fuentes de mortalidad infantil, Gapminder y CME (6,6 %), en 1950-2009 |
-  | 1900-1949 | ±3 años | ±15 % | **Supuesto del proyecto** |
-  | 1800-1899 | ±5 años | ±20 % | **Supuesto del proyecto** |
-  | Antes de 1800 | ±6 años | ±25 % | **Supuesto del proyecto** |
+  | 1900-1949 | ±5 años | ±20 % | **Supuesto del proyecto**, prudente |
+  | 1800-1899 | ±8 años | ±25 % | **Supuesto del proyecto**, prudente |
+  | Antes de 1800 | ±10 años | ±30 % | **Supuesto del proyecto**, prudente |
 
-  Antes de 1950 no hay una segunda fuente independiente: Gapminder y Clio Infra salen de la misma compilación de Riley y casi no discrepan (mediana de 0,03 años), así que medir con ellas daría una precisión falsa. Esos anchos son un juicio mío para que ninguna cifra parezca más firme de lo que es, no una medición, y **son un piso, no un techo**: la incertidumbre real de una cifra de 1800 puede ser mayor. Los valores están en `BANDAS` de `preparar_datos.py`.
+  Antes de 1950 no hay una segunda fuente independiente: Gapminder y Clio Infra salen de la misma compilación de Riley y casi no discrepan (mediana de 0,03 años), así que medir con ellas daría una precisión falsa. Esos anchos son un juicio mío, deliberadamente **prudente** (se ensancharon a petición de la persona a cargo, el 21 de noviembre de 2026, para que cubran con holgura lo que la literatura suele dar para estimaciones de esas épocas), para que ninguna cifra parezca más firme de lo que es; no son una medición, y **son un piso, no un techo**: la incertidumbre real de una cifra de 1800 puede ser mayor. Los valores están en `BANDAS` de `preparar_datos.py`.
 - **Es una cifra de período, no de generación**: la mortalidad de esa década, aplicada a quien nace o cumple esa edad. No dice cuánto vivió una persona concreta ni una familia.
 - **Cada década es el promedio de sus 10 años** y se omite si falta alguno. No hay 2010 en adelante a propósito: la serie larga llega hasta 2015 y esa década quedaría incompleta.
 - **Países**: son los de `codigos_iso.csv` de `Listado-paises/` que tienen datos. Guernsey y la Isla de Man no tienen ninguna serie. Otros 15 solo tienen la serie por sexo desde 1950, sin los años anteriores ni la edad 5: Andorra, Bermudas, Dominica, Gibraltar, Islas Feroe, Islas Marshall, Jersey, Kosovo, Liechtenstein, Mónaco, Nauru, Palaos, San Cristóbal y Nieves, San Marino y Tuvalu. Un nombre de las fuentes que no sea un país ni esté en las listas de omitidos de `preparar_datos.py` hace fallar el script, para no perder un país sin enterarse.
@@ -102,7 +102,7 @@ Fijadas por commit y comprobadas con SHA-256 (`fuentes.sha256`). Identificadores
 | `londres-owid` | Muertes totales y por viruela en Londres, 1629-1902 | Our World in Data (`owid/owid-datasets`), a partir de Guy (1882) y de los informes del Registrar-General; ver su `datapackage.json` |
 | `thomas-2015-owid` | Muertes por cólera en Gran Bretaña en los brotes del siglo XIX | Our World in Data, a partir de Thomas (2015) y Pearson Schools and Colleges |
 
-`owid-larga+gapminder-0-5` es una fila derivada de `owid-larga` y `gapminder-0-5`. `logquad` es una fila **modelada** (ambos sexos): el modelo log-cuadrático (coeficientes de DemoTools, `modelo-logcuadratico-b.rda` en `fuentes.sha256`) aplicado a la esperanza de vida de `owid-larga` y a la mortalidad de 0 a 5 años de `gapminder-0-5`. `logquad-sexo` es lo mismo para mujeres y hombres (`-f.rda` y `-m.rda`), con la esperanza al nacer de `gapminder-sexo`. `riley-clio` es la esperanza de vida de Riley (2005) y Clio Infra (2015), vía Our World in Data (`esperanza-riley-clio-owid.csv`), de la que solo se usan las décadas anteriores a 1800; **su licencia (Clio Infra) no la he podido comprobar** y hay que verificarla antes de publicar esas 37 filas.
+`owid-larga+gapminder-0-5` es una fila derivada de `owid-larga` y `gapminder-0-5`. `logquad` es una fila **modelada** (ambos sexos): el modelo log-cuadrático (coeficientes de DemoTools, `modelo-logcuadratico-b.rda` en `fuentes.sha256`) aplicado a la esperanza de vida de `owid-larga` y a la mortalidad de 0 a 5 años de `gapminder-0-5`. `logquad-sexo` es lo mismo para mujeres y hombres (`-f.rda` y `-m.rda`), con la esperanza al nacer de `gapminder-sexo`. `riley-clio` es la esperanza de vida de Riley (2005) y Clio Infra (2015), vía Our World in Data (`esperanza-riley-clio-owid.csv`), de la que solo se usan las décadas anteriores a 1800; **su licencia (Clio Infra) no la he podido comprobar** y hay que verificarla antes de publicar esas 42 filas (las de los cuatro países y las de las cinco regiones). Se mantienen por decisión de la persona a cargo (21 de noviembre de 2026).
 
 **Licencias (pendiente de comprobar antes de publicar los datos):** `systema_globalis` declara en su README que Gapminder lo publica con **CC BY 4.0**. El repositorio `fasttrack` y el espejo `owid-datasets` no declaran ninguna licencia; Gapminder y Our World in Data publican sus datos con CC BY 4.0 según sus sitios, pero no pude comprobarlo desde el contenedor. En todo caso hay que **citar a Gapminder, a la ONU y a Our World in Data**. **No se copia ningún dato de la Human Mortality Database**: no se redistribuye. Existe una versión por edades (15 y 45) en Our World in Data que viene de sus tablas de período; no la copié por eso.
 
@@ -152,7 +152,7 @@ Qué se conserva: `datos/revisiones.csv` (el registro de quién ha revisado qué
 | `datos/revisiones.csv` | El registro de quién ha revisado qué término del glosario (idioma, término, causa, huella, resultado, revisor, fecha y nota). Está vacío y no se prevé llenarlo: ver «Revisión del glosario». |
 | `revisiones.md` | Cuánto del glosario revisó una persona, por idioma, y qué requiere atención (generado). |
 | `PRIVACIDAD.md` | Qué guarda esta carpeta, qué impide el código y qué hay que decidir antes de mostrar causas de muerte en fichas de personas. |
-| `consultas.py` | Consultas en Python: `causa_moderna`, `epidemias_en`, `hitos_de`, `region_de`, `esperanza_restante`, `banda_esperanza`, `supervivencia`, `muertes_londres` y `exceso_de_muertes_londres`; `epidemias_en` filtra por año, región y país. |
+| `consultas.py` | Consultas en Python: `causa_moderna`, `epidemias_en`, `hitos_de`, `region_de`, `esperanza_restante`, `banda_esperanza`, `supervivencia`, las de edades de muerte (`probabilidad_de_llegar_a`, `supervivientes_esperados`, `fraccion_de_muertes_antes_de`, `edad_de_muerte_percentil` y `edades_de_muerte_comunes`), `muertes_londres` y `exceso_de_muertes_londres`; `epidemias_en` filtra por año, región y país. |
 | `descargar_fuentes.py` | Baja las fuentes de la esperanza de vida (fijadas por commit), comprueba `fuentes.sha256` y, con `--rehacer`, corre `preparar_datos.py`. |
 | `preparar_datos.py` | Arma `esperanza_vida.csv` desde esas fuentes: décadas, derivación a los 5 años, edades modeladas y cruce con los códigos de país. También escribe `londres_muertes.csv`, `paises.csv` y `modelo_logcuadratico.csv`. |
 | `modelo.py` | El modelo log-cuadrático de Wilmoth: una tabla de vida completa desde la mortalidad de 0 a 5 años y la esperanza al nacer. |
@@ -195,6 +195,9 @@ esperanza_restante("SE", 1805, 5)      # 47.3: años que le quedan a quien cumpl
 esperanza_restante("SE", 1805, 45)     # 22.7: a quien cumplió 45 (de los 15 años en adelante, modelada)
 banda_esperanza("SE", 1805, 45)        # (bajo, alto): antes de 1950 la banda es un supuesto
 esperanza_restante("GB", 1545)         # 36.4: Reino Unido antes de 1800, solo al nacer
+edades_de_muerte_comunes("CL", 1895)  # {'p10': 0.4, 'p25': 1.0, 'p50': 13.0, 'p75': 67.5, 'p90': 79.2}: edades de muerte, por década
+probabilidad_de_llegar_a("SE", 1805, 15)  # 0.63: de 10 recién nacidos, unos 6 llegaban a los 15
+supervivientes_esperados("SE", 1805, 6, 5)  # 4.1: de 6 nacimientos, en promedio unos 4 llegaban a los 5
 supervivencia("SE", 1805)              # 0.687: probabilidad de llegar a los 5
 esperanza_restante("ES", 1985, 0, "F") # por sexo, desde 1950
 ```
@@ -220,6 +223,22 @@ m.causaModerna('Hidropesía', 'spa');
 ```
 
 Los dos ports se prueban contra `datos/vectores.json`, que genera `generar_tabla.py` con `consultas.py`: **si cambias una consulta de Python, regenera con `python3 generar_tabla.py` y sigue el cambio en `php/src/Mortalidad.php` y `js/mortalidad.js`**; sus pruebas fallan si difieren en una sola respuesta. El port a JavaScript no tiene el plegado completo de mayúsculas de Unicode: cubre las diferencias que importan a los datos (ß y la sigma final).
+
+## Edades de muerte y supervivencia, por país y década
+
+Cinco consultas (en Python, PHP y JavaScript, y en la pestaña «Edades de muerte» de la vista) responden preguntas de **población**: «¿a qué edades se moría en Chile en los años 1890?» o «¿cuántos de seis niños nacidos en la Suecia de 1800 llegaban a los cinco años?». Salen de la tabla de vida que arma el modelo log-cuadrático (`modelo.py`) para ese país, esa década y ese sexo.
+
+| Consulta | Qué devuelve |
+|---|---|
+| `probabilidad_de_llegar_a(país, año, edad, sexo)` | La probabilidad (0 a 1) de que un recién nacido llegue con vida a esa edad (0 a 110). |
+| `supervivientes_esperados(país, año, nacidos, edad, sexo)` | `nacidos` por la probabilidad anterior: un valor esperado de la población (de 6 nacimientos, «4,1»), no lo que pasó en una familia. |
+| `fraccion_de_muertes_antes_de(país, año, edad, desde_edad, sexo)` | De quienes llegaban a `desde_edad`, la fracción que moría antes de cumplir `edad`. |
+| `edad_de_muerte_percentil(país, año, p, desde_edad, sexo)` | La edad por debajo de la cual había muerto la fracción `p` (con `p = 0,5`, la mediana). |
+| `edades_de_muerte_comunes(país, año, desde_edad, sexo)` | `p10`, `p25`, `p50`, `p75` y `p90`: de `p10` a `p90` está el 80 % central de las muertes. |
+
+**El contrato de privacidad** (decisión de la persona a cargo, 21 de noviembre de 2026: «solo estadística por país y década»): estas funciones **solo reciben país, año, sexo y edades o cantidades**; nunca una ficha, un nombre, un apellido ni un origen. Una prueba (`test_el_contrato_ninguna_funcion_recibe_una_persona`) lo fija: si alguien agrega un parámetro que no sea de esa lista (`PARAMETROS_PERMITIDOS` de `consultas.py`), falla. Son cifras de **toda una población**, modeladas (calidad C) y, antes de 1950, apenas estimaciones. **No sirven para decidir si algo es verosímil en una familia concreta** (la mortalidad infantil de una familia no es la de su país) **ni para inferir riesgos de salud de nadie**; la plataforma que las use debe decirlo, como lo dice la vista. No hay datos (`None`) antes de 1800, ni para países sin serie de mortalidad de 0 a 5 años; mujeres y hombres, solo desde 1950, con la mortalidad infantil de ambos sexos.
+
+Se prueban contra los mismos vectores que las demás consultas (`datos/vectores.json`): PHP y JavaScript dan lo mismo que Python.
 
 ## Qué no hace
 

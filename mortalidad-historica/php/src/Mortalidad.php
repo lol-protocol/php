@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MortalidadHistorica;
 
+require_once __DIR__ . '/Modelo.php';
+
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -42,6 +44,11 @@ final class Mortalidad
     private ?array $muertesDeLondres = null;
 
     private string $carpetaDeDatos;
+
+    private ?Modelo $modelo = null;
+
+    /** @var array<string, array{list<float>, list<float>}|null> */
+    private array $perfiles = [];
 
     /** @param string|null $carpetaDeDatos Carpeta con los CSV; por omisión, la datos/ del proyecto. */
     public function __construct(?string $carpetaDeDatos = null)
@@ -239,12 +246,116 @@ final class Mortalidad
         return $serie[$anio][0] / $mediana;
     }
 
-    /** @return array{float, float|null, array{float, float}|null}|null */
-    private function periodoQueCubre(string $codigo, int $anio, int $edad, string $sexo): ?array
+    /**
+     * Probabilidad (0 a 1) de que un recién nacido de esa década y ese país llegue con vida a `$edad` (0 a 110). Null si no
+     * hay datos (hacen falta la esperanza al nacer y la mortalidad de 0 a 5 años de la década). Estadística de población
+     * por país y década, modelada: no dice nada de una persona ni de una familia.
+     */
+    public function probabilidadDeLlegarA(string $codigo, int $anio, float $edad, string $sexo = 'T'): ?float
+    {
+        $perfil = $this->perfil($codigo, $anio, $sexo);
+
+        return $perfil === null ? null : Modelo::supervivenciaEn($perfil[0], $edad);
+    }
+
+    /** Cuántos de `$nacidos` niños llegaban en promedio a `$edad`: un valor esperado de la población, no lo que pasó en una familia. */
+    public function supervivientesEsperados(string $codigo, int $anio, int $nacidos, float $edad, string $sexo = 'T'): ?float
+    {
+        if ($nacidos < 0) {
+            throw new InvalidArgumentException("nacidos no puede ser negativo: $nacidos");
+        }
+        $probabilidad = $this->probabilidadDeLlegarA($codigo, $anio, $edad, $sexo);
+
+        return $probabilidad === null ? null : $nacidos * $probabilidad;
+    }
+
+    /** De quienes llegaban a `$desdeEdad`, la fracción (0 a 1) que moría antes de cumplir `$edad` en esa década. */
+    public function fraccionDeMuertesAntesDe(string $codigo, int $anio, float $edad, float $desdeEdad = 0, string $sexo = 'T'): ?float
+    {
+        if ($edad < $desdeEdad) {
+            throw new InvalidArgumentException("edad ($edad) menor que desdeEdad ($desdeEdad)");
+        }
+        $perfil = $this->perfil($codigo, $anio, $sexo);
+        if ($perfil === null) {
+            return null;
+        }
+        $base = Modelo::supervivenciaEn($perfil[0], $desdeEdad);
+
+        return $base <= 0 ? null : 1 - Modelo::supervivenciaEn($perfil[0], $edad) / $base;
+    }
+
+    /** La edad por debajo de la cual había muerto la fracción `$p` (0 < p < 1) de quienes llegaban a `$desdeEdad`; como mucho 110. */
+    public function edadDeMuertePercentil(string $codigo, int $anio, float $p, float $desdeEdad = 0, string $sexo = 'T'): ?float
+    {
+        if (!($p > 0 && $p < 1)) {
+            throw new InvalidArgumentException("p fuera de (0, 1): $p");
+        }
+        $perfil = $this->perfil($codigo, $anio, $sexo);
+        if ($perfil === null) {
+            return null;
+        }
+        $base = Modelo::supervivenciaEn($perfil[0], $desdeEdad);
+
+        return $base <= 0 ? null : Modelo::edadDeSupervivencia($perfil[0], $base * (1 - $p));
+    }
+
+    /**
+     * ['p10', 'p25', 'p50', 'p75', 'p90']: las edades por debajo de las cuales moría el 10, 25, 50, 75 y 90 % de quienes
+     * llegaban a `$desdeEdad`. De p10 a p90 está el 80 % central de las muertes. Null si no hay datos.
+     *
+     * @return array<string, float>|null
+     */
+    public function edadesDeMuerteComunes(string $codigo, int $anio, float $desdeEdad = 0, string $sexo = 'T'): ?array
+    {
+        $edades = [];
+        foreach ([10, 25, 50, 75, 90] as $n) {
+            $edad = $this->edadDeMuertePercentil($codigo, $anio, $n / 100, $desdeEdad, $sexo);
+            if ($edad === null) {
+                return null;
+            }
+            $edades["p$n"] = $edad;
+        }
+
+        return $edades;
+    }
+
+    /** @return array{list<float>, list<float>}|null */
+    private function perfil(string $codigo, int $anio, string $sexo): ?array
     {
         if (!in_array($sexo, self::SEXOS, true)) {
             throw new InvalidArgumentException("sexo «{$sexo}»: debe ser uno de " . implode(', ', self::SEXOS));
         }
+        $this->indiceDeEsperanza();
+        $desde = null;
+        $e0 = null;
+        foreach ($this->periodosDeEsperanza["$codigo|$sexo|0"] ?? [] as [$d, $h, $esperanza]) {
+            if ($d <= $anio && $anio <= $h) {
+                $desde = $d;
+                $e0 = $esperanza;
+                break;
+            }
+        }
+        if ($desde === null || $e0 === null) {
+            return null;
+        }
+        $clave = "$codigo|$sexo|$desde";
+        if (!array_key_exists($clave, $this->perfiles)) {
+            $l5 = null;
+            foreach ($this->periodosDeEsperanza["$codigo|T|5"] ?? [] as [$d, , , $supervivencia]) {
+                if ($d === $desde) {
+                    $l5 = $supervivencia;
+                    break;
+                }
+            }
+            $this->modelo ??= new Modelo($this->carpetaDeDatos);
+            $this->perfiles[$clave] = $l5 === null ? null : $this->modelo->perfil((1 - $l5) * 1000, $e0, $sexo);
+        }
+
+        return $this->perfiles[$clave];
+    }
+
+    private function indiceDeEsperanza(): void
+    {
         if ($this->periodosDeEsperanza === null) {
             $this->periodosDeEsperanza = [];
             foreach ($this->filas('esperanza_vida') as $f) {
@@ -256,6 +367,15 @@ final class Mortalidad
                 ];
             }
         }
+    }
+
+    /** @return array{float, float|null, array{float, float}|null}|null */
+    private function periodoQueCubre(string $codigo, int $anio, int $edad, string $sexo): ?array
+    {
+        if (!in_array($sexo, self::SEXOS, true)) {
+            throw new InvalidArgumentException("sexo «{$sexo}»: debe ser uno de " . implode(', ', self::SEXOS));
+        }
+        $this->indiceDeEsperanza();
         foreach ($this->periodosDeEsperanza["$codigo|$sexo|$edad"] ?? [] as [$desde, $hasta, $esperanza, $supervivencia, $banda]) {
             if ($desde <= $anio && $anio <= $hasta) {
                 return [$esperanza, $supervivencia, $banda];
