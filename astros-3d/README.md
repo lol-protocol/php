@@ -10,13 +10,14 @@ Visor WebGL de 52 astros: 12 planetas (8 planetas y 4 planetas enanos: Plutón, 
 |---|---|
 | `index.html` | El visor. Abre el archivo en el navegador: no hace falta servidor. |
 | `js/visor.js` | WebGL2 a mano, sin dependencias: matrices, geometría de esfera, anillos y halo, shaders, cámara y ficha. |
-| `js/texturas.js` | Texturas procedurales: ruido con semilla, bandas, cráteres, océanos y nubes, y el color de una estrella a partir de su temperatura. Funciones puras: corren en el navegador y en Node. |
+| `js/texturas.js` | Texturas procedurales: ruido con semilla, bandas, cráteres, océanos y nubes, y el color de cada estrella (el propio del catálogo o, si falta, el de su temperatura). Funciones puras: corren en el navegador y en Node. |
 | `js/ajustes.js` | Los ajustes de comodidad: el astro empieza quieto, la velocidad de giro se limita a un rango lento y se recuerda la elección. Funciones puras, probadas en Node. |
+| `js/orientacion.js` | El sentido de giro de cada astro. Venus, Urano y Plutón ya traen la inclinación del eje mayor de 90° (que es un giro retrógrado), así que no se invierte otra vez. Funciones puras, probadas en Node. |
 | `js/datos.js` | El catálogo para el visor. **Generado**, no editar a mano. |
 | `datos/astros.json` | La fuente de verdad: nombre, tipo, radio, masa, rotación, órbita, temperatura, atmósfera, anillos y la textura de cada astro. |
 | `caracteristicas.md` | La tabla de características, por categoría. **Generada.** |
 | `generar.js` | Lee `datos/astros.json` y genera `js/datos.js` y `caracteristicas.md`. Solo usa Node. |
-| `pruebas/` | `datos.test.js` (coherencia del catálogo), `texturas.test.js` (texturas y colores), `ajustes.test.js` (comodidad del visor) y `generar.test.js` (valores derivados y que lo generado esté al día). |
+| `pruebas/` | `datos.test.js` (coherencia del catálogo, incluida la física: la tercera ley de Kepler debe cuadrar para cada planeta y cada luna), `texturas.test.js` (texturas y colores), `ajustes.test.js` (comodidad del visor), `orientacion.test.js` (sentido de giro) y `generar.test.js` (valores derivados, que lo generado esté al día y la línea de comandos). |
 
 ## Uso
 
@@ -42,7 +43,7 @@ node --test 'pruebas/*.test.js'
 node generar.js --comprobar
 ```
 
-La CI corre las dos. `--comprobar` falla si `js/datos.js` o `caracteristicas.md` no coinciden con el JSON.
+La CI corre las dos. `--comprobar` falla si `js/datos.js` o `caracteristicas.md` no coinciden con el JSON. Cualquier otro argumento (por ejemplo, un `--comprobr` mal escrito) falla con código 2 en vez de escribir los archivos sin avisar.
 
 La revisión visual (que el visor compile y pinte en Chromium) se hizo a mano con Chromium headless y WebGL por software: no está en la CI. Si cambias un shader o una textura, abre `index.html` y recorre los 52 astros.
 
@@ -54,7 +55,7 @@ La revisión visual (que el visor compile y pinte en Chromium) se hizo a mano co
 - **Texturas procedurales.** No se descargan imágenes ni mapas: la textura se calcula en el navegador con ruido con semilla, así que es la misma en cada visita y no depende de la red. No son fotografías ni mapas científicos; los colores son aproximados.
 - **Estrellas.** Cada una tiene un color propio y distinto (`textura.color` en `datos/astros.json`), y un puntito de ese color en la lista. El color es ilustrativo: la temperatura superficial fija su familia (azul, blanca, amarilla, naranja o roja) y se exagera la saturación para distinguirlas; una prueba comprueba que las calientes salgan azuladas y las frías, rojizas. Cada una trae su constelación, y el signo zodiacal cuando la constelación es zodiacal (Hamal en Aries, Aldebarán en Tauro, Pólux en Géminis, Regulus en Leo, Spica en Virgo y Antares en Escorpio). Su radio es poco preciso en cuatro de ellas (Polaris, Betelgeuse, Antares y Deneb): está marcado en la tabla. La edad queda vacía cuando no hay un dato fiable.
 - **Sin dependencias.** Ni bibliotecas de WebGL ni CDN. El visor se abre sin red.
-- **Datos.** Valores redondeados de la NASA (Planetary Fact Sheet y las fichas de satélites) y de la literatura para las estrellas. Las temperaturas de las lunas pequeñas y de algunas estrellas son aproximadas. La versión de los datos está en `datos/astros.json`.
+- **Datos.** Valores redondeados de la NASA (Planetary Fact Sheet y las fichas de satélites) y de la literatura para las estrellas. Las temperaturas de las lunas pequeñas y de algunas estrellas son aproximadas. La versión de los datos está en `datos/astros.json` y se sube cuando cambian los datos (hoy, 1.1.0). «Lunas conocidas» de los planetas gigantes son las cifras de NASA de abril de 2025 y siguen subiendo con los descubrimientos.
 
 ## Idioma
 

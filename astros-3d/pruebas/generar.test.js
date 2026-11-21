@@ -5,6 +5,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const { spawnSync } = require('node:child_process');
 const path = require('node:path');
 
 const RAIZ = path.join(__dirname, '..');
@@ -73,4 +74,24 @@ test('lo committeado (js/datos.js y caracteristicas.md) está al día con el JSO
   const md = fs.readFileSync(path.join(RAIZ, 'caracteristicas.md'), 'utf8');
   assert.equal(js, G.generarJs(DATOS), 'js/datos.js desactualizado: corre node generar.js');
   assert.equal(md, G.generarMarkdown(DATOS), 'caracteristicas.md desactualizado: corre node generar.js');
+});
+
+function correr(...args) {
+  return spawnSync(process.execPath, [path.join(RAIZ, 'generar.js'), ...args], { encoding: 'utf8' });
+}
+
+test('un argumento desconocido falla sin escribir nada (un flag mal escrito no debe pasar por «escribir»)', () => {
+  const antesJs = fs.readFileSync(path.join(RAIZ, 'js', 'datos.js'), 'utf8');
+  const antesMd = fs.readFileSync(path.join(RAIZ, 'caracteristicas.md'), 'utf8');
+  const r = correr('--comprobr');
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /Argumento desconocido: --comprobr/);
+  assert.equal(fs.readFileSync(path.join(RAIZ, 'js', 'datos.js'), 'utf8'), antesJs);
+  assert.equal(fs.readFileSync(path.join(RAIZ, 'caracteristicas.md'), 'utf8'), antesMd);
+});
+
+test('--comprobar sale con 0 cuando lo generado está al día', () => {
+  const r = correr('--comprobar');
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /Al día/);
 });

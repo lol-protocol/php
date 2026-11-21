@@ -11,6 +11,7 @@
   const T = window.AstrosTexturas;
   const DATOS = window.ASTROS_DATOS;
   const AJUSTES = window.AstrosAjustes;
+  const ORIENTACION = window.AstrosOrientacion;
 
   const canvas = document.getElementById('escena');
   const aviso = document.getElementById('aviso');
@@ -384,7 +385,7 @@ void main() {
     const R = mult(rotX(estado.pitch), rotY(estado.yaw));
     const V = mult(trasladar(-estado.distancia), R);
     const inclinacion = ((a.inclinacion_eje_grados || 0) * Math.PI) / 180;
-    const sentido = a.periodo_rotacion_h < 0 ? -1 : 1;
+    const sentido = ORIENTACION.sentidoDeGiro(a.periodo_rotacion_h, a.inclinacion_eje_grados);
     const M = mult(rotX(inclinacion), rotY(estado.giro * sentido));
 
     // Cuerpo
@@ -543,6 +544,8 @@ void main() {
       dl.appendChild(dd);
     }
     ficha.replaceChildren();
+    // El nombre accesible del lienzo dice qué astro se ve, igual que la ficha.
+    canvas.setAttribute('aria-label', 'Vista 3D de ' + a.nombre);
     const h = document.createElement('h2');
     h.textContent = a.nombre;
     const p = document.createElement('p');
