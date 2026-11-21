@@ -47,11 +47,11 @@ class PhoneDirectoryEntry
         ?string $language = null,
         ?int $sourceLine = null
     ) {
-        if (empty(trim($fullName))) {
+        if (trim($fullName) === '') {
             throw new \InvalidArgumentException('Full name cannot be empty');
         }
 
-        if (empty(trim($street))) {
+        if (trim($street) === '') {
             throw new \InvalidArgumentException('Street cannot be empty');
         }
 
