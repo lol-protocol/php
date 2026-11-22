@@ -142,6 +142,17 @@ class RetiroTest extends TestCase
             entorno: ['TEST_REMOTE_ADDR' => '198.51.100.8-' . bin2hex(random_bytes(4)), 'RETIRO_MAX_POR_HORA' => '2'])[0], 'another visitor is not affected');
     }
 
+    /** RETIRO_MAX_POR_HORA=0 closes the form (429): it used to reach min([]), a ValueError, and answer 500. */
+    public function testALimitOfZeroClosesTheForm(): void
+    {
+        $entorno = ['TEST_REMOTE_ADDR' => '198.51.100.9-' . bin2hex(random_bytes(4)), 'RETIRO_MAX_POR_HORA' => '0'];
+        [$sid, $token] = $this->formulario(self::PEDIR);
+        $antes = (int)$this->db()->fetchValue('SELECT COUNT(*) FROM pedidos_retiro');
+
+        $this->assertSame(429, $this->pedir(self::PEDIR, 'POST', $this->pedidoValido($token), $sid, entorno: $entorno)[0]);
+        $this->assertSame($antes, (int)$this->db()->fetchValue('SELECT COUNT(*) FROM pedidos_retiro'));
+    }
+
     public function testAPageStopsTakingPedidosWhenManyAreWaiting(): void
     {
         $repo = new \App\Repositories\Genealogy\RetiroRepository($this->db());
