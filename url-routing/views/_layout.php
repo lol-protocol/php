@@ -2,6 +2,7 @@
 
 use App\Support\Flash;
 use App\Support\HostParser;
+use App\Support\Textos;
 
 /**
  * Page shell shared by both sites. Each view renders its body into $content
@@ -14,6 +15,10 @@ use App\Support\HostParser;
  * $pedirRetiro, the URL to ask for the page to be withdrawn, shown at the foot, and $pedirDatos, the URL to ask for the
  * data of the persona the page is about.
  * A view may set $sinCanonica to leave out the canonical and hreflang links: an error page has no address of its own.
+ * A view whose whole body goes through t() sets $traducida: only then does the page announce its other languages
+ * (hreflang, for the languages that have a lang/ table) and, when this request's language has one too, take its own
+ * subdomain as canonical. Any other page is Spanish text whatever the subdomain: it announces no other language and
+ * its canonical is the base-language address.
  * A view may set $scripts, local paths of scripts (public/) to load at the end of the body: the CSP only
  * allows scripts from this origin, so there are no inline ones.
  */
@@ -32,9 +37,10 @@ $tActual = isset($digitos) ? (string)$digitos : (string)array_key_first($tiposBu
     <meta name="robots" content="noindex">
 <?php endif; ?>
 <?php $ruta = (string)strtok($_SERVER['REQUEST_URI'] ?? '/', '?'); ?>
+<?php $propia = !empty($traducida) && Textos::traducido(get_locale()); ?>
 <?php if (empty($sinCanonica)): ?>
-    <link rel="canonical" href="<?= esc(HostParser::origen() . $ruta) ?>">
-<?php foreach (HostParser::alternos($ruta) as $hreflang => $url): ?>
+    <link rel="canonical" href="<?= esc(($propia ? HostParser::origen() : HostParser::origenEnBase()) . $ruta) ?>">
+<?php foreach (empty($traducida) ? [] : HostParser::alternos($ruta, true) as $hreflang => $url): ?>
     <link rel="alternate" hreflang="<?= esc($hreflang) ?>" href="<?= esc($url) ?>">
 <?php endforeach; ?>
 <?php endif; ?>
