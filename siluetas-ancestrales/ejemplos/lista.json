@@ -615,5 +615,38 @@
       "edad": 30,
       "vista": "espalda"
     }
+  },
+  {
+    "archivo": "gesto-saludo-en-alto",
+    "opciones": {
+      "semilla": 3,
+      "sexo": "m",
+      "edad": 34,
+      "pose": {
+        "saludoEstilo": "alto"
+      },
+      "vestir": [
+        "camisa-manga-corta",
+        "pantalon-vestir",
+        "zapatos-vestir"
+      ]
+    }
+  },
+  {
+    "archivo": "gesto-manos-en-las-caderas",
+    "opciones": {
+      "semilla": 3,
+      "sexo": "f",
+      "edad": 34,
+      "saludo": "ninguno",
+      "pose": {
+        "manos": "jarras"
+      },
+      "vestir": [
+        "camiseta-cap",
+        "falda-midi",
+        "zapatos-vestir"
+      ]
+    }
   }
 ]

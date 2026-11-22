@@ -2246,6 +2246,14 @@ const CORPULENCIA_MIN = 0.6, CORPULENCIA_MAX = 1.6; // si se da como número
 const CORPULENCIAS = { delgada: 0.86, media: 1, robusta: 1.2, corpulenta: 1.34 };
 const POSTURAS = { firme: 7, relajada: 11, abierta: 22 };
 
+/** Estilos de saludo: cuánto baja el codo bajo la horizontal (menos grados = el codo más arriba), cuánto se inclina el antebrazo hacia afuera y cuánto gira la mano (grados). */
+const SALUDOS_ESTILO = Object.freeze({
+  alto: { codo: 22, antebrazo: 5, mano: 0 }, // el codo casi a la altura del hombro y la mano muy arriba
+  medio: { codo: 55, antebrazo: 15, mano: 0 }, // el de siempre
+  bajo: { codo: 76, antebrazo: 32, mano: 12 }, // un saludo discreto: el codo pegado al cuerpo y la mano a la altura del pecho
+  inclinado: { codo: 45, antebrazo: 34, mano: 22 }, // el antebrazo y la mano inclinados hacia afuera
+});
+
 /** Pose simétrica y rígida (la de las primeras versiones). */
 const POSE_FIRME = Object.freeze({
   modo: 'firme', cabeza: 0, inclinacion: 0, carga: 0, abre: 1, giro: 10, brazoLibre: 'abajo', angulos: null,
@@ -2397,12 +2405,12 @@ function medidas(opc = {}) {
     return { tipo: 'caido', linea, anchos: anchosBrazo, u: uBrazo, mano: { ang: grados + bend + flex } };
   };
   // Mano en la cintura: codo hacia afuera y muñeca sobre la cadera.
-  const brazoCintura = () => {
+  const brazoCintura = (lado = ladoLibre) => {
     const codo = [S0[0] + H * 0.064 * pose.cinturaCodo, lerp(y.axila, y.cintura, 0.5)];
     const mun = [w.cadera * 0.98 + H * 0.004, y.cintura + (y.cadera - y.cintura) * 0.72];
     const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
     const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
-    return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
+    return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[lado] ?? 0 };
   };
   // Mano sobre el pecho (como al jurar o saludar con respeto): el codo sale un poco y la muñeca llega al centro del pecho.
   const brazoPecho = () => {
@@ -2412,10 +2420,11 @@ function medidas(opc = {}) {
     const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
     return { tipo: 'pecho', linea: [S0, [m1[0] + H * 0.004, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
   };
-  // Manos juntas al frente (a la altura de la cintura) y brazos cruzados sobre el pecho: afectan a los dos brazos.
-  const brazoJuntas = () => {
-    const codo = [S0[0] + H * 0.024, lerp(y.axila, y.cintura, 0.8)];
-    const mun = [w.cintura * 0.12, y.cintura + (y.cadera - y.cintura) * 0.45];
+  // Manos juntas al frente (a la cintura o, en plegaria, al pecho), brazos cruzados sobre el pecho y manos en jarras: afectan a los dos brazos.
+  const brazoJuntas = (alto = false) => {
+    // `alto`: las manos juntas a la altura del pecho (plegaria); si no, a la de la cintura.
+    const codo = [S0[0] + H * (alto ? 0.04 : 0.024), lerp(y.axila, y.cintura, alto ? 0.55 : 0.8)];
+    const mun = alto ? [w.pecho * 0.1, y.pecho + H * 0.03] : [w.cintura * 0.12, y.cintura + (y.cadera - y.cintura) * 0.45];
     const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
     const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
     return { tipo: 'juntas', linea: [S0, m1, codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: 0 };
@@ -2452,6 +2461,8 @@ function medidas(opc = {}) {
   for (const s of [1, -1]) {
     if (s === saludoLado) brazos[s] = brazoSaludo();
     else if (manos === 'juntas') brazos[s] = brazoJuntas();
+    else if (manos === 'plegaria') brazos[s] = brazoJuntas(true);
+    else if (manos === 'jarras') brazos[s] = brazoCintura(s);
     else if (manos === 'cruzados') brazos[s] = brazoCruzado(s > 0 ? 0 : 1);
     else if (s === ladoLibre && pose.brazoLibre === 'pecho') brazos[s] = brazoPecho();
     else if (s === ladoLibre && pose.brazoLibre === 'cintura') brazos[s] = brazoCintura();
@@ -2697,7 +2708,7 @@ function deformar(M) {
   };
 }
 
-Object.assign(__e, { LIENZO, EDAD_MIN, ALTURA_MIN, CORPULENCIA_MIN, CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria, normalizarPose, medidas, perfilTorso, trazoTorso, brazoLado, brazoEnU, lineaEnY, piernaLado, trazoBrazo, trazoPierna, trazoMano, trazoAntebrazo, trazoPie, trazoCuello, deformar });
+Object.assign(__e, { LIENZO, EDAD_MIN, ALTURA_MIN, CORPULENCIA_MIN, CORPULENCIAS, POSTURAS, SALUDOS_ESTILO, POSE_FIRME, poseAleatoria, normalizarPose, medidas, perfilTorso, trazoTorso, brazoLado, brazoEnU, lineaEnY, piernaLado, trazoBrazo, trazoPierna, trazoMano, trazoAntebrazo, trazoPie, trazoCuello, deformar });
 return __e;
 })();
 
@@ -4709,7 +4720,7 @@ const { PIELES, CABELLOS } = __m['datos/colores'];
 const { PRENDAS } = __m['datos/prendas'];
 const { REGIONES } = __m['datos/atuendos'];
 const { PEINADOS_ID, BARBAS_ID, TOCADOS_ID } = __m['cabeza'];
-const { CORPULENCIAS, POSTURAS, EDAD_MIN, EDAD_MAX, ALTURA_MIN, ALTURA_MAX, CORPULENCIA_MIN, CORPULENCIA_MAX } = __m['cuerpo'];
+const { CORPULENCIAS, POSTURAS, SALUDOS_ESTILO, EDAD_MIN, EDAD_MAX, ALTURA_MIN, ALTURA_MAX, CORPULENCIA_MIN, CORPULENCIA_MAX } = __m['cuerpo'];
 const { esHex } = __m['util'];
 
 const lista = (v) => v.join(', ');
@@ -4726,7 +4737,7 @@ const ESTILOS_ROPA_NUEVA = ['sobrio', 'trabajo', 'festivo', 'ceremonial'];
 const ESQUEMAS = ['analogo', 'complementario', 'triada', 'monocromo', 'tierra', 'festivo'];
 const SALUDOS = ['derecha', 'izquierda', 'ninguno', 'ninguna'];
 const BRAZOS_LIBRES = ['abajo', 'cintura', 'bolsillo', 'pecho'];
-const MANOS = ['juntas', 'cruzados'];
+const MANOS = ['juntas', 'plegaria', 'cruzados', 'jarras'];
 
 /** Comprueba las opciones de `generarPersona` (y de `generarRopaNueva`); no cambia nada, solo lanza si algo no vale. */
 function validarOpciones(opc = {}) {
@@ -4744,6 +4755,7 @@ function validarOpciones(opc = {}) {
   if (opc.pose !== undefined && opc.pose !== null && typeof opc.pose !== 'object') enLista('Pose', opc.pose, ['casual', 'firme', 'infantil', 'mayor', 'segun-edad']);
   if (opc.pose && typeof opc.pose === 'object') {
     if (opc.pose.brazoLibre !== undefined) enLista('pose.brazoLibre', opc.pose.brazoLibre, BRAZOS_LIBRES);
+    if (opc.pose.saludoEstilo !== undefined) enLista('pose.saludoEstilo', opc.pose.saludoEstilo, Object.keys(SALUDOS_ESTILO));
     if (opc.pose.manos !== undefined) enLista('pose.manos', opc.pose.manos, MANOS);
     if (opc.pose.carga !== undefined) enLista('pose.carga', opc.pose.carga, [-1, 0, 1]);
   }
@@ -4788,7 +4800,7 @@ const { PRENDAS_POR_ID, PRENDAS } = __m['datos/prendas'];
 const { ATUENDOS, ATUENDOS_POR_ID, REGIONES } = __m['datos/atuendos'];
 const { MANDIBULAS_ID, PEINADOS, BARBAS, TOCADOS } = __m['cabeza'];
 const { PATRONES_ID } = __m['patrones'];
-const { CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria } = __m['cuerpo'];
+const { CORPULENCIAS, POSTURAS, POSE_FIRME, SALUDOS_ESTILO, poseAleatoria } = __m['cuerpo'];
 const { renderizar } = __m['svg'];
 const { ETNIAS, ETNIAS_POR_ID } = __m['datos/etnias'];
 const { distribucionColor, catalogoColores, muestrearColor, muestrearColorLibre, perfilDe, PERFILES } = __m['datos/colores-prendas'];
@@ -5190,7 +5202,7 @@ function generarPersona(opc = {}) {
   else {
     const perfilPose = opc.pose === 'segun-edad' ? (edad <= 12 ? 'infantil' : edad >= 65 ? 'mayor' : undefined) : (opc.pose === 'infantil' || opc.pose === 'mayor' ? opc.pose : undefined);
     pose = poseAleatoria(azar.hijo('pose'), 1, perfilPose);
-    if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(opc.pose.saludo ?? {}) } };
+    if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(SALUDOS_ESTILO[opc.pose.saludoEstilo] ?? {}), ...(opc.pose.saludo ?? {}) } };
     if (opc.postura !== undefined && !(opc.pose && opc.pose.angulos)) {
       const base = typeof opc.postura === 'number' ? opc.postura : (POSTURAS[opc.postura] ?? POSTURAS.relajada);
       pose.angulos = { 1: base + pose.angulos[1] * 0.2 - 1, '-1': base + pose.angulos['-1'] * 0.2 - 1 };
