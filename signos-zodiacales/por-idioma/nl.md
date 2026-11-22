@@ -335,7 +335,7 @@ Uit de Goetia (17e eeuw), een grimoire dat geen deel van de Bijbel uitmaakt. Elk
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Koning | 66 | 21/03 – 25/03 | Onzichtbaarheid, wijsheid |
 | 2 | Agares | Hertog | 31 | 26/03 – 30/03 | Talen, voortvluchtigen, aardbevingen |
-| 3 | Vassago | Prins | — | 31/03 – 04/04 | Verleden en toekomst, verloren voorwerpen |
+| 3 | Vassago | Prins | 26 | 31/03 – 04/04 | Verleden en toekomst, verloren voorwerpen |
 | 4 | Samigina | Markies | 30 | 05/04 – 09/04 | Vrije kunsten, zielen van overledenen |
 | 5 | Marbas | President | 36 | 10/04 – 14/04 | Geheimen, ziekten, genezing, werktuigkunde |
 | 6 | Valefor | Hertog | 10 | 15/04 – 19/04 | Huisgeesten, diefstal |
@@ -353,7 +353,7 @@ Uit de Goetia (17e eeuw), een grimoire dat geen deel van de Bijbel uitmaakt. Elk
 | 18 | Bathin | Hertog | 30 | 16/06 – 20/06 | Planten, edelstenen, snelle verplaatsingen |
 | 19 | Sallos | Hertog | 30 | 21/06 – 26/06 | Liefde |
 | 20 | Purson | Koning | 22 | 27/06 – 02/07 | Schatten, verleden en toekomst, huisgeesten |
-| 21 | Marax | President / Graaf | 30 | 03/07 – 07/07 | Sterrenkunde, vrije kunsten, planten |
+| 21 | Marax | President / Graaf | 36 | 03/07 – 07/07 | Sterrenkunde, vrije kunsten, planten |
 | 22 | Ipos | Graaf / Prins | 36 | 08/07 – 12/07 | Verleden en toekomst, moed, vernuft |
 | 23 | Aim | Hertog | 26 | 13/07 – 17/07 | Branden, vernuft, geheimen |
 | 24 | Naberius | Markies | 19 | 18/07 – 22/07 | Retoriek, kunsten, eerbewijzen |
@@ -389,7 +389,7 @@ Uit de Goetia (17e eeuw), een grimoire dat geen deel van de Bijbel uitmaakt. Elk
 | 54 | Murmur | Hertog / Graaf | 30 | 17/12 – 21/12 | Muziek, filosofie, zielen van overledenen |
 | 55 | Orobas | Prins | 20 | 22/12 – 26/12 | Verleden en toekomst, gunst, loyaliteit |
 | 56 | Gremory | Hertog | 26 | 27/12 – 31/12 | Schatten, liefde, verleden en toekomst |
-| 57 | Ose | President | 3 | 01/01 – 05/01 | Vrije kunsten, gedaanteverandering, waanzin |
+| 57 | Ose | President | 30 | 01/01 – 05/01 | Vrije kunsten, gedaanteverandering, waanzin |
 | 58 | Amy | President | 36 | 06/01 – 10/01 | Astrologie, vrije kunsten, schatten |
 | 59 | Orias | Markies | 30 | 11/01 – 15/01 | Astrologie, gedaanteverandering, eerbewijzen |
 | 60 | Vapula | Hertog | 36 | 16/01 – 19/01 | Werktuigkunde, filosofie, wetenschappen |
@@ -400,7 +400,7 @@ Uit de Goetia (17e eeuw), een grimoire dat geen deel van de Bijbel uitmaakt. Elk
 | 65 | Andrealphus | Markies | 30 | 09/02 – 13/02 | Wiskunde, sterrenkunde, gedaanteverandering |
 | 66 | Kimaris | Markies | 20 | 14/02 – 18/02 | Retoriek, logica, verloren voorwerpen |
 | 67 | Amdusias | Hertog | 29 | 19/02 – 23/02 | Muziek, bomen |
-| 68 | Belial | Koning | 50 | 24/02 – 28/02 | Gunst, waardigheden, huisgeesten |
+| 68 | Belial | Koning | 80 | 24/02 – 28/02 | Gunst, waardigheden, huisgeesten |
 | 69 | Decarabia | Markies | 30 | 01/03 – 05/03 | Vogels, edelstenen, planten |
 | 70 | Seere | Prins | 26 | 06/03 – 10/03 | Snelle verplaatsingen, diefstal, verloren voorwerpen |
 | 71 | Dantalion | Hertog | 36 | 11/03 – 15/03 | Gedachten, wetenschappen, liefde |

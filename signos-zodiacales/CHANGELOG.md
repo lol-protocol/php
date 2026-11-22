@@ -4,6 +4,11 @@ Los cambios de `datos/` y de lo que se calcula con ellos, de lo más reciente a 
 
 Versionado semántico: la **mayor** cambia si se rompe el esquema de `datos/signos.json` o lo que devuelven las consultas; la **menor** cuando se agregan datos, campos o funciones; la **parche** cuando se corrige un texto, una fecha o una figura sin cambiar la forma.
 
+## [1.3.5] - 2026-11-22
+
+### Corregido
+- Cuatro cifras de legiones se alinean con Wikipedia, donde las fuentes difieren entre ediciones: Belial pasa de 50 a 80, Marax (Morax) de 30 a 36, Ose de 3 a 30, y Vassago, que no tenía cifra, queda en 26. El campo `legiones` sigue admitiendo `null` para un demonio sin cifra.
+
 ## [1.3.4] - 2026-11-21
 
 ### Corregido

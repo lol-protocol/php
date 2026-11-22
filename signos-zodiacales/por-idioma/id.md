@@ -335,7 +335,7 @@ Dari Goetia (abad ke-17), sebuah grimoar yang bukan bagian dari Alkitab. Setiap 
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Raja | 66 | 21/03 – 25/03 | Kegaiban, kebijaksanaan |
 | 2 | Agares | Adipati | 31 | 26/03 – 30/03 | Bahasa, buronan, gempa bumi |
-| 3 | Vassago | Pangeran | — | 31/03 – 04/04 | Masa lalu dan masa depan, barang hilang |
+| 3 | Vassago | Pangeran | 26 | 31/03 – 04/04 | Masa lalu dan masa depan, barang hilang |
 | 4 | Samigina | Marquis | 30 | 05/04 – 09/04 | Seni liberal, arwah orang mati |
 | 5 | Marbas | Presiden | 36 | 10/04 – 14/04 | Rahasia, penyakit, penyembuhan, seni mekanik |
 | 6 | Valefor | Adipati | 10 | 15/04 – 19/04 | Roh pendamping, pencurian |
@@ -353,7 +353,7 @@ Dari Goetia (abad ke-17), sebuah grimoar yang bukan bagian dari Alkitab. Setiap 
 | 18 | Bathin | Adipati | 30 | 16/06 – 20/06 | Tumbuhan, batu mulia, perjalanan cepat |
 | 19 | Sallos | Adipati | 30 | 21/06 – 26/06 | Cinta |
 | 20 | Purson | Raja | 22 | 27/06 – 02/07 | Harta karun, masa lalu dan masa depan, roh pendamping |
-| 21 | Marax | Presiden / Earl | 30 | 03/07 – 07/07 | Astronomi, seni liberal, tumbuhan |
+| 21 | Marax | Presiden / Earl | 36 | 03/07 – 07/07 | Astronomi, seni liberal, tumbuhan |
 | 22 | Ipos | Earl / Pangeran | 36 | 08/07 – 12/07 | Masa lalu dan masa depan, keberanian, kecerdikan |
 | 23 | Aim | Adipati | 26 | 13/07 – 17/07 | Kebakaran, kecerdikan, rahasia |
 | 24 | Naberius | Marquis | 19 | 18/07 – 22/07 | Retorika, seni, kehormatan |
@@ -389,7 +389,7 @@ Dari Goetia (abad ke-17), sebuah grimoar yang bukan bagian dari Alkitab. Setiap 
 | 54 | Murmur | Adipati / Earl | 30 | 17/12 – 21/12 | Musik, filsafat, arwah orang mati |
 | 55 | Orobas | Pangeran | 20 | 22/12 – 26/12 | Masa lalu dan masa depan, kemurahan hati, loyalitas |
 | 56 | Gremory | Adipati | 26 | 27/12 – 31/12 | Harta karun, cinta, masa lalu dan masa depan |
-| 57 | Ose | Presiden | 3 | 01/01 – 05/01 | Seni liberal, transformasi, kegilaan |
+| 57 | Ose | Presiden | 30 | 01/01 – 05/01 | Seni liberal, transformasi, kegilaan |
 | 58 | Amy | Presiden | 36 | 06/01 – 10/01 | Astrologi, seni liberal, harta karun |
 | 59 | Orias | Marquis | 30 | 11/01 – 15/01 | Astrologi, transformasi, kehormatan |
 | 60 | Vapula | Adipati | 36 | 16/01 – 19/01 | Seni mekanik, filsafat, ilmu pengetahuan |
@@ -400,7 +400,7 @@ Dari Goetia (abad ke-17), sebuah grimoar yang bukan bagian dari Alkitab. Setiap 
 | 65 | Andrealphus | Marquis | 30 | 09/02 – 13/02 | Matematika, astronomi, transformasi |
 | 66 | Kimaris | Marquis | 20 | 14/02 – 18/02 | Retorika, logika, barang hilang |
 | 67 | Amdusias | Adipati | 29 | 19/02 – 23/02 | Musik, pepohonan |
-| 68 | Belial | Raja | 50 | 24/02 – 28/02 | Kemurahan hati, kedudukan, roh pendamping |
+| 68 | Belial | Raja | 80 | 24/02 – 28/02 | Kemurahan hati, kedudukan, roh pendamping |
 | 69 | Decarabia | Marquis | 30 | 01/03 – 05/03 | Burung, batu mulia, tumbuhan |
 | 70 | Seere | Pangeran | 26 | 06/03 – 10/03 | Perjalanan cepat, pencurian, barang hilang |
 | 71 | Dantalion | Adipati | 36 | 11/03 – 15/03 | Pikiran, ilmu pengetahuan, cinta |
