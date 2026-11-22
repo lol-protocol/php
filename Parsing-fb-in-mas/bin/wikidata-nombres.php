@@ -30,26 +30,34 @@ if (count($archivos) !== 2 || Lote::esUrl($archivos[0]) || Lote::esUrl($archivos
     exit(2);
 }
 
-$lineas = is_file($archivos[1]) ? file($archivos[1], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : false;
-if ($lineas === false) {
+if (!is_file($archivos[1]) || ($entrada = fopen($archivos[1], 'rb')) === false) {
     fwrite(STDERR, "{$archivos[1]}: no se pudo leer\n");
     exit(1);
 }
-$perfiles = [];
-foreach ($lineas as $linea) {
-    $p = json_decode($linea, true);
-    if (is_array($p)) {
-        $perfiles[] = array_filter($p, 'is_string', ARRAY_FILTER_USE_KEY);
+
+/** Lee los perfiles de uno en uno: en memoria solo hay un perfil y los identificadores pedidos. */
+$perfiles = static function () use ($entrada): Generator {
+    rewind($entrada);
+    while (($linea = fgets($entrada)) !== false) {
+        $p = json_decode($linea, true);
+        if (is_array($p)) {
+            yield array_filter($p, 'is_string', ARRAY_FILTER_USE_KEY);
+        }
     }
-}
+};
 
 try {
-    $r = Wikidata::resolverNombres($archivos[0], $perfiles, $exclusiones);
+    $quiero = Wikidata::identificadoresPedidos($perfiles());
+    $datos = Wikidata::leerNombres($archivos[0], $quiero);
 } catch (RuntimeException $e) {
     fwrite(STDERR, $e->getMessage() . "\n");
     exit(1);
 }
-foreach ($r['perfiles'] as $p) {
-    echo json_encode($p, Lote::JSON), "\n";
+$total = 0;
+foreach ($perfiles() as $p) {
+    echo json_encode(Wikidata::completarNombres($p, $datos, $exclusiones), Lote::JSON), "\n";
+    $total++;
 }
-fwrite(STDERR, count($r['perfiles']) . " perfiles, {$r['resueltos']} nombres resueltos, " . count($r['pendientes']) . " identificadores no están en el volcado\n");
+fclose($entrada);
+$pendientes = count(array_diff(array_keys($quiero), array_keys($datos)));
+fwrite(STDERR, $total . ' perfiles, ' . Wikidata::contarResueltos($datos) . " nombres resueltos, {$pendientes} identificadores no están en el volcado\n");
