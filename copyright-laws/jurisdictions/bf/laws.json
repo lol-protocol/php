@@ -6,9 +6,9 @@
     "law_name": "Law No. 048-2019/AN of 12 November 2019 on the Protection of Literary and Artistic Property",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years (Law No. 048-2019/AN on literary and artistic property, which repealed Law No. 032-99/AN; exact article not seen)",
-    "author_rights": "Economic rights (unconfirmed)",
+    "author_rights": "Author holds moral and economic (patrimonial) rights (art. 3); economic rights may be assigned by contract (art. 51)",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "No general orphan-works rule found; anonymous or pseudonymous works: economic rights last 70 years from lawful first publication (art. 41); publisher named on the work presumed to represent the author (art. 30)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-18",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/text/597824",
@@ -39,14 +39,14 @@
         "checked": "2026-10-18"
       },
       "author_rights": {
-        "url": "https://www.wipo.int/wipolex/en/text/597824",
-        "confidence": "low",
-        "checked": "2026-10-18"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/597824",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
-        "url": "https://www.wipo.int/wipolex/en/text/597824",
-        "confidence": "low",
-        "checked": "2026-10-18"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/597824",
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "enforcement_body": {
         "url": "https://www.sidwaya.info/lettre-ouverte-kango-sawadogo-interpelle-les-deputes-sur-le-droit-dauteur/",
@@ -55,6 +55,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "No general orphan-works rule found; anonymous or pseudonymous works: economic rights last 70 years from lawful first publication (art. 41); publisher named on the work presumed to represent the author (art. 30)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Author holds moral and economic (patrimonial) rights (art. 3); economic rights may be assigned by contract (art. 51)"
+      },
       {
         "date": "2026-10-18",
         "field": "row",

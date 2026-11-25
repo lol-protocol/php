@@ -6,13 +6,13 @@
     "law_name": "Law No. 8 of 25 January 1991 on copyright (amended by Laws No. 63/1997 and 43/1998)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years (Art. 36; photographs life + 50 years; computer programs 50 years from first disclosure; terms run to end of calendar year)",
-    "author_rights": "Economic rights (unconfirmed)",
+    "author_rights": "Economic rights",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified (unconfirmed)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "No (copyright arises from creation)",
-    "enforcement_body": "State Patent and Trademark Office (Ufficio di Stato Brevetti e Marchi) - proposed copyright role only, unconfirmed (unconfirmed)",
+    "enforcement_body": "Commissario della Legge (Law Commissioner) imposes administrative fines per copy and orders confiscation of pirated goods (Law 63/1997, Art. 3)",
     "treaties_signatory": "Berne/WCT/WPPT",
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/8234",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8234",
@@ -40,8 +40,8 @@
       },
       "author_rights": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8234",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8234",
@@ -54,9 +54,9 @@
         "checked": "2026-10-22"
       },
       "enforcement_body": {
-        "url": "https://www.consigliograndeegenerale.sm/on-line/home/documento17150056.html",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8234",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "treaties_signatory": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/20020",
@@ -65,6 +65,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "enforcement_body",
+        "from": "State Patent and Trademark Office (Ufficio di Stato Brevetti e Marchi) - proposed copyright role only, unconfirmed (unconfirmed)",
+        "to": "Commissario della Legge (Law Commissioner) imposes administrative fines per copy and orders confiscation of pirated goods (Law 63/1997, Art. 3)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Economic rights"
+      },
       {
         "date": "2026-10-22",
         "field": "row",

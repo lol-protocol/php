@@ -5,8 +5,8 @@
     "region": "asia_pacific",
     "law_name": "Copyright Act (Chapter 40.24), Revised Edition 2008",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years; photographs, anonymous, audiovisual, posthumous and government works 50 years from publication (unconfirmed)",
-    "author_rights": "Economic rights (unconfirmed)",
+    "term_of_protection": "Per Commons summary of UK Copyright Act 1956: life + 50 years; photographs and anonymous works 50 years from end of year of first publication; films from registration",
+    "author_rights": "Economic rights",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified (unconfirmed)",
     "digital_protection": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/17698",
@@ -35,13 +35,13 @@
       },
       "term_of_protection": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Tuvalu.html",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "author_rights": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/17698",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/17698",
@@ -55,6 +55,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Economic rights"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "term_of_protection",
+        "from": "Author's life + 50 years; photographs, anonymous, audiovisual, posthumous and government works 50 years from publication (unconfirmed)",
+        "to": "Per Commons summary of UK Copyright Act 1956: life + 50 years; photographs and anonymous works 50 years from end of year of first publication; films from registration"
+      },
       {
         "date": "2026-10-25",
         "field": "row",
