@@ -335,7 +335,7 @@ Z Goecji (XVII w.), grimuaru, który nie należy do Biblii. Każdy duch dzieli o
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Król | 66 | 21/03 – 25/03 | Niewidzialność, mądrość |
 | 2 | Agares | Diuk | 31 | 26/03 – 30/03 | Języki, zbiegowie, trzęsienia ziemi |
-| 3 | Vassago | Książę | — | 31/03 – 04/04 | Przeszłość i przyszłość, zagubione przedmioty |
+| 3 | Vassago | Książę | 26 | 31/03 – 04/04 | Przeszłość i przyszłość, zagubione przedmioty |
 | 4 | Samigina | Markiz | 30 | 05/04 – 09/04 | Sztuki wyzwolone, dusze zmarłych |
 | 5 | Marbas | Prezydent | 36 | 10/04 – 14/04 | Tajemnice, choroby, uzdrawianie, sztuki mechaniczne |
 | 6 | Valefor | Diuk | 10 | 15/04 – 19/04 | Duchy opiekuńcze, kradzież |
@@ -353,7 +353,7 @@ Z Goecji (XVII w.), grimuaru, który nie należy do Biblii. Każdy duch dzieli o
 | 18 | Bathin | Diuk | 30 | 16/06 – 20/06 | Rośliny, kamienie szlachetne, szybkie przenoszenie |
 | 19 | Sallos | Diuk | 30 | 21/06 – 26/06 | Miłość |
 | 20 | Purson | Król | 22 | 27/06 – 02/07 | Skarby, przeszłość i przyszłość, duchy opiekuńcze |
-| 21 | Marax | Prezydent / Hrabia | 30 | 03/07 – 07/07 | Astronomia, sztuki wyzwolone, rośliny |
+| 21 | Marax | Prezydent / Hrabia | 36 | 03/07 – 07/07 | Astronomia, sztuki wyzwolone, rośliny |
 | 22 | Ipos | Hrabia / Książę | 36 | 08/07 – 12/07 | Przeszłość i przyszłość, odwaga, dowcip |
 | 23 | Aim | Diuk | 26 | 13/07 – 17/07 | Pożary, dowcip, tajemnice |
 | 24 | Naberius | Markiz | 19 | 18/07 – 22/07 | Retoryka, sztuki, zaszczyty |
@@ -389,7 +389,7 @@ Z Goecji (XVII w.), grimuaru, który nie należy do Biblii. Każdy duch dzieli o
 | 54 | Murmur | Diuk / Hrabia | 30 | 17/12 – 21/12 | Muzyka, filozofia, dusze zmarłych |
 | 55 | Orobas | Książę | 20 | 22/12 – 26/12 | Przeszłość i przyszłość, przychylność, lojalność |
 | 56 | Gremory | Diuk | 26 | 27/12 – 31/12 | Skarby, miłość, przeszłość i przyszłość |
-| 57 | Ose | Prezydent | 3 | 01/01 – 05/01 | Sztuki wyzwolone, przemiana, szaleństwo |
+| 57 | Ose | Prezydent | 30 | 01/01 – 05/01 | Sztuki wyzwolone, przemiana, szaleństwo |
 | 58 | Amy | Prezydent | 36 | 06/01 – 10/01 | Astrologia, sztuki wyzwolone, skarby |
 | 59 | Orias | Markiz | 30 | 11/01 – 15/01 | Astrologia, przemiana, zaszczyty |
 | 60 | Vapula | Diuk | 36 | 16/01 – 19/01 | Sztuki mechaniczne, filozofia, nauki |
@@ -400,7 +400,7 @@ Z Goecji (XVII w.), grimuaru, który nie należy do Biblii. Każdy duch dzieli o
 | 65 | Andrealphus | Markiz | 30 | 09/02 – 13/02 | Matematyka, astronomia, przemiana |
 | 66 | Kimaris | Markiz | 20 | 14/02 – 18/02 | Retoryka, logika, zagubione przedmioty |
 | 67 | Amdusias | Diuk | 29 | 19/02 – 23/02 | Muzyka, drzewa |
-| 68 | Belial | Król | 50 | 24/02 – 28/02 | Przychylność, godności, duchy opiekuńcze |
+| 68 | Belial | Król | 80 | 24/02 – 28/02 | Przychylność, godności, duchy opiekuńcze |
 | 69 | Decarabia | Markiz | 30 | 01/03 – 05/03 | Ptaki, kamienie szlachetne, rośliny |
 | 70 | Seere | Książę | 26 | 06/03 – 10/03 | Szybkie przenoszenie, kradzież, zagubione przedmioty |
 | 71 | Dantalion | Diuk | 36 | 11/03 – 15/03 | Myśli, nauki, miłość |

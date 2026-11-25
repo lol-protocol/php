@@ -914,7 +914,7 @@ class PruebasDeEspiritus(unittest.TestCase):
         ficha = generar.ficha_de(self.datos, "es")
         self.assertIn("| 1 | Vehuiah | Serafines | 21/03 – 25/03 | Voluntad, comienzos, energía |", ficha)
         self.assertIn("| 17 | Botis | Presidente / Conde | 60 | 11/06 – 15/06 |", ficha)
-        self.assertIn("| 3 | Vassago | Príncipe | — | 31/03 – 04/04 |", ficha)  # sin legiones en la fuente
+        self.assertIn("| 3 | Vassago | Príncipe | 26 | 31/03 – 04/04 |", ficha)
 
     def test_las_tablas_van_dentro_del_bloque_de_derecha_a_izquierda(self):
         ficha = generar.ficha_de(self.datos, "ar")

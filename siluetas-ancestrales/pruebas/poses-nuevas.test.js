@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { generarPersona, renderizar, PRENDAS } from '../src/index.js';
-import { medidas, poseAleatoria } from '../src/cuerpo.js';
+import { medidas, poseAleatoria, SALUDOS_ESTILO } from '../src/cuerpo.js';
 import { crearAzar } from '../src/util.js';
 import { puntosDeRuta } from './ayuda.js';
 
@@ -35,13 +35,13 @@ test('la mano sobre el pecho va en el brazo libre, y el otro puede saludar', () 
 });
 
 test('valores de pose no válidos lanzan error con la lista', () => {
-  assert.throws(() => generarPersona({ pose: { manos: 'rezando' } }), /pose\.manos.*juntas, cruzados/);
+  assert.throws(() => generarPersona({ pose: { manos: 'rezando' } }), /pose\.manos.*juntas, plegaria, cruzados, jarras/);
   assert.throws(() => generarPersona({ pose: { brazoLibre: 'cabeza' } }), /pose\.brazoLibre.*pecho/);
   assert.throws(() => generarPersona({ pose: 'bailando' }), /Pose no válid/);
 });
 
 test('toda prenda, con cada pose de brazos al frente, se dibuja sin NaN y dentro del lienzo', () => {
-  const poses = [{ manos: 'juntas' }, { manos: 'cruzados' }, { brazoLibre: 'pecho' }];
+  const poses = [{ manos: 'juntas' }, { manos: 'plegaria' }, { manos: 'cruzados' }, { manos: 'jarras' }, { brazoLibre: 'pecho' }, { saludoEstilo: 'alto' }, { saludoEstilo: 'bajo' }];
   for (const pr of PRENDAS) {
     for (const pose of poses) {
       const p = generarPersona({ semilla: 7, sexo: pr.id.length % 2 ? 'f' : 'm', edad: 35, vestir: [pr.id], saludo: 'ninguno', pose });
@@ -67,4 +67,28 @@ test('pose "segun-edad" elige la pose infantil, la de mayor o la casual de siemp
   assert.equal(abre({ edad: 8, pose: 'segun-edad' }), abre({ edad: 8, pose: 'infantil' }));
   assert.equal(abre({ edad: 80, pose: 'segun-edad' }), abre({ edad: 80, pose: 'mayor' }));
   assert.equal(abre({ edad: 30, pose: 'segun-edad' }), abre({ edad: 30 }));
+});
+
+test('manos en jarras y en plegaria ocupan los dos brazos cuando no hay saludo', () => {
+  for (const [manos, tipo] of [['jarras', 'cintura'], ['plegaria', 'juntas']]) {
+    const p = generarPersona({ semilla: 3, saludo: 'ninguno', pose: { manos } });
+    const M = medidas({ ...p.cuerpo, saludo: null });
+    assert.deepEqual([M.brazos[1].tipo, M.brazos[-1].tipo], [tipo, tipo], manos);
+  }
+  // Con saludo, el brazo que saluda sigue levantado.
+  const conSaludo = generarPersona({ semilla: 3, saludo: 'derecha', pose: { manos: 'jarras' } });
+  assert.equal(medidas(conSaludo.cuerpo).brazos[-1].tipo, 'saludo');
+  // La plegaria junta las manos más arriba que las manos juntas.
+  const y = (manos) => medidas({ ...generarPersona({ semilla: 3, saludo: 'ninguno', pose: { manos } }).cuerpo, saludo: null }).brazos[1].linea.at(-1)[1];
+  assert.ok(y('plegaria') < y('juntas'), 'la plegaria va a la altura del pecho');
+});
+
+test('los estilos de saludo levantan la mano a distinta altura y un valor explícito manda sobre el estilo', () => {
+  const alturaMano = (pose) => { const p = generarPersona({ semilla: 3, saludo: 'derecha', pose }); return medidas(p.cuerpo).brazos[-1].linea.at(-1)[1]; };
+  const alto = alturaMano({ saludoEstilo: 'alto' }), medio = alturaMano({ saludoEstilo: 'medio' }), bajo = alturaMano({ saludoEstilo: 'bajo' });
+  assert.ok(alto < medio && medio < bajo, `alto ${alto} < medio ${medio} < bajo ${bajo}`);
+  for (const [nombre, v] of Object.entries(SALUDOS_ESTILO)) assert.equal(generarPersona({ semilla: 3, pose: { saludoEstilo: nombre } }).cuerpo.pose.saludo.codo, v.codo, nombre);
+  assert.equal(generarPersona({ semilla: 3, pose: { saludoEstilo: 'alto', saludo: { codo: 40 } } }).cuerpo.pose.saludo.codo, 40);
+  assert.throws(() => generarPersona({ pose: { saludoEstilo: 'frenetico' } }), /pose\.saludoEstilo.*alto, medio, bajo, inclinado/);
+  assert.throws(() => generarPersona({ pose: { manos: 'rezando' } }), /pose\.manos.*juntas, plegaria, cruzados, jarras/);
 });

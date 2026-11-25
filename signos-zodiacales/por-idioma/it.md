@@ -335,7 +335,7 @@ Dalla Goetia (XVII secolo), un grimorio che non fa parte della Bibbia. Ogni spir
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Re | 66 | 21/03 – 25/03 | Invisibilità, saggezza |
 | 2 | Agares | Duca | 31 | 26/03 – 30/03 | Lingue, fuggiaschi, terremoti |
-| 3 | Vassago | Principe | — | 31/03 – 04/04 | Passato e futuro, oggetti smarriti |
+| 3 | Vassago | Principe | 26 | 31/03 – 04/04 | Passato e futuro, oggetti smarriti |
 | 4 | Samigina | Marchese | 30 | 05/04 – 09/04 | Arti liberali, anime dei defunti |
 | 5 | Marbas | Presidente | 36 | 10/04 – 14/04 | Segreti, malattie, guarigione, arti meccaniche |
 | 6 | Valefor | Duca | 10 | 15/04 – 19/04 | Spiriti familiari, furto |
@@ -353,7 +353,7 @@ Dalla Goetia (XVII secolo), un grimorio che non fa parte della Bibbia. Ogni spir
 | 18 | Bathin | Duca | 30 | 16/06 – 20/06 | Piante, pietre preziose, spostamenti rapidi |
 | 19 | Sallos | Duca | 30 | 21/06 – 26/06 | Amore |
 | 20 | Purson | Re | 22 | 27/06 – 02/07 | Tesori, passato e futuro, spiriti familiari |
-| 21 | Marax | Presidente / Conte | 30 | 03/07 – 07/07 | Astronomia, arti liberali, piante |
+| 21 | Marax | Presidente / Conte | 36 | 03/07 – 07/07 | Astronomia, arti liberali, piante |
 | 22 | Ipos | Conte / Principe | 36 | 08/07 – 12/07 | Passato e futuro, coraggio, ingegno |
 | 23 | Aim | Duca | 26 | 13/07 – 17/07 | Incendi, ingegno, segreti |
 | 24 | Naberius | Marchese | 19 | 18/07 – 22/07 | Retorica, arti, onori |
@@ -389,7 +389,7 @@ Dalla Goetia (XVII secolo), un grimorio che non fa parte della Bibbia. Ogni spir
 | 54 | Murmur | Duca / Conte | 30 | 17/12 – 21/12 | Musica, filosofia, anime dei defunti |
 | 55 | Orobas | Principe | 20 | 22/12 – 26/12 | Passato e futuro, favore, lealtà |
 | 56 | Gremory | Duca | 26 | 27/12 – 31/12 | Tesori, amore, passato e futuro |
-| 57 | Ose | Presidente | 3 | 01/01 – 05/01 | Arti liberali, trasformazione, follia |
+| 57 | Ose | Presidente | 30 | 01/01 – 05/01 | Arti liberali, trasformazione, follia |
 | 58 | Amy | Presidente | 36 | 06/01 – 10/01 | Astrologia, arti liberali, tesori |
 | 59 | Orias | Marchese | 30 | 11/01 – 15/01 | Astrologia, trasformazione, onori |
 | 60 | Vapula | Duca | 36 | 16/01 – 19/01 | Arti meccaniche, filosofia, scienze |
@@ -400,7 +400,7 @@ Dalla Goetia (XVII secolo), un grimorio che non fa parte della Bibbia. Ogni spir
 | 65 | Andrealphus | Marchese | 30 | 09/02 – 13/02 | Matematica, astronomia, trasformazione |
 | 66 | Kimaris | Marchese | 20 | 14/02 – 18/02 | Retorica, logica, oggetti smarriti |
 | 67 | Amdusias | Duca | 29 | 19/02 – 23/02 | Musica, alberi |
-| 68 | Belial | Re | 50 | 24/02 – 28/02 | Favore, dignità, spiriti familiari |
+| 68 | Belial | Re | 80 | 24/02 – 28/02 | Favore, dignità, spiriti familiari |
 | 69 | Decarabia | Marchese | 30 | 01/03 – 05/03 | Uccelli, pietre preziose, piante |
 | 70 | Seere | Principe | 26 | 06/03 – 10/03 | Spostamenti rapidi, furto, oggetti smarriti |
 | 71 | Dantalion | Duca | 36 | 11/03 – 15/03 | Pensieri, scienze, amore |
