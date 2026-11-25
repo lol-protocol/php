@@ -8,7 +8,7 @@
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Full economic rights",
     "moral_rights": "Moral rights recognized",
-    "orphan_works": "Collective administration required",
+    "orphan_works": "Use of orphan works under the Orphan Works Act (764/2013; s. 16 f)",
     "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
@@ -27,9 +27,25 @@
         "url": "https://stm.fi/en/web/okm/copyright",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://www.finlex.fi/fi/laki/ajantasa/1961/19610404",
+        "confidence": "high",
+        "checked": "2026-11-25"
+      },
+      "orphan_works": {
+        "url": "https://www.finlex.fi/fi/laki/ajantasa/1961/19610404",
+        "confidence": "high",
+        "checked": "2026-11-25"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Collective administration required",
+        "to": "Use of orphan works under the Orphan Works Act (764/2013; s. 16 f)"
+      },
       {
         "date": "2026-11-25",
         "field": "linked_resources",

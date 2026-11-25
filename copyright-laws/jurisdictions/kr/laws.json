@@ -15,7 +15,7 @@
     "enforcement_body": "Ministry of Culture, Sports and Tourism (MCST)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://elaw.klri.re.kr/eng_service/lawView.do?hseq=40403&lang=ENG",
+    "linked_resources": "https://www.kipo.go.kr/",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
@@ -30,6 +30,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://elaw.klri.re.kr/eng_service/lawView.do?hseq=40403&lang=ENG",
+        "to": "https://www.kipo.go.kr/"
+      },
       {
         "date": "2026-11-25",
         "field": "linked_resources",

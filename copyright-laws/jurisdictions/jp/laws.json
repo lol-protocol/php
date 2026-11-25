@@ -15,7 +15,7 @@
     "enforcement_body": "Agency for Cultural Affairs (Bunkacho)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.japaneselawtranslation.go.jp/en/laws/view/4207",
+    "linked_resources": "https://www.jpo.go.jp/",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
@@ -30,6 +30,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.japaneselawtranslation.go.jp/en/laws/view/4207",
+        "to": "https://www.jpo.go.jp/"
+      },
       {
         "date": "2026-11-25",
         "field": "linked_resources",
