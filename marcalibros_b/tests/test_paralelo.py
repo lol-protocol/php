@@ -81,3 +81,32 @@ def test_si_un_movimiento_falla_el_orquestador_devuelve_error(monkeypatch, capsy
     assert "con errores: gotico" in salida and "14 de 15" in salida
     monkeypatch.setattr(build_paralelo.subprocess, "run", lambda o, **_: subprocess.CompletedProcess(o, 0, "", ""))
     assert build_paralelo.main(["--procesos", "3"]) == 0
+
+
+def test_leer_la_cache_mientras_otro_proceso_la_escribe_nunca_falla(catalogo):
+    """Regresión de la CI: un proceso que arrancaba leía piezas.json justo cuando otro lo reescribía y veía el
+    archivo vacío (JSONDecodeError). La escritura es atómica: se lee siempre el contenido viejo o el nuevo."""
+    grande = {f"m-{n}": _pieza("m", n) for n in range(4000)}
+    build.guardar_cache(grande)
+    fin = threading.Event()
+    errores = []
+
+    def escribir():
+        while not fin.is_set():
+            build.guardar_cache(grande)
+
+    def leer():
+        for _ in range(300):
+            try:
+                assert len(build.cargar_cache()) == 4000
+            except Exception as e:  # noqa: BLE001
+                errores.append(repr(e))
+                break
+
+    escritor = threading.Thread(target=escribir)
+    escritor.start()
+    leer()
+    fin.set()
+    escritor.join()
+    assert errores == []
+    assert not list(catalogo.glob(".cache/*.tmp"))  # no quedan temporales

@@ -413,10 +413,17 @@ def cargar_cache():
     return json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else {}
 
 
-def guardar_cache(cache):
-    ruta = CATALOGO / ".cache" / "piezas.json"
+def _escribir_atomico(ruta, texto):
+    """Escribe en un archivo temporal y lo renombra: quien lea a la vez ve el contenido viejo o el nuevo, nunca
+    uno a medias (con varios procesos generando, un `write_text` deja el archivo vacío un instante)."""
     ruta.parent.mkdir(parents=True, exist_ok=True)
-    ruta.write_text(json.dumps(cache, ensure_ascii=False) + "\n", encoding="utf-8")
+    tmp = ruta.with_name(f"{ruta.name}.{os.getpid()}.tmp")
+    tmp.write_text(texto, encoding="utf-8")
+    os.replace(tmp, ruta)
+
+
+def guardar_cache(cache):
+    _escribir_atomico(CATALOGO / ".cache" / "piezas.json", json.dumps(cache, ensure_ascii=False) + "\n")
 
 
 @contextmanager
@@ -566,11 +573,8 @@ def main(argv=None):
             [e for e in previas_manifest if e["movimiento"] not in rehechos] + generados,
             key=lambda e: e["id"],
         )
-        manifiesto.write_text(
-            json.dumps({"version_generador": VERSION_GENERADOR, "total": len(entradas), "entradas": entradas},
-                       ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
+        _escribir_atomico(manifiesto, json.dumps({"version_generador": VERSION_GENERADOR, "total": len(entradas),
+                                                  "entradas": entradas}, ensure_ascii=False, indent=2) + "\n")
 
     # Caché: se conservan los demás movimientos (los que haya ahora en disco) y se sustituyen los regenerados.
     guardar_cache_mezclando(nueva_cache, rehechos)
