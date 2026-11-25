@@ -6,9 +6,9 @@
     "law_name": "Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years (Ordinance No. 2010-95, art. 28, which repealed the 1993 law's life + 50); anonymous works: publication + 70 years; applied art: creation + 25 years",
-    "author_rights": "Economic rights (unconfirmed)",
+    "author_rights": "Moral rights (Art. 8: perpetual, inalienable) and exclusive economic rights (Art. 9)",
     "moral_rights": "Moral rights perpetual, inalienable and transmissible to heirs (Art. 8)",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Collective administration required: only the national collective management body grants exploitation authorisations (Art. 79)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-18",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/fr/legislation/details/22769",
@@ -39,9 +39,9 @@
         "checked": "2026-10-18"
       },
       "author_rights": {
-        "url": "https://www.wipo.int/wipolex/fr/legislation/details/22769",
-        "confidence": "low",
-        "checked": "2026-10-18"
+        "url": "https://oapi.int/wp-content/uploads/2025/04/Ordonnance2010Niger.pdf",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "moral_rights": {
         "url": "https://www.wipo.int/wipolex/en/text/583875",
@@ -49,9 +49,9 @@
         "checked": "2026-10-18"
       },
       "orphan_works": {
-        "url": "https://www.wipo.int/wipolex/fr/legislation/details/22769",
-        "confidence": "low",
-        "checked": "2026-10-18"
+        "url": "https://oapi.int/wp-content/uploads/2025/04/Ordonnance2010Niger.pdf",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "enforcement_body": {
         "url": "https://oapi.int/wp-content/uploads/2025/04/Statuts_BNDA.pdf",
@@ -60,6 +60,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Collective administration required: only the national collective management body grants exploitation authorisations (Art. 79)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Moral rights (Art. 8: perpetual, inalienable) and exclusive economic rights (Art. 9)"
+      },
       {
         "date": "2026-10-18",
         "field": "row",

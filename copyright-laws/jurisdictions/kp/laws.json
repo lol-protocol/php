@@ -6,9 +6,9 @@
     "law_name": "Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years; institutional works up to 50 years from publication",
-    "author_rights": "Economic rights (unconfirmed)",
+    "author_rights": "Moral and property (economic) rights (Art. 13-15); property rights transferable (Art. 21)",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Use allowed if the copyright holder cannot be found, with authorization of the competent institution (Art. 27)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "State management documents and current news excluded from protection (Art. 12), unless commercial purpose pursued (2006 amendment)",
     "registration_required": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/zh/legislation/details/9722",
@@ -40,13 +40,13 @@
       },
       "author_rights": {
         "url": "https://www.wipo.int/wipolex/zh/legislation/details/9722",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/zh/legislation/details/9722",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "fair_use_exceptions": {
         "url": "https://www.nkeconwatch.com/2007/08/02/everything-youve-ever-wanted-to-know-about-the-north-korean-copyright-act/",
@@ -60,6 +60,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Use allowed if the copyright holder cannot be found, with authorization of the competent institution (Art. 27)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Moral and property (economic) rights (Art. 13-15); property rights transferable (Art. 21)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

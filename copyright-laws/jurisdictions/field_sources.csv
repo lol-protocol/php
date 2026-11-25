@@ -16,7 +16,7 @@ AF,"Law on Supporting the Rights of Authors, Composers, Artists and Researchers 
 AF,"Law on Supporting the Rights of Authors, Composers, Artists and Researchers (Copyright Law), 2008 (Decree No. 54)",term_of_protection,7cb86eda43,medium,2026-10-18
 AF,"Law on Supporting the Rights of Authors, Composers, Artists and Researchers (Copyright Law), 2008 (Decree No. 54)",author_rights,b0b4d9c17b,high,2026-10-18
 AF,"Law on Supporting the Rights of Authors, Composers, Artists and Researchers (Copyright Law), 2008 (Decree No. 54)",moral_rights,b0b4d9c17b,medium,2026-10-18
-AF,"Law on Supporting the Rights of Authors, Composers, Artists and Researchers (Copyright Law), 2008 (Decree No. 54)",orphan_works,b0b4d9c17b,low,2026-10-18
+AF,"Law on Supporting the Rights of Authors, Composers, Artists and Researchers (Copyright Law), 2008 (Decree No. 54)",orphan_works,b0b4d9c17b,medium,2026-11-25
 AG,"Copyright Act, 2003 (Act No. 22 of 2003)",law_name,8f00a767db,high,2026-10-25
 AG,"Copyright Act, 2003 (Act No. 22 of 2003)",protection_type,8f00a767db,medium,2026-10-25
 AG,"Copyright Act, 2003 (Act No. 22 of 2003)",term_of_protection,9b4fdcf19f,medium,2026-10-25
@@ -62,12 +62,12 @@ BF,Law No. 048-2019/AN of 12 November 2019 on the Protection of Literary and Art
 BF,Law No. 048-2019/AN of 12 November 2019 on the Protection of Literary and Artistic Property,orphan_works,abfd7296d4,medium,2026-11-25
 BF,Law No. 048-2019/AN of 12 November 2019 on the Protection of Literary and Artistic Property,enforcement_body,c606680311,medium,2026-10-18
 BH,,moral_rights,fa9c12f510,medium,2026-10-15
-BH,,digital_protection,eeb5a2e326,low,2026-10-14
+BH,,digital_protection,fa9c12f510,high,2026-11-25
 BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,law_name,774c1f719a,high,2026-10-16
 BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,protection_type,774c1f719a,high,2026-10-16
 BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,term_of_protection,b4ae959e33,medium,2026-10-17
 BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,moral_rights,801957f983,medium,2026-10-16
-BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,orphan_works,a250423d74,low,2026-10-16
+BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,orphan_works,a250423d74,medium,2026-11-25
 BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,fair_use_exceptions,b9e3e86349,medium,2026-10-16
 BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,treaties_signatory,3180201ff0,medium,2026-10-16
 BJ,Law No. 2005-30 of 5 April 2006 on the Protection of Copyright and Neighbouring Rights (repealed Law No. 84-008 of 15 March 1984),law_name,0af9ab4c8d,high,2026-10-16
@@ -103,7 +103,7 @@ BY,,fair_use_exceptions,05f9cd885c,medium,2026-10-18
 BZ,"Copyright Act, Cap. 252 (Revised Edition 2020)",law_name,7f23cda72e,high,2026-10-25
 BZ,"Copyright Act, Cap. 252 (Revised Edition 2020)",protection_type,7f23cda72e,high,2026-10-25
 BZ,"Copyright Act, Cap. 252 (Revised Edition 2020)",term_of_protection,4f3ef3882d,high,2026-10-25
-BZ,"Copyright Act, Cap. 252 (Revised Edition 2020)",orphan_works,7f23cda72e,low,2026-10-25
+BZ,"Copyright Act, Cap. 252 (Revised Edition 2020)",orphan_works,7f23cda72e,medium,2026-11-25
 BZ,"Copyright Act, Cap. 252 (Revised Edition 2020)",registration_required,7f23cda72e,medium,2026-10-25
 BZ,"Copyright Act, Cap. 252 (Revised Edition 2020)",enforcement_body,4f3ef3882d,medium,2026-10-25
 BZ,"Copyright Act, Cap. 252 (Revised Edition 2020)",treaties_signatory,6fffa22380,high,2026-10-25
@@ -186,8 +186,8 @@ FJ,Copyright Act 1999 (Act No. 11 of 1999),treaties_signatory,bcd117b304,medium,
 FM,"Copyright Law, Title 35, Chapter 1 of the Code of the Federated States of Micronesia (originally Public Law 2-29, 1981)",law_name,efb23b2b43,high,2026-10-25
 FM,"Copyright Law, Title 35, Chapter 1 of the Code of the Federated States of Micronesia (originally Public Law 2-29, 1981)",protection_type,efb23b2b43,medium,2026-10-25
 FM,"Copyright Law, Title 35, Chapter 1 of the Code of the Federated States of Micronesia (originally Public Law 2-29, 1981)",term_of_protection,1c1ef7c924,medium,2026-10-25
-FM,"Copyright Law, Title 35, Chapter 1 of the Code of the Federated States of Micronesia (originally Public Law 2-29, 1981)",author_rights,efb23b2b43,low,2026-10-25
-FM,"Copyright Law, Title 35, Chapter 1 of the Code of the Federated States of Micronesia (originally Public Law 2-29, 1981)",orphan_works,efb23b2b43,low,2026-10-25
+FM,"Copyright Law, Title 35, Chapter 1 of the Code of the Federated States of Micronesia (originally Public Law 2-29, 1981)",author_rights,efb23b2b43,high,2026-11-25
+FM,"Copyright Law, Title 35, Chapter 1 of the Code of the Federated States of Micronesia (originally Public Law 2-29, 1981)",orphan_works,efb23b2b43,medium,2026-11-25
 FM,"Copyright Law, Title 35, Chapter 1 of the Code of the Federated States of Micronesia (originally Public Law 2-29, 1981)",fair_use_exceptions,efb23b2b43,medium,2026-10-25
 FM,"Copyright Law, Title 35, Chapter 1 of the Code of the Federated States of Micronesia (originally Public Law 2-29, 1981)",treaties_signatory,1c1ef7c924,medium,2026-10-25
 GA,"Law No. 1/87 of 29 July 1987 on Copyright and Neighbouring Rights; the Bangui Agreement (revised 1999), Annex VII, also applies as Gabon is an OAPI member",law_name,6ea42d17f4,medium,2026-10-18
@@ -224,7 +224,7 @@ GR,,enforcement_body,56dc0ee6af,high,2026-10-14
 GT,,digital_protection,39cc985890,high,2026-10-14
 GW,"Copyright Code approved by Decree-Law No. 46.980 (Portuguese colonial code, 1966; WIPO lists publication 1972)",law_name,dc130b63cf,medium,2026-10-16
 GW,"Copyright Code approved by Decree-Law No. 46.980 (Portuguese colonial code, 1966; WIPO lists publication 1972)",protection_type,dc130b63cf,medium,2026-10-16
-GW,"Copyright Code approved by Decree-Law No. 46.980 (Portuguese colonial code, 1966; WIPO lists publication 1972)",term_of_protection,90b18fbff7,low,2026-10-16
+GW,"Copyright Code approved by Decree-Law No. 46.980 (Portuguese colonial code, 1966; WIPO lists publication 1972)",term_of_protection,90b18fbff7,medium,2026-11-25
 GW,"Copyright Code approved by Decree-Law No. 46.980 (Portuguese colonial code, 1966; WIPO lists publication 1972)",author_rights,dc130b63cf,low,2026-10-16
 GY,"Copyright Act 1956 (Cap. 74), UK Copyright Act 1956 applied to Guyana by the Copyright (British Guiana) Order 1966",law_name,ef9e0eacd0,medium,2026-10-25
 GY,"Copyright Act 1956 (Cap. 74), UK Copyright Act 1956 applied to Guyana by the Copyright (British Guiana) Order 1966",protection_type,48f65a3f39,medium,2026-10-25
@@ -236,8 +236,8 @@ HN,"Law on Copyright and Related Rights (Decree No. 4-99-E of 1999, amended by D
 HN,"Law on Copyright and Related Rights (Decree No. 4-99-E of 1999, amended by Decree No. 16-2006)",protection_type,14993da8f9,high,2026-10-16
 HN,"Law on Copyright and Related Rights (Decree No. 4-99-E of 1999, amended by Decree No. 16-2006)",term_of_protection,43770d38f0,medium,2026-10-16
 HN,"Law on Copyright and Related Rights (Decree No. 4-99-E of 1999, amended by Decree No. 16-2006)",author_rights,14993da8f9,medium,2026-10-16
-HN,"Law on Copyright and Related Rights (Decree No. 4-99-E of 1999, amended by Decree No. 16-2006)",orphan_works,14993da8f9,low,2026-10-16
-HN,"Law on Copyright and Related Rights (Decree No. 4-99-E of 1999, amended by Decree No. 16-2006)",fair_use_exceptions,1e7119c8a1,low,2026-10-16
+HN,"Law on Copyright and Related Rights (Decree No. 4-99-E of 1999, amended by Decree No. 16-2006)",orphan_works,1e7119c8a1,medium,2026-11-25
+HN,"Law on Copyright and Related Rights (Decree No. 4-99-E of 1999, amended by Decree No. 16-2006)",fair_use_exceptions,1e7119c8a1,medium,2026-11-25
 HN,"Law on Copyright and Related Rights (Decree No. 4-99-E of 1999, amended by Decree No. 16-2006)",enforcement_body,2275f5c246,medium,2026-10-16
 HT,Decree of 12 October 2005 on Copyright (published 9 March 2006; WIPO Lex HT008),law_name,24d30e89e7,high,2026-10-16
 HT,Decree of 12 October 2005 on Copyright (published 9 March 2006; WIPO Lex HT008),protection_type,24d30e89e7,medium,2026-10-16
@@ -271,8 +271,8 @@ KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related
 KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",protection_type,b68c223cd6,high,2026-10-17
 KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",term_of_protection,9f2a0f5baf,medium,2026-10-17
 KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",author_rights,b68c223cd6,medium,2026-10-17
-KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",moral_rights,b68c223cd6,low,2026-10-17
-KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",orphan_works,a713b52677,low,2026-10-17
+KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",moral_rights,b68c223cd6,high,2026-11-25
+KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",orphan_works,b68c223cd6,medium,2026-11-25
 KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",fair_use_exceptions,a713b52677,medium,2026-10-17
 KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",registration_required,5110339887,high,2026-10-17
 KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",enforcement_body,e9d70179a5,medium,2026-10-17
@@ -287,8 +287,8 @@ KI,Copyright Act 2018 (Act No. 8 of 2018),treaties_signatory,369baba3c2,medium,2
 KM,Law of 11 March 1957 on Literary and Artistic Property (French law applied in Comoros); Bangui Agreement (OAPI) since 2013,law_name,c8a64c6f2a,medium,2026-10-25
 KM,Law of 11 March 1957 on Literary and Artistic Property (French law applied in Comoros); Bangui Agreement (OAPI) since 2013,protection_type,c8a64c6f2a,low,2026-10-25
 KM,Law of 11 March 1957 on Literary and Artistic Property (French law applied in Comoros); Bangui Agreement (OAPI) since 2013,term_of_protection,f4d5c29d72,medium,2026-10-25
-KM,Law of 11 March 1957 on Literary and Artistic Property (French law applied in Comoros); Bangui Agreement (OAPI) since 2013,author_rights,c8a64c6f2a,low,2026-10-25
-KM,Law of 11 March 1957 on Literary and Artistic Property (French law applied in Comoros); Bangui Agreement (OAPI) since 2013,orphan_works,c8a64c6f2a,low,2026-10-25
+KM,Law of 11 March 1957 on Literary and Artistic Property (French law applied in Comoros); Bangui Agreement (OAPI) since 2013,author_rights,c8a64c6f2a,high,2026-11-25
+KM,Law of 11 March 1957 on Literary and Artistic Property (French law applied in Comoros); Bangui Agreement (OAPI) since 2013,orphan_works,c8a64c6f2a,medium,2026-11-25
 KM,Law of 11 March 1957 on Literary and Artistic Property (French law applied in Comoros); Bangui Agreement (OAPI) since 2013,treaties_signatory,f4d5c29d72,medium,2026-10-25
 KN,"Copyright Act, 2024 (Act No. 14 of 2024), replacing Copyright Act 2000 (Cap. 18.08)",law_name,bd8e6673a9,medium,2026-10-25
 KN,"Copyright Act, 2024 (Act No. 14 of 2024), replacing Copyright Act 2000 (Cap. 18.08)",protection_type,bd8e6673a9,medium,2026-10-25
@@ -300,8 +300,8 @@ KN,"Copyright Act, 2024 (Act No. 14 of 2024), replacing Copyright Act 2000 (Cap.
 KP,"Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",law_name,e9293601a3,high,2026-10-16
 KP,"Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",protection_type,e9293601a3,medium,2026-10-16
 KP,"Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",term_of_protection,4bae5fecb4,medium,2026-10-16
-KP,"Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",author_rights,e9293601a3,low,2026-10-16
-KP,"Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",orphan_works,e9293601a3,low,2026-10-16
+KP,"Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",author_rights,e9293601a3,high,2026-11-25
+KP,"Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",orphan_works,e9293601a3,high,2026-11-25
 KP,"Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",fair_use_exceptions,7caded8108,medium,2026-10-16
 KP,"Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",treaties_signatory,7caded8108,medium,2026-10-16
 KR,,enforcement_body,baaf311a47,high,2026-10-14
@@ -313,9 +313,9 @@ LB,,fair_use_exceptions,bf2914b37b,medium,2026-10-14
 LC,"Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",law_name,065f6dfb75,high,2026-10-25
 LC,"Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",protection_type,065f6dfb75,medium,2026-10-25
 LC,"Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",term_of_protection,2cb3be0412,high,2026-10-25
-LC,"Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",author_rights,065f6dfb75,low,2026-10-25
+LC,"Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",author_rights,065f6dfb75,high,2026-11-25
 LC,"Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",moral_rights,cbb852a167,medium,2026-10-25
-LC,"Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",orphan_works,065f6dfb75,low,2026-10-25
+LC,"Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",orphan_works,065f6dfb75,high,2026-11-25
 LC,"Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",registration_required,065f6dfb75,low,2026-10-25
 LC,"Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",treaties_signatory,106eb40b0d,medium,2026-10-25
 LI,"Law of 19 May 1999 on Copyright and Related Rights (Copyright Act, URG), LGBl. 1999 No. 160; consolidated 1 November 2021",law_name,e08ff0521d,high,2026-10-22
@@ -376,8 +376,8 @@ MN,,digital_protection,59a65c87b5,medium,2026-10-15
 MO,,digital_protection,3a764d91a7,medium,2026-10-14
 MR,Law No. 2012-038 of 17 July 2012 on literary and artistic property (copyright and related rights),law_name,d63e7a4718,high,2026-10-16
 MR,Law No. 2012-038 of 17 July 2012 on literary and artistic property (copyright and related rights),protection_type,d63e7a4718,medium,2026-10-16
-MR,Law No. 2012-038 of 17 July 2012 on literary and artistic property (copyright and related rights),term_of_protection,aa40df620b,low,2026-10-16
-MR,Law No. 2012-038 of 17 July 2012 on literary and artistic property (copyright and related rights),author_rights,d63e7a4718,low,2026-10-16
+MR,Law No. 2012-038 of 17 July 2012 on literary and artistic property (copyright and related rights),term_of_protection,b5af1e87ef,high,2026-11-25
+MR,Law No. 2012-038 of 17 July 2012 on literary and artistic property (copyright and related rights),author_rights,b5af1e87ef,high,2026-11-25
 MU,,digital_protection,0b80c0caa0,high,2026-10-14
 MU,,fair_use_exceptions,2b3b1edf0e,high,2026-10-15
 MV,"Copyright and Related Rights Act (Law No. 23/2010), as amended by first amendment ratified 10 December 2024",law_name,685fed18ab,high,2026-10-25
@@ -411,9 +411,9 @@ NA,"Copyright and Neighbouring Rights Protection Act, 1994 (Act No. 6 of 1994), 
 NE,"Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions",law_name,2e63211e8a,medium,2026-10-18
 NE,"Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions",protection_type,2e63211e8a,high,2026-10-18
 NE,"Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions",term_of_protection,1343992038,medium,2026-10-18
-NE,"Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions",author_rights,2e63211e8a,low,2026-10-18
+NE,"Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions",author_rights,ff3c27c4f4,high,2026-11-25
 NE,"Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions",moral_rights,02593785d6,medium,2026-10-18
-NE,"Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions",orphan_works,2e63211e8a,low,2026-10-18
+NE,"Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions",orphan_works,ff3c27c4f4,high,2026-11-25
 NE,"Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions",enforcement_body,d938bfaa68,medium,2026-10-18
 NG,,law_name,80eb9cad8d,high,2026-10-14
 NG,,term_of_protection,356181141a,medium,2026-10-14
@@ -441,9 +441,9 @@ NP,,digital_protection,5c42d875fb,medium,2026-10-15
 NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",law_name,a24063c8c1,high,2026-10-25
 NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",protection_type,a24063c8c1,medium,2026-10-25
 NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",term_of_protection,b0e8e41bff,medium,2026-10-25
-NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",author_rights,a24063c8c1,low,2026-10-25
+NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",author_rights,a24063c8c1,high,2026-11-25
 NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",moral_rights,a24063c8c1,medium,2026-10-25
-NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",orphan_works,a24063c8c1,low,2026-10-25
+NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",orphan_works,a24063c8c1,high,2026-11-25
 NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",digital_protection,a24063c8c1,medium,2026-10-25
 NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",treaties_signatory,b0e8e41bff,medium,2026-10-25
 OM,,moral_rights,b1c049182c,medium,2026-10-14
@@ -476,7 +476,7 @@ PT,,law_name,093b62b599,medium,2026-10-14
 PW,Republic of Palau Copyright Act of 2003 (RPPL No. 6-38),law_name,e2a2ac7d78,high,2026-10-25
 PW,Republic of Palau Copyright Act of 2003 (RPPL No. 6-38),protection_type,e2a2ac7d78,medium,2026-10-25
 PW,Republic of Palau Copyright Act of 2003 (RPPL No. 6-38),term_of_protection,15dcdb061a,medium,2026-10-25
-PW,Republic of Palau Copyright Act of 2003 (RPPL No. 6-38),author_rights,e2a2ac7d78,low,2026-10-25
+PW,Republic of Palau Copyright Act of 2003 (RPPL No. 6-38),author_rights,e2a2ac7d78,high,2026-11-25
 PW,Republic of Palau Copyright Act of 2003 (RPPL No. 6-38),orphan_works,e2a2ac7d78,low,2026-10-25
 PY,,digital_protection,ac5dbafe6a,medium,2026-10-15
 QA,,digital_protection,eb91500d32,medium,2026-10-15
@@ -499,8 +499,8 @@ SA,,notes,e3f76eccb0,high,2026-10-14
 SB,"Copyright Act 1987 (Cap. 138), Revised Edition 1996",law_name,c0a0cd34e8,high,2026-10-25
 SB,"Copyright Act 1987 (Cap. 138), Revised Edition 1996",protection_type,c0a0cd34e8,medium,2026-10-25
 SB,"Copyright Act 1987 (Cap. 138), Revised Edition 1996",term_of_protection,5422c7ee82,medium,2026-10-25
-SB,"Copyright Act 1987 (Cap. 138), Revised Edition 1996",author_rights,c0a0cd34e8,low,2026-10-25
-SB,"Copyright Act 1987 (Cap. 138), Revised Edition 1996",orphan_works,c0a0cd34e8,low,2026-10-25
+SB,"Copyright Act 1987 (Cap. 138), Revised Edition 1996",author_rights,c0a0cd34e8,high,2026-11-25
+SB,"Copyright Act 1987 (Cap. 138), Revised Edition 1996",orphan_works,c0a0cd34e8,high,2026-11-25
 SB,"Copyright Act 1987 (Cap. 138), Revised Edition 1996",treaties_signatory,5422c7ee82,medium,2026-10-25
 SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",law_name,97a358b83c,high,2026-10-22
 SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",protection_type,97a358b83c,medium,2026-10-22
@@ -512,7 +512,7 @@ SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Cop
 SD,"Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013",law_name,9dbf71b977,high,2026-10-18
 SD,"Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013",protection_type,9dbf71b977,high,2026-10-18
 SD,"Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013",term_of_protection,9a8c00e0d1,medium,2026-10-18
-SD,"Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013",author_rights,9dbf71b977,low,2026-10-18
+SD,"Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013",author_rights,9dbf71b977,high,2026-11-25
 SD,"Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013",orphan_works,9dbf71b977,low,2026-10-18
 SD,"Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013",fair_use_exceptions,8530dd0659,medium,2026-10-18
 SE,,enforcement_body,099b5f1ce9,medium,2026-10-14
@@ -530,7 +530,7 @@ SL,"Copyright Act, 2011 (Act No. 8 of 2011)",law_name,61b26c4fc4,high,2026-10-16
 SL,"Copyright Act, 2011 (Act No. 8 of 2011)",protection_type,61b26c4fc4,medium,2026-10-16
 SL,"Copyright Act, 2011 (Act No. 8 of 2011)",term_of_protection,17fe9a8c3e,medium,2026-10-16
 SL,"Copyright Act, 2011 (Act No. 8 of 2011)",author_rights,61b26c4fc4,medium,2026-10-16
-SL,"Copyright Act, 2011 (Act No. 8 of 2011)",moral_rights,17fe9a8c3e,low,2026-10-16
+SL,"Copyright Act, 2011 (Act No. 8 of 2011)",moral_rights,17fe9a8c3e,medium,2026-11-25
 SL,"Copyright Act, 2011 (Act No. 8 of 2011)",orphan_works,61b26c4fc4,low,2026-10-16
 SL,"Copyright Act, 2011 (Act No. 8 of 2011)",fair_use_exceptions,8519817913,medium,2026-10-16
 SL,"Copyright Act, 2011 (Act No. 8 of 2011)",enforcement_body,01c4916953,medium,2026-10-16
@@ -603,12 +603,12 @@ TJ,Law on Copyright and Related Rights No. 726 of 13 November 1998 (as amended u
 TJ,Law on Copyright and Related Rights No. 726 of 13 November 1998 (as amended up to Law No. 1488 of 2 January 2018),term_of_protection,9ab06964c6,medium,2026-10-16
 TJ,Law on Copyright and Related Rights No. 726 of 13 November 1998 (as amended up to Law No. 1488 of 2 January 2018),author_rights,4c72d442f3,medium,2026-10-16
 TJ,Law on Copyright and Related Rights No. 726 of 13 November 1998 (as amended up to Law No. 1488 of 2 January 2018),orphan_works,4c72d442f3,low,2026-10-16
-TJ,Law on Copyright and Related Rights No. 726 of 13 November 1998 (as amended up to Law No. 1488 of 2 January 2018),fair_use_exceptions,9ab06964c6,low,2026-10-16
+TJ,Law on Copyright and Related Rights No. 726 of 13 November 1998 (as amended up to Law No. 1488 of 2 January 2018),fair_use_exceptions,9ab06964c6,medium,2026-11-25
 TJ,Law on Copyright and Related Rights No. 726 of 13 November 1998 (as amended up to Law No. 1488 of 2 January 2018),enforcement_body,957e9e1506,medium,2026-10-16
 TJ,Law on Copyright and Related Rights No. 726 of 13 November 1998 (as amended up to Law No. 1488 of 2 January 2018),treaties_signatory,05767dceac,high,2026-10-16
 TL,Code of Copyright and Related Rights (approved by National Parliament 29 Nov 2022; in force about 28 May 2023),law_name,69105a68eb,medium,2026-10-25
 TL,Code of Copyright and Related Rights (approved by National Parliament 29 Nov 2022; in force about 28 May 2023),protection_type,69105a68eb,medium,2026-10-25
-TL,Code of Copyright and Related Rights (approved by National Parliament 29 Nov 2022; in force about 28 May 2023),term_of_protection,b16d18de05,low,2026-10-25
+TL,Code of Copyright and Related Rights (approved by National Parliament 29 Nov 2022; in force about 28 May 2023),term_of_protection,b16d18de05,medium,2026-11-25
 TL,Code of Copyright and Related Rights (approved by National Parliament 29 Nov 2022; in force about 28 May 2023),orphan_works,bfd1d5d5f2,low,2026-10-25
 TM,"Law of Turkmenistan No. 257-IV of January 10, 2012 on Copyright and Related Rights (as amended by Law No. 668-V of 25 Nov 2017)",law_name,266b46aa75,high,2026-10-25
 TM,"Law of Turkmenistan No. 257-IV of January 10, 2012 on Copyright and Related Rights (as amended by Law No. 668-V of 25 Nov 2017)",protection_type,266b46aa75,high,2026-10-25
@@ -618,8 +618,8 @@ TO,"Copyright Act 2002 (Act No. 12 of 2002), 2020 Revised Edition, Chapter 17.05
 TO,"Copyright Act 2002 (Act No. 12 of 2002), 2020 Revised Edition, Chapter 17.05",protection_type,5a61bf21ba,low,2026-10-25
 TO,"Copyright Act 2002 (Act No. 12 of 2002), 2020 Revised Edition, Chapter 17.05",term_of_protection,9a75a0068e,medium,2026-10-25
 TO,"Copyright Act 2002 (Act No. 12 of 2002), 2020 Revised Edition, Chapter 17.05",author_rights,7c306f8293,medium,2026-10-25
-TO,"Copyright Act 2002 (Act No. 12 of 2002), 2020 Revised Edition, Chapter 17.05",moral_rights,5a61bf21ba,low,2026-10-25
-TO,"Copyright Act 2002 (Act No. 12 of 2002), 2020 Revised Edition, Chapter 17.05",orphan_works,5a61bf21ba,low,2026-10-25
+TO,"Copyright Act 2002 (Act No. 12 of 2002), 2020 Revised Edition, Chapter 17.05",moral_rights,5a61bf21ba,high,2026-11-25
+TO,"Copyright Act 2002 (Act No. 12 of 2002), 2020 Revised Edition, Chapter 17.05",orphan_works,5a61bf21ba,medium,2026-11-25
 TO,"Copyright Act 2002 (Act No. 12 of 2002), 2020 Revised Edition, Chapter 17.05",treaties_signatory,9a75a0068e,medium,2026-10-25
 TR,,digital_protection,4abdbefec9,high,2026-10-14
 TR,,enforcement_body,306f3ccbe1,high,2026-10-14
@@ -667,8 +667,8 @@ VU,Copyright and Related Rights Act No. 42 of 2000 (amended 2017 and 2021),prote
 VU,Copyright and Related Rights Act No. 42 of 2000 (amended 2017 and 2021),term_of_protection,b457ef28bf,medium,2026-10-25
 VU,Copyright and Related Rights Act No. 42 of 2000 (amended 2017 and 2021),author_rights,20ec9593d7,medium,2026-10-25
 VU,Copyright and Related Rights Act No. 42 of 2000 (amended 2017 and 2021),moral_rights,50d1ee1234,medium,2026-10-25
-VU,Copyright and Related Rights Act No. 42 of 2000 (amended 2017 and 2021),orphan_works,20ec9593d7,low,2026-10-25
-VU,Copyright and Related Rights Act No. 42 of 2000 (amended 2017 and 2021),enforcement_body,1edbb71e21,low,2026-10-25
+VU,Copyright and Related Rights Act No. 42 of 2000 (amended 2017 and 2021),orphan_works,db75d00839,medium,2026-11-25
+VU,Copyright and Related Rights Act No. 42 of 2000 (amended 2017 and 2021),enforcement_body,db75d00839,high,2026-11-25
 VU,Copyright and Related Rights Act No. 42 of 2000 (amended 2017 and 2021),treaties_signatory,b457ef28bf,medium,2026-10-25
 WS,"Copyright Act 1998 (Act No. 25 of 1998), as amended by Act No. 10 of 2011",law_name,c6e27ca44b,high,2026-10-25
 WS,"Copyright Act 1998 (Act No. 25 of 1998), as amended by Act No. 10 of 2011",protection_type,c6e27ca44b,low,2026-10-25
@@ -685,9 +685,9 @@ XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; r
 XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),term_of_protection,4f8b42e5c5,medium,2026-10-22
 XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),author_rights,0455a0d846,medium,2026-10-22
 XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),moral_rights,0455a0d846,medium,2026-10-22
-XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),orphan_works,4f8b42e5c5,low,2026-10-22
+XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),orphan_works,5308555c62,medium,2026-11-25
 XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),registration_required,b9f3980966,low,2026-10-22
-XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),enforcement_body,b9f3980966,low,2026-10-22
+XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),enforcement_body,b9f3980966,medium,2026-11-25
 YE,Law No. 15 of 2012 on the Protection of Copyright and Related Rights,law_name,76587b65dc,high,2026-10-16
 YE,Law No. 15 of 2012 on the Protection of Copyright and Related Rights,protection_type,76587b65dc,high,2026-10-16
 YE,Law No. 15 of 2012 on the Protection of Copyright and Related Rights,term_of_protection,991ca4aa8b,medium,2026-10-16
@@ -724,3 +724,4 @@ NZ,,moral_rights,e1a9231bd1,high,2026-11-25
 NZ,,digital_protection,e1a9231bd1,high,2026-11-25
 NZ,,fair_use_exceptions,e1a9231bd1,high,2026-11-25
 NZ,,orphan_works,e1a9231bd1,medium,2026-11-25
+PG,,fair_use_exceptions,14e20b05fe,high,2026-11-25
