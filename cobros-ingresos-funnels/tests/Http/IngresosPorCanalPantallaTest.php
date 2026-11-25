@@ -90,9 +90,9 @@ final class IngresosPorCanalPantallaTest extends HttpTestCase
     {
         $email = 'sin-enlace-' . uniqid() . '@example.com';
         Database::connection()->prepare(
-            "INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, fecha_nacimiento,
+            "INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, rango_de_edad,
                                           fecha_visita, fecha_registro, fecha_lead, fecha_conversion, cliente_id)
-             VALUES ('Sin enlace', :email, 'ads', 'US', 'Miami', 'Ingles', 'No especifica', '1985-05-05',
+             VALUES ('Sin enlace', :email, 'ads', 'US', 'Miami', 'Ingles', 'No especifica', '35-44',
                      '2019-03-05', '2019-03-05', '2019-03-05', '2019-03-05', NULL)"
         )->execute([':email' => $email]);
         $this->alTerminar(static function () use ($email): void {

@@ -29,9 +29,9 @@ final class ListadosPaginadosTest extends IntegracionTestCase
     {
         $nombreSql = $numerados ? "CAST(:nombre AS text) || ' ' || lpad(g::text, 4, '0')" : 'CAST(:nombre AS text)';
         Database::connection()->prepare(
-            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
+            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, rango_de_edad)
              SELECT {$nombreSql}, lower(regexp_replace(CAST(:nombre AS text), '[^a-zA-Z0-9]+', '-', 'g')) || '-' || g || '@example.com',
-                    'general', CURRENT_DATE, 'AR', 'Rosario', 'Espanol', 'No especifica', DATE '1990-01-01'
+                    'general', CURRENT_DATE, 'AR', 'Rosario', 'Espanol', 'No especifica', '35-44'
              FROM generate_series(1, :cuantos) g"
         )->execute([':nombre' => $nombre, ':cuantos' => $cuantos]);
     }

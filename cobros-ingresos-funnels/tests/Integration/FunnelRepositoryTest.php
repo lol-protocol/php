@@ -77,12 +77,12 @@ final class FunnelRepositoryTest extends IntegracionTestCase
     }
 
     /** $cuantos visitantes de $pais en el periodo de prueba; los $convertidos llegan hasta cliente. */
-    private function visitantes(string $pais, int $cuantos, int $convertidos = 0): void
+    private function visitantes(string $pais, int $cuantos, int $convertidos = 0, string $rango = '35-44'): void
     {
         $stmt = Database::connection()->prepare(
-            "INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, fecha_nacimiento,
+            "INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, rango_de_edad,
                                           fecha_visita, fecha_registro, fecha_lead, fecha_conversion)
-             VALUES ('Visitante de prueba', :email, 'organico', :pais, 'X', 'Espanol', 'No especifica', '1980-01-01',
+             VALUES ('Visitante de prueba', :email, 'organico', :pais, 'X', 'Espanol', 'No especifica', :rango,
                      '1950-03-01', '1950-03-02', :lead, :conversion)"
         );
         for ($i = 0; $i < $cuantos; $i++) {
@@ -90,10 +90,28 @@ final class FunnelRepositoryTest extends IntegracionTestCase
             $stmt->execute([
                 ':email' => 'funnel-' . uniqid('', true) . '@example.com',
                 ':pais' => $pais,
+                ':rango' => $rango,
                 ':lead' => $llega ? '1950-03-03' : null,
                 ':conversion' => $llega ? '1950-03-04' : null,
             ]);
         }
+    }
+
+    /** La conversion por rango de edad agrupa por usuarios_funnel.rango_de_edad (migracion 021), con las etapas de cada tramo. */
+    public function testPorRangoEdadAgrupaPorElTramoGuardado(): void
+    {
+        $pais = $this->paisesDelCatalogo(1)[0]['codigo'];
+        $this->visitantes($pais, 3);                       // '35-44'
+        $this->visitantes($pais, 2, 1, '65+');             // uno llega a cliente
+        $this->visitantes($pais, 1, 0, 'Menor de 18');
+
+        $filas = (new FunnelRepository())->porRangoEdad('1950-01-01', '1950-12-31');
+        $porTramo = array_column($filas, null, 'etiqueta');
+
+        self::assertSame(['35-44', '65+', 'Menor de 18'], array_keys($porTramo), 'de mas a menos visitantes');
+        self::assertSame([3, 0], [(int) $porTramo['35-44']['visitantes'], (int) $porTramo['35-44']['clientes']]);
+        self::assertSame([2, 1], [(int) $porTramo['65+']['visitantes'], (int) $porTramo['65+']['clientes']]);
+        self::assertSame([1, 0], [(int) $porTramo['Menor de 18']['visitantes'], (int) $porTramo['Menor de 18']['clientes']]);
     }
 
     public function testPorPaisJuntaLosPaisesDeSobraEnUnaFilaOtrosQueCuadraConElResumen(): void
