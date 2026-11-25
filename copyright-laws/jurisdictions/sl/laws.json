@@ -7,7 +7,7 @@
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years (s. 21; joint works from death of last surviving author)",
     "author_rights": "Economic rights",
-    "moral_rights": "Moral rights recognized; exist in perpetuity (secondary summary) (unconfirmed)",
+    "moral_rights": "Yes (s. 21: economic and moral rights last for life + 50 years; secondary summary says the moral right exists in perpetuity)",
     "orphan_works": "Not specified (unconfirmed)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Fair dealing model (ss. 9 and 14); private reproduction, quotation, teaching, libraries and archives, computer programs (ss. 27-37)",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/14529",
@@ -45,8 +45,8 @@
       },
       "moral_rights": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Sierra_Leone.html",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/14529",
@@ -70,6 +70,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "moral_rights",
+        "from": "Moral rights recognized; exist in perpetuity (secondary summary) (unconfirmed)",
+        "to": "Yes (s. 21: economic and moral rights last for life + 50 years; secondary summary says the moral right exists in perpetuity)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

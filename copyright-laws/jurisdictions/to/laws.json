@@ -7,8 +7,8 @@
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years; anonymous and collective works 50 years from creation or publication; applied art 25 years from creation",
     "author_rights": "Economic rights",
-    "moral_rights": "Moral rights recognized (dedicated section in Part I; article number and duration not confirmed) (unconfirmed)",
-    "orphan_works": "Not specified (unconfirmed)",
+    "moral_rights": "Yes (s. 7: right to be named or to remain anonymous, to use a pseudonym, and to object to derogatory treatment; s. 18: life + 50 years)",
+    "orphan_works": "Not specified (no orphan-works provision found; s. 20(2): publisher of an anonymous work presumed to represent the author)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/21343",
@@ -45,13 +45,13 @@
       },
       "moral_rights": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/21343",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/21343",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "treaties_signatory": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Tonga.html",
@@ -60,6 +60,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Not specified (no orphan-works provision found; s. 20(2): publisher of an anonymous work presumed to represent the author)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "moral_rights",
+        "from": "Moral rights recognized (dedicated section in Part I; article number and duration not confirmed) (unconfirmed)",
+        "to": "Yes (s. 7: right to be named or to remain anonymous, to use a pseudonym, and to object to derogatory treatment; s. 18: life + 50 years)"
+      },
       {
         "date": "2026-10-25",
         "field": "row",
