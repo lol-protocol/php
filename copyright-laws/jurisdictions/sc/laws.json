@@ -15,7 +15,7 @@
     "enforcement_body": "Not specified",
     "treaties_signatory": "",
     "treaties_not_party": "",
-    "linked_resources": "https://commons.laws.africa/akn/sc/act/2014/5/media/publication/sc-act-2014-5-publication-document.pdf",
+    "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=15300",
     "notes": "WTO membership 26 April 2015 per Commons only. No Berne/WCT/WPPT accession found; a 2019 WIPO workshop said Berne ratification was under consideration. Term is conflicting between sources (an old UNESCO page shows 25 years for the repealed 1984 Act).",
     "pending_change": "",
     "pending_date": "",
@@ -60,6 +60,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://commons.laws.africa/akn/sc/act/2014/5/media/publication/sc-act-2014-5-publication-document.pdf",
+        "to": "https://www.wipo.int/wipolex/en/details.jsp?id=15300"
+      },
       {
         "date": "2026-11-25",
         "field": "fair_use_exceptions",
