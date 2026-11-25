@@ -335,7 +335,7 @@ Z Goetie (17. století), grimoáru, které není součástí Bible. Každý duch
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Král | 66 | 21/03 – 25/03 | Neviditelnost, moudrost |
 | 2 | Agares | Vévoda | 31 | 26/03 – 30/03 | Jazyky, uprchlíci, zemětřesení |
-| 3 | Vassago | Princ | — | 31/03 – 04/04 | Minulost a budoucnost, ztracené předměty |
+| 3 | Vassago | Princ | 26 | 31/03 – 04/04 | Minulost a budoucnost, ztracené předměty |
 | 4 | Samigina | Markýz | 30 | 05/04 – 09/04 | Svobodná umění, duše zesnulých |
 | 5 | Marbas | Prezident | 36 | 10/04 – 14/04 | Tajemství, nemoci, uzdravení, mechanická umění |
 | 6 | Valefor | Vévoda | 10 | 15/04 – 19/04 | Domácí duchové, krádež |
@@ -353,7 +353,7 @@ Z Goetie (17. století), grimoáru, které není součástí Bible. Každý duch
 | 18 | Bathin | Vévoda | 30 | 16/06 – 20/06 | Rostliny, drahokamy, rychlé přesuny |
 | 19 | Sallos | Vévoda | 30 | 21/06 – 26/06 | Láska |
 | 20 | Purson | Král | 22 | 27/06 – 02/07 | Poklady, minulost a budoucnost, domácí duchové |
-| 21 | Marax | Prezident / Hrabě | 30 | 03/07 – 07/07 | Astronomie, svobodná umění, rostliny |
+| 21 | Marax | Prezident / Hrabě | 36 | 03/07 – 07/07 | Astronomie, svobodná umění, rostliny |
 | 22 | Ipos | Hrabě / Princ | 36 | 08/07 – 12/07 | Minulost a budoucnost, odvaha, důvtip |
 | 23 | Aim | Vévoda | 26 | 13/07 – 17/07 | Požáry, důvtip, tajemství |
 | 24 | Naberius | Markýz | 19 | 18/07 – 22/07 | Rétorika, umění, pocty |
@@ -389,7 +389,7 @@ Z Goetie (17. století), grimoáru, které není součástí Bible. Každý duch
 | 54 | Murmur | Vévoda / Hrabě | 30 | 17/12 – 21/12 | Hudba, filozofie, duše zesnulých |
 | 55 | Orobas | Princ | 20 | 22/12 – 26/12 | Minulost a budoucnost, přízeň, loajalita |
 | 56 | Gremory | Vévoda | 26 | 27/12 – 31/12 | Poklady, láska, minulost a budoucnost |
-| 57 | Ose | Prezident | 3 | 01/01 – 05/01 | Svobodná umění, proměna, šílenství |
+| 57 | Ose | Prezident | 30 | 01/01 – 05/01 | Svobodná umění, proměna, šílenství |
 | 58 | Amy | Prezident | 36 | 06/01 – 10/01 | Astrologie, svobodná umění, poklady |
 | 59 | Orias | Markýz | 30 | 11/01 – 15/01 | Astrologie, proměna, pocty |
 | 60 | Vapula | Vévoda | 36 | 16/01 – 19/01 | Mechanická umění, filozofie, vědy |
@@ -400,7 +400,7 @@ Z Goetie (17. století), grimoáru, které není součástí Bible. Každý duch
 | 65 | Andrealphus | Markýz | 30 | 09/02 – 13/02 | Matematika, astronomie, proměna |
 | 66 | Kimaris | Markýz | 20 | 14/02 – 18/02 | Rétorika, logika, ztracené předměty |
 | 67 | Amdusias | Vévoda | 29 | 19/02 – 23/02 | Hudba, stromy |
-| 68 | Belial | Král | 50 | 24/02 – 28/02 | Přízeň, hodnosti, domácí duchové |
+| 68 | Belial | Král | 80 | 24/02 – 28/02 | Přízeň, hodnosti, domácí duchové |
 | 69 | Decarabia | Markýz | 30 | 01/03 – 05/03 | Ptáci, drahokamy, rostliny |
 | 70 | Seere | Princ | 26 | 06/03 – 10/03 | Rychlé přesuny, krádež, ztracené předměty |
 | 71 | Dantalion | Vévoda | 36 | 11/03 – 15/03 | Myšlenky, vědy, láska |

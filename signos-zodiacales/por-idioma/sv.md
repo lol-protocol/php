@@ -335,7 +335,7 @@ Ur Goetia (1600-talet), en trollbok som inte ingår i Bibeln. Varje ande delar p
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Kung | 66 | 21/03 – 25/03 | Osynlighet, vishet |
 | 2 | Agares | Hertig | 31 | 26/03 – 30/03 | Språk, flyktingar, jordbävningar |
-| 3 | Vassago | Prins | — | 31/03 – 04/04 | Det förflutna och framtiden, förlorade föremål |
+| 3 | Vassago | Prins | 26 | 31/03 – 04/04 | Det förflutna och framtiden, förlorade föremål |
 | 4 | Samigina | Markis | 30 | 05/04 – 09/04 | De fria konsterna, de dödas själar |
 | 5 | Marbas | President | 36 | 10/04 – 14/04 | Hemligheter, sjukdomar, helande, mekaniska konster |
 | 6 | Valefor | Hertig | 10 | 15/04 – 19/04 | Följeslagare av andar, stöld |
@@ -353,7 +353,7 @@ Ur Goetia (1600-talet), en trollbok som inte ingår i Bibeln. Varje ande delar p
 | 18 | Bathin | Hertig | 30 | 16/06 – 20/06 | Växter, ädelstenar, snabba förflyttningar |
 | 19 | Sallos | Hertig | 30 | 21/06 – 26/06 | Kärlek |
 | 20 | Purson | Kung | 22 | 27/06 – 02/07 | Skatter, det förflutna och framtiden, följeslagare av andar |
-| 21 | Marax | President / Greve | 30 | 03/07 – 07/07 | Astronomi, de fria konsterna, växter |
+| 21 | Marax | President / Greve | 36 | 03/07 – 07/07 | Astronomi, de fria konsterna, växter |
 | 22 | Ipos | Greve / Prins | 36 | 08/07 – 12/07 | Det förflutna och framtiden, mod, kvickhet |
 | 23 | Aim | Hertig | 26 | 13/07 – 17/07 | Bränder, kvickhet, hemligheter |
 | 24 | Naberius | Markis | 19 | 18/07 – 22/07 | Retorik, konster, hedersbetygelser |
@@ -389,7 +389,7 @@ Ur Goetia (1600-talet), en trollbok som inte ingår i Bibeln. Varje ande delar p
 | 54 | Murmur | Hertig / Greve | 30 | 17/12 – 21/12 | Musik, filosofi, de dödas själar |
 | 55 | Orobas | Prins | 20 | 22/12 – 26/12 | Det förflutna och framtiden, ynnest, lojalitet |
 | 56 | Gremory | Hertig | 26 | 27/12 – 31/12 | Skatter, kärlek, det förflutna och framtiden |
-| 57 | Ose | President | 3 | 01/01 – 05/01 | De fria konsterna, förvandling, galenskap |
+| 57 | Ose | President | 30 | 01/01 – 05/01 | De fria konsterna, förvandling, galenskap |
 | 58 | Amy | President | 36 | 06/01 – 10/01 | Astrologi, de fria konsterna, skatter |
 | 59 | Orias | Markis | 30 | 11/01 – 15/01 | Astrologi, förvandling, hedersbetygelser |
 | 60 | Vapula | Hertig | 36 | 16/01 – 19/01 | Mekaniska konster, filosofi, vetenskaper |
@@ -400,7 +400,7 @@ Ur Goetia (1600-talet), en trollbok som inte ingår i Bibeln. Varje ande delar p
 | 65 | Andrealphus | Markis | 30 | 09/02 – 13/02 | Matematik, astronomi, förvandling |
 | 66 | Kimaris | Markis | 20 | 14/02 – 18/02 | Retorik, logik, förlorade föremål |
 | 67 | Amdusias | Hertig | 29 | 19/02 – 23/02 | Musik, träd |
-| 68 | Belial | Kung | 50 | 24/02 – 28/02 | Ynnest, värdigheter, följeslagare av andar |
+| 68 | Belial | Kung | 80 | 24/02 – 28/02 | Ynnest, värdigheter, följeslagare av andar |
 | 69 | Decarabia | Markis | 30 | 01/03 – 05/03 | Fåglar, ädelstenar, växter |
 | 70 | Seere | Prins | 26 | 06/03 – 10/03 | Snabba förflyttningar, stöld, förlorade föremål |
 | 71 | Dantalion | Hertig | 36 | 11/03 – 15/03 | Tankar, vetenskaper, kärlek |
