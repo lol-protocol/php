@@ -3,7 +3,7 @@
 Lee `PLAN.md` antes de empezar: contiene las decisiones tomadas, el estado del prototipo y las mejoras pendientes.
 
 - Idioma de trabajo: español.
-- Generar: `python generator/build.py --movimiento romanticismo` (o `--all`).
+- Generar: `python generator/build.py --movimiento romanticismo` (o `--all`; `python generator/build_paralelo.py` hace lo mismo con un proceso por movimiento, más rápido en máquinas con varios núcleos, y es lo que usa la CI).
 - La fuente de verdad es `catalog/taxonomia.yaml`. No edites a mano `catalog/svg/`, `catalog/jpg/` ni `catalog/manifest.json`: son salida del generador.
 - Formato: solo vertical, 200×1400 (1:7). No generes versiones horizontales.
 - El catálogo completo (`catalog/svg|jpg|jpg2x|revision`) no se versiona: está en `.gitignore` y lo publica la CI como artefacto. En git solo van taxonomía, generador, tests, manifest y `catalog/muestras/`.

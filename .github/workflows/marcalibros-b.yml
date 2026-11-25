@@ -74,11 +74,13 @@ jobs:
           restore-keys: |
             marcalibros-${{ runner.os }}-py3.13-
 
+      # Un proceso por movimiento, tantos a la vez como nucleos (4 en ubuntu-24.04): el resultado es el
+      # mismo que con `build.py --all`, en una cuarta parte del tiempo.
       - name: Generar el catalogo completo
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
           FORZAR: ${{ inputs.forzar && '--forzar' || '' }}
-        run: python generator/build.py --all $FORZAR
+        run: python generator/build_paralelo.py $FORZAR
 
       - name: Pruebas
         run: python -m pytest -q tests
