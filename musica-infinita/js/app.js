@@ -41,6 +41,7 @@
     grabacion: null,
     ajustes: Object.assign({}, AJUSTES_POR_OMISION),
     ultimoCambioVisual: 0,
+    pistas: {}, // la pista de melodía elegida a mano por canción: {id: clave}
   };
 
   function guardarAjustes() { window.Almacen.guardarAjustes(estado.ajustes); }
@@ -51,7 +52,15 @@
   function agregarCancion(c) {
     try {
       c.midi = M.leer(c.bytes);
-      c.analisis = A.analizar(c.midi, c.nombre);
+      c.candidatas = A.candidatas(c.midi);
+      c.pistaElegida = estado.pistas[c.id] || null;
+      c.analisis = A.analizar(c.midi, c.nombre, { melodia: c.pistaElegida });
+      if (c.analisis && c.analisis.melodiaPedidaInvalida) {
+        // la pista guardada ya no existe en este archivo: se olvida
+        c.pistaElegida = null;
+        delete estado.pistas[c.id];
+        window.Almacen.guardarPistas(estado.pistas);
+      }
     } catch (e) {
       c.error = e.message;
     }
@@ -147,11 +156,34 @@
         const a = c.analisis;
         meta.textContent = T.nombreTonalidad(a.tonica, a.modo) + ' · ' + a.bpm + ' bpm · ' + a.compas.join('/') + ' · ' + a.frases.length + ' frases';
       } else meta.textContent = c.error ? 'no se pudo leer' : 'sin melodía';
+      // elegir qué pista es la melodía, si el MIDI tiene más de una candidata
+      const pista = document.createElement('span');
+      if (c.candidatas && c.candidatas.length >= 2) {
+        const sel = document.createElement('select');
+        sel.className = 'pista';
+        sel.title = 'Qué pista es la melodía (la que se cita)';
+        sel.setAttribute('aria-label', 'Pista de la melodía de ' + c.nombre);
+        const auto = c.candidatas.find(function (x) { return x.automatica; });
+        const o0 = document.createElement('option');
+        o0.value = '';
+        o0.textContent = 'Melodía: automática' + (auto ? ' (' + A.describir(auto) + ')' : '');
+        sel.append(o0);
+        for (const x of c.candidatas) {
+          if (x.puntaje === null && !x.todas) continue; // grupos de menos de 6 notas
+          const o = document.createElement('option');
+          o.value = x.clave;
+          o.textContent = A.describir(x);
+          sel.append(o);
+        }
+        sel.value = c.pistaElegida || '';
+        sel.addEventListener('change', function () { elegirPista(c, sel.value); });
+        pista.append(sel);
+      }
       const tal = document.createElement('button');
       tal.textContent = '▶ tal cual';
       tal.disabled = !c.midi;
       tal.addEventListener('click', function () { tocarMidi(c); });
-      li.append(chk, nom, meta, tal);
+      li.append(chk, nom, meta, pista, tal);
       if (c.origen === 'propio') {
         const borrar = document.createElement('button');
         borrar.textContent = '✕';
@@ -170,6 +202,25 @@
       ul.append(li);
     }
     contar();
+  }
+
+  /** Cambia la pista de melodía de una canción, la guarda y vuelve a analizarla. */
+  function elegirPista(c, clave) {
+    c.pistaElegida = clave || null;
+    if (clave) estado.pistas[c.id] = clave;
+    else delete estado.pistas[c.id];
+    window.Almacen.guardarPistas(estado.pistas);
+    c.analisis = A.analizar(c.midi, c.nombre, { melodia: c.pistaElegida });
+    if (c.analisis && c.analisis.melodiaPedidaInvalida) {
+      avisar('Esa pista no tiene una melodía que se pueda usar: queda la automática.');
+      c.pistaElegida = null;
+      delete estado.pistas[c.id];
+      window.Almacen.guardarPistas(estado.pistas);
+    } else if (c.analisis) {
+      avisar('«' + c.nombre + '»: ' + (clave ? 'melodía elegida a mano (' + (clave === A.TODAS ? 'todas las pistas juntas' : 'pista ' + (Number(clave.split(':')[0]) + 1)) + ')' : 'melodía automática') + ', ' + c.analisis.frases.length + ' frases.');
+    }
+    pintarLista();
+    actualizarGenerador();
   }
 
   function contar() {
@@ -408,6 +459,7 @@
   function iniciarInterfaz() {
     exportador = window.Exportador.crear({ estado: estado, $: $, avisar: avisar, alternar: alternar, iniciarAudio: iniciarAudio, crearGenerador: crearGenerador, semillaActual: semillaActual, descargar: descargar });
     cargarAjustes();
+    estado.pistas = window.Almacen.cargarPistas();
     const sel = $('estilo');
     const auto = document.createElement('option');
     auto.value = 'auto';

@@ -88,9 +88,13 @@ async function principal() {
   const estilo = await pagina.evaluate(async function () {
     const vis = window.MusicaInfinita.estado.vis;
     const VP = window.VisualPuro;
+    // la música en vivo también manda sus avisos de sección y cambiaría el color objetivo a mitad
+    // de la prueba: se les cierra el paso mientras se prueba a mano
+    const real = vis.alInfo;
+    vis.alInfo = function () {};
     vis.fijo = false;
     vis.matiz = 0;
-    vis.alInfo({ seccion: 9001, estilo: 'Chiptune' });
+    real.call(vis, { seccion: 9001, estilo: 'Chiptune' });
     const grupo = VP.ESTILO_PRESETS.Chiptune;
     const enGrupo = grupo.indexOf(vis.presetObjetivo.nombre) >= 0;
     const objetivo = vis.matizObjetivo;
@@ -99,8 +103,10 @@ async function principal() {
     // fijados, no cambian aunque cambie la sección
     vis.fijo = true;
     const antes = vis.presetObjetivo.nombre;
-    vis.alInfo({ seccion: 9002, estilo: 'Pop' });
-    return { enGrupo: enGrupo, objetivo: objetivo, despues: despues, fijoIgual: vis.presetObjetivo.nombre === antes, matizPop: vis.matizObjetivo };
+    real.call(vis, { seccion: 9002, estilo: 'Pop' });
+    const r = { enGrupo: enGrupo, objetivo: objetivo, despues: despues, fijoIgual: vis.presetObjetivo.nombre === antes, matizPop: vis.matizObjetivo };
+    vis.alInfo = real;
+    return r;
   });
   assert.ok(estilo.enGrupo, 'el ajuste no es del grupo del estilo');
   assert.equal(estilo.objetivo, 125);
@@ -286,6 +292,62 @@ async function principal() {
   for (const v of flac.canales[0]) pico = Math.max(pico, Math.abs(v));
   assert.ok(pico > 1000, 'el FLAC exportado está en silencio');
   paso('exporta un FLAC válido de ' + (flac.info.total / 48000).toFixed(1) + ' s (' + d.suggestedFilename() + ')');
+
+  // elegir a mano qué pista es la melodía: un MIDI con un arpegio de piano (que el automático toma por
+  // melodía) y una melodía grave de violonchelo; la elección se guarda y sobrevive a recargar la página
+  const arpegio = [];
+  for (let i = 0; i < 64; i++) arpegio.push({ nota: [60, 64, 67, 72, 67, 64][i % 6], inicio: i * 0.5, dur: 0.45, vel: 80 });
+  const cello = [48, 50, 52, 53, 55, 53, 52, 50, 48, 52, 55, 52, 50, 48, 47, 48, 50, 52, 55, 57, 55, 53, 52, 48].map(function (n, i) { return { nota: n, inicio: i * 1.5, dur: 1.4, vel: 90 }; });
+  const dosPistas = M.escribir({ bpm: 100, pistas: [{ nombre: 'Piano', canal: 0, programa: 0, notas: arpegio }, { nombre: 'Cello', canal: 1, programa: 42, notas: cello }] });
+  await pagina.evaluate(async function (bytes) {
+    await window.MusicaInfinita.cargarArchivos([new File([new Uint8Array(bytes)], 'dos-pistas.mid')]);
+  }, Array.from(dosPistas));
+  await pagina.waitForTimeout(500);
+  const antesPista = await pagina.evaluate(function () {
+    const c = window.MusicaInfinita.estado.canciones.find(function (x) { return x.nombre === 'dos-pistas'; });
+    const fila = Array.from(document.querySelectorAll('#lista li')).find(function (li) { return li.textContent.indexOf('dos-pistas') >= 0; });
+    const sel = fila && fila.querySelector('select.pista');
+    return { notas: c.analisis.melodia.length, auto: c.analisis.melodiaAutomatica, opciones: sel ? Array.from(sel.options).map(function (o) { return o.textContent; }) : null, valor: sel ? sel.value : null };
+  });
+  assert.equal(antesPista.notas, 64, 'el automático debería tomar el arpegio');
+  assert.ok(antesPista.auto);
+  assert.ok(antesPista.opciones && antesPista.opciones.length === 4, 'el selector debe tener: automática, 2 pistas y «todas»: ' + JSON.stringify(antesPista.opciones));
+  assert.match(antesPista.opciones[0], /^Melodía: automática \(pista \d+ «Piano»/);
+  assert.match(antesPista.opciones[2], /«Cello» · canal 2 · 24 notas/);
+  assert.match(antesPista.opciones[3], /^todas las pistas juntas/);
+  await pagina.evaluate(function () { document.getElementById('ajustes').hidden = false; window.MusicaInfinita.estado.panelFijo = true; });
+  await pagina.mouse.move(300, 300);
+  const filaDos = pagina.locator('#lista li', { hasText: 'dos-pistas' });
+  await filaDos.locator('select.pista').selectOption({ label: antesPista.opciones[2] });
+  await pagina.waitForTimeout(300);
+  const despuesPista = await pagina.evaluate(function () {
+    const c = window.MusicaInfinita.estado.canciones.find(function (x) { return x.nombre === 'dos-pistas'; });
+    return { notas: c.analisis.melodia.length, auto: c.analisis.melodiaAutomatica, programa: c.analisis.programaMelodia, guardado: JSON.parse(localStorage.getItem('musica-infinita:pistas')), id: c.id, aviso: document.getElementById('aviso').textContent };
+  });
+  assert.equal(despuesPista.notas, 24);
+  assert.equal(despuesPista.auto, false);
+  assert.equal(despuesPista.programa, 42);
+  assert.match(despuesPista.guardado[despuesPista.id], /^\d+:\d+$/);
+  assert.match(despuesPista.aviso, /melodía elegida a mano/);
+  // recargar: el MIDI sigue en la biblioteca (IndexedDB) y la elección también
+  await pagina.reload();
+  await pagina.waitForFunction(function () { return window.MusicaInfinita.estado.canciones.some(function (c) { return c.nombre === 'dos-pistas'; }); }, null, { timeout: 15000 });
+  await pagina.evaluate(function () { document.getElementById('ajustes').hidden = false; window.MusicaInfinita.estado.panelFijo = true; });
+  const trasRecargar = await pagina.evaluate(function () {
+    const c = window.MusicaInfinita.estado.canciones.find(function (x) { return x.nombre === 'dos-pistas'; });
+    const fila = Array.from(document.querySelectorAll('#lista li')).find(function (li) { return li.textContent.indexOf('dos-pistas') >= 0; });
+    return { notas: c.analisis.melodia.length, auto: c.analisis.melodiaAutomatica, valorSelect: fila.querySelector('select.pista').value };
+  });
+  assert.equal(trasRecargar.notas, 24, 'la elección no sobrevivió a recargar');
+  assert.equal(trasRecargar.auto, false);
+  assert.ok(trasRecargar.valorSelect !== '');
+  // volver a «automática»
+  await pagina.mouse.move(320, 300);
+  await pagina.locator('#lista li', { hasText: 'dos-pistas' }).locator('select.pista').selectOption({ index: 0 });
+  await pagina.waitForTimeout(300);
+  assert.equal(await pagina.evaluate(function () { return window.MusicaInfinita.estado.canciones.find(function (x) { return x.nombre === 'dos-pistas'; }).analisis.melodia.length; }), 64);
+  assert.deepEqual(await pagina.evaluate(function () { return JSON.parse(localStorage.getItem('musica-infinita:pistas')); }), {});
+  paso('elegir a mano la pista de melodía: re-analiza, se guarda, sobrevive a recargar y se puede volver a la automática');
 
   await navegador.close();
   assert.deepEqual(errores, [], 'errores en la página');

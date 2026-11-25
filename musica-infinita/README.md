@@ -25,6 +25,8 @@ Abre `index.html` en el navegador (Chrome, Edge o Firefox; no hace falta servido
 
 Cada canción muestra la tonalidad, el tempo, el compás y la cantidad de frases que se detectaron. **▶ tal cual** toca el MIDI sin cambiarlo, con el mismo sintetizador y las mismas visualizaciones. Cuando termina, sigue la música infinita. Si un MIDI no suena como esperabas al citarlo, mira la [guía de MIDI](docs/GUIA-MIDI.md): explica cómo elige la melodía y cómo prepararlo.
 
+**Elegir la pista de la melodía.** Cuando un MIDI tiene más de una pista con notas, su fila trae un selector: «Melodía: automática (pista 2 «Melody»…)» y, debajo, cada pista con su canal, su cantidad de notas y su registro. Elige la que de verdad lleva la melodía y la canción se vuelve a analizar al instante (frases, y citas desde la próxima sección). La última opción, «todas las pistas juntas», toma la línea superior del conjunto: sirve cuando la melodía pasa de un instrumento a otro. La tonalidad y los acordes se siguen detectando de todo el archivo. La elección queda guardada en tu navegador y vuelve a «automática» con la primera opción del selector. Si una pista no tiene una melodía que se pueda usar, avisa y se queda la automática.
+
 ![El panel de ajustes](docs/capturas/panel.jpg)
 
 | Ajuste | Qué hace |
@@ -137,7 +139,7 @@ La primera tanda prueba el MIDI (ida y vuelta, tempos, running status), la teor�
 
 ## Límites conocidos
 
-- La detección de melodía es una heurística. Si un MIDI tiene la melodía en una pista grave o repartida entre varias, puede elegir otra pista, y no hay todavía un selector manual de pista. La tonalidad y los acordes también pueden salir errados en música muy cromática o modal. La [guía de MIDI](docs/GUIA-MIDI.md) explica cómo revisarlo y corregirlo.
+- La detección de melodía es una heurística. Si elige mal (una melodía en una pista grave, o un arpegio continuo que toma por melodía), la pista se corrige a mano con el selector de la fila. Un MIDI con la melodía repartida entre instrumentos se arregla con «todas las pistas juntas». La tonalidad y los acordes también pueden salir errados en música muy cromática o modal. La [guía de MIDI](docs/GUIA-MIDI.md) explica cómo revisarlo y corregirlo.
 - Las citas solo toman la melodía y la armonía de la canción, no su arreglo: el acompañamiento lo pone el estilo.
 - Todo se probó con instrumentos propios y con SoundFont de prueba, no con una SoundFont comercial grande: el balance de volúmenes con GeneralUser GS o FluidR3_GM puede pedir ajustes.
 - Los moduladores de la SoundFont que dependen de controles MIDI y los enlazados entre moduladores no se aplican (ver arriba).
