@@ -15,7 +15,7 @@
     "enforcement_body": "Kenya Copyright Board (KECOBO)",
     "treaties_signatory": "Berne/TRIPS",
     "treaties_not_party": "WCT/WPPT",
-    "linked_resources": "https://copyright.go.ke/",
+    "linked_resources": "https://new.kenyalaw.org/akn/ke/act/2001/12/eng@2022-12-31",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
@@ -24,6 +24,12 @@
     "last_checked": "",
     "sources": {},
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://copyright.go.ke/",
+        "to": "https://new.kenyalaw.org/akn/ke/act/2001/12/eng@2022-12-31"
+      },
       {
         "date": "2026-10-14",
         "field": "digital_protection",
