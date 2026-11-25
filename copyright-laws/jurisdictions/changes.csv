@@ -640,8 +640,6 @@ date,country_code,law_name,field,old_value,new_value
 2026-11-25,DE,German Copyright Act (UrhG),orphan_works,Collective management required,Diligent search and permitted use by cultural institutions (ss 61-61c UrhG)
 2026-11-25,DE,German Copyright Act (UrhG),digital_protection,"Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",Protection of technological measures (s. 95a UrhG)
 2026-11-25,DE,German Copyright Act (UrhG),fair_use_exceptions,Educational exceptions,Statutory limitations incl. teaching and research (ss 60a-60c UrhG)
-<<<<<<< HEAD
-=======
 2026-11-25,DK,Danish Copyright Law,linked_resources,https://www.dkpto.dk/,https://www.retsinformation.dk/eli/lta/2023/1144
 2026-11-25,DK,Danish Copyright Law,linked_resources,https://www.retsinformation.dk/eli/lta/2023/1144,https://www.dkpto.dk/
 2026-11-25,EU,InfoSoc Directive (2001/29/EC),linked_resources,https://euipo.europa.eu/,https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32001L0029
@@ -649,24 +647,19 @@ date,country_code,law_name,field,old_value,new_value
 2026-11-25,EU,InfoSoc Directive (2001/29/EC),digital_protection,EUCD compliance,Legal protection of technological measures (art. 6 Directive 2001/29/EC)
 2026-11-25,FI,Finnish Copyright Law,linked_resources,https://www.prh.fi/,https://www.finlex.fi/fi/laki/ajantasa/1961/19610404
 2026-11-25,FI,Finnish Copyright Law,orphan_works,Collective administration required,Use of orphan works under the Orphan Works Act (764/2013; s. 16 f)
->>>>>>> origin/master
 2026-11-25,FJ,Copyright Act 1999 (Act No. 11 of 1999),author_rights,Economic rights (unconfirmed),"Owner has the exclusive right to copy, issue copies to the public, publicly perform, broadcast, communicate to the public, and adapt the work (s.16(1))"
 2026-11-25,FJ,Copyright Act 1999 (Act No. 11 of 1999),orphan_works,Not specified (unconfirmed),"No general orphan-works licence. Acts are not infringing for literary, dramatic, musical or artistic works if the author cannot be identified by reasonable inquiry and copyright is reasonably assumed expired (s.62)"
 2026-11-25,FJ,Copyright Act 1999 (Act No. 11 of 1999),fair_use_exceptions,Fair dealing provisions (specific purposes and articles not confirmed) (unconfirmed),"Criticism or review with acknowledgement, and reporting current events (s.41); research or private study by an individual, unless a collective licence is available (s.42); also education and judicial exemptions"
 2026-11-25,FJ,Copyright Act 1999 (Act No. 11 of 1999),enforcement_body,Office of the Attorney General (publishes copyright guidance) (unconfirmed),"Copyright Tribunal (ss.202-209) decides licensing-scheme disputes; Minister responsible for the Act, which may be the Attorney General; police (warrants) and Customs (pirated copies at the border)"
-<<<<<<< HEAD
 2026-11-25,FM,"Copyright Law, Title 35, Chapter 1 of the Code of the Federated States of Micronesia (originally Public Law 2-29, 1981)",author_rights,Economic rights (unconfirmed),"Economic rights: reproduce, prepare derivative works, distribute, perform and display (§ 106); ownership vests in the author (§ 110)"
 2026-11-25,FM,"Copyright Law, Title 35, Chapter 1 of the Code of the Federated States of Micronesia (originally Public Law 2-29, 1981)",orphan_works,Not specified (unconfirmed),Not specified (no orphan-works provision in §§ 101-126)
-=======
 2026-11-25,FR,Intellectual Property Code,linked_resources,https://www.inpi.fr/,https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006069414/
 2026-11-25,FR,Intellectual Property Code,linked_resources,https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006069414/,https://www.inpi.fr/
->>>>>>> origin/master
 2026-11-25,GM,"Copyright Act, 2004 (Act No. 10 of 2004)",author_rights,Economic rights (unconfirmed),"Economic and moral rights of the author, protected for the author's life plus 50 years (s. 21(1), per Commons summary)"
 2026-11-25,GM,"Copyright Act, 2004 (Act No. 10 of 2004)",moral_rights,Moral rights recognized (right of authorship; waivable only in writing; articles unconfirmed) (unconfirmed),"Moral rights protected for the author's life plus 50 years (s. 21(1), per Commons summary)"
 2026-11-25,GM,"Copyright Act, 2004 (Act No. 10 of 2004)",enforcement_body,UNKNOWN (Act s. 79 provides a Collecting Society of The Gambia; no copyright office identified) (unconfirmed),"Copyright Office under the National Centre for Arts and Culture (NCAC), with copyright inspectors holding police powers (per musicinafrica article; no section given)"
 2026-11-25,GN,Law No. L/2019/0028/AN of 7 June 2019 on Literary and Artistic Property (replaced Law 043/APN/CP/80 of 1980); implementing decree of 20 June 2022,term_of_protection,"Author's life + 70 years (Law L/2019/0028/AN of 7 June 2019, art. 39 as quoted on Commons talk page; quoted text reads 'seventy (80)' so 80 is possible; the repealed 1980 law gave life + 80, photographs/applied art life + 40) (unconfirmed)","Author's life + 70 years, or 80: Art. 39 text reads 'seventy (80)', so the figure is ambiguous"
 2026-11-25,GN,Law No. L/2019/0028/AN of 7 June 2019 on Literary and Artistic Property (replaced Law 043/APN/CP/80 of 1980); implementing decree of 20 June 2022,fair_use_exceptions,Reproduction of works permanently in public places allowed unless main subject and commercial (Art. 27); private copying regime exists (details not seen); artist resale right 5% of pre-tax price managed by BGDA (2022 decree) (unconfirmed),"Art. 27 allows reproducing works permanently in public places, unless the image is the main subject and used commercially"
-<<<<<<< HEAD
 2026-11-25,GW,"Copyright Code approved by Decree-Law No. 46.980 (Portuguese colonial code, 1966; WIPO lists publication 1972)",term_of_protection,Author's life + 50 years (Commons summary; article not seen) (unconfirmed),"Author's life + 50 years (art. 25, per Commons summary); anonymous or pseudonymous works 50 years after disclosure (art. 34)"
 2026-11-25,HN,"Law on Copyright and Related Rights (Decree No. 4-99-E of 1999, amended by Decree No. 16-2006)",orphan_works,Not specified (unconfirmed),Not specified (WIPO 2019 survey lists orphan-work exceptions only for Colombia and Ecuador)
 2026-11-25,HN,"Law on Copyright and Related Rights (Decree No. 4-99-E of 1999, amended by Decree No. 16-2006)",fair_use_exceptions,UNKNOWN (WIPO survey lists a specialized library exception covering preservation; no article numbers seen) (unconfirmed),"Specialized library exception for preservation (WIPO 2019 survey, Latin America group; no article numbers)"
@@ -678,7 +671,6 @@ date,country_code,law_name,field,old_value,new_value
 2026-11-25,KP,"Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",orphan_works,Not specified (unconfirmed),"Use allowed if the copyright holder cannot be found, with authorization of the competent institution (Art. 27)"
 2026-11-25,LC,"Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",author_rights,Economic rights (unconfirmed),"Economic rights: exclusive right to reproduce, translate, adapt and distribute (s. 8); moral rights (ss. 13-18)"
 2026-11-25,LC,"Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",orphan_works,Not specified (unconfirmed),No general orphan-works licence; s. 59: unidentified-author works not infringed only if copyright is reasonably presumed expired or author died 50+ years ago
-=======
 2026-11-25,HK,Copyright Ordinance,linked_resources,https://www.ipd.gov.hk/,https://www.elegislation.gov.hk/hk/cap528
 2026-11-25,HK,Copyright Ordinance,linked_resources,https://www.elegislation.gov.hk/hk/cap528,https://www.ipd.gov.hk/
 2026-11-25,HU,Hungarian Copyright Act,linked_resources,https://www.hipo.hu/,https://net.jogtar.hu/jogszabaly?docid=99900076.tv
@@ -692,7 +684,6 @@ date,country_code,law_name,field,old_value,new_value
 2026-11-25,KE,Copyright Act,orphan_works,Collective administration required,No orphan works regime in the Act
 2026-11-25,KR,Copyright Act,linked_resources,https://www.kipo.go.kr/,https://elaw.klri.re.kr/eng_service/lawView.do?hseq=40403&lang=ENG
 2026-11-25,KR,Copyright Act,linked_resources,https://elaw.klri.re.kr/eng_service/lawView.do?hseq=40403&lang=ENG,https://www.kipo.go.kr/
->>>>>>> origin/master
 2026-11-25,LY,Law No. 9 of 1968 Issuing the Copyright Protection Law,term_of_protection,"Author's life + 50 years (commonly reported; 50 years from publication for posthumous works, Art. 22) (unconfirmed)","Author's life + 25 years, but not less than 50 years from first publication (Art. 20); anonymous or pseudonymous works 25 years from publication (Art. 21)"
 2026-11-25,LY,Law No. 9 of 1968 Issuing the Copyright Protection Law,author_rights,Economic rights (unconfirmed),"Economic (financial utilization) rights, plus moral rights: attribution and protection against changes (Art. 9); withdrawal for serious moral reasons (Art. 43)"
 2026-11-25,LY,Law No. 9 of 1968 Issuing the Copyright Protection Law,orphan_works,Not specified (unconfirmed),No orphan-works provision in the law text
@@ -708,24 +699,18 @@ date,country_code,law_name,field,old_value,new_value
 2026-11-25,NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",moral_rights,Moral rights recognized (articles and duration not seen) (unconfirmed),"Moral rights recognized, irrenounceable and inalienable (Reglamento art. 7); State safeguards authorship and integrity after the term (art. 8)"
 2026-11-25,NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",digital_protection,UNKNOWN (Law 577 of 2006 implemented CAFTA-DR obligations; TPM/RMI articles not seen) (unconfirmed),"Circumventing effective technological measures (art. 111) and altering rights-management information (art. 111 bis) are criminal offences, 2-3 years' prison (Law 577/2006)"
 2026-11-25,NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",fair_use_exceptions,Specific exceptions incl. library exceptions (limited application per IFLA); article numbers not seen (unconfirmed),"Library, archive, educational and non-commercial public broadcaster activities are exempt from the criminal provisions of art. 111 (Law 577/2006)"
-<<<<<<< HEAD
 2026-11-25,NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",author_rights,Economic rights (unconfirmed),"Economic rights (s. 11: reproduction, translation, publication, adaptation, distribution, rental, public performance, broadcasting, communication); moral rights (s. 13: claim authorship, object to distortion)"
 2026-11-25,NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",orphan_works,Not specified (unconfirmed),No general orphan-works rule found; s. 30(3)(b) lets a person copy an entire textbook when the copyright owner cannot be found
-=======
->>>>>>> origin/master
 2026-11-25,NZ,Copyright Act 1994,linked_resources,https://www.iponz.govt.nz/,https://www.legislation.govt.nz/act/public/1994/0143/latest/whole.html
 2026-11-25,NZ,Copyright Act 1994,orphan_works,Orphan works licensing scheme,No orphan works regime in the Act (use needs permission or a licence)
 2026-11-25,NZ,Copyright Act 1994,digital_protection,Digital Millennium Act,Technological protection measures (ss 226-226E)
 2026-11-25,NZ,Copyright Act 1994,fair_use_exceptions,Fair use copying,Fair dealing (criticism; review; news reporting; research or private study; ss 41-43)
-<<<<<<< HEAD
 2026-11-25,PG,Copyright and Neighbouring Rights Act 2000 (Act No. 21 of 2000),fair_use_exceptions,Limitations on protection (s. 25); folklore expressions protected in Part V (unconfirmed),Limitations on protection (s. 25); folklore expressions protected in Part V
 2026-11-25,PW,Republic of Palau Copyright Act of 2003 (RPPL No. 6-38),author_rights,Economic rights (unconfirmed),"Economic rights (s. 6(a): reproduce, prepare derivative works, distribute, perform, display, translate, adapt, broadcast); moral rights (s. 6(b): attribution, pseudonym, object to distortion)"
 2026-11-25,SB,"Copyright Act 1987 (Cap. 138), Revised Edition 1996",author_rights,Economic rights (unconfirmed),"Economic rights (s. 6(1): reproduce, publish, broadcast, adapt, perform in public); author is first owner (s. 5(1))"
 2026-11-25,SB,"Copyright Act 1987 (Cap. 138), Revised Edition 1996",orphan_works,Not specified (unconfirmed),"Limited: s. 8(1) lets a library reproduce a published literary, dramatic or musical work if the person in charge cannot identify or locate the rightholder by reasonable inquiry; prescribed conditions apply"
-=======
 2026-11-25,PL,Copyright & Related Rights Act,linked_resources,https://www.uprp.pl/,https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU19940240083
 2026-11-25,PL,Copyright & Related Rights Act,linked_resources,https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU19940240083,https://www.uprp.pl/
->>>>>>> origin/master
 2026-11-25,SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",author_rights,Economic rights (unconfirmed),Economic rights
 2026-11-25,SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",fair_use_exceptions,Fair dealing exceptions exist (specifics not found); covers traditional cultural expressions and folklore (unconfirmed),Fair use or fair dealing exceptions mentioned in general terms; specific provisions not stated
 2026-11-25,SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",linked_resources,https://commons.laws.africa/akn/sc/act/2014/5/media/publication/sc-act-2014-5-publication-document.pdf,https://www.wipo.int/wipolex/en/details.jsp?id=15300
