@@ -77,7 +77,8 @@ jobs:
 
   # Las migraciones de database/migraciones/ se aplican con bin/migrar.php en PostgreSQL de verdad,
   # dos veces (la segunda no debe encontrar nada pendiente), y la base tiene que rechazar lo que las
-  # reglas del esquema prohiben (una exclusion activa sin prueba, un motivo de texto libre).
+  # reglas del esquema prohiben (una exclusion activa sin prueba, un motivo de texto libre) y cualquier
+  # edicion de la auditoria.
   migraciones:
     name: personas-especiales / migraciones PostgreSQL
     runs-on: ubuntu-24.04
@@ -146,6 +147,17 @@ jobs:
           fi
           psql -h 127.0.0.1 -U pe_test -d pe_test -v ON_ERROR_STOP=1 -q -c "INSERT INTO exclusion VALUES ('m2', 'p', 'persona', 'seguridad', NULL, 'pendiente', now(), now())"
           echo "Texto libre se rechaza; uno de la lista entra."
+
+      - name: La auditoria no se edita ni se borra
+        run: |
+          psql -h 127.0.0.1 -U pe_test -d pe_test -v ON_ERROR_STOP=1 -q -c "INSERT INTO exclusion VALUES ('x', 'p', 'persona', 'otro', NULL, 'pendiente', now(), now())" -c "INSERT INTO exclusion_evento (exclusion_id, tipo, actor, ocurrido_en) VALUES ('x', 'solicitada', 'a', now())"
+          for sql in "UPDATE exclusion_evento SET actor = 'otro'" "DELETE FROM exclusion_evento" "TRUNCATE exclusion_evento"; do
+            if psql -h 127.0.0.1 -U pe_test -d pe_test -q -c "$sql" 2>/dev/null; then
+              echo "::error::La base aceptó: $sql"
+              exit 1
+            fi
+          done
+          echo "Solo admite INSERT, como debe ser."
 
   # PHPStan (personas-especiales/phpstan.neon.dist): nivel max sobre src/. La 2.1.x mas reciente
   # del momento, como en los demas proyectos; una sola version de PHP basta (la configuracion fija
