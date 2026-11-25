@@ -71,11 +71,11 @@ El perfil no cambia la fecha de envío: solo segmenta el contenido (decidido el 
 - **Alcance:** cambios en campos sensibles de una persona del árbol.
   **[SUPUESTO]** Lista de campos: nombre legal, fechas de nacimiento y defunción, filiación, adopción, notas biográficas, cualquier campo marcado como sensible, y las categorías salud, origen étnico o racial, creencias o religión, vida sexual u orientación, y opiniones políticas (ampliada el 18-nov-2026, y con opiniones políticas el 20-nov-2026, a partir de PRIVACIDAD-Y-HONRA.md). Falta validarla: la valida Conce junto con el contrato del carril (21-nov-2026).
 - **Clasificación:** el submódulo de difamación entrega datos (registros marcados, disputas). El plugin decide si notifica.
-- **Destinatarios:** titular del árbol y persona afectada si tiene cuenta (decidido el 18-nov-2026). El titular puede apagar los avisos desde Preferencias (decidido el 25-nov-2026).
+- **Destinatarios:** titular del árbol y persona afectada si tiene cuenta (decidido el 18-nov-2026). El titular y la persona afectada con cuenta pueden apagar los avisos que reciben, cada uno desde sus Preferencias (decidido el 25-nov-2026).
 - **Fail-closed:** si el submódulo no responde o entrega datos incompletos, el evento se trata como sensible.
 - **Tiempo real:** no pasa por cola, ventana, umbral ni agrupación.
 - **Contenido neutral:** el aviso indica que hubo un cambio y enlaza a la ficha. No reproduce el valor del dato, y no nombra el campo si es categoría especial (decidido el 25-nov-2026).
-- **Trazabilidad:** cada evento se registra antes de llamar al carril. Si el titular apagó los avisos, el evento se registra y no se envía.
+- **Trazabilidad:** cada evento se registra antes de llamar al carril. Si un destinatario apagó los avisos, el evento se registra y no se le envía a él.
 
 ---
 

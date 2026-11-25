@@ -36,10 +36,10 @@ MailSender.send(destinatario, asunto, html, texto)
 ```
 NotificationAdapter.emit(evento: EventoSensible) -> ack | error
 NotificationAdapter.estado(evento_id) -> pendiente | entregado | error
-EventoSensible = { id, arbol_id, ref_registro, tipo_cambio, clasificacion, titular_id, afectada_id | null, detectado_at }
+EventoSensible = { id, arbol_id, ref_registro, tipo_cambio, clasificacion, titular_id | null, afectada_id | null, detectado_at }
 ```
 
-`id` es la clave de idempotencia: un reintento del cron no duplica el aviso. El evento no lleva valores del dato (docs/01, sección 5), y el aviso no nombra el campo cuando es de categoría especial (decidido el 25-nov-2026). Si el titular apagó los avisos desde Preferencias, el plugin registra el evento y no llama al adaptador (decidido el 25-nov-2026).
+`id` es la clave de idempotencia: un reintento del cron no duplica el aviso. El evento no lleva valores del dato (docs/01, sección 5), y el aviso no nombra el campo cuando es de categoría especial (decidido el 25-nov-2026). Si un destinatario apagó los avisos desde Preferencias, el plugin deja su campo en `null` y el aviso no se le envía; si los dos campos quedan en `null`, registra el evento y no llama al adaptador (decidido el 25-nov-2026).
 
 ---
 
@@ -52,7 +52,7 @@ Almacenamiento propio por integración. Ninguna tabla es compartida entre plataf
 - `queue_item(id, user_id, ref_contenido, creado_at, estado)`
 - `send_log(user_id, ventana_id, enviado_at, estado)`, con clave única (user_id, ventana_id)
 - `sensitive_event(id, ref_registro, tipo_cambio, detectado_at, notificado_at, estado)`, solo en Conce
-- `preferencias_aviso(user_id, avisos_sensibles, actualizado_at)`, solo en Conce **[PROPUESTA]**: guarda si el titular apagó los avisos sensibles (decidido el 25-nov-2026; la tabla es una propuesta)
+- `preferencias_aviso(user_id, avisos_sensibles, actualizado_at)`, solo en Conce **[PROPUESTA]**: guarda si cada destinatario (titular o persona afectada con cuenta) apagó los avisos sensibles (decidido el 25-nov-2026; la tabla es una propuesta)
 
 ---
 
