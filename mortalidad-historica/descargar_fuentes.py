@@ -33,6 +33,7 @@ MONDO = f"{RAW}/monarch-initiative/mondo/bf25273f921b165ca2b49a85be4b1eb6b2bca27
 _LONDRES = "Deaths from Smalllpox and all causes in London 1629-1902"  # sí: «Smalllpox», con tres eles
 _COLERA = "UK Cholera Death over the long-term - ONS"
 _RILEY = "Life expectancy - Riley (2005), Clio Infra (2015), and UN (2019)"
+_INGLATERRA = "Crude Birth and Death Rates (per 1,000), England and Wales 1541-2015 - Wrigley and Schofield, Mitche"  # el nombre está truncado en el repositorio
 
 
 def _owid(nombre):
@@ -50,6 +51,7 @@ FUENTES = {
     "modelo-logcuadratico-f.rda": f"{DEMOTOOLS}/data/fitted_logquad_f.rda",
     "modelo-logcuadratico-m.rda": f"{DEMOTOOLS}/data/fitted_logquad_m.rda",
     "esperanza-riley-clio-owid.csv": _owid(_RILEY),
+    "tasas-inglaterra-owid.csv": _owid(_INGLATERRA),
     "mondo-edit.obo": f"{MONDO}/src/ontology/mondo-edit.obo",
     "esperanza-hombres-gapminder.csv": f"{SG}/ddf--datapoints--life_expectancy_male--by--geo--time.csv",
 }

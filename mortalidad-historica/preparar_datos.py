@@ -366,6 +366,7 @@ def construir(e0_total, q5, e0_mujeres, e0_hombres, edades_modelo=(), riley=None
     return filas
 
 
+FUENTE_INGLATERRA = "wrigley-schofield-owid"
 FUENTE_LONDRES = "londres-owid"
 FUENTE_COLERA = "thomas-2015-owid"
 
@@ -380,6 +381,21 @@ def construir_londres(ruta):
         if f[viruela] == "" or f[totales] == "":
             continue
         filas.append([int(f["Year"]), int(float(f[totales])), int(float(f[viruela])), "verificado", FUENTE_LONDRES])
+    return sorted(filas)
+
+
+def construir_inglaterra(ruta):
+    """Las filas de inglaterra_tasas.csv: [año, natalidad, mortalidad (por mil), estado, fuente], Inglaterra y Gales.
+
+    Hasta 1861 la fuente (Wrigley y Schofield) da quinquenios, y el año de cada fila es el primero del quinquenio;
+    desde 1862 son anuales (Mitchell) y, desde 2004, de la ONS del Reino Unido."""
+    filas = []
+    for f in _filas(ruta):
+        natalidad = next(f[c] for c in f if c.startswith("Crude Birth Rate"))
+        mortalidad = next(f[c] for c in f if c.startswith("Crude Death Rate"))
+        if natalidad == "" or mortalidad == "":
+            continue
+        filas.append([int(f["Year"]), f"{float(natalidad):g}", f"{float(mortalidad):g}", "verificado", FUENTE_INGLATERRA])
     return sorted(filas)
 
 
@@ -480,6 +496,9 @@ def main(argv=None):
     londres = construir_londres(f / "muertes-londres-owid.csv")
     _escribir("londres_muertes", londres)
     print(f"londres_muertes.csv: {len(londres)} años.")
+    inglaterra = construir_inglaterra(f / "tasas-inglaterra-owid.csv")
+    _escribir("inglaterra_tasas", inglaterra)
+    print(f"inglaterra_tasas.csv: {len(inglaterra)} años.")
     paises = construir_paises(args.paises)
     _escribir("paises", paises)
     print(f"paises.csv: {len(paises)} países.")

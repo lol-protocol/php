@@ -95,6 +95,23 @@ foreach ($vectores['londres'] as [$anio, $totales, $viruela, $exceso]) {
     casiIgual($exceso, $m->excesoDeMuertesLondres($anio), "londres $anio exceso");
 }
 
+// Tasas de Inglaterra y años de mortalidad anormal.
+foreach ($vectores['inglaterra']['puntos'] as [$anio, $tasas, $exceso]) {
+    $obtenidas = $m->tasasInglaterra($anio);
+    casiIgual($tasas['natalidad'] ?? null, $obtenidas['natalidad'] ?? null, "inglaterra $anio natalidad");
+    casiIgual($tasas['mortalidad'] ?? null, $obtenidas['mortalidad'] ?? null, "inglaterra $anio mortalidad");
+    casiIgual($exceso, $m->excesoDeMortalidadInglaterra($anio), "inglaterra $anio exceso");
+}
+foreach (['anormales' => 1.15, 'anormales_1_3' => 1.3] as $clave => $umbral) {
+    $esperados = $vectores['inglaterra'][$clave];
+    $obtenidos = $m->aniosDeMortalidadAnormalInglaterra($umbral);
+    igual(count($esperados), count($obtenidos), "inglaterra $clave: cuántos");
+    foreach ($esperados as $i => $e) {
+        igual($e['anio'], $obtenidos[$i]['anio'] ?? null, "inglaterra $clave año $i");
+        casiIgual($e['exceso'], $obtenidos[$i]['exceso'] ?? null, "inglaterra $clave exceso $i");
+    }
+}
+
 // Estadística de edades de muerte y supervivencia (modelada, por país y década).
 igual(true, count($vectores['plausibilidad']) > 100, 'vectores: plausibilidad');
 $conPlausibilidad = 0;

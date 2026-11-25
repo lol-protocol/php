@@ -148,6 +148,7 @@
     var hitos = null;
     var periodos = null;
     var londres = null;
+    var inglaterra = null;
 
     function perezoso(nombre, cache) { return cache || objetos(tablas[nombre]); }
 
@@ -346,6 +347,55 @@
       return serie[anio][0] / mediana;
     }
 
+    function serieDeInglaterra() {
+      if (inglaterra === null) {
+        var t = tablas.inglaterra_tasas;
+        var c = {};
+        t.columnas.forEach(function (n, i) { c[n] = i; });
+        inglaterra = t.filas.map(function (f) {
+          return [Number(f[c.anio]), Number(f[c.natalidad]), Number(f[c.mortalidad])];
+        });
+      }
+      return inglaterra;
+    }
+
+    function tasasInglaterra(anio) {
+      var serie = serieDeInglaterra();
+      for (var i = 0; i < serie.length; i++) {
+        if (serie[i][0] === anio) return { natalidad: serie[i][1], mortalidad: serie[i][2] };
+      }
+      return null;
+    }
+
+    function excesoDeMortalidadInglaterra(anio, vecinos) {
+      if (vecinos === undefined) vecinos = 2;
+      var serie = serieDeInglaterra();
+      var indice = -1;
+      for (var i = 0; i < serie.length; i++) {
+        if (serie[i][0] === anio) { indice = i; break; }
+      }
+      if (indice < 0) return null;
+      var valores = [];
+      for (var j = indice - vecinos; j <= indice + vecinos; j++) {
+        if (j !== indice && j >= 0 && j < serie.length) valores.push(serie[j][2]);
+      }
+      if (valores.length < 4) return null;
+      valores.sort(function (x, y) { return x - y; });
+      var mitad = Math.floor(valores.length / 2);
+      var mediana = valores.length % 2 === 1 ? valores[mitad] : (valores[mitad - 1] + valores[mitad]) / 2;
+      return serie[indice][2] / mediana;
+    }
+
+    function aniosDeMortalidadAnormalInglaterra(umbral) {
+      if (umbral === undefined) umbral = 1.15;
+      var resultado = [];
+      serieDeInglaterra().forEach(function (f) {
+        var exceso = excesoDeMortalidadInglaterra(f[0]);
+        if (exceso !== null && exceso >= umbral) resultado.push({ anio: f[0], exceso: exceso });
+      });
+      return resultado;
+    }
+
     return {
       causaModerna: causaModerna,
       regionDe: regionDe,
@@ -361,6 +411,9 @@
       edadesDeMuerteComunes: edadesDeMuerteComunes,
       muertesLondres: muertesLondres,
       excesoDeMuertesLondres: excesoDeMuertesLondres,
+      tasasInglaterra: tasasInglaterra,
+      excesoDeMortalidadInglaterra: excesoDeMortalidadInglaterra,
+      aniosDeMortalidadAnormalInglaterra: aniosDeMortalidadAnormalInglaterra,
     };
   }
 
