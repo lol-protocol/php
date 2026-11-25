@@ -15,6 +15,9 @@ Registradas también en docs/00-inconsistencias.md.
 9. **Clasificación de cambios sensibles** (20-nov-2026): el host guarda el resultado de `defamatory-content-review/` y lo pasa con el evento. El plugin no llama al revisor ni ve el valor del dato.
 10. **Validación de la lista sensible** (21-nov-2026): la valida Conce junto con el contrato del carril.
 11. **Contrato del carril** (21-nov-2026): lo envía el usuario a Conce, con un resumen de una página.
+12. **Base del aviso sensible** (25-nov-2026): interés legítimo, con una ponderación documentada. Falta confirmar con el texto oficial que la ley acepte esa base para este caso.
+13. **Arranque del boletín** (25-nov-2026): sin fecha por ahora. No se fija hasta cerrar docs/06.
+14. **Correo** (25-nov-2026): lo envía un proveedor externo, que va como encargado. Falta su nombre y el país de sus servidores.
 
 ## Decisiones pendientes
 
@@ -23,8 +26,10 @@ Necesarias antes de implementar.
 1. **El abuelo que avisa a familiares:** diferido; se decide al implementar el carril. Propuesta: fuera del alcance del plugin.
 2. **Contrato del carril de notificaciones:** propuesta de firmas en docs/02, pendiente de validación con Conce (decisión 11). Incluye `clasificacion` en el evento (decisión 9).
 3. **Lista de campos sensibles:** la valida Conce junto con el contrato (decisión 10).
-4. **Ley 21.719 aplicada al newsletter:** revisada en docs/06 el 21-nov-2026. Falta cotejarla con el texto oficial y decidir las bases, plazos y encargados que señala.
+4. **Ley 21.719 aplicada al newsletter:** revisada en docs/06 (21-nov-2026, actualizada el 25-nov-2026). Falta cotejarla con el texto oficial.
 5. **Versión mínima de PHP:** se fija al implementar. No bloquea los documentos.
+6. **Plazos de conservación** (25-nov-2026): se decidió cambiar algunos de los propuestos en docs/06, sección 3, punto 4. Falta indicar cuáles y el plazo nuevo.
+7. **Encargado del correo** (25-nov-2026): falta el nombre del proveedor y el país de sus servidores (docs/06, sección 3, punto 5).
 
 ## Riesgos
 
@@ -40,6 +45,7 @@ Necesarias antes de implementar.
 Marcados como **[SUPUESTO]** en los documentos:
 - Lista de campos sensibles (ampliada, sin validar; la valida Conce).
 - Umbrales de perfil: valores iniciales (decisión 5).
+- Interés legítimo como base del aviso sensible, con la ponderación por documentar (decisión 12).
 - Umbral de colección para el perfil coleccionista (M a definir).
 - Reintentos de correo: máximo 3.
 - Envío POS el día 15 a las 09:00 hora de Santiago, sin fecha firme para el primer envío.
