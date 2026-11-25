@@ -29,8 +29,9 @@ Registro de contradicciones encontradas durante el diseño, con la resolución p
 | 23 | Aviso sensible y categorías especiales | El aviso no nombra el campo cuando es categoría especial: dice que hubo un cambio y enlaza a la ficha. | Decidido (25-nov-2026) |
 | 24 | Personas vivas en el correo | El correo solo muestra apellidos que el titular ya ve en la ficha. | Decidido (25-nov-2026) |
 | 25 | Criterio de bloqueo de docs/06 | Se mantienen las nueve obligaciones marcadas como bloqueantes. Es criterio del equipo, no de la ley. | Decidido (25-nov-2026) |
-| 26 | Baja de los avisos sensibles | Sin decidir: ¿puede el titular desactivarlos? Ver docs/06, sección 3, punto 3. | Pendiente de decisión |
+| 26 | Baja de los avisos sensibles | El titular puede apagarlos desde Preferencias; el plugin registra el evento y no lo envía. | Decidido (25-nov-2026) |
+| 27 | Persona afectada con cuenta y los avisos | Sin decidir si también puede apagarlos. Ver docs/06, sección 3, punto 3. | Pendiente de decisión |
 
 ## Notas
-- Quedan abiertas: la 5 (se decide al implementar), la 8 y la 15 (las valida Conce con el contrato), la 16 (cotejar con el texto oficial), la 17 (se fija al implementar), la 21 (falta el nombre del proveedor de correo y el país de sus servidores) y la 26 (baja de los avisos sensibles).
+- Quedan abiertas: la 5 (se decide al implementar), la 8 y la 15 (las valida Conce con el contrato), la 16 (cotejar con el texto oficial), la 17 (se fija al implementar), la 21 (falta el nombre del proveedor de correo y el país de sus servidores) y la 27 (si la persona afectada con cuenta puede apagar los avisos).
 - Un supuesto no validado no es una decisión. Ver docs/05-riesgos-y-pendientes.md.

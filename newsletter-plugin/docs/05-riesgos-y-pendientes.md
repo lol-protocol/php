@@ -4,7 +4,7 @@
 
 Registradas también en docs/00-inconsistencias.md.
 
-1. **Destinatarios del carril de notificaciones** (18-nov-2026): titular del árbol siempre, y persona afectada si tiene cuenta.
+1. **Destinatarios del carril de notificaciones** (18-nov-2026): titular del árbol y persona afectada si tiene cuenta. El titular puede apagar los avisos (decisión 19).
 2. **Cron** (18-nov-2026): en el VPS del host.
 3. **Stack** (18-nov-2026): PHP, igual que el resto del repo.
 4. **Doble confirmación en el alta** (18-nov-2026): sí.
@@ -22,6 +22,7 @@ Registradas también en docs/00-inconsistencias.md.
 16. **Aviso sensible y categorías especiales** (25-nov-2026): el aviso no nombra el campo cuando es categoría especial; dice que hubo un cambio y enlaza a la ficha.
 17. **Personas vivas en el correo** (25-nov-2026): el correo solo muestra apellidos que el titular ya ve en la ficha.
 18. **Criterio de bloqueo de docs/06** (25-nov-2026): se mantienen las nueve obligaciones marcadas como bloqueantes. Es criterio del equipo, no de la ley.
+19. **Baja de los avisos sensibles** (25-nov-2026): el titular puede apagarlos desde Preferencias. El plugin registra el evento y no lo envía.
 
 ## Decisiones pendientes
 
@@ -33,7 +34,7 @@ Necesarias antes de implementar.
 4. **Ley 21.719 aplicada al newsletter:** revisada en docs/06 (21-nov-2026, actualizada el 25-nov-2026). Falta cotejarla con el texto oficial.
 5. **Versión mínima de PHP:** se fija al implementar. No bloquea los documentos.
 6. **Encargado del correo** (25-nov-2026): falta el nombre del proveedor y el país de sus servidores (docs/06, sección 3, punto 5).
-7. **Baja de los avisos sensibles** (25-nov-2026): sin decidir si el titular puede desactivarlos (docs/06, sección 3, punto 3).
+7. **Persona afectada con cuenta** (25-nov-2026): sin decidir si también puede apagar los avisos (docs/06, sección 3, punto 3).
 
 ## Riesgos
 
