@@ -335,7 +335,7 @@ Aus der Goetia (17. Jahrhundert), einem Zauberbuch, das nicht zur Bibel gehört.
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | König | 66 | 21/03 – 25/03 | Unsichtbarkeit, Weisheit |
 | 2 | Agares | Herzog | 31 | 26/03 – 30/03 | Sprachen, Flüchtige, Erdbeben |
-| 3 | Vassago | Prinz | — | 31/03 – 04/04 | Vergangenheit und Zukunft, verlorene Gegenstände |
+| 3 | Vassago | Prinz | 26 | 31/03 – 04/04 | Vergangenheit und Zukunft, verlorene Gegenstände |
 | 4 | Samigina | Marquis | 30 | 05/04 – 09/04 | Freie Künste, Seelen der Verstorbenen |
 | 5 | Marbas | Präsident | 36 | 10/04 – 14/04 | Geheimnisse, Krankheiten, Heilung, Handwerkskünste |
 | 6 | Valefor | Herzog | 10 | 15/04 – 19/04 | Schutzgeister, Diebstahl |
@@ -353,7 +353,7 @@ Aus der Goetia (17. Jahrhundert), einem Zauberbuch, das nicht zur Bibel gehört.
 | 18 | Bathin | Herzog | 30 | 16/06 – 20/06 | Pflanzen, Edelsteine, schnelle Ortswechsel |
 | 19 | Sallos | Herzog | 30 | 21/06 – 26/06 | Liebe |
 | 20 | Purson | König | 22 | 27/06 – 02/07 | Schätze, Vergangenheit und Zukunft, Schutzgeister |
-| 21 | Marax | Präsident / Graf | 30 | 03/07 – 07/07 | Astronomie, freie Künste, Pflanzen |
+| 21 | Marax | Präsident / Graf | 36 | 03/07 – 07/07 | Astronomie, freie Künste, Pflanzen |
 | 22 | Ipos | Graf / Prinz | 36 | 08/07 – 12/07 | Vergangenheit und Zukunft, Mut, Witz |
 | 23 | Aim | Herzog | 26 | 13/07 – 17/07 | Brände, Witz, Geheimnisse |
 | 24 | Naberius | Marquis | 19 | 18/07 – 22/07 | Rhetorik, Künste, Ehren |
@@ -389,7 +389,7 @@ Aus der Goetia (17. Jahrhundert), einem Zauberbuch, das nicht zur Bibel gehört.
 | 54 | Murmur | Herzog / Graf | 30 | 17/12 – 21/12 | Musik, Philosophie, Seelen der Verstorbenen |
 | 55 | Orobas | Prinz | 20 | 22/12 – 26/12 | Vergangenheit und Zukunft, Gunst, Loyalität |
 | 56 | Gremory | Herzog | 26 | 27/12 – 31/12 | Schätze, Liebe, Vergangenheit und Zukunft |
-| 57 | Ose | Präsident | 3 | 01/01 – 05/01 | Freie Künste, Verwandlung, Wahnsinn |
+| 57 | Ose | Präsident | 30 | 01/01 – 05/01 | Freie Künste, Verwandlung, Wahnsinn |
 | 58 | Amy | Präsident | 36 | 06/01 – 10/01 | Astrologie, freie Künste, Schätze |
 | 59 | Orias | Marquis | 30 | 11/01 – 15/01 | Astrologie, Verwandlung, Ehren |
 | 60 | Vapula | Herzog | 36 | 16/01 – 19/01 | Handwerkskünste, Philosophie, Wissenschaften |
@@ -400,7 +400,7 @@ Aus der Goetia (17. Jahrhundert), einem Zauberbuch, das nicht zur Bibel gehört.
 | 65 | Andrealphus | Marquis | 30 | 09/02 – 13/02 | Mathematik, Astronomie, Verwandlung |
 | 66 | Kimaris | Marquis | 20 | 14/02 – 18/02 | Rhetorik, Logik, verlorene Gegenstände |
 | 67 | Amdusias | Herzog | 29 | 19/02 – 23/02 | Musik, Bäume |
-| 68 | Belial | König | 50 | 24/02 – 28/02 | Gunst, Würden, Schutzgeister |
+| 68 | Belial | König | 80 | 24/02 – 28/02 | Gunst, Würden, Schutzgeister |
 | 69 | Decarabia | Marquis | 30 | 01/03 – 05/03 | Vögel, Edelsteine, Pflanzen |
 | 70 | Seere | Prinz | 26 | 06/03 – 10/03 | Schnelle Ortswechsel, Diebstahl, verlorene Gegenstände |
 | 71 | Dantalion | Herzog | 36 | 11/03 – 15/03 | Gedanken, Wissenschaften, Liebe |

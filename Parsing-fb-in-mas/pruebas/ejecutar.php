@@ -798,6 +798,21 @@ exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata-nombres.php') . ' ' . e
 igual('wikidata-nombres.php: sale con 0 y un perfil con el lugar nombrado', [0, 1, true], [$codigo, count($salida), str_contains($salida[0] ?? '', '"lugar_nacimiento_nombre":"Santiago de Chile"')]);
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata-nombres.php') . ' https://dumps.wikimedia.org/x.json ' . escapeshellarg("$tmp/wd.jsonl") . ' 2>&1', $salida, $codigo);
 igual('wikidata-nombres.php: rechaza una URL', 2, $codigo);
+// Streaming: la salida del programa es la de resolverNombres(), y un archivo grande no sube la memoria.
+$muchos = [];
+for ($i = 0; $i < 3000; $i++) {
+    $muchos[] = ['red' => 'wikidata', 'url' => "https://www.wikidata.org/wiki/Q{$i}0001", 'usuario' => "Q{$i}0001", 'nombre' => "Ficticio {$i}",
+        'lugar_nacimiento' => 'Q2887', 'avisos' => [], 'parientes' => [['relacion' => 'padre', 'nombre' => null, 'id' => 'Q2']]];
+}
+file_put_contents("$tmp/wd-muchos.jsonl", implode("\n", array_map(static fn (array $p): string => json_encode($p, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR), $muchos)) . "\n");
+$esperado = Wikidata::resolverNombres($volcadoNombres, $muchos)['perfiles'];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata-nombres.php') . ' ' . escapeshellarg($volcadoNombres) . ' ' . escapeshellarg("$tmp/wd-muchos.jsonl") . ' 2>/dev/null', $salidaMuchos, $codigo);
+$obtenido = array_map(static fn (string $l): mixed => json_decode($l, true), $salidaMuchos);
+igual('wikidata-nombres.php (streaming): 3000 perfiles dan lo mismo que resolverNombres()', [0, true], [$codigo, $obtenido === json_decode(json_encode($esperado, JSON_UNESCAPED_UNICODE) ?: '', true)]);
+igual('wikidata-nombres.php (streaming): un archivo de perfiles que no existe sale con 1', 1, (static function () use ($volcadoNombres, $tmp): int {
+    exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata-nombres.php') . ' ' . escapeshellarg($volcadoNombres) . ' ' . escapeshellarg("$tmp/no-existe.jsonl") . ' 2>/dev/null', $o, $c);
+    return $c;
+})());
 
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --jsonl ' . escapeshellarg(__DIR__ . '/muestras/wikitree-api.json') . ' 2>/dev/null', $salida, $codigo);

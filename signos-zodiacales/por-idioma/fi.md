@@ -335,7 +335,7 @@ Goetiasta (1600-luku), lumouskirjasta, joka ei kuulu Raamattuun. Jokainen henki 
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Kuningas | 66 | 21/03 – 25/03 | Näkymättömyys, viisaus |
 | 2 | Agares | Herttua | 31 | 26/03 – 30/03 | Kielet, pakolaiset, maanjäristykset |
-| 3 | Vassago | Prinssi | — | 31/03 – 04/04 | Menneisyys ja tulevaisuus, kadonneet esineet |
+| 3 | Vassago | Prinssi | 26 | 31/03 – 04/04 | Menneisyys ja tulevaisuus, kadonneet esineet |
 | 4 | Samigina | Markiisi | 30 | 05/04 – 09/04 | Vapaat taiteet, vainajien sielut |
 | 5 | Marbas | Presidentti | 36 | 10/04 – 14/04 | Salaisuudet, sairaudet, parantaminen, mekaaniset taidot |
 | 6 | Valefor | Herttua | 10 | 15/04 – 19/04 | Henkiapurit, varkaus |
@@ -353,7 +353,7 @@ Goetiasta (1600-luku), lumouskirjasta, joka ei kuulu Raamattuun. Jokainen henki 
 | 18 | Bathin | Herttua | 30 | 16/06 – 20/06 | Kasvit, jalokivet, nopeat siirtymät |
 | 19 | Sallos | Herttua | 30 | 21/06 – 26/06 | Rakkaus |
 | 20 | Purson | Kuningas | 22 | 27/06 – 02/07 | Aarteet, menneisyys ja tulevaisuus, henkiapurit |
-| 21 | Marax | Presidentti / Kreivi | 30 | 03/07 – 07/07 | Tähtitiede, vapaat taiteet, kasvit |
+| 21 | Marax | Presidentti / Kreivi | 36 | 03/07 – 07/07 | Tähtitiede, vapaat taiteet, kasvit |
 | 22 | Ipos | Kreivi / Prinssi | 36 | 08/07 – 12/07 | Menneisyys ja tulevaisuus, rohkeus, sukkeluus |
 | 23 | Aim | Herttua | 26 | 13/07 – 17/07 | Tulipalot, sukkeluus, salaisuudet |
 | 24 | Naberius | Markiisi | 19 | 18/07 – 22/07 | Retoriikka, taiteet, kunnianosoitukset |
@@ -389,7 +389,7 @@ Goetiasta (1600-luku), lumouskirjasta, joka ei kuulu Raamattuun. Jokainen henki 
 | 54 | Murmur | Herttua / Kreivi | 30 | 17/12 – 21/12 | Musiikki, filosofia, vainajien sielut |
 | 55 | Orobas | Prinssi | 20 | 22/12 – 26/12 | Menneisyys ja tulevaisuus, suosio, lojaalius |
 | 56 | Gremory | Herttua | 26 | 27/12 – 31/12 | Aarteet, rakkaus, menneisyys ja tulevaisuus |
-| 57 | Ose | Presidentti | 3 | 01/01 – 05/01 | Vapaat taiteet, muodonmuutos, hulluus |
+| 57 | Ose | Presidentti | 30 | 01/01 – 05/01 | Vapaat taiteet, muodonmuutos, hulluus |
 | 58 | Amy | Presidentti | 36 | 06/01 – 10/01 | Astrologia, vapaat taiteet, aarteet |
 | 59 | Orias | Markiisi | 30 | 11/01 – 15/01 | Astrologia, muodonmuutos, kunnianosoitukset |
 | 60 | Vapula | Herttua | 36 | 16/01 – 19/01 | Mekaaniset taidot, filosofia, tieteet |
@@ -400,7 +400,7 @@ Goetiasta (1600-luku), lumouskirjasta, joka ei kuulu Raamattuun. Jokainen henki 
 | 65 | Andrealphus | Markiisi | 30 | 09/02 – 13/02 | Matematiikka, tähtitiede, muodonmuutos |
 | 66 | Kimaris | Markiisi | 20 | 14/02 – 18/02 | Retoriikka, logiikka, kadonneet esineet |
 | 67 | Amdusias | Herttua | 29 | 19/02 – 23/02 | Musiikki, puut |
-| 68 | Belial | Kuningas | 50 | 24/02 – 28/02 | Suosio, arvonimet, henkiapurit |
+| 68 | Belial | Kuningas | 80 | 24/02 – 28/02 | Suosio, arvonimet, henkiapurit |
 | 69 | Decarabia | Markiisi | 30 | 01/03 – 05/03 | Linnut, jalokivet, kasvit |
 | 70 | Seere | Prinssi | 26 | 06/03 – 10/03 | Nopeat siirtymät, varkaus, kadonneet esineet |
 | 71 | Dantalion | Herttua | 36 | 11/03 – 15/03 | Ajatukset, tieteet, rakkaus |

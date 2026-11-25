@@ -335,7 +335,7 @@ Fra Goetia (1600-tallet), en trolddomsbog, der ikke er en del af Bibelen. Hver �
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Konge | 66 | 21/03 – 25/03 | Usynlighed, visdom |
 | 2 | Agares | Hertug | 31 | 26/03 – 30/03 | Sprog, flygtninge, jordskælv |
-| 3 | Vassago | Prins | — | 31/03 – 04/04 | Fortid og fremtid, mistede ting |
+| 3 | Vassago | Prins | 26 | 31/03 – 04/04 | Fortid og fremtid, mistede ting |
 | 4 | Samigina | Markis | 30 | 05/04 – 09/04 | De frie kunster, de dødes sjæle |
 | 5 | Marbas | President | 36 | 10/04 – 14/04 | Hemmeligheder, sygdomme, helbredelse, mekaniske kunster |
 | 6 | Valefor | Hertug | 10 | 15/04 – 19/04 | Hjælpeånder, tyveri |
@@ -353,7 +353,7 @@ Fra Goetia (1600-tallet), en trolddomsbog, der ikke er en del af Bibelen. Hver �
 | 18 | Bathin | Hertug | 30 | 16/06 – 20/06 | Planter, ædelsten, hurtige rejser |
 | 19 | Sallos | Hertug | 30 | 21/06 – 26/06 | Kærlighed |
 | 20 | Purson | Konge | 22 | 27/06 – 02/07 | Skatte, fortid og fremtid, hjælpeånder |
-| 21 | Marax | President / Greve | 30 | 03/07 – 07/07 | Astronomi, de frie kunster, planter |
+| 21 | Marax | President / Greve | 36 | 03/07 – 07/07 | Astronomi, de frie kunster, planter |
 | 22 | Ipos | Greve / Prins | 36 | 08/07 – 12/07 | Fortid og fremtid, mod, vid |
 | 23 | Aim | Hertug | 26 | 13/07 – 17/07 | Brande, vid, hemmeligheder |
 | 24 | Naberius | Markis | 19 | 18/07 – 22/07 | Retorik, kunst, hædersbevisninger |
@@ -389,7 +389,7 @@ Fra Goetia (1600-tallet), en trolddomsbog, der ikke er en del af Bibelen. Hver �
 | 54 | Murmur | Hertug / Greve | 30 | 17/12 – 21/12 | Musik, filosofi, de dødes sjæle |
 | 55 | Orobas | Prins | 20 | 22/12 – 26/12 | Fortid og fremtid, yndest, loyalitet |
 | 56 | Gremory | Hertug | 26 | 27/12 – 31/12 | Skatte, kærlighed, fortid og fremtid |
-| 57 | Ose | President | 3 | 01/01 – 05/01 | De frie kunster, forvandling, vanvid |
+| 57 | Ose | President | 30 | 01/01 – 05/01 | De frie kunster, forvandling, vanvid |
 | 58 | Amy | President | 36 | 06/01 – 10/01 | Astrologi, de frie kunster, skatte |
 | 59 | Orias | Markis | 30 | 11/01 – 15/01 | Astrologi, forvandling, hædersbevisninger |
 | 60 | Vapula | Hertug | 36 | 16/01 – 19/01 | Mekaniske kunster, filosofi, videnskaber |
@@ -400,7 +400,7 @@ Fra Goetia (1600-tallet), en trolddomsbog, der ikke er en del af Bibelen. Hver �
 | 65 | Andrealphus | Markis | 30 | 09/02 – 13/02 | Matematik, astronomi, forvandling |
 | 66 | Kimaris | Markis | 20 | 14/02 – 18/02 | Retorik, logik, mistede ting |
 | 67 | Amdusias | Hertug | 29 | 19/02 – 23/02 | Musik, træer |
-| 68 | Belial | Konge | 50 | 24/02 – 28/02 | Yndest, værdigheder, hjælpeånder |
+| 68 | Belial | Konge | 80 | 24/02 – 28/02 | Yndest, værdigheder, hjælpeånder |
 | 69 | Decarabia | Markis | 30 | 01/03 – 05/03 | Fugle, ædelsten, planter |
 | 70 | Seere | Prins | 26 | 06/03 – 10/03 | Hurtige rejser, tyveri, mistede ting |
 | 71 | Dantalion | Hertug | 36 | 11/03 – 15/03 | Tanker, videnskaber, kærlighed |
