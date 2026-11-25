@@ -18,12 +18,12 @@ La decisión de no guardar categorías está en
 [`PRIVACIDAD-Y-HONRA.md`](../PRIVACIDAD-Y-HONRA.md) y en el plan que se acordó
 para este módulo.
 
-## Estado: el modelo, su registro y la política de visibilidad
+## Estado: el modelo, su registro, la política de visibilidad y la auditoría
 
 **La política ya restringe** (en este módulo): una persona con una exclusión activa no se
 conecta, no se muestra en listas y no sale en una exportación. La coincidencia por apellido
-existe pero solo marca para revisión. Falta la auditoría (PR siguiente), y la integración con
-`url-routing` espera a que se fusione #611.
+existe pero solo marca para revisión. Cada paso de una solicitud deja un evento de auditoría. La
+integración con `url-routing` espera a que se fusione #611.
 
 | Pieza | Qué hace |
 |---|---|
@@ -36,9 +36,12 @@ existe pero solo marca para revisión. Falta la auditoría (PR siguiente), y la 
 | `src/RegistroExclusiones.php` | Interfaz del registro: `activasDe`, `conExclusionActiva` (por lote, para listas largas), `porId`, `insertar` (nunca reemplaza) y `actualizar` (solo lo que cambia una transición, y solo si el estado sigue siendo el leído). |
 | `src/RegistroPdo.php` | Implementación sobre la tabla `exclusion` (PostgreSQL). Dentro de una transacción, `porId` bloquea la fila (`FOR UPDATE`). |
 | `src/RegistroEnMemoria.php` | Implementación sin base de datos, para pruebas. |
+| `src/Gestion.php` | El camino de una solicitud: aplica la transición, la guarda y deja el evento de auditoría. Con un `PDO`, las tres cosas van en una transacción. |
+| `src/Evento.php`, `src/TipoEvento.php`, `src/Auditoria.php` | Un hecho de la auditoría: quién (identificador opaco), qué y cuándo. No lleva razones ni pruebas. |
+| `src/AuditoriaPdo.php`, `src/AuditoriaEnMemoria.php` | Las dos implementaciones de la auditoría. |
 | `src/Fila.php` | Lectura comprobada de lo que devuelve la base: un tipo inesperado falla con un error claro en vez de convertirse en `""`. |
 | `src/Migrador.php`, `bin/migrar.php` | Aplican en orden las migraciones que faltan, cada una en su transacción, con un candado asesor de PostgreSQL para que dos instancias no choquen. |
-| `database/migraciones/` | `001_exclusion.sql`: tabla `exclusion`, con `CHECK` de longitudes, estados y motivos, y de que una activa tenga prueba. |
+| `database/migraciones/` | `001_exclusion.sql`: tabla `exclusion`, con `CHECK` de longitudes, estados y motivos, y de que una activa tenga prueba. `002_exclusion_evento.sql`: la auditoría. |
 
 ### Respuesta uniforme
 
@@ -71,6 +74,15 @@ decisión queda en una persona.
 - No usa la librería de `defamatory-content-review` a propósito: depender de otra
   carpeta por composer acopla dos proyectos. Si se decide la fonética, se reusa entonces.
 
+### Auditoría
+
+Cada paso de una solicitud (`solicitada`, `verificada`, `rechazada`, `revocada`) deja un
+evento con el actor y la hora. La base **no deja editar ni borrar** esa tabla: un
+disparador rechaza `UPDATE`, `DELETE` y `TRUNCATE`. Si falla el registro del evento, no
+queda el cambio de estado (misma transacción). El actor es un identificador opaco, no un
+nombre, y el evento no copia la razón ni la prueba, para que el historial no acumule datos
+personales.
+
 ### Concurrencia
 
 - **Un id repetido nunca pisa a otra solicitud.** `insertar` falla con `DomainException` si el
@@ -95,7 +107,6 @@ Esta lista la decidió la persona a cargo el 2026-11-20 (se dejan los cuatro mot
 
 ### Pendiente
 
-- La auditoría (PR siguiente).
 - Conectar la coincidencia con el registro: hoy `Exclusion` guarda el id de la persona, no su
   apellido, y el apellido lo tiene la plataforma. Quien consulte pasa los apellidos de las excluidas.
 - Mostrar el marcador de `url-routing` donde aparece una persona excluida (ver «Alcance»).
@@ -120,8 +131,8 @@ una omisión es un fallo, como en la CI.
 
 La CI (`.github/workflows/pruebas-personas-especiales.yml`) corre PHPUnit en PHP 8.1 a 8.4
 contra PostgreSQL 16 (con `--fail-on-skipped`), aplica las migraciones dos veces con
-`bin/migrar.php` y comprueba que la base rechace lo que debe (una activa sin prueba y un
-motivo de texto libre), y corre PHPStan 2.1 en nivel `max`.
+`bin/migrar.php` y comprueba que la base rechace lo que debe (una activa sin prueba, un
+motivo de texto libre y editar o borrar la auditoría), y corre PHPStan 2.1 en nivel `max`.
 
 ## Dependencias
 

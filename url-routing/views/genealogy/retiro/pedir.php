@@ -29,4 +29,4 @@ $error = static fn(string $campo): string => isset($errores[$campo])
     <p class="meta"><?= esc(t('retiro.guardamos')) ?></p>
     <button type="submit"><?= esc(t('retiro.enviar')) ?></button>
 </form>
-<?php $content = ob_get_clean(); $title = t('retiro.title'); $noindex = true; include __DIR__ . '/../_layout.php';
+<?php $content = ob_get_clean(); $title = t('retiro.title'); $noindex = true; $traducida = true; include __DIR__ . '/../_layout.php';

@@ -335,7 +335,7 @@ Din Goetia (secolul al XVII-lea), un grimoriu care nu face parte din Biblie. Fie
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Rege | 66 | 21/03 – 25/03 | Invizibilitate, înțelepciune |
 | 2 | Agares | Duce | 31 | 26/03 – 30/03 | Limbi, fugari, cutremure |
-| 3 | Vassago | Prinț | — | 31/03 – 04/04 | Trecut și viitor, obiecte pierdute |
+| 3 | Vassago | Prinț | 26 | 31/03 – 04/04 | Trecut și viitor, obiecte pierdute |
 | 4 | Samigina | Marchiz | 30 | 05/04 – 09/04 | Arte liberale, sufletele celor morți |
 | 5 | Marbas | Președinte | 36 | 10/04 – 14/04 | Secrete, boli, vindecare, arte mecanice |
 | 6 | Valefor | Duce | 10 | 15/04 – 19/04 | Spirite familiare, furt |
@@ -353,7 +353,7 @@ Din Goetia (secolul al XVII-lea), un grimoriu care nu face parte din Biblie. Fie
 | 18 | Bathin | Duce | 30 | 16/06 – 20/06 | Plante, pietre prețioase, deplasări rapide |
 | 19 | Sallos | Duce | 30 | 21/06 – 26/06 | Dragoste |
 | 20 | Purson | Rege | 22 | 27/06 – 02/07 | Comori, trecut și viitor, spirite familiare |
-| 21 | Marax | Președinte / Conte | 30 | 03/07 – 07/07 | Astronomie, arte liberale, plante |
+| 21 | Marax | Președinte / Conte | 36 | 03/07 – 07/07 | Astronomie, arte liberale, plante |
 | 22 | Ipos | Conte / Prinț | 36 | 08/07 – 12/07 | Trecut și viitor, curaj, spirit |
 | 23 | Aim | Duce | 26 | 13/07 – 17/07 | Incendii, spirit, secrete |
 | 24 | Naberius | Marchiz | 19 | 18/07 – 22/07 | Retorică, arte, onoruri |
@@ -389,7 +389,7 @@ Din Goetia (secolul al XVII-lea), un grimoriu care nu face parte din Biblie. Fie
 | 54 | Murmur | Duce / Conte | 30 | 17/12 – 21/12 | Muzică, filosofie, sufletele celor morți |
 | 55 | Orobas | Prinț | 20 | 22/12 – 26/12 | Trecut și viitor, favoare, loialitate |
 | 56 | Gremory | Duce | 26 | 27/12 – 31/12 | Comori, dragoste, trecut și viitor |
-| 57 | Ose | Președinte | 3 | 01/01 – 05/01 | Arte liberale, transformare, nebunie |
+| 57 | Ose | Președinte | 30 | 01/01 – 05/01 | Arte liberale, transformare, nebunie |
 | 58 | Amy | Președinte | 36 | 06/01 – 10/01 | Astrologie, arte liberale, comori |
 | 59 | Orias | Marchiz | 30 | 11/01 – 15/01 | Astrologie, transformare, onoruri |
 | 60 | Vapula | Duce | 36 | 16/01 – 19/01 | Arte mecanice, filosofie, științe |
@@ -400,7 +400,7 @@ Din Goetia (secolul al XVII-lea), un grimoriu care nu face parte din Biblie. Fie
 | 65 | Andrealphus | Marchiz | 30 | 09/02 – 13/02 | Matematică, astronomie, transformare |
 | 66 | Kimaris | Marchiz | 20 | 14/02 – 18/02 | Retorică, logică, obiecte pierdute |
 | 67 | Amdusias | Duce | 29 | 19/02 – 23/02 | Muzică, copaci |
-| 68 | Belial | Rege | 50 | 24/02 – 28/02 | Favoare, demnități, spirite familiare |
+| 68 | Belial | Rege | 80 | 24/02 – 28/02 | Favoare, demnități, spirite familiare |
 | 69 | Decarabia | Marchiz | 30 | 01/03 – 05/03 | Păsări, pietre prețioase, plante |
 | 70 | Seere | Prinț | 26 | 06/03 – 10/03 | Deplasări rapide, furt, obiecte pierdute |
 | 71 | Dantalion | Duce | 36 | 11/03 – 15/03 | Gânduri, științe, dragoste |

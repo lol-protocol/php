@@ -6,7 +6,7 @@ import { PIELES, CABELLOS } from './datos/colores.js';
 import { PRENDAS } from './datos/prendas.js';
 import { REGIONES } from './datos/atuendos.js';
 import { PEINADOS_ID, BARBAS_ID, TOCADOS_ID } from './cabeza.js';
-import { CORPULENCIAS, POSTURAS, EDAD_MIN, EDAD_MAX, ALTURA_MIN, ALTURA_MAX, CORPULENCIA_MIN, CORPULENCIA_MAX } from './cuerpo.js';
+import { CORPULENCIAS, POSTURAS, SALUDOS_ESTILO, EDAD_MIN, EDAD_MAX, ALTURA_MIN, ALTURA_MAX, CORPULENCIA_MIN, CORPULENCIA_MAX } from './cuerpo.js';
 import { esHex } from './util.js';
 
 const lista = (v) => v.join(', ');
@@ -23,7 +23,7 @@ export const ESTILOS_ROPA_NUEVA = ['sobrio', 'trabajo', 'festivo', 'ceremonial']
 export const ESQUEMAS = ['analogo', 'complementario', 'triada', 'monocromo', 'tierra', 'festivo'];
 export const SALUDOS = ['derecha', 'izquierda', 'ninguno', 'ninguna'];
 const BRAZOS_LIBRES = ['abajo', 'cintura', 'bolsillo', 'pecho'];
-const MANOS = ['juntas', 'cruzados'];
+const MANOS = ['juntas', 'plegaria', 'cruzados', 'jarras'];
 
 /** Comprueba las opciones de `generarPersona` (y de `generarRopaNueva`); no cambia nada, solo lanza si algo no vale. */
 export function validarOpciones(opc = {}) {
@@ -41,6 +41,7 @@ export function validarOpciones(opc = {}) {
   if (opc.pose !== undefined && opc.pose !== null && typeof opc.pose !== 'object') enLista('Pose', opc.pose, ['casual', 'firme', 'infantil', 'mayor', 'segun-edad']);
   if (opc.pose && typeof opc.pose === 'object') {
     if (opc.pose.brazoLibre !== undefined) enLista('pose.brazoLibre', opc.pose.brazoLibre, BRAZOS_LIBRES);
+    if (opc.pose.saludoEstilo !== undefined) enLista('pose.saludoEstilo', opc.pose.saludoEstilo, Object.keys(SALUDOS_ESTILO));
     if (opc.pose.manos !== undefined) enLista('pose.manos', opc.pose.manos, MANOS);
     if (opc.pose.carga !== undefined) enLista('pose.carga', opc.pose.carga, [-1, 0, 1]);
   }

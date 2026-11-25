@@ -335,7 +335,7 @@ Kutoka Goetia (karne ya 17), kitabu cha uchawi kisicho sehemu ya Biblia. Kila ro
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Mfalme | 66 | 21/03 – 25/03 | Kutoonekana, hekima |
 | 2 | Agares | Duki | 31 | 26/03 – 30/03 | Lugha, wakimbizi, matetemeko ya ardhi |
-| 3 | Vassago | Mwana wa mfalme | — | 31/03 – 04/04 | Yaliyopita na yajayo, vitu vilivyopotea |
+| 3 | Vassago | Mwana wa mfalme | 26 | 31/03 – 04/04 | Yaliyopita na yajayo, vitu vilivyopotea |
 | 4 | Samigina | Markizi | 30 | 05/04 – 09/04 | Sanaa huru, roho za wafu |
 | 5 | Marbas | Rais | 36 | 10/04 – 14/04 | Siri, magonjwa, uponyaji, sanaa za ufundi |
 | 6 | Valefor | Duki | 10 | 15/04 – 19/04 | Pepo wasaidizi, wizi |
@@ -353,7 +353,7 @@ Kutoka Goetia (karne ya 17), kitabu cha uchawi kisicho sehemu ya Biblia. Kila ro
 | 18 | Bathin | Duki | 30 | 16/06 – 20/06 | Mimea, vito vya thamani, safari za haraka |
 | 19 | Sallos | Duki | 30 | 21/06 – 26/06 | Upendo |
 | 20 | Purson | Mfalme | 22 | 27/06 – 02/07 | Hazina, yaliyopita na yajayo, pepo wasaidizi |
-| 21 | Marax | Rais / Kaunti | 30 | 03/07 – 07/07 | Astronomia, sanaa huru, mimea |
+| 21 | Marax | Rais / Kaunti | 36 | 03/07 – 07/07 | Astronomia, sanaa huru, mimea |
 | 22 | Ipos | Kaunti / Mwana wa mfalme | 36 | 08/07 – 12/07 | Yaliyopita na yajayo, ujasiri, werevu |
 | 23 | Aim | Duki | 26 | 13/07 – 17/07 | Moto mkubwa, werevu, siri |
 | 24 | Naberius | Markizi | 19 | 18/07 – 22/07 | Balagha, sanaa, heshima |
@@ -389,7 +389,7 @@ Kutoka Goetia (karne ya 17), kitabu cha uchawi kisicho sehemu ya Biblia. Kila ro
 | 54 | Murmur | Duki / Kaunti | 30 | 17/12 – 21/12 | Muziki, falsafa, roho za wafu |
 | 55 | Orobas | Mwana wa mfalme | 20 | 22/12 – 26/12 | Yaliyopita na yajayo, upendeleo, utii |
 | 56 | Gremory | Duki | 26 | 27/12 – 31/12 | Hazina, upendo, yaliyopita na yajayo |
-| 57 | Ose | Rais | 3 | 01/01 – 05/01 | Sanaa huru, mabadiliko, wazimu |
+| 57 | Ose | Rais | 30 | 01/01 – 05/01 | Sanaa huru, mabadiliko, wazimu |
 | 58 | Amy | Rais | 36 | 06/01 – 10/01 | Unajimu, sanaa huru, hazina |
 | 59 | Orias | Markizi | 30 | 11/01 – 15/01 | Unajimu, mabadiliko, heshima |
 | 60 | Vapula | Duki | 36 | 16/01 – 19/01 | Sanaa za ufundi, falsafa, sayansi mbalimbali |
@@ -400,7 +400,7 @@ Kutoka Goetia (karne ya 17), kitabu cha uchawi kisicho sehemu ya Biblia. Kila ro
 | 65 | Andrealphus | Markizi | 30 | 09/02 – 13/02 | Hisabati, astronomia, mabadiliko |
 | 66 | Kimaris | Markizi | 20 | 14/02 – 18/02 | Balagha, mantiki, vitu vilivyopotea |
 | 67 | Amdusias | Duki | 29 | 19/02 – 23/02 | Muziki, miti |
-| 68 | Belial | Mfalme | 50 | 24/02 – 28/02 | Upendeleo, vyeo, pepo wasaidizi |
+| 68 | Belial | Mfalme | 80 | 24/02 – 28/02 | Upendeleo, vyeo, pepo wasaidizi |
 | 69 | Decarabia | Markizi | 30 | 01/03 – 05/03 | Ndege, vito vya thamani, mimea |
 | 70 | Seere | Mwana wa mfalme | 26 | 06/03 – 10/03 | Safari za haraka, wizi, vitu vilivyopotea |
 | 71 | Dantalion | Duki | 36 | 11/03 – 15/03 | Mawazo, sayansi mbalimbali, upendo |

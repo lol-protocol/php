@@ -522,35 +522,49 @@ class PagesTest extends TestCase
         $this->assertStringNotContainsString($noindex, $this->getComoPropietario(self::GENEALOGIA, self::CARLOS)[1], 'not hidden from the owner');
     }
 
-    public function testEveryPageNamesItsCanonicalUrlAndItsOtherLanguages(): void
+    /** A page announces another language only when it is written in it: today that is the form to ask for a withdrawal. */
+    public function testOnlyAPageWrittenInSeveralLanguagesAnnouncesThem(): void
     {
-        [, $body] = $this->get('spa.tudominio.local', '/6128473101/');
+        // A person's page is Spanish text under any subdomain: no hreflang, and one address, the Spanish one.
+        [, $spa] = $this->get('spa.tudominio.local', '/6128473101/');
+        $this->assertStringContainsString('<link rel="canonical" href="http://spa.tudominio.local/6128473101/">', $spa);
+        $this->assertStringNotContainsString('hreflang', $spa);
 
-        $this->assertStringContainsString('<link rel="canonical" href="http://spa.tudominio.local/6128473101/">', $body);
-        $this->assertStringContainsString('<link rel="alternate" hreflang="es" href="http://spa.tudominio.local/6128473101/">', $body);
-        $this->assertStringContainsString('<link rel="alternate" hreflang="en" href="http://eng.tudominio.local/6128473101/">', $body);
-        $this->assertStringContainsString('<link rel="alternate" hreflang="x-default" href="http://tudominio.local/6128473101/">', $body);
+        [, $eng] = $this->get('eng.tudominio.local', '/6128473101/');
+        $this->assertStringContainsString('<link rel="canonical" href="http://spa.tudominio.local/6128473101/">', $eng, 'the English copy is not a page of its own');
+        $this->assertStringNotContainsString('hreflang', $eng);
 
         [, $pos] = $this->get(self::POS, '/81372047/');
-        $this->assertStringContainsString('hreflang="en" href="http://eng.contrastocolor.local/81372047/"', $pos);
+        $this->assertStringNotContainsString('hreflang', $pos);
+        [, $posEng] = $this->get('eng.contrastocolor.local', '/81372047/');
+        $this->assertStringContainsString('<link rel="canonical" href="http://spa.contrastocolor.local/81372047/">', $posEng);
+
+        // The form has its English texts: it names itself and its other language.
+        [, $form] = $this->get('eng.tudominio.local', '/r/6128473101/');
+        $this->assertStringContainsString('<link rel="canonical" href="http://eng.tudominio.local/r/6128473101/">', $form);
+        $this->assertStringContainsString('<link rel="alternate" hreflang="es" href="http://spa.tudominio.local/r/6128473101/">', $form);
+        $this->assertStringContainsString('<link rel="alternate" hreflang="en" href="http://eng.tudominio.local/r/6128473101/">', $form);
+        $this->assertStringContainsString('<link rel="alternate" hreflang="x-default" href="http://tudominio.local/r/6128473101/">', $form);
     }
 
     public function testALanguageIsServedOnlyOnceItIsListed(): void
     {
         $activos = ['IDIOMAS_ACTIVOS' => 'spa,eng,fra'];
 
-        [, $fr] = $this->get('fra.tudominio.local', '/6128473101/', entorno: $activos);
+        // French is listed but has no lang/ table yet: its pages are the Spanish ones, so it announces nothing in French.
+        [, $fr] = $this->get('fra.tudominio.local', '/r/6128473101/', entorno: $activos);
         $this->assertStringContainsString('<html lang="fr">', $fr);
-        $this->assertStringContainsString('<link rel="alternate" hreflang="fr" href="http://fra.tudominio.local/6128473101/">', $fr);
-        $this->assertStringContainsString('<link rel="canonical" href="http://fra.tudominio.local/6128473101/">', $fr);
+        $this->assertStringNotContainsString('hreflang="fr"', $fr, 'no French texts: it must not be announced');
+        $this->assertStringContainsString('hreflang="en" href="http://eng.tudominio.local/r/6128473101/"', $fr, 'the languages that are written are');
+        $this->assertStringContainsString('<link rel="canonical" href="http://spa.tudominio.local/r/6128473101/">', $fr);
 
         // Known but not listed: not a language here, so the Spanish page, with no hreflang for it.
-        [, $de] = $this->get('deu.tudominio.local', '/6128473101/', entorno: $activos);
+        [, $de] = $this->get('deu.tudominio.local', '/r/6128473101/', entorno: $activos);
         $this->assertStringContainsString('<html lang="es">', $de);
         $this->assertStringNotContainsString('hreflang="de"', $de);
 
         // Without the setting, French is not announced either.
-        [, $sin] = $this->get('spa.tudominio.local', '/6128473101/');
+        [, $sin] = $this->get('spa.tudominio.local', '/r/6128473101/');
         $this->assertStringNotContainsString('hreflang="fr"', $sin);
     }
 

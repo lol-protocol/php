@@ -335,7 +335,7 @@ From the Goetia (17th century), a grimoire that is not part of the Bible. Each s
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | King | 66 | 21/03 – 25/03 | Invisibility, wisdom |
 | 2 | Agares | Duke | 31 | 26/03 – 30/03 | Languages, fugitives, earthquakes |
-| 3 | Vassago | Prince | — | 31/03 – 04/04 | Past and future, lost objects |
+| 3 | Vassago | Prince | 26 | 31/03 – 04/04 | Past and future, lost objects |
 | 4 | Samigina | Marquis | 30 | 05/04 – 09/04 | Liberal arts, souls of the dead |
 | 5 | Marbas | President | 36 | 10/04 – 14/04 | Secrets, diseases, healing, mechanical arts |
 | 6 | Valefor | Duke | 10 | 15/04 – 19/04 | Familiar spirits, theft |
@@ -353,7 +353,7 @@ From the Goetia (17th century), a grimoire that is not part of the Bible. Each s
 | 18 | Bathin | Duke | 30 | 16/06 – 20/06 | Plants, precious stones, swift journeys |
 | 19 | Sallos | Duke | 30 | 21/06 – 26/06 | Love |
 | 20 | Purson | King | 22 | 27/06 – 02/07 | Treasures, past and future, familiar spirits |
-| 21 | Marax | President / Earl | 30 | 03/07 – 07/07 | Astronomy, liberal arts, plants |
+| 21 | Marax | President / Earl | 36 | 03/07 – 07/07 | Astronomy, liberal arts, plants |
 | 22 | Ipos | Earl / Prince | 36 | 08/07 – 12/07 | Past and future, courage, wit |
 | 23 | Aim | Duke | 26 | 13/07 – 17/07 | Fires, wit, secrets |
 | 24 | Naberius | Marquis | 19 | 18/07 – 22/07 | Rhetoric, arts, honors |
@@ -389,7 +389,7 @@ From the Goetia (17th century), a grimoire that is not part of the Bible. Each s
 | 54 | Murmur | Duke / Earl | 30 | 17/12 – 21/12 | Music, philosophy, souls of the dead |
 | 55 | Orobas | Prince | 20 | 22/12 – 26/12 | Past and future, favor, loyalty |
 | 56 | Gremory | Duke | 26 | 27/12 – 31/12 | Treasures, love, past and future |
-| 57 | Ose | President | 3 | 01/01 – 05/01 | Liberal arts, transformation, madness |
+| 57 | Ose | President | 30 | 01/01 – 05/01 | Liberal arts, transformation, madness |
 | 58 | Amy | President | 36 | 06/01 – 10/01 | Astrology, liberal arts, treasures |
 | 59 | Orias | Marquis | 30 | 11/01 – 15/01 | Astrology, transformation, honors |
 | 60 | Vapula | Duke | 36 | 16/01 – 19/01 | Mechanical arts, philosophy, sciences |
@@ -400,7 +400,7 @@ From the Goetia (17th century), a grimoire that is not part of the Bible. Each s
 | 65 | Andrealphus | Marquis | 30 | 09/02 – 13/02 | Mathematics, astronomy, transformation |
 | 66 | Kimaris | Marquis | 20 | 14/02 – 18/02 | Rhetoric, logic, lost objects |
 | 67 | Amdusias | Duke | 29 | 19/02 – 23/02 | Music, trees |
-| 68 | Belial | King | 50 | 24/02 – 28/02 | Favor, dignities, familiar spirits |
+| 68 | Belial | King | 80 | 24/02 – 28/02 | Favor, dignities, familiar spirits |
 | 69 | Decarabia | Marquis | 30 | 01/03 – 05/03 | Birds, precious stones, plants |
 | 70 | Seere | Prince | 26 | 06/03 – 10/03 | Swift journeys, theft, lost objects |
 | 71 | Dantalion | Duke | 36 | 11/03 – 15/03 | Thoughts, sciences, love |
