@@ -32,6 +32,9 @@ return [
             ['word' => 'buwaya', 'riskType' => 'animal', 'severity' => 'high', 'forms' => 'noun'],
             ['word' => 'ulupong', 'riskType' => 'animal', 'severity' => 'high', 'forms' => 'noun'],
             ['word' => 'hayup', 'riskType' => 'animal', 'severity' => 'high', 'forms' => 'noun'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'linta', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'bayawak', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'talino' => [
             ['word' => 'tanga', 'riskType' => 'intelectual', 'severity' => 'high', 'forms' => 'noun'],
@@ -51,6 +54,9 @@ return [
             ['word' => 'abnoy', 'riskType' => 'intelectual', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'shunga', 'riskType' => 'intelectual', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'buang', 'riskType' => 'intelectual', 'severity' => 'medium', 'forms' => 'noun'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'tonto', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'hunghang', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'anyo' => [
             ['word' => 'panget', 'riskType' => 'fisico', 'severity' => 'medium', 'forms' => 'noun'],
@@ -107,6 +113,12 @@ return [
             ['word' => 'hinayupak', 'riskType' => 'moral', 'severity' => 'high', 'forms' => 'noun'],
             ['word' => 'bruha', 'riskType' => 'moral', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'pakialamero', 'riskType' => 'moral', 'severity' => 'low', 'forms' => 'noun'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'salbahe', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'hudas', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'taksil', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'manggagantso', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'sipsip', 'riskType' => 'moral', 'severity' => 'low'],
         ],
         'kasarian' => [
             ['word' => 'puta', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun'],
@@ -133,11 +145,18 @@ return [
             ['word' => 'puke', 'riskType' => 'ordinario', 'severity' => 'high', 'forms' => 'noun'],
             ['word' => 'pekpek', 'riskType' => 'ordinario', 'severity' => 'high', 'forms' => 'noun'],
             ['word' => 'jakol', 'riskType' => 'ordinario', 'severity' => 'high', 'forms' => 'noun'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'shet', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'tae', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'peste', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'ampota', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
         'katatawanan' => [
             ['word' => 'payaso', 'riskType' => 'burlesco', 'severity' => 'low', 'forms' => 'noun'],
             ['word' => 'pasaway', 'riskType' => 'burlesco', 'severity' => 'low', 'forms' => 'noun'],
             ['word' => 'kalog', 'riskType' => 'burlesco', 'severity' => 'low', 'forms' => 'noun'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'katawa-tawa', 'riskType' => 'burlesco', 'severity' => 'low'],
         ],
     ],
 ];
