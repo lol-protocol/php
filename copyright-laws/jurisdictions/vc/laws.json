@@ -5,13 +5,13 @@
     "region": "americas",
     "law_name": "Copyright Act, 2003 (Act No. 21 of 2003), revised as Chapter 311 (2009 Revised Edition)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 75 years (anonymous works 50 years; s. 8 covers duration; figure from Wikimedia Commons summary, not statute text) (unconfirmed)",
+    "term_of_protection": "Author's life + 75 years (s. 8(1)); unknown authorship: 50 years from first making available to the public (s. 8(2))",
     "author_rights": "Not specified",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "No general orphan-works regime; s. 54 allows certain acts with anonymous works only if the author cannot be identified by reasonable inquiry and copyright has expired or the author died 75+ years earlier",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
-    "registration_required": "No (unconfirmed)",
+    "registration_required": "No (copyright arises on qualification under s. 6; the Act sets no work registration requirement)",
     "enforcement_body": "Not specified",
     "treaties_signatory": "Berne/TRIPS",
     "treaties_not_party": "",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/fr/legislation/details/11336",
@@ -34,19 +34,19 @@
         "checked": "2026-10-25"
       },
       "term_of_protection": {
-        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Saint_Vincent_and_the_Grenadines.html",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.wipo.int/wipolex/fr/legislation/details/11336",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/fr/legislation/details/11336",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "registration_required": {
         "url": "https://www.wipo.int/wipolex/fr/legislation/details/11336",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "treaties_signatory": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Saint_Vincent_and_the_Grenadines.html",
@@ -55,6 +55,24 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "registration_required",
+        "from": "No (unconfirmed)",
+        "to": "No (copyright arises on qualification under s. 6; the Act sets no work registration requirement)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "No general orphan-works regime; s. 54 allows certain acts with anonymous works only if the author cannot be identified by reasonable inquiry and copyright has expired or the author died 75+ years earlier"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "term_of_protection",
+        "from": "Author's life + 75 years (anonymous works 50 years; s. 8 covers duration; figure from Wikimedia Commons summary, not statute text) (unconfirmed)",
+        "to": "Author's life + 75 years (s. 8(1)); unknown authorship: 50 years from first making available to the public (s. 8(2))"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

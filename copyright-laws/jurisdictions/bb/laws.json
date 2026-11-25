@@ -6,11 +6,11 @@
     "law_name": "Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years (anonymous works publication + 50 years; audiovisual works creation/publication + 50 years)",
-    "author_rights": "Economic rights (unconfirmed)",
-    "moral_rights": "Moral rights recognized (infringement of moral rights is addressed in the 1998 Act; articles not seen) (unconfirmed)",
-    "orphan_works": "Not specified (unconfirmed)",
-    "digital_protection": "Treaty obligations not yet incorporated into the 1998 Act as of 2020 (IIPA); encrypted broadcast provision exists (unconfirmed)",
-    "fair_use_exceptions": "Fair dealing for research and private study, criticism, review and reporting (headings seen on a Barbados Government Printery page) (unconfirmed)",
+    "author_rights": "Exclusive right to reproduce, translate, adapt or arrange, and communicate the work to the public, or authorise others (s.10, subject to ss.24-29)",
+    "moral_rights": "Right to claim authorship, to have it indicated, and to object to distortion, mutilation or derogatory treatment adversely affecting the author's character or reputation (s.11)",
+    "orphan_works": "No general orphan-works rule. Minister may license reproduction of a published work when the reproduction-right owner is unknown, but only after three months (s.28, Second Schedule)",
+    "digital_protection": "Barbados acceded to the WCT and WPPT effective 13 Dec 2019; their obligations were not yet incorporated into the 1998 Act (IIPA 2020 report)",
+    "fair_use_exceptions": "Not a general fair-dealing clause. Permitted uses without consent (s.24(1)): personal use, quotations with source credit, teaching, news and press reporting, library copies",
     "registration_required": "No (no registration requirement found; unconfirmed)",
     "enforcement_body": "Corporate Affairs and Intellectual Property Office (CAIPO)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Barbados.html",
@@ -39,29 +39,29 @@
         "checked": "2026-10-22"
       },
       "author_rights": {
-        "url": "https://caipo.gov.bb/?p=4857",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.wipo.int/wipolex/en/text/125059",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "moral_rights": {
         "url": "https://www.wipo.int/wipolex/en/text/125059",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
-        "url": "https://caipo.gov.bb/?p=4857",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.wipo.int/wipolex/en/text/125059",
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "digital_protection": {
         "url": "https://www.iipa.org/files/uploads/2020/02/2020SPEC301BARBADOS.pdf",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "fair_use_exceptions": {
-        "url": "https://governmentprintery.gov.bb/?p=2899",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.wipo.int/wipolex/en/text/125059",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "registration_required": {
         "url": "https://caipo.gov.bb/?p=4857",
@@ -80,6 +80,36 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "fair_use_exceptions",
+        "from": "Fair dealing for research and private study, criticism, review and reporting (headings seen on a Barbados Government Printery page) (unconfirmed)",
+        "to": "Not a general fair-dealing clause. Permitted uses without consent (s.24(1)): personal use, quotations with source credit, teaching, news and press reporting, library copies"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "digital_protection",
+        "from": "Treaty obligations not yet incorporated into the 1998 Act as of 2020 (IIPA); encrypted broadcast provision exists (unconfirmed)",
+        "to": "Barbados acceded to the WCT and WPPT effective 13 Dec 2019; their obligations were not yet incorporated into the 1998 Act (IIPA 2020 report)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "No general orphan-works rule. Minister may license reproduction of a published work when the reproduction-right owner is unknown, but only after three months (s.28, Second Schedule)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "moral_rights",
+        "from": "Moral rights recognized (infringement of moral rights is addressed in the 1998 Act; articles not seen) (unconfirmed)",
+        "to": "Right to claim authorship, to have it indicated, and to object to distortion, mutilation or derogatory treatment adversely affecting the author's character or reputation (s.11)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Exclusive right to reproduce, translate, adapt or arrange, and communicate the work to the public, or authorise others (s.10, subject to ss.24-29)"
+      },
       {
         "date": "2026-10-22",
         "field": "row",

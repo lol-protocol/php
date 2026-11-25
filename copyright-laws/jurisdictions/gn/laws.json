@@ -5,12 +5,12 @@
     "region": "middle_east_africa",
     "law_name": "Law No. L/2019/0028/AN of 7 June 2019 on Literary and Artistic Property (replaced Law 043/APN/CP/80 of 1980); implementing decree of 20 June 2022",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 70 years (Law L/2019/0028/AN of 7 June 2019, art. 39 as quoted on Commons talk page; quoted text reads 'seventy (80)' so 80 is possible; the repealed 1980 law gave life + 80, photographs/applied art life + 40) (unconfirmed)",
+    "term_of_protection": "Author's life + 70 years, or 80: Art. 39 text reads 'seventy (80)', so the figure is ambiguous",
     "author_rights": "Not specified",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified (unconfirmed)",
     "digital_protection": "New offences assimilated to counterfeiting incl. Beijing Treaty provisions (Art. 117) (unconfirmed)",
-    "fair_use_exceptions": "Reproduction of works permanently in public places allowed unless main subject and commercial (Art. 27); private copying regime exists (details not seen); artist resale right 5% of pre-tax price managed by BGDA (2022 decree) (unconfirmed)",
+    "fair_use_exceptions": "Art. 27 allows reproducing works permanently in public places, unless the image is the main subject and used commercially",
     "registration_required": "Not specified",
     "enforcement_body": "Guinean Copyright Bureau (BGDA)",
     "treaties_signatory": "TRIPS/WCT/WPPT",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-18",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.labase-lextenso.fr/l-essentiel-droits-africains-des-affaires/2022-n10/guinee-precision-des-regles-applicables-aux-droits-d-auteurs-et-droits-voisins-DAA201c6",
@@ -35,8 +35,8 @@
       },
       "term_of_protection": {
         "url": "https://c.enwp.org/wiki/Commons_talk:Copyright_rules_by_territory",
-        "confidence": "low",
-        "checked": "2026-10-18"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.labase-lextenso.fr/l-essentiel-droits-africains-des-affaires/2020-n1/guinee-reforme-du-droit-d-auteur-et-des-droits-voisins-DAA112t3",
@@ -50,8 +50,8 @@
       },
       "fair_use_exceptions": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Guinea.html",
-        "confidence": "low",
-        "checked": "2026-10-18"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "enforcement_body": {
         "url": "https://www.labase-lextenso.fr/l-essentiel-droits-africains-des-affaires/2022-n10/guinee-precision-des-regles-applicables-aux-droits-d-auteurs-et-droits-voisins-DAA201c6",
@@ -65,6 +65,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "fair_use_exceptions",
+        "from": "Reproduction of works permanently in public places allowed unless main subject and commercial (Art. 27); private copying regime exists (details not seen); artist resale right 5% of pre-tax price managed by BGDA (2022 decree) (unconfirmed)",
+        "to": "Art. 27 allows reproducing works permanently in public places, unless the image is the main subject and used commercially"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "term_of_protection",
+        "from": "Author's life + 70 years (Law L/2019/0028/AN of 7 June 2019, art. 39 as quoted on Commons talk page; quoted text reads 'seventy (80)' so 80 is possible; the repealed 1980 law gave life + 80, photographs/applied art life + 40) (unconfirmed)",
+        "to": "Author's life + 70 years, or 80: Art. 39 text reads 'seventy (80)', so the figure is ambiguous"
+      },
       {
         "date": "2026-10-18",
         "field": "row",
