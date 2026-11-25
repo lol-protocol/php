@@ -132,6 +132,47 @@ php bin/chat.php --ia mis-libros/mi.txt               # o marca la casilla en la
   que responda bien. Tampoco activé el reintento automático con otro modelo ante una negativa
   (`fallbacks`): el SDK de PHP lo permite, pero su forma exacta no está documentada aquí.
 
+## Libros largos: el Quijote
+
+`ejemplos/quijote.txt` es *El ingenioso hidalgo don Quijote de la Mancha* completo: 126 capítulos
+(52 de la primera parte y 74 de la segunda, nombrados «Parte I, cap. VIII»: las dos partes
+numeran los suyos desde el I). Es de dominio público; el texto sale del eBook #2000 de Project
+Gutenberg, sin su encabezado ni su licencia, y `bin/preparar-quijote.php` lo arma a partir de él
+(`php bin/preparar-quijote.php pg2000.txt`; con `--comprobar` verifica que el archivo guardado
+sigue al día).
+
+```bash
+php bin/chat.php ejemplos/quijote.txt
+```
+
+Con un libro de más de 1.000 pasajes (`Ajustes::PASAJES_LIBRO_LARGO`) la búsqueda cambia,
+porque un párrafo del Quijote ocupa una página y un párrafo largo gana solo por tener muchas
+palabras:
+
+1. **Ventanas** (`src/Ventanas.php`): cada párrafo largo se parte en ventanas de tres oraciones que
+   se solapan en una, y un párrafo de menos de 150 caracteres («Y dijo don Quijote:») se une con el
+   siguiente.
+2. **Título del capítulo**: sus palabras se suman a cada ventana. Los títulos del Quijote resumen
+   el capítulo («…la espantable y jamás imaginada aventura de los molinos de viento»).
+3. **Dos pasos**: primero el capítulo (por los 5 pasajes que más se parecen, con el título), y
+   después, dentro de él, el pasaje que más se parece por su texto solo.
+
+Los alias de personajes y cosas («Rocinante, rocín, caballo»; «yelmo, bacía, celada») están en
+`ejemplos/quijote.sinonimos.tsv`, que se suma a los generales porque se llama como el libro.
+
+`pruebas/quijote.tsv` tiene 53 preguntas con el capítulo que las responde y una palabra clave del
+pasaje (las 16 últimas son de cosas que **no** salen en los títulos, para no medir solo el truco
+del título). Hoy el primer resultado cae en el capítulo correcto en 43 de 53, y trae la palabra
+clave en 38, contra 28 y 31 de la búsqueda por párrafos. Lo que falla es de búsqueda: una palabra
+parecida en otro capítulo («¿Quién venció a don Quijote en Barcelona?» cae en la fanfarronada del
+Caballero del Bosque) o el capítulo bueno con otro pasaje. Armar el índice tarda menos de un
+segundo y cada pregunta, unos 20 ms.
+
+> **Solo PHP.** El port a Java busca por párrafos, así que no da lo mismo que PHP con un libro
+> largo. Con la muestra y con cualquier libro de menos de 1.000 pasajes, las dos dan lo mismo.
+> Si quieres la búsqueda por párrafos también en un libro largo:
+> `new Conversador($libro, $sinonimos, Ajustes::parrafos())`.
+
 ## Cómo funciona
 
 1. **Normalizar** (`src/Normaliza.php`): minúsculas, sin acentos, sin palabras vacías
@@ -144,10 +185,11 @@ php bin/chat.php --ia mis-libros/mi.txt               # o marca la casilla en la
    `<libro>.sinonimos.tsv` junto al `.txt`: se suma al general.
 3. **Índice** (`src/Indice.php`): cada pasaje es un vector de pesos TF-IDF normalizado. Una
    pregunta se convierte al mismo espacio, y el puntaje es el coseno entre los dos.
-4. **Respuesta** (`src/Conversador.php`, `src/Dialogo.php`): si el puntaje de un pasaje pasa el
+4. **Libros largos** (`src/Ajustes.php`, `src/Ventanas.php`): ver «Libros largos».
+5. **Respuesta** (`src/Conversador.php`, `src/Dialogo.php`): si el puntaje de un pasaje pasa el
    umbral de 0,10, se cita (hasta dos; con IA, hasta cuatro se le dan al modelo). Si ninguno lo
    pasa, se dice que el libro no habla de eso.
-5. **Redacción con IA** (`src/GeneradorClaude.php`): solo en el modo con IA.
+6. **Redacción con IA** (`src/GeneradorClaude.php`): solo en el modo con IA.
 
 ## Documentación de arquitectura
 
@@ -166,7 +208,7 @@ editores los dibujan, y `mmdc` (mermaid-cli) los convierte a SVG o PNG.
 ## Pruebas
 
 ```bash
-php pruebas/ejecutar.php              # 91 pruebas del núcleo, la API web y el modo con IA (con un cliente falso)
+php pruebas/ejecutar.php              # 112 pruebas: el núcleo, el Quijote, la API web y el modo con IA (con un cliente falso)
 php bin/vectores.php --comprobar      # que pruebas/vectores.tsv esté al día
 ```
 
@@ -186,19 +228,24 @@ miden en cuántas acierta la búsqueda con y sin sinónimos (hoy 8 de 8 contra 4
 evaluación pequeña, sobre un solo texto inventado: sirve para notar si un cambio empeora la
 búsqueda, no como medida general de calidad. Para tus libros, escribe tus propias preguntas.
 
+Con el Quijote se comprueba, además, que el archivo tenga sus 126 capítulos y nada de Gutenberg,
+y que la búsqueda para libros largos acierte al menos 40 de 53 capítulos y supere por 8 a la de
+párrafos (`pruebas/quijote.tsv`).
+
 El workflow `pruebas-chat-con-libros.yml` corre las dos y comprueba que `vectores.tsv` coincida.
 
 ## Estructura
 
 ```text
-src/          núcleo en PHP: Normaliza, Sinonimos, Libro, Indice, Conversador, Dialogo, Api,
+src/          núcleo en PHP: Normaliza, Sinonimos, Libro, Ventanas, Ajustes, Indice, Conversador, Dialogo, Api,
               Generador (interfaz), GeneradorClaude (modo con IA) y GeneradorError
-bin/          chat.php (la conversación en la terminal) y vectores.php (genera vectores.tsv)
+bin/          chat.php (la conversación en la terminal), vectores.php (genera vectores.tsv) y
+              preparar-quijote.php (arma ejemplos/quijote.txt desde Project Gutenberg)
 web/          la página (index.html, estilo.css, app.js) y api.php, la entrada de src/Api.php
 datos/        sinonimos.tsv
 java/src/     port a Java de la búsqueda, con Chat.java para la terminal
 java/pruebas/ pruebas del port a Java
-pruebas/      pruebas en PHP, consultas.txt, vectores.tsv y evaluacion.tsv
-ejemplos/     muestra.txt, un cuento inventado para probar
+pruebas/      pruebas en PHP, consultas.txt, vectores.tsv, evaluacion.tsv y quijote.tsv
+ejemplos/     muestra.txt (un cuento inventado para probar) y quijote.txt, con sus sinónimos
 docs/         diagramas de arquitectura en Mermaid (.mmd)
 ```

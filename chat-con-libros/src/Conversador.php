@@ -18,7 +18,19 @@ final class Conversador
     /** Cuántos pasajes se citan como mucho en una respuesta. */
     public const MAX_CITAS = 2;
 
+    /** En la búsqueda en dos pasos: cuántos pasajes de los mejores votan por su capítulo. */
+    public const PASAJES_PARA_CAPITULO = 5;
+
+    /** Índice de los pasajes; en un libro largo, con el título del capítulo sumado a cada uno. */
     private Indice $indice;
+
+    /** Solo en la búsqueda en dos pasos: índice del texto de los pasajes, sin el título. */
+    private ?Indice $indiceTexto = null;
+
+    /** @var list<array{capitulo:string, texto:string}> lo que se busca: párrafos o ventanas de oraciones */
+    private array $unidades;
+
+    private Ajustes $ajustes;
 
     /** @var list<string> las palabras más repetidas del libro */
     private array $temas;
@@ -26,17 +38,33 @@ final class Conversador
     public function __construct(
         private readonly Libro $libro,
         private readonly ?Sinonimos $sinonimos = null,
+        ?Ajustes $ajustes = null,
     ) {
-        $terminosPorPasaje = [];
+        $this->ajustes = $ajustes ?? Ajustes::paraLibro($libro);
+        $this->unidades = $this->ajustes->ventana > 0
+            ? Ventanas::partir($libro->pasajes, $this->ajustes->ventana, $this->ajustes->solape, $this->ajustes->corto)
+            : $libro->pasajes;
+
         $cuenta = [];
         foreach ($libro->pasajes as $pasaje) {
-            $terminosPorPasaje[] = Normaliza::terminos($pasaje['texto']);
             // Para mostrar los temas se cuenta la palabra tal como está escrita, no su raíz.
             foreach (Normaliza::palabras($pasaje['texto']) as $palabra) {
                 $cuenta[$palabra] = ($cuenta[$palabra] ?? 0) + 1;
             }
         }
-        $this->indice = new Indice($terminosPorPasaje);
+
+        $terminosTexto = $terminosIndice = [];
+        foreach ($this->unidades as $unidad) {
+            $t = Normaliza::terminos($unidad['texto']);
+            $terminosTexto[] = $t;
+            $terminosIndice[] = $this->ajustes->titulo
+                ? array_merge($t, Normaliza::terminos((string) preg_replace('/^[^:]*:\s*/', '', $unidad['capitulo'])))
+                : $t;
+        }
+        $this->indice = new Indice($terminosIndice);
+        if ($this->ajustes->dosPasos) {
+            $this->indiceTexto = new Indice($terminosTexto);
+        }
 
         $pares = [];
         foreach ($cuenta as $t => $c) {
@@ -108,17 +136,72 @@ final class Conversador
         if ($this->sinonimos !== null) {
             $terminos = $this->sinonimos->expandir($terminos);
         }
+        if ($this->indiceTexto !== null) {
+            return $this->enDosPasos($terminos, $max);
+        }
         $pasajes = [];
         foreach ($this->indice->buscar($terminos, $max) as $r) {
             if ($r['puntaje'] < self::UMBRAL) {
                 continue;
             }
-            $pasaje = $this->libro->pasajes[$r['pasaje']];
+            $pasaje = $this->unidades[$r['pasaje']];
             $pasajes[] = [
                 'capitulo' => $pasaje['capitulo'],
                 'texto' => $pasaje['texto'],
                 'puntaje' => $r['puntaje'],
             ];
+        }
+        return $pasajes;
+    }
+
+    /**
+     * Búsqueda en dos pasos para un libro largo: (1) los capítulos con más puntaje entre los 5
+     * mejores pasajes (con el título sumado); (2) en cada uno de los $max primeros, el pasaje que
+     * más se parece a la pregunta por su texto solo. Los títulos del Quijote resumen cada capítulo,
+     * así que sirven para elegirlo, pero no para elegir una frase dentro de él.
+     *
+     * @param list<string> $terminos
+     * @return list<array{capitulo:string, texto:string, puntaje:float}>
+     */
+    private function enDosPasos(array $terminos, int $max): array
+    {
+        $mejores = $this->indice->buscar($terminos, self::PASAJES_PARA_CAPITULO);
+        if ($mejores === [] || $mejores[0]['puntaje'] < self::UMBRAL) {
+            return [];
+        }
+        $porCapitulo = [];
+        foreach ($mejores as $r) {
+            $capitulo = $this->unidades[$r['pasaje']]['capitulo'];
+            $porCapitulo[$capitulo] = ($porCapitulo[$capitulo] ?? 0.0) + $r['puntaje'];
+        }
+        arsort($porCapitulo);
+
+        $porTexto = $this->indiceTexto?->buscar($terminos, count($this->unidades)) ?? [];
+        $pasajes = [];
+        foreach (array_slice($porCapitulo, 0, max(0, $max), true) as $capitulo => $puntaje) {
+            $elegido = null;
+            foreach ($porTexto as $r) {
+                if ($r['puntaje'] > 0.0 && $this->unidades[$r['pasaje']]['capitulo'] === (string) $capitulo) {
+                    $elegido = $r['pasaje'];
+                    break;
+                }
+            }
+            if ($elegido === null) {
+                // Ninguna palabra de la pregunta está en el texto del capítulo, solo en su título.
+                foreach ($mejores as $r) {
+                    if ($this->unidades[$r['pasaje']]['capitulo'] === (string) $capitulo) {
+                        $elegido = $r['pasaje'];
+                        break;
+                    }
+                }
+            }
+            if ($elegido !== null) {
+                $pasajes[] = [
+                    'capitulo' => (string) $capitulo,
+                    'texto' => $this->unidades[$elegido]['texto'],
+                    'puntaje' => $puntaje,
+                ];
+            }
         }
         return $pasajes;
     }
