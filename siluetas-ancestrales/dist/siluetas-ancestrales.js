@@ -781,6 +781,21 @@ Object.assign(__e, { PRENDAS_MODA });
 return __e;
 })();
 
+__m['datos/prendas-pueblos'] = (() => {
+const __e = {};
+// Prendas de los pueblos agregados por cobertura de país (ver etnias-pueblos.js). Misma forma que prendas.js; su color
+// sale del perfil de colores-prendas.js.
+
+const { P } = __m['datos/ayuda'];
+
+const PRENDAS_PUEBLOS = [
+  P('foustanella', 'Foustanella: falda plisada de lino', 'inferior', 'falda', { largo: 'rodilla', vuelo: 0.13, cintura: 'natural', pliegues: 8, bajo: 'recto', ribeteBajo: 0.015 }),
+];
+
+Object.assign(__e, { PRENDAS_PUEBLOS });
+return __e;
+})();
+
 __m['datos/prendas'] = (() => {
 const __e = {};
 // Catálogo de prendas. Cada una es una plantilla (src/prendas.js) con sus parámetros, la ranura donde se
@@ -792,6 +807,7 @@ const { PRENDAS_AMPLIADAS } = __m['datos/prendas-ampliadas'];
 const { PRENDAS_SIGLO20 } = __m['datos/prendas-siglo20'];
 const { PRENDAS_REGIONALES_2 } = __m['datos/prendas-regionales-2'];
 const { PRENDAS_MODA } = __m['datos/prendas-moda'];
+const { PRENDAS_PUEBLOS } = __m['datos/prendas-pueblos'];
 
 const PRENDAS = [
   // ===== Egipto y Mesopotamia =====
@@ -1023,6 +1039,7 @@ const PRENDAS = [
   ...PRENDAS_SIGLO20,
   ...PRENDAS_REGIONALES_2,
   ...PRENDAS_MODA,
+  ...PRENDAS_PUEBLOS,
 ];
 
 const PRENDAS_POR_ID = Object.fromEntries(PRENDAS.map((p) => [p.id, p]));
@@ -1519,6 +1536,16 @@ const ATUENDOS_PUEBLOS = [
   A('francocanadiense-mujer', 'Habitante rural francocanadiense', 'norteamerica-moderna', [1800, 1940], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco chal-lana botas-cuero', { A: 'azul-plomo lana-parda rojo-granza', B: BL, C: BL, D: 'cobre' }, { peinados: 'trenza-una recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: 'Ropa rural genérica del Quebec.' }),
   A('isleno-hombre', 'Hombre criollo de las islas', 'latinoamerica-moderna', [1850, 1980], 'm', 'baja', 'guayabera pantalon-recto cinturon-fino zapatos-cuero', { A: 'blanco-lino crema beige', B: BL, C: 'lana-negra', D: 'cobre' }, { peinados: 'corto rizos', barbas: 'bigote ninguna', tocados: 'canotier ninguno', pieles: 'oliva canela bronce castana', conf: 'baja', nota: 'Agrupa islas muy distintas; es ropa cotidiana de clima cálido, no un traje de cada isla.' }),
   A('isleno-mujer', 'Mujer criolla de las islas', 'latinoamerica-moderna', [1850, 1980], 'f', 'baja', 'vestido-sencillo chal-seda sandalias-cuero', { A: 'azul-celeste verde-agua rosa-palido', B: BL, C: BL, D: 'oro' }, { peinados: 'corto recogido rizos', tocados: 'panuelo ninguno', pieles: 'oliva canela bronce castana', conf: 'baja', nota: 'Agrupa islas muy distintas; es ropa cotidiana de clima cálido, no un traje de cada isla.' }),
+  A('neerlandes-hombre', 'Campesino neerlandés', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-campesino pantalon-recto zuecos', { A: 'azul-plomo indigo lana-negra', B: BL, C: 'lana-negra', D: 'plata' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorra-plana', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('neerlandesa-mujer', 'Campesina neerlandesa', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco chal-lana zuecos', { A: 'indigo lana-negra rojo-granza', B: BL, C: BL, D: 'cobre' }, { peinados: 'recogido trenza-una', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('escandinavo-hombre', 'Campesino escandinavo', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-lana pantalon-recto polainas-lana botas-cuero', { A: 'lana-negra azul-marino lana-parda', B: BL, C: 'rojo-granza', D: 'plata' }, { peinados: 'corto', barbas: 'bigote barba-corta ninguna', tocados: 'gorro-lana', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('escandinava-mujer', 'Campesina escandinava', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina corpino falda-larga delantal-bordado chal-lana botas-cuero', { A: 'azul-marino rojo-granza verde-botella', B: BL, C: 'rojo-granza', D: 'plata' }, { peinados: 'trenza-una recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('griego-moderno-hombre', 'Campesino griego con foustanella', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-blanca chaleco-corto foustanella calzas-largas botas-cuero', { A: 'azul-marino lana-negra burdeos', B: BL, C: 'rojo-granza', D: 'oro' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'fez ninguno', pieles: 'clara-calida oliva-clara oliva', conf: 'baja', nota: 'La foustanella y el chaleco bordado variaron mucho por región; el calzado típico (tsarouchia) no está en el catálogo.' }),
+  A('griego-moderno-mujer', 'Campesina griega', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-bordado chal-lana zapatos-cuero', { A: 'azul-marino rojo-granza lana-negra', B: BL, C: 'rojo-granza', D: 'oro' }, { peinados: 'recogido trenza-una', tocados: 'panuelo ninguno', pieles: 'clara-calida oliva-clara oliva', conf: 'baja', nota: NOTA }),
+  A('polaco-hombre', 'Campesino polaco', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-campesino pantalon-recto cinturon-cuero botas-cuero', { A: 'lana-parda azul-marino rojo-granza', B: BL, C: 'rojo-granza', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorra-plana', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('polaca-mujer', 'Campesina polaca', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina corpino falda-volantes delantal-bordado botas-cuero', { A: 'rojo-granza azul-ultramar verde-hoja', B: BL, C: 'azafran', D: 'cobre' }, { peinados: 'trenza-una recogido', tocados: 'panuelo corona-flores ninguno', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('ingles-hombre', 'Campesino inglés', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-largo calzones-rodilla calzas-largas botas-cuero', { A: 'lana-parda umbra kaki', B: BL, C: 'lana-negra', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorra-plana', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('ingles-mujer', 'Campesina inglesa', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco chal-lana botas-cuero', { A: 'azul-plomo rojo-granza lana-parda', B: BL, C: BL, D: 'cobre' }, { peinados: 'recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: NOTA }),
 ];
 
 Object.assign(__e, { ATUENDOS_PUEBLOS });
@@ -4333,6 +4360,11 @@ const ETNIAS_PUEBLOS = [
   E('malayo-cabo', 'Malayo del Cabo', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'malayo-cabo', pieles: 'clara-calida oliva-clara oliva canela', cabellos: MED, peinados: 'corto recogido', barba: 0.4, altura: [157, 170], conf: 'baja', nota: 'Comunidad de origen diverso (Indonesia, India, África oriental y otros); traje genérico de los siglos XIX y XX.' }),
   E('francocanadiense', 'Francocanadiense', { grupo: 'Norteamérica', regiones: 'norteamerica-moderna', prefijos: 'francocanadiense', pieles: 'porcelana clara clara-calida', cabellos: CLARO, peinados: 'corto recogido trenza-una', barba: 0.35, altura: [162, 175], conf: 'baja', nota: 'Traje rural genérico del Quebec de los siglos XIX y XX; no incluye la faja fléchée ni los trajes de los métis.' }),
   E('criollo-isleno', 'Criollo de las islas (Atlántico e Índico)', { grupo: 'Latinoamérica', regiones: 'latinoamerica-moderna', prefijos: 'isleno', pieles: 'oliva canela bronce castana', cabellos: OSC, peinados: 'corto recogido rizos', barba: 0.3, altura: [158, 171], conf: 'baja', nota: 'Agrupa pueblos criollos de islas muy distintas (Cabo Verde, Mauricio, Reunión, Curazao, Jamaica, Barbados, Bahamas…): es una imagen genérica de ropa cotidiana, no de cada isla.' }),
+  E('neerlandes', 'Neerlandés y flamenco', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'neerland', pieles: 'porcelana clara', cabellos: CLARO, peinados: 'corto recogido trenza-una', barba: 0.35, altura: [168, 181], conf: 'baja', nota: 'Traje campesino genérico de los siglos XVIII a XX con zuecos; los trajes de Volendam, Marken, Zelanda o Flandes se distinguen por tocados y colores que no se reproducen.' }),
+  E('escandinavo', 'Escandinavo campesino (danés, sueco, noruego, islandés)', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'escandinav', pieles: 'porcelana clara', cabellos: CLARO, peinados: 'corto trenza-una recogido', barba: 0.35, altura: [166, 179], conf: 'baja', nota: 'Traje campesino genérico del norte de Europa; no reproduce el bunad noruego, el folkdräkt sueco ni los trajes regionales, que cambian de valle en valle. Los sami tienen su propia entrada.' }),
+  E('griego-moderno', 'Griego moderno', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'griego-moderno', pieles: 'clara-calida oliva-clara oliva', cabellos: MED, peinados: 'corto recogido', barba: 0.4, altura: [160, 173], conf: 'baja', nota: 'Traje rural genérico de los siglos XVIII a XX; el griego antiguo tiene su propia entrada. La foustanella varió mucho por región.' }),
+  E('polaco', 'Polaco', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'polac', pieles: 'porcelana clara', cabellos: CLARO, peinados: 'corto trenza-una recogido', barba: 0.35, altura: [163, 176], conf: 'baja', nota: 'Traje campesino genérico; los trajes regionales polacos (Cracovia, Łowicz, Podhale…) se distinguen por bordados y colores que no se reproducen.' }),
+  E('ingles', 'Inglés campesino', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'ingles', pieles: 'porcelana clara', cabellos: CLARO, peinados: 'corto recogido', barba: 0.35, altura: [162, 175], conf: 'baja', nota: 'Ropa rural genérica de los siglos XVIII a XX; escoceses, galeses e irlandeses tienen otras entradas.' }),
 ];
 
 Object.assign(__e, { ETNIAS_PUEBLOS });
@@ -4556,7 +4588,7 @@ const GRUPOS = [
   ['principal', 'CALZADO_CUERO', 'zapatos-cuero zapatos-hebilla zapatos-vestir botas-altas botas-vaqueras botas-militares botas-mongolas botas-tibetanas'],
   ['principal', 'BLANCOS', 'enaguas tallit dishdasha cuello-alto kihei'],
   ['principal', 'TIERRAS', 'bragae escapulario faldon-campesina capa-viaje capa-lluvia-paja sombrero-paja-capa manto-lana-ancho falda-lana-gruesa'],
-  ['principal', 'BLANCOS_RUSTICOS', 'delantal-peto'],
+  ['principal', 'BLANCOS_RUSTICOS', 'delantal-peto foustanella'],
   ['principal', 'LANAS_OSCURAS', 'kepam'],
   ['principal', 'VESTIDOS_GALA', 'capa-ceremonial capa-opera'],
   ['principal', 'LUTO', 'chador'],
