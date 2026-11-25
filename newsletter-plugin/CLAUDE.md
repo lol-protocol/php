@@ -33,8 +33,9 @@ No implementar hasta resolverse:
 - Validación de la lista de campos sensibles, con el contrato (la valida Conce; docs/05, pendiente 3).
 - Ley 21.719 aplicada al newsletter: cotejar docs/06 con el texto oficial (docs/05, pendiente 4).
 - Encargado del correo: faltan el nombre del proveedor y el país de sus servidores (docs/06, sección 3, punto 5).
+- Baja de los avisos sensibles: sin decidir (docs/06, sección 3, punto 3).
 
-Decididos el 18-nov-2026 (ver docs/05): destinatarios, cron en el VPS del host, stack PHP, doble confirmación y umbrales con valores iniciales. Decididos el 20-nov-2026: el host entrega la clasificación con el evento, y la lista sensible incluye opiniones políticas. Decididos el 25-nov-2026: base del aviso sensible (interés legítimo), arranque sin fecha y plazos de conservación.
+Decididos el 18-nov-2026 (ver docs/05): destinatarios, cron en el VPS del host, stack PHP, doble confirmación y umbrales con valores iniciales. Decididos el 20-nov-2026: el host entrega la clasificación con el evento, y la lista sensible incluye opiniones políticas. Decididos el 25-nov-2026: base del aviso sensible (interés legítimo), arranque sin fecha, plazos de conservación, aviso que no nombra campos de categoría especial y correo con solo los apellidos que el titular ya ve.
 
 ## Stack
 PHP, igual que el resto del repo (decidido el 18-nov-2026). La versión mínima se fija al implementar.

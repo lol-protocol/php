@@ -19,6 +19,9 @@ Registradas también en docs/00-inconsistencias.md.
 13. **Arranque del boletín** (25-nov-2026): sin fecha por ahora. No se fija hasta cerrar docs/06.
 14. **Correo** (25-nov-2026): lo envía un proveedor externo, que va como encargado. Falta su nombre y el país de sus servidores.
 15. **Plazos de conservación** (25-nov-2026): `queue_item`, 30 días después del envío; `send_log` y `profile_snapshot`, 6 meses; `sensitive_event`, mientras exista la ficha; `subscriptions`, 6 meses desde la baja. Siguen como supuesto hasta cotejarlos con el texto oficial.
+16. **Aviso sensible y categorías especiales** (25-nov-2026): el aviso no nombra el campo cuando es categoría especial; dice que hubo un cambio y enlaza a la ficha.
+17. **Personas vivas en el correo** (25-nov-2026): el correo solo muestra apellidos que el titular ya ve en la ficha.
+18. **Criterio de bloqueo de docs/06** (25-nov-2026): se mantienen las nueve obligaciones marcadas como bloqueantes. Es criterio del equipo, no de la ley.
 
 ## Decisiones pendientes
 
@@ -30,6 +33,7 @@ Necesarias antes de implementar.
 4. **Ley 21.719 aplicada al newsletter:** revisada en docs/06 (21-nov-2026, actualizada el 25-nov-2026). Falta cotejarla con el texto oficial.
 5. **Versión mínima de PHP:** se fija al implementar. No bloquea los documentos.
 6. **Encargado del correo** (25-nov-2026): falta el nombre del proveedor y el país de sus servidores (docs/06, sección 3, punto 5).
+7. **Baja de los avisos sensibles** (25-nov-2026): sin decidir si el titular puede desactivarlos (docs/06, sección 3, punto 3).
 
 ## Riesgos
 

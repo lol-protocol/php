@@ -74,7 +74,7 @@ El perfil no cambia la fecha de envío: solo segmenta el contenido (decidido el 
 - **Destinatarios:** titular del árbol siempre, y persona afectada si tiene cuenta (decidido el 18-nov-2026).
 - **Fail-closed:** si el submódulo no responde o entrega datos incompletos, el evento se trata como sensible.
 - **Tiempo real:** no pasa por cola, ventana, umbral ni agrupación.
-- **Contenido neutral:** el aviso indica que hubo un cambio y enlaza a la ficha. No reproduce el valor del dato.
+- **Contenido neutral:** el aviso indica que hubo un cambio y enlaza a la ficha. No reproduce el valor del dato, y no nombra el campo si es categoría especial (decidido el 25-nov-2026).
 - **Trazabilidad:** cada evento se registra antes de llamar al carril.
 
 ---
@@ -83,6 +83,7 @@ El perfil no cambia la fecha de envío: solo segmenta el contenido (decidido el 
 
 - El newsletter muestra apellidos y conteos, nunca nombres de terceros ni datos sensibles.
 - El bloque familiar muestra apellidos compartidos y conteos, sin identificar personas.
+- El correo solo muestra apellidos que el titular ya ve en la ficha (decidido el 25-nov-2026).
 
 ---
 

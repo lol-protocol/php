@@ -26,7 +26,11 @@ Registro de contradicciones encontradas durante el diseño, con la resolución p
 | 20 | Arranque del boletín | Sin fecha por ahora; no se fija hasta cerrar docs/06. | Decidido (25-nov-2026) |
 | 21 | Correo del boletín | Lo envía un proveedor externo, que va como encargado. Faltan su nombre y el país de sus servidores (docs/06, sección 3, punto 5). | Pendiente de datos |
 | 22 | Plazos de conservación | `queue_item`: 30 días después del envío. `send_log` y `profile_snapshot`: 6 meses. `sensitive_event`: mientras exista la ficha. `subscriptions`: 6 meses desde la baja. Siguen como supuesto hasta cotejarlos con el texto oficial. | Decidido (25-nov-2026) |
+| 23 | Aviso sensible y categorías especiales | El aviso no nombra el campo cuando es categoría especial: dice que hubo un cambio y enlaza a la ficha. | Decidido (25-nov-2026) |
+| 24 | Personas vivas en el correo | El correo solo muestra apellidos que el titular ya ve en la ficha. | Decidido (25-nov-2026) |
+| 25 | Criterio de bloqueo de docs/06 | Se mantienen las nueve obligaciones marcadas como bloqueantes. Es criterio del equipo, no de la ley. | Decidido (25-nov-2026) |
+| 26 | Baja de los avisos sensibles | Sin decidir: ¿puede el titular desactivarlos? Ver docs/06, sección 3, punto 3. | Pendiente de decisión |
 
 ## Notas
-- Quedan abiertas: la 5 (se decide al implementar), la 8 y la 15 (las valida Conce con el contrato), la 16 (cotejar con el texto oficial), la 17 (se fija al implementar) y la 21 (falta el nombre del proveedor de correo y el país de sus servidores).
+- Quedan abiertas: la 5 (se decide al implementar), la 8 y la 15 (las valida Conce con el contrato), la 16 (cotejar con el texto oficial), la 17 (se fija al implementar), la 21 (falta el nombre del proveedor de correo y el país de sus servidores) y la 26 (baja de los avisos sensibles).
 - Un supuesto no validado no es una decisión. Ver docs/05-riesgos-y-pendientes.md.

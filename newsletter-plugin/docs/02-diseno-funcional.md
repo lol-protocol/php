@@ -39,7 +39,7 @@ NotificationAdapter.estado(evento_id) -> pendiente | entregado | error
 EventoSensible = { id, arbol_id, ref_registro, tipo_cambio, clasificacion, titular_id, afectada_id | null, detectado_at }
 ```
 
-`id` es la clave de idempotencia: un reintento del cron no duplica el aviso. El evento no lleva valores del dato (docs/01, sección 5).
+`id` es la clave de idempotencia: un reintento del cron no duplica el aviso. El evento no lleva valores del dato (docs/01, sección 5), y el aviso no nombra el campo cuando es de categoría especial (decidido el 25-nov-2026).
 
 ---
 
