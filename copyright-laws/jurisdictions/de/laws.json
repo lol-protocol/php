@@ -15,7 +15,7 @@
     "enforcement_body": "Federal Ministry of Justice and Consumer Protection (BMJV)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.dpma.de/",
+    "linked_resources": "https://www.gesetze-im-internet.de/urhg/BJNR012730965.html",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
@@ -30,6 +30,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.dpma.de/",
+        "to": "https://www.gesetze-im-internet.de/urhg/BJNR012730965.html"
+      },
       {
         "date": "2026-10-14",
         "field": "enforcement_body",

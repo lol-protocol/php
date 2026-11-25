@@ -15,7 +15,7 @@
     "enforcement_body": "IP New Zealand / Courts",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.iponz.govt.nz/",
+    "linked_resources": "https://www.legislation.govt.nz/act/public/1994/0143/latest/whole.html",
     "notes": "",
     "pending_change": "Government confirmed in May 2026 a life + 70 term package (UK/EU FTAs); bill expected 2027",
     "pending_date": "",
@@ -24,6 +24,12 @@
     "last_checked": "",
     "sources": {},
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.iponz.govt.nz/",
+        "to": "https://www.legislation.govt.nz/act/public/1994/0143/latest/whole.html"
+      },
       {
         "date": "2026-10-08",
         "field": "treaties_signatory",
