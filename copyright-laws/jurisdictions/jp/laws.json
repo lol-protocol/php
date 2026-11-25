@@ -31,6 +31,18 @@
     },
     "changes": [
       {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.japaneselawtranslation.go.jp/en/laws/view/4207",
+        "to": "https://www.jpo.go.jp/"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.jpo.go.jp/",
+        "to": "https://www.japaneselawtranslation.go.jp/en/laws/view/4207"
+      },
+      {
         "date": "2026-10-14",
         "field": "enforcement_body",
         "from": "Japan Patent Office",
