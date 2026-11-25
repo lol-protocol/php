@@ -24,6 +24,11 @@ No hay datos de personas reales en las pruebas ni en los ejemplos.
 
 ## 2. Lo que el código impide
 
+- **Las consultas de edades de muerte y supervivencia** (`probabilidad_de_llegar_a`, `edades_de_muerte_comunes`…) son
+  **estadística de población por país y década**, y **solo reciben país, año, sexo y edades o cantidades**: una prueba
+  (`test_el_contrato_ninguna_funcion_recibe_una_persona`) falla si alguien les agrega un parámetro que no esté en
+  `PARAMETROS_PERMITIDOS`. Dicen cómo se repartían las muertes en una población, no si algo es verosímil en una
+  familia concreta ni qué riesgo tiene alguien.
 - **Ninguna consulta recibe una persona, una ficha, un apellido ni un origen.** Las funciones de `consultas.py`, de
   `php/src/Mortalidad.php` y de `js/mortalidad.js` reciben términos, años, países, regiones y edades. Una prueba
   (`test_las_hereditarias_son_de_poblacion_no_de_personas`) fija que la tabla de hereditarias solo habla de

@@ -10,6 +10,7 @@ declare(strict_types=1);
  * que los vectores cubren lo que dicen cubrir.
  */
 
+require __DIR__ . '/../src/Modelo.php';
 require __DIR__ . '/../src/Mortalidad.php';
 
 use MortalidadHistorica\Mortalidad;
@@ -93,6 +94,40 @@ foreach ($vectores['londres'] as [$anio, $totales, $viruela, $exceso]) {
     igual($viruela, $obtenido['viruela'] ?? null, "londres $anio viruela");
     casiIgual($exceso, $m->excesoDeMuertesLondres($anio), "londres $anio exceso");
 }
+
+// Estadística de edades de muerte y supervivencia (modelada, por país y década).
+igual(true, count($vectores['plausibilidad']) > 100, 'vectores: plausibilidad');
+$conPlausibilidad = 0;
+foreach ($vectores['plausibilidad'] as [$codigo, $anio, $sexo, $caso]) {
+    $donde = "plausibilidad $codigo $anio $sexo";
+    foreach ($caso['llegar'] as [$edad, $esperado]) {
+        casiIgual($esperado, $m->probabilidadDeLlegarA($codigo, $anio, $edad, $sexo), "$donde llegar a $edad");
+        $conPlausibilidad += $esperado === null ? 0 : 1;
+    }
+    foreach ($caso['esperados'] as [$nacidos, $edad, $esperado]) {
+        casiIgual($esperado, $m->supervivientesEsperados($codigo, $anio, $nacidos, $edad, $sexo), "$donde esperados $nacidos a $edad");
+    }
+    foreach ($caso['fraccion'] as [$desde, $edad, $esperado]) {
+        casiIgual($esperado, $m->fraccionDeMuertesAntesDe($codigo, $anio, $edad, $desde, $sexo), "$donde fracción desde $desde antes de $edad");
+    }
+    foreach ($caso['percentiles'] as [$desde, $p, $esperado]) {
+        casiIgual($esperado, $m->edadDeMuertePercentil($codigo, $anio, $p, $desde, $sexo), "$donde percentil $p desde $desde");
+    }
+    foreach ($caso['comunes'] as [$desde, $esperado]) {
+        $obtenido = $m->edadesDeMuerteComunes($codigo, $anio, $desde, $sexo);
+        igual($esperado === null, $obtenido === null, "$donde comunes desde $desde: hay o no hay");
+        foreach ($esperado ?? [] as $clave => $valor) {
+            casiIgual($valor, $obtenido[$clave] ?? null, "$donde comunes $clave desde $desde");
+        }
+    }
+}
+igual(true, $conPlausibilidad > 200, 'vectores: plausibilidad tiene bastantes casos con dato');
+lanza(fn () => $m->probabilidadDeLlegarA('SE', 1805, 120), 'edad fuera de 0 a 110');
+lanza(fn () => $m->edadDeMuertePercentil('SE', 1805, 1.0), 'p fuera de (0, 1)');
+lanza(fn () => $m->supervivientesEsperados('SE', 1805, -1, 5), 'nacidos negativos');
+lanza(fn () => $m->fraccionDeMuertesAntesDe('SE', 1805, 10, 20), 'edad menor que desde_edad');
+lanza(fn () => $m->probabilidadDeLlegarA('SE', 1805, 5, 'X'), 'sexo inválido');
+igual(null, $m->probabilidadDeLlegarA('GB', 1545, 5), 'antes de 1800 no hay mortalidad infantil: null');
 
 // Los ejemplos del README.
 casiIgual(36.2, $m->esperanzaRestante('SE', 1805), 'README: esperanza al nacer, Suecia 1800-1809');

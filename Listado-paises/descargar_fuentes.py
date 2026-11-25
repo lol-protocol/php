@@ -44,6 +44,8 @@ COMMON_CRAWL = f"{RAW}/commoncrawl/cc-crawl-statistics/ea9a79ea09b492cd2a0afcafb
 # El grapher de Our World in Data y la API del Banco Mundial no tienen versiones fijas: fuentes.sha256 guarda la que se usó.
 POBLACION_OWID = ("https://ourworldindata.org/grapher/population.csv"
                   "?v=1&csvType=full&useColumnShortNames=true")
+CORRUPCION_OWID = ("https://ourworldindata.org/grapher/ti-corruption-perception-index.csv"
+                   "?v=1&csvType=full&useColumnShortNames=true")
 # La API del Banco Mundial tampoco tiene versiones fijas.
 NATALIDAD_BM = ("https://api.worldbank.org/v2/country/all/indicator/SP.DYN.CBRT.IN"
                 "?format=json&per_page=20000&date=1960:2025")
@@ -76,7 +78,7 @@ FIJAS = {
     "emigrantes-gapminder.csv": gapminder(FT, "emigrant_n", "country"),
     "libertad-gapminder.csv": gapminder(FT, "freedstatus_fh", "country"),
     "democracia-gapminder.csv": gapminder(FT, "demox_eiu", "country"),
-    "corrupcion-gapminder.csv": gapminder(FT, "corruption_perception_index_cpi", "country"),
+    "corrupcion-owid.csv": CORRUPCION_OWID,
     "pib-pc.csv": f"{WDI}/indicators/ny.gdp.pcap.cd/data.csv",
     "population.csv": POBLACION_BM,
     "natalidad-bm.json": NATALIDAD_BM,
@@ -120,7 +122,7 @@ def rehacer(destino):
          "--idh", d("idh-gapminder.csv"), "--alfabetizacion", d("alfabetizacion-gapminder.csv"),
          "--internet", d("internet-gapminder.csv"), "--emigrantes", d("emigrantes-gapminder.csv"),
          "--poblacion-gapminder", d("poblacion-gapminder.csv"), "--poblacion-owid", d("poblacion-owid.csv"), "--libertad", d("libertad-gapminder.csv"),
-         "--democracia", d("democracia-gapminder.csv"), "--corrupcion", d("corrupcion-gapminder.csv"),
+         "--democracia", d("democracia-gapminder.csv"), "--corrupcion", d("corrupcion-owid.csv"),
          "--pib-ppa", d("pib-ppa-gapminder.csv"), "--pib-pc-bm", d("pib-pc.csv"), "--poblacion-bm", d("population.csv"),
          "--natalidad-bm", d("natalidad-bm.json")],
         ["historia_poblacion.py"],

@@ -71,13 +71,20 @@ export function createRecordChanges({ dataset }) {
       recordedBefore = [];
     }
     const addedSince = changes.rows.filter((r) => !recordedBefore.some((s) => sameRow(r, s)));
-    return { entries, all, changes, sources, addedSince };
+    return { entries, all, changes, sources, addedSince, masterPath };
+  }
+
+  /** Writes changes.csv and, when a law was renamed, field_sources.csv with its rows moved to the new name. */
+  function writeRecorded({ entries, all, changes, sources, masterPath }) {
+    writeCsv(changes.path, CHANGE_COLUMNS, all);
+    if (entries.some((e) => e.field === "law_name") && sources.rows.length) writeSources(masterPath, sources.rows);
   }
 
   function main(argv = process.argv.slice(2)) {
     const options = parseArgs(argv);
     const gitShow = (rev, path) => execFileSync("git", ["show", `${rev}:./${path}`], { cwd: ROOT, encoding: "utf-8", maxBuffer: 64 * 1024 * 1024 });
-    const { entries, all, changes, sources, addedSince } = recordChanges({ ...options, gitShow });
+    const recorded = recordChanges({ ...options, gitShow });
+    const { entries, all, changes, addedSince } = recorded;
     if (options.check) {
       const missing = unrecorded(entries, addedSince);
       if (!missing.length) {
@@ -93,8 +100,7 @@ export function createRecordChanges({ dataset }) {
       console.log(`✔ no changes since ${options.since}`);
       return 0;
     }
-    writeCsv(changes.path, CHANGE_COLUMNS, all);
-    if (entries.some((e) => e.field === "law_name") && sources.rows.length) writeSources(masterPath, sources.rows);
+    writeRecorded(recorded);
     const rows = new Set(entries.map((e) => `${e.country_code} ${e.law_name}`));
     const added = entries.filter((e) => e.field === ROW_CHANGE).length;
     console.log(`✔ ${entries.length} change(s) in ${rows.size} row(s) since ${options.since} (${added} added/removed) → ${CHANGES_FILE}`);
@@ -102,5 +108,5 @@ export function createRecordChanges({ dataset }) {
     return 0;
   }
 
-  return { recordChanges, main };
+  return { recordChanges, writeRecorded, main };
 }

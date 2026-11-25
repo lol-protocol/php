@@ -23,6 +23,7 @@ import editor
 import modelo
 import plantillas
 import qa
+import regiones as regiones_mod
 from render_raster import a_imagen
 from scene import ALTO, ANCHO, CELDA_REVISION, ESCALA_REVISION, FRANJA_CENTRAL
 
@@ -56,17 +57,24 @@ def catalogo():
     generos = modelo.cargar_generos()
     lista_generos = [{"id": g["id"], "nombre": g["nombre"]} for g in generos["generos"]]
     indice_genero = {g["id"]: i for i, g in enumerate(lista_generos)}
+    regiones = regiones_mod.cargar_regiones()
+    lista_zonas = [{"id": z["id"], "nombre": z["nombre"]} for z in regiones["zonas"]]
+    indice_zona = {z["id"]: i for i, z in enumerate(lista_zonas)}
+    lista_lenguas = [{"id": k, "nombre": v} for k, v in regiones["lenguas"].items()]
+    indice_lengua = {l["id"]: i for i, l in enumerate(lista_lenguas)}
     obras = {(m["id"], a["id"], o["id"]): (a, o) for m in config["movimientos"] for a in m["autores"] for o in a["obras"]}
     autores, piezas = [], []
     for e in _manifiesto():
         clave = (e["movimiento"], e["autor_id"])
         if clave not in [(a["m"], a["id"]) for a in autores]:
-            autores.append({"m": e["movimiento"], "id": e["autor_id"], "nombre": e["autor"]})
+            autores.append({"m": e["movimiento"], "id": e["autor_id"], "nombre": e["autor"],
+                            "z": indice_zona[e["zona"]], "l": indice_lengua[e["lengua"]]})
         autor = next(i for i, a in enumerate(autores) if (a["m"], a["id"]) == clave)
         a, o = obras[(e["movimiento"], e["autor_id"], e["obra_id"])]
         piezas.append([e["id"], autor, e["obra"], e["paleta"], e["arquetipo"], e["motivo"],
                        indice_genero[modelo.genero_de_obra(o, a, generos)]])
-    return {"movs": movs, "autores": autores, "generos": lista_generos, "piezas": piezas}
+    return {"movs": movs, "autores": autores, "generos": lista_generos, "zonas": lista_zonas, "lenguas": lista_lenguas,
+            "piezas": piezas}
 
 
 def datos():

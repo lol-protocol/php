@@ -25,6 +25,9 @@ export const COPIAS = [
   "tests/helpers/php-server.js",
   "tests/translations.test.js",
   "tests/app-names.test.js",
+  "tests/importer.test.js",
+  "tests/verify.test.js",
+  "scripts/verify.js",
   "tests/fixtures/law-page.html",
 ];
 

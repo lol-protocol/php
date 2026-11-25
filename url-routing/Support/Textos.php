@@ -32,6 +32,12 @@ final class Textos
         ));
     }
 
+    /** Whether $idioma has its own table (Spanish, the source, always does): its pages can say they are in that language. */
+    public static function traducido(string $idioma): bool
+    {
+        return $idioma === HostParser::IDIOMA_BASE || self::tabla($idioma) !== [];
+    }
+
     /**
      * The keys a language has written (the tests compare each table with Spanish).
      *

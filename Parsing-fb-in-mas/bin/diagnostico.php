@@ -10,11 +10,15 @@ declare(strict_types=1);
 
 require __DIR__ . '/../src/cargar.php';
 
+use ParsingFbInMas\Cli;
 use ParsingFbInMas\Diagnostico;
 use ParsingFbInMas\Lote;
 
 $archivo = null;
 $esqueleto = false;
+$uso = "Uso: php bin/diagnostico.php pagina.html [--esqueleto]\nEsto no descarga páginas: guarda el HTML y pásame el archivo.\n";
+Cli::validar(array_slice($argv, 1), ['--esqueleto'], $uso);
+
 foreach (array_slice($argv, 1) as $arg) {
     if ($arg === '--esqueleto') {
         $esqueleto = true;
@@ -23,7 +27,7 @@ foreach (array_slice($argv, 1) as $arg) {
     }
 }
 if ($archivo === null || Lote::esUrl($archivo)) {
-    fwrite(STDERR, "Uso: php bin/diagnostico.php pagina.html [--esqueleto]\nEsto no descarga páginas: guarda el HTML y pásame el archivo.\n");
+    fwrite(STDERR, $uso);
     exit(2);
 }
 $html = is_file($archivo) ? file_get_contents($archivo) : false;

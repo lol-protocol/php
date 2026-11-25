@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 /**
  * What the site holds about a persona, and erasing it (see SupresionRepository). For the owner, from the command
- * line; the web app has no page for this.
+ * line. The web app changes and erases nothing: the owner's panel (/0/4/) only makes a delivery (entrega) for a pending
+ * solicitud and shows what a correction would do (rectificar without --confirmar).
  *
  *   php bin/persona.php acceso <id>                              # everything held about her, as JSON
  *   php bin/persona.php resumen <id>                             # a draft of what to tell her: what a visitor sees and counts of the rest

@@ -34,6 +34,14 @@ class TextosTest extends TestCase
         $this->assertSame('Página no encontrada', Textos::t('error.404', [], '../lang/eng'), 'a code that is not three letters never reaches the path');
     }
 
+    public function testWhichLanguagesHaveTheirTexts(): void
+    {
+        $this->assertTrue(Textos::traducido('spa'), 'the source always does');
+        $this->assertTrue(Textos::traducido('eng'));
+        $this->assertFalse(Textos::traducido('fra'), 'no lang/fra.php yet');
+        $this->assertFalse(Textos::traducido('../lang/eng'), 'a code that is not three letters never reaches the path');
+    }
+
     public function testAKeyNobodyWroteIsShownAsItself(): void
     {
         $this->assertSame('error.que_no_existe', Textos::t('error.que_no_existe', [], 'eng'), 'a typo is seen, it is not silent');

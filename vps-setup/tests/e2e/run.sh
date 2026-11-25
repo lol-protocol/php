@@ -149,6 +149,11 @@ check "tras 10_B ya no se sirve" test "$(http "nuevo.$D" /)" = 000
 check "la landing sigue en 200" test "$(http "$D" /)" = 200
 check "nginx -t sigue OK" nginx -t
 
+step "Tope del journal de systemd (07_D)"
+check "07_D dejo el tope de 200M en el drop-in" grep -qx 'SystemMaxUse=200M' /etc/systemd/journald.conf.d/vps-setup.conf
+check "systemd lo ve en la configuracion efectiva de journald" bash -c "systemd-analyze cat-config systemd/journald.conf | grep -qx 'SystemMaxUse=200M'"
+check "journald sigue activo y responde tras el reinicio" bash -c "systemctl is-active --quiet systemd-journald && journalctl --disk-usage"
+
 step "Monitoreo (09_A) y healthcheck sin dominio (08)"
 check "09_A termina bien" ./09_A-setup-monitoring.sh
 check "vps-monitor --dry-run sin problemas" bash -c 'vps-monitor --dry-run | grep -q "OK: sin problemas"'

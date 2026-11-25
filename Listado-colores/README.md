@@ -184,6 +184,8 @@ Límites:
 
 ## Revisión por hablantes nativos
 
+> **`@deprecated` desde el 2026-11-12.** No habrá revisión por hablantes nativos (decisión de la persona que encarga el proyecto), así que este flujo —`revisiones.csv`, `revisiones.md`, el visor y `revision.py`— no se mantiene ni se amplía. Sigue funcionando y las pruebas lo cubren; se conserva por si alguien quiere usarlo, no se borra. Lo escrito por la IA queda marcado como tal (`origen=ia` en los lemas propuestos) y sin revisar.
+
 Casi todo el contenido (traducciones de nombres, significados, léxico y categorías gramaticales) lo escribió un asistente de IA, y **ningún hablante nativo lo ha revisado todavía**. `revisiones.csv` es el registro de quién ha revisado qué; empieza vacío, y `revisiones.md` (generado) dice cuánto está cubierto por idioma y qué correcciones o dudas quedan pendientes.
 
 Para revisar:

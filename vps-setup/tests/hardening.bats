@@ -5,6 +5,10 @@ setup() {
     setup_stubs; setup_system_stubs; export SUDO_EXEC=0
     export SUDO_EXEC=1
     export SSHD_CONF_DIR="$BATS_TEST_TMPDIR/sshd_config.d"
+    # 07_D: el drop-in de journald va a una carpeta de prueba, y "journalctl --vacuum-size" no se ejecuta de verdad
+    # (con SUDO_EXEC=1 recortaria el journal REAL de la maquina que corre los tests): solo se registra.
+    export JOURNALD_CONF_DIR="$BATS_TEST_TMPDIR/journald.conf.d"
+    make_stub journalctl 'echo "journalctl $*" >> "$SUDO_LOG"'
     export SSH_TARGET_USER=tester SSH_TARGET_HOME="$BATS_TEST_TMPDIR/home"
     mkdir -p "$SSH_TARGET_HOME"
     # sshd falso: -t valida (rc configurable), -T imprime la config efectiva
@@ -379,4 +383,29 @@ exit 0'
     printf 'ID=ubuntu\nVERSION_ID="24.04"\n' > "$OS_RELEASE"
     : > "$SUDO_LOG"; run bash "$VPS_DIR/01-system-update.sh"
     [ "$status" -eq 0 ]
+}
+
+# ---- 07_D: tope del journal de systemd ----
+@test "07_D limita el journal de systemd con un drop-in propio (200M por defecto) y reinicia journald" {
+    export LOGROTATE_CONF="$BATS_TEST_TMPDIR/nginx-domains" JOURNALD_CONF_DIR="$BATS_TEST_TMPDIR/journald.conf.d"
+    run bash "$VPS_DIR/07_D-setup-logrotate.sh"
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    f="$JOURNALD_CONF_DIR/vps-setup.conf"
+    grep -qx '\[Journal\]' "$f" && grep -qx 'SystemMaxUse=200M' "$f"
+    [ "$(grep -c '^SystemMaxUse=' "$f")" -eq 1 ]
+    grep -q 'systemctl restart systemd-journald' "$SUDO_LOG"
+    grep -q 'journalctl --vacuum-size=200M' "$SUDO_LOG"
+    [[ "$output" == *"Journal de systemd limitado a 200M"* ]]
+}
+
+@test "07_D: JOURNAL_MAX_USE cambia el tope, re-correr no duplica nada y un valor invalido se rechaza antes de tocar nada" {
+    export LOGROTATE_CONF="$BATS_TEST_TMPDIR/nginx-domains" JOURNALD_CONF_DIR="$BATS_TEST_TMPDIR/journald.conf.d"
+    JOURNAL_MAX_USE=1G bash "$VPS_DIR/07_D-setup-logrotate.sh" > /dev/null
+    JOURNAL_MAX_USE=1G bash "$VPS_DIR/07_D-setup-logrotate.sh" > /dev/null
+    f="$JOURNALD_CONF_DIR/vps-setup.conf"
+    grep -qx 'SystemMaxUse=1G' "$f" && [ "$(grep -c '^SystemMaxUse=' "$f")" -eq 1 ]
+    : > "$SUDO_LOG"
+    JOURNAL_MAX_USE='200M; rm' run bash "$VPS_DIR/07_D-setup-logrotate.sh"
+    [ "$status" -eq 2 ]
+    [ ! -s "$SUDO_LOG" ] && grep -qx 'SystemMaxUse=1G' "$f"
 }

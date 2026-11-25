@@ -12,11 +12,14 @@ Pequeño sistema en PHP (sin framework) para analizar:
   registrar su pago. Se ve por defecto a los que tienen saldo vencido, o todo el saldo abierto, y se
   ordena por monto vencido, antigüedad, saldo o nombre. Sus totales son los del Dashboard: las dos
   pantallas salen de la misma consulta (`IngresosYCobrosRepository::saldosAbiertosSql()`).
-- **Flujo de caja esperado** (`?page=flujo`): lo que falta cobrar, repartido por el mes en que vence
-  cada boleta abierta, en USD a la tasa de hoy: lo ya vencido aparte, un mes por cada uno de los
+- **Flujo de caja esperado** (`?page=flujo`): lo que falta cobrar, repartido por el mes en que se
+  espera cobrarlo, en USD a la tasa de hoy: lo ya vencido aparte, un mes por cada uno de los
   próximos 3, 6 (por defecto) o 12, y «Más adelante». La suma de las filas es exactamente la cartera
-  pendiente del Dashboard (sale de la misma consulta). Supone que cada boleta se cobra el día de su
-  vencimiento: no predice cuándo va a pagar cada cliente, y por eso lo vencido no se reparte.
+  pendiente del Dashboard (sale de la misma consulta). **Cuándo se espera cada cobro** lo elige el
+  selector «Cobro esperado» (`?supuesto=`): con **el atraso habitual de cada cliente** (por defecto)
+  cada boleta por vencer se corre según cuánto suele atrasarse ese cliente; con **el día del
+  vencimiento** se supone que todos pagan a tiempo. Es una estimación, no una promesa de pago, y lo
+  vencido no se reparte en ninguno de los dos (ver «Atraso habitual» en las notas de diseño).
 - **Tasas de cambio** (`?page=tasas`): una fila por moneda con su tasa de hoy (cuántos dólares vale una
   unidad y cuántas unidades vale un dólar), la fecha de su cotización y cuánto cambió en 30 días; con
   `?moneda=CLP`, el historial de esa moneda, paginado, con el cambio de cada fila frente a la anterior.
@@ -24,7 +27,10 @@ Pequeño sistema en PHP (sin framework) para analizar:
   «Historial de las tasas»). Se exporta a CSV (ver «Exportar a CSV»).
 - **Pagos**: por mes y por método (transferencia, tarjeta, efectivo).
 - **Funnel de conversión**: visitante → registrado → lead → cliente, con tasas por
-  etapa, por canal de adquisición y por país/género/rango de edad.
+  etapa, por canal de adquisición y por país/género/rango de edad. Y lo que **vale cada
+  canal**: de los usuarios que visitaron en el período, lo que ya cobraron los que se volvieron
+  clientes (pagos menos notas de crédito, en USD, hasta hoy), su LTV por cliente y lo que vale
+  cada visita («Por visitante»). Ver «Ingresos por canal» en las notas de diseño.
 - **Cohortes**: qué % de cada cohorte (mes de primera visita) convirtió a cliente
   dentro de 0, 1, 2 o 3 meses.
 - **Segmentación de clientes**: top país, ciudad, idioma, género y rango de edad por facturación. La ciudad
@@ -74,8 +80,8 @@ Pequeño sistema en PHP (sin framework) para analizar:
   email de los clientes): valen las mismas precauciones de acceso que el resto de la app
   (ver «Antes de exponerlo»), y se mandan con `Cache-Control: no-store`.
   El **Flujo de caja** también se exporta (`?page=flujo-csv`): las filas de la pantalla con el
-  horizonte elegido (el vencimiento como «Ya vencido», «Más adelante» o el mes `AAAA-MM`, y el
-  saldo como número en dólares). No lleva fila de totales: los clientes de una fila se repiten en
+  horizonte y el supuesto elegidos (el cobro esperado como «Ya vencido», «Más adelante» o el mes
+  `AAAA-MM`, y el saldo como número en dólares). No lleva fila de totales: los clientes de una fila se repiten en
   otra y no se pueden sumar. Las **Tasas de cambio** también (`?page=tasas-csv`): sin moneda, el
   resumen de todas; con `?moneda=CLP`, **todo** el historial de esa moneda, no solo la página que
   se ve. Las tasas van como números con sus decimales (ocho el valor en dólares, seis las unidades
@@ -223,10 +229,11 @@ Todo se lee de variables de entorno (con PHP-FPM, `env[...]` en el pool):
 
 ### Tasas de cambio
 
-Los totales en USD de Dashboard, Cobros, Pagos y Cohortes convierten cada monto con
-una tasa de `monedas.tasa_a_usd` (cuál, en «La tasa de cada día», más abajo). La
-migración `005` las carga con valores de ejemplo, y mientras sigan así esas cuatro
-pantallas lo avisan arriba. Para cargar las reales:
+Los totales en USD de Dashboard, Cobros, Pagos, Cohortes, Cobranza, Flujo de caja, Tasas de
+cambio y Funnel (sus ingresos por canal) convierten cada monto con una tasa de
+`monedas.tasa_a_usd` (cuál, en «La tasa de cada día», más abajo). La migración `005` las
+carga con valores de ejemplo, y mientras sigan así esas pantallas lo avisan arriba. Para
+cargar las reales:
 
 ```bash
 php bin/actualizar_tasas.php             # baja las tasas y las guarda
@@ -297,10 +304,9 @@ de esas tres columnas no agrega filas.
 - Una fila de ejemplo (`cotizada_en` vacío) no se compara con una real: el «cambio» entre una cifra
   inventada y una verdadera no dice nada. Y mientras el historial real no llegue a 30 días atrás, el
   resumen no muestra cambio en 30 días.
-- **No cambia ninguna cifra**: las boletas, los pagos y las notas de crédito siguen guardando su propia
-  tasa (ver «La tasa de cada día»), y una boleta cargada hoy con fecha de hace tres meses sigue quedando con
-  la tasa de hoy. Cotizarla con la de su fecha, ahora que hay de dónde sacarla, cambiaría los reportes y
-  es una decisión aparte.
+- **No cambia ninguna cifra ya cargada**: las boletas, los pagos y las notas de crédito guardan su propia
+  tasa (ver «La tasa de cada día»). Desde la migración `020` las filas **nuevas** la toman de este
+  historial según su fecha; lo que ya existe no se toca.
 - No se borra ni se limpia solo: es como mucho una fila por moneda por día, y solo se lee el historial de
   una moneda a la vez.
 
@@ -318,9 +324,15 @@ cerrado da siempre la misma cifra, aunque la tasa se mueva después: actualizar 
 no toca lo que ya está cargado. Lo único que se valúa a la tasa de hoy es la **cartera
 pendiente** (lo que todavía se debe), que es plata por cobrar. Cómo se llena:
 
-- Un trigger de la base graba la tasa de `monedas` en cada alta que venga sin una, así
-  que lo mismo da una boleta cargada en la app que un `INSERT` a mano o el seed. Una
-  tasa que se pase explícita se respeta (una importación con su propia cotización).
+- Un trigger de la base graba la tasa en cada alta que venga sin una, así que lo mismo da
+  una boleta cargada en la app que un `INSERT` a mano o el seed. Una tasa que se pase
+  explícita se respeta (una importación con su propia cotización). **Cuál tasa** (migración
+  `020`, solo para filas nuevas): la de la **fecha de la fila** (`fecha_emision`, `fecha_pago`
+  o `fecha` de la nota), es decir, la última cotización del historial hecha ese día o antes;
+  si la fecha es de hoy o futura, o el historial no tiene nada de esa fecha o anterior (empieza
+  con la `018`; una tasa de ejemplo no cuenta), la de `monedas`, la de hoy. Por eso un pago se
+  convierte con la tasa de su fecha de pago y no con la de la boleta: la diferencia es la
+  diferencia de cambio.
 - Editar un monto o una fecha no vuelve a cotizar: la moneda no se puede cambiar.
 - La nota de crédito toma el promedio, ponderado por monto, de las tasas de los pagos
   que devuelve, para que el cobro y la devolución se cancelen en USD aunque la tasa se
@@ -328,11 +340,11 @@ pendiente** (lo que todavía se debe), que es plata por cobrar. Cómo se llena:
 - La primera vez que una moneda recibe una tasa real, las boletas, pagos y notas que se
   habían grabado con la de ejemplo pasan a esa tasa real (`--simular` dice cuántas
   filas son). Desde ahí ya no se mueven.
-- **Límite:** la base no guarda un historial de cotizaciones. Una boleta cargada hoy
-  con fecha de hace tres meses queda con la tasa de hoy, no con la de esa fecha, y lo
-  mismo vale para lo que ya existía cuando se aplicó la migración. Si hace falta la
-  tasa exacta de cada fecha, falta una tabla de cotizaciones por día (y una importación
-  que las use: las filas aceptan una tasa explícita).
+- **Límite:** el historial empieza con la migración `018` y solo guarda las cotizaciones que la
+  base vio (una por corrida de `actualizar_tasas.php`). Una boleta de una fecha anterior a la
+  primera cotización guardada queda con la tasa de hoy, y las filas que ya existían cuando se
+  aplicó la `020` no se recotizan. Si hace falta la tasa exacta de fechas más viejas, falta
+  cargar cotizaciones por día (las filas aceptan una tasa explícita).
 
 ### Pagos con fecha futura
 
@@ -567,6 +579,18 @@ Hay tres suites:
 - `tests/Http`: levanta la app con `php -S` y la recorre por HTTP como un navegador
   (CSRF, formularios, redirecciones). Cubre lo que los otros no alcanzan: el
   cableado de `public/index.php` y los controllers. Lo que crea se borra al terminar.
+  `ConcurrenciaTest` es la excepción en cómo corre: levanta **dos servidores** (dos procesos
+  de `php -S`, cada uno con su conexión a la base) y les manda dos peticiones a la vez, de
+  dos sesiones distintas: dos pagos que juntos superan el saldo de la boleta (solo uno
+  entra), un pago que llega mientras se anula la boleta (queda dentro de la nota de crédito o
+  se rechaza) y dos anulaciones simultáneas (una sola nota). Prueba el flujo completo: si un
+  controlador deja de tomar el candado de la boleta, o valida antes de tomarlo, falla,
+  cosa que las piezas de `AnulableTest` no ven. Para que el solapamiento no dependa de la
+  suerte, un trigger temporal duerme 0,8 s al insertar en `pagos` o `notas_credito` (lo
+  borra al terminar); con el candado el resultado es el mismo en cualquier orden, así que no
+  falla por lentitud. No usa `PHP_CLI_SERVER_WORKERS`: los trabajadores comparten el socket y
+  uno puede atender las dos peticiones una tras otra. No cubre editar una boleta o un pago
+  mientras se paga.
 
 PHPStan corre en nivel 8, el que revisa los nulos (por ejemplo, el resultado de un
 `porId()` usado sin chequear que la entidad exista). Las excepciones están
@@ -593,8 +617,12 @@ src/
                       CobranzaRepository (esa cartera por cliente),
                       FlujoDeCajaRepository (esa cartera por mes de vencimiento),
                       HistorialDeTasasRepository (el historial de las tasas de cambio) y
+                      FunnelRepository (conversión por etapa, canal, país, género y edad;
+                      ingresos por canal) y
                       SegmentacionRepository (top país/ciudad/idioma/género/edad,
-                      LTV por cohorte) para el reporting, que no es CRUD y crecía
+                      LTV por cohorte; su `cobradoNetoPorClienteSql()` es la única definición
+                      de «cobrado» de un cliente, que usan el LTV y los ingresos por canal)
+                      para el reporting, que no es CRUD y crecía
                       por separado. AuditoriaRepository también concentra el
                       `auditar()` que usan todos los controllers
                       en vez de repetirlo cada uno. El trait `ConsultasEnRango`
@@ -696,7 +724,9 @@ src/
 database/
   migraciones/          el esquema, el catálogo de ~240 países y sus monedas
                         (ISO 4217), los índices y la regla de mayoría de edad,
-                        en cambios numerados (001 = esquema inicial, 005 =
+                        en cambios numerados (001 = esquema inicial, 002 =
+                        el envío único de los formularios, 003 = la vista
+                        boletas_con_saldo, 004 = valores cerrados, 005 =
                         catálogo, 006 y 008 = índices, 007 = mayoría de edad,
                         009 = origen de las tasas de cambio, 010 = mayoría de
                         edad de cada país, 011 = la tasa de cambio de cada día,
@@ -705,7 +735,8 @@ database/
                         del catálogo de países y monedas, 015 = email único sin
                         importar mayúsculas, 016 = monedas reemplazadas, 017 =
                         mayoría de edad de Puerto Rico, 018 = el historial de las
-                        tasas de cambio)
+                        tasas de cambio, 019 = montos con tres decimales, 020 = la tasa de
+                        la fecha de cada fila nueva)
 bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
@@ -879,6 +910,32 @@ antes de enviarlo, y el servidor lo vuelve a validar.
 
 ## Notas de diseño
 
+- **Atraso habitual** (flujo de caja): para cada cliente, el promedio de días que se atrasó en pagar
+  sus boletas **ya saldadas** (vigentes y pagadas por completo, con el saldo en cero o a un centavo),
+  contado desde el vencimiento hasta su **último** pago vigente. Un pago anticipado cuenta cero y no
+  compensa los atrasos de otras boletas: no se espera cobrar antes de tiempo. Hacen falta **3 boletas
+  pagadas** (`FlujoDeCajaRepository::BOLETAS_MINIMAS_DE_HISTORIAL`); con menos, o sin ninguna, se
+  espera el día del vencimiento. Una boleta anulada, una pagada a medias o una cuyo pago se anuló no
+  cuentan: de su atraso no se sabe nada. El promedio es por boleta (no ponderado por monto) y se
+  redondea al día. Cada boleta **por vencer** se espera el día de su vencimiento más ese atraso; la
+  pantalla dice cuánto de lo que falta se movió así. Lo ya vencido va aparte en los dos supuestos.
+  **La suma no cambia con el supuesto**, solo en qué mes cae cada boleta (lo prueba
+  `FlujoDeCajaConAtrasoTest`). Con 120 mil boletas y 90 mil pagos la consulta tarda unos 205 ms
+  (unos 105 ms con el supuesto del vencimiento).
+- **Ingresos por canal** (funnel): la cohorte es la de las visitas del período (los mismos usuarios que
+  cuenta «Conversión por canal», con el mismo orden) y el ingreso es lo que sus clientes **llevan cobrado
+  hasta hoy**, no lo cobrado dentro del período: pagos vigentes menos notas de crédito, cada uno en USD a
+  la tasa que guardó al crearse (la misma definición del LTV por cohorte de alta, en
+  `SegmentacionRepository::cobradoNetoPorClienteSql()`, para que dos pantallas no den cifras distintas del
+  mismo cliente). **LTV por cliente** = cobrado entre los convertidos que tienen un cliente enlazado
+  (`usuarios_funnel.cliente_id`); **Por visitante** = cobrado entre todos los visitantes, hayan comprado o
+  no. Un convertido sin cliente enlazado cuenta como cliente en la conversión pero no tiene ingreso que
+  atribuirle: la pantalla lo avisa y el LTV no lo cuenta. Los clientes que se cargaron directo (sin
+  recorrido en el funnel) no están en ninguna cohorte y el panel dice cuántos son. El total del panel es
+  la suma de las filas, y el LTV total es cobrado entre clientes enlazados, no el promedio de los
+  promedios. Un cliente con solo notas (se le anuló el pago después de la nota) resta, como en el LTV
+  por cohorte. Con 150 mil usuarios del funnel, 30 mil clientes y 90 mil pagos la consulta tarda unos
+  180 ms.
 - «Conversión por país» (funnel) nombra los 10 países con más visitantes y junta el resto en
   una fila «Otros (N países)», para que la tabla sume lo mismo que el resumen; a igual cantidad
   va primero el de nombre menor, así el corte no cambia entre una consulta y otra.

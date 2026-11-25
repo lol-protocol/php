@@ -10,6 +10,8 @@
 
   const T = window.AstrosTexturas;
   const DATOS = window.ASTROS_DATOS;
+  const AJUSTES = window.AstrosAjustes;
+  const ORIENTACION = window.AstrosOrientacion;
 
   const canvas = document.getElementById('escena');
   const aviso = document.getElementById('aviso');
@@ -17,10 +19,11 @@
   const ficha = document.getElementById('ficha');
   const botonGirar = document.getElementById('girar');
   const botonReiniciar = document.getElementById('reiniciar');
+  const deslizadorVelocidad = document.getElementById('velocidad');
+  const textoVelocidad = document.getElementById('velocidad-texto');
 
   const ANCHO_TEXTURA = 1024;
   const ALTO_TEXTURA = 512;
-  const VELOCIDAD_GIRO = 0.35;   // radianes por segundo, igual para todos
   const RADIO_HALO = 1.06;
   const RADIO_CORONA = 1.32;
 
@@ -319,13 +322,37 @@ void main() {
 
   const reducirMovimiento = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // La elección de giro y velocidad se recuerda en este navegador. Si el almacenamiento no está
+  // disponible (modo privado, datos bloqueados), el visor funciona igual con los valores por defecto.
+  const CLAVE_AJUSTES = 'astros3d.ajustes';
+
+  function leerGuardado() {
+    try {
+      const crudo = window.localStorage.getItem(CLAVE_AJUSTES);
+      return crudo ? JSON.parse(crudo) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function guardarAjustes() {
+    try {
+      window.localStorage.setItem(CLAVE_AJUSTES, JSON.stringify({ girando: estado.girando, velocidad: estado.velocidad }));
+    } catch (e) {
+      // sin almacenamiento: no pasa nada
+    }
+  }
+
+  const inicial = AJUSTES.ajustesIniciales(leerGuardado(), reducirMovimiento);
+
   const estado = {
     actual: null,
     yaw: 0.5,
     pitch: 0.25,
     distancia: 3.4,
     giro: 0,
-    girando: !reducirMovimiento,
+    girando: inicial.girando,
+    velocidad: inicial.velocidad,
     arrastrando: false,
     ultimoX: 0,
     ultimoY: 0
@@ -358,7 +385,7 @@ void main() {
     const R = mult(rotX(estado.pitch), rotY(estado.yaw));
     const V = mult(trasladar(-estado.distancia), R);
     const inclinacion = ((a.inclinacion_eje_grados || 0) * Math.PI) / 180;
-    const sentido = a.periodo_rotacion_h < 0 ? -1 : 1;
+    const sentido = ORIENTACION.sentidoDeGiro(a.periodo_rotacion_h, a.inclinacion_eje_grados);
     const M = mult(rotX(inclinacion), rotY(estado.giro * sentido));
 
     // Cuerpo
@@ -415,7 +442,7 @@ void main() {
     if (!estado.ultimoTiempo) estado.ultimoTiempo = ahora;
     const dt = Math.min((ahora - estado.ultimoTiempo) / 1000, 0.1);
     estado.ultimoTiempo = ahora;
-    if (estado.girando && !estado.arrastrando) estado.giro += dt * VELOCIDAD_GIRO;
+    if (estado.girando && !estado.arrastrando) estado.giro += dt * estado.velocidad;
     dibujar(ahora);
     requestAnimationFrame(bucle);
   }
@@ -492,7 +519,7 @@ void main() {
       ['Atmósfera', a.atmosfera]
     ];
     if (a.categoria === 'planeta') {
-      filas.splice(6, 0, ['Inclinación del eje', numeroEs(a.inclinacion_eje_grados, 2) + '°']);
+      filas.splice(6, 0, ['Inclinación del eje', a.inclinacion_eje_grados == null ? 'Desconocida' : numeroEs(a.inclinacion_eje_grados, 2) + '°']);
       filas.push(['Año', numeroEs(a.periodo_orbital_dias, 2) + ' días terrestres']);
       filas.push(['Lunas conocidas', String(a.lunas)]);
       filas.push(['Anillos', a.anillos ? 'Sí' : 'No']);
@@ -517,6 +544,8 @@ void main() {
       dl.appendChild(dd);
     }
     ficha.replaceChildren();
+    // El nombre accesible del lienzo dice qué astro se ve, igual que la ficha.
+    canvas.setAttribute('aria-label', 'Vista 3D de ' + a.nombre);
     const h = document.createElement('h2');
     h.textContent = a.nombre;
     const p = document.createElement('p');
@@ -544,7 +573,7 @@ void main() {
 
   function construirLista() {
     const grupos = [
-      { titulo: 'Planetas', astros: DATOS.astros.filter(a => a.categoria === 'planeta') },
+      { titulo: 'Planetas y planetas enanos', astros: DATOS.astros.filter(a => a.categoria === 'planeta') },
       { titulo: 'Lunas', astros: DATOS.astros.filter(a => a.categoria === 'luna') },
       { titulo: 'Soles (estrellas)', astros: DATOS.astros.filter(a => a.categoria === 'sol') }
     ];
@@ -573,10 +602,22 @@ void main() {
     }
   }
 
-  botonGirar.addEventListener('click', function () {
-    estado.girando = !estado.girando;
+  function actualizarControlesGiro() {
     botonGirar.setAttribute('aria-pressed', String(estado.girando));
     botonGirar.textContent = estado.girando ? 'Pausar giro' : 'Girar';
+    deslizadorVelocidad.value = String(estado.velocidad);
+    textoVelocidad.textContent = 'una vuelta cada ' + AJUSTES.segundosPorVuelta(estado.velocidad) + ' s';
+  }
+
+  botonGirar.addEventListener('click', function () {
+    estado.girando = !estado.girando;
+    actualizarControlesGiro();
+    guardarAjustes();
+  });
+  deslizadorVelocidad.addEventListener('input', function () {
+    estado.velocidad = AJUSTES.limitarVelocidad(deslizadorVelocidad.value);
+    actualizarControlesGiro();
+    guardarAjustes();
   });
   botonReiniciar.addEventListener('click', function () {
     estado.yaw = 0.5;
@@ -585,8 +626,9 @@ void main() {
   });
 
   construirLista();
-  botonGirar.setAttribute('aria-pressed', String(estado.girando));
-  botonGirar.textContent = estado.girando ? 'Pausar giro' : 'Girar';
+  deslizadorVelocidad.min = String(AJUSTES.VELOCIDAD_MINIMA);
+  deslizadorVelocidad.max = String(AJUSTES.VELOCIDAD_MAXIMA);
+  actualizarControlesGiro();
   if (gl) {
     try {
       inicializarGL();

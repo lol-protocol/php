@@ -109,13 +109,32 @@ test('generarTextura: cada astro tiene algo de contraste (no es un color plano)'
   }
 });
 
-test('las estrellas toman el color de su temperatura: Sirio azulado, Betelgeuse rojizo', () => {
+test('las estrellas toman su color propio: Sirio azulado, Betelgeuse rojizo', () => {
   const sirio = ASTROS.find(a => a.id === 'sirio');
   const betel = ASTROS.find(a => a.id === 'betelgeuse');
   const bs = T.generarTextura(sirio, ANCHO, ALTO);
   const bb = T.generarTextura(betel, ANCHO, ALTO);
   assert.ok(mediaCanal(bs, 2) > mediaCanal(bs, 0), 'Sirio debe tener más azul que rojo');
   assert.ok(mediaCanal(bb, 0) > mediaCanal(bb, 2) + 40, 'Betelgeuse debe tener mucho más rojo que azul');
+});
+
+test('Jápeto tiene un hemisferio oscuro y otro claro', () => {
+  const japeto = ASTROS.find(a => a.id === 'japeto');
+  const buf = T.generarTextura(japeto, 256, 64);
+  const brillo = (u0, u1) => {
+    let s = 0, n = 0;
+    for (let y = 0; y < 64; y++) {
+      for (let x = Math.floor(u0 * 256); x < Math.floor(u1 * 256); x++) {
+        const i = (y * 256 + x) * 4;
+        s += buf[i] + buf[i + 1] + buf[i + 2];
+        n += 3;
+      }
+    }
+    return s / n;
+  };
+  const oscuro = brillo(0.0, 0.1);   // el hemisferio oscuro está centrado en u = 0
+  const claro = brillo(0.45, 0.55);  // y el claro en u = 0,5
+  assert.ok(claro > oscuro * 1.5, `claro ${claro.toFixed(0)} frente a oscuro ${oscuro.toFixed(0)}`);
 });
 
 test('una estrella con color propio lo usa; sin él, usa el de su temperatura', () => {

@@ -286,10 +286,13 @@ const ESTATURA_REF = { f: 161, m: 174 }; // los promedios con los que medidas() 
 // ---------- Persona ----------
 
 /**
- * Opciones (todas opcionales): semilla, sexo ('f'|'m'), edad, corpulencia, altura (cm), postura,
- * atuendo (id), region, anio, clase ('baja'|'media'|'alta'), piel, cabello, barba (true|false|id),
- * peinado, tocado, calzado, paleta ({A,B,C,D} en hex), variacion (0..1), detalle ('minimo'|'medio'|'alto'),
- * rasgos (true: ojos, cejas y boca suaves), fondo, prendas (lista propia de prendas ya armadas).
+ * Opciones (todas opcionales; una opción mal escrita lanza un Error, ver validacion.js): semilla, sexo ('f'|'m'), edad (2 a 100),
+ * corpulencia (nombre o número), altura (cm), postura, atuendo (id), region, anio, clase ('baja'|'media'|'alta'), etnia (id, lista,
+ * texto con comas o { id: peso }), piel, cabello, barba (true|false|id), peinado, tocado, calzado, paleta ({A,B,C,D} en hex),
+ * variacion (0..1), colores ('atuendo'|'prenda'), vestir (ids de prenda o { ranura: id }), saludo ('derecha'|'izquierda'|'ninguno'),
+ * pose ('casual'|'firme'|'infantil'|'mayor'|'segun-edad' o un objeto parcial: brazoLibre, manos, carga, cabeza…), vista ('frente'|'espalda'),
+ * detalle ('minimo'|'medio'|'alto'), contorno ('ninguno'|'suave'), rasgos (true: ojos, cejas y boca suaves), fondo,
+ * prendas (lista propia de prendas ya armadas).
  */
 export function generarPersona(opc = {}) {
   validarOpciones(opc);

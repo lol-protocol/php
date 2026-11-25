@@ -5,11 +5,11 @@ Datos para leer con criterio las edades, las enfermedades y las causas de muerte
 - **Esperanza de vida a lo largo de los siglos**, por país o región, sexo y **edad** (no solo al nacer; ver «Por qué no basta la esperanza de vida al nacer»).
 - **Epidemias y pandemias** (28, de la peste de Justiniano a la gripe de 1968), con sus años, regiones y, cuando hace falta, países, para notar cuándo una serie de muertes en una familia tiene una explicación. Se leen de corrido en [`epidemias.md`](epidemias.md).
 - **Las muertes por año en Londres, 1629-1902** (Bills of Mortality y los registros que las siguieron): la única serie anual de muertes de esta carpeta, con la que se ve cuánto se disparó un año como 1665.
-- **Un glosario de causas de defunción históricas** («hidropesía», «alferecía», «Schwindsucht», «bexigas»…) en 20 idiomas (más de 800 términos: entre 46 y 101 en español, inglés, alemán, francés, italiano, latín y portugués, y entre 19 y 32 en los otros 13 idiomas), con la causa moderna a la que suelen corresponder y qué tan segura es esa correspondencia, y un registro para que hablantes nativos lo revisen.
+- **Un glosario de causas de defunción históricas** («hidropesía», «alferecía», «Schwindsucht», «bexigas»…) en 20 idiomas (más de 800 términos: entre 46 y 101 en español, inglés, alemán, francés, italiano, latín y portugués, y entre 19 y 32 en los otros 13 idiomas), con la causa moderna a la que suelen corresponder y qué tan segura es esa correspondencia, y **sin revisión por hablantes nativos prevista** (ver «Revisión del glosario»).
 - **Enfermedades hereditarias**, como contexto médico y poblacional.
 - **Cuándo empezó el registro civil** en cada país, para saber qué fiabilidad esperar de una edad o una causa.
 
-> **Estado: fase 2 (esperanza de vida).** La esperanza de vida (≈37 500 filas, con bandas de incertidumbre) viene de fuentes abiertas fijadas por commit y se rehace con un script (`estado=verificado`: la fila es lo que dice su fuente; la calidad de la fuente es otra cosa, ver `calidad` y «Esperanza de vida: de dónde sale y cómo leerla»). También son `verificado` las muertes por año en Londres (1629-1902) y tres cifras de cólera en Gran Bretaña. Todo lo demás sigue siendo un **borrador escrito por un asistente de IA**: el glosario, casi todas las epidemias, las hereditarias y los hitos de registro civil no están verificados contra una fuente (`estado=borrador`) y **ninguna persona nativa ha revisado los términos**. La esperanza de vida cubre las edades 0 y 5 (medidas o derivadas) y 15, 30, 45 y 60, que son **modeladas** (ver más abajo). Ver «Plan».
+> **Estado: fase 2 (esperanza de vida).** La esperanza de vida (≈37 500 filas, con bandas de incertidumbre) viene de fuentes abiertas fijadas por commit y se rehace con un script (`estado=verificado`: la fila es lo que dice su fuente; la calidad de la fuente es otra cosa, ver `calidad` y «Esperanza de vida: de dónde sale y cómo leerla»). También son `verificado` las muertes por año en Londres (1629-1902) y tres cifras de cólera en Gran Bretaña. Todo lo demás sigue siendo un **borrador escrito por un asistente de IA**: el glosario, casi todas las epidemias, las hereditarias y los hitos de registro civil no están verificados contra una fuente (`estado=borrador`) y **nadie ha revisado los términos ni se prevé una revisión por hablantes nativos** (ver «Revisión del glosario»). La esperanza de vida cubre las edades 0 y 5 (medidas o derivadas) y 15, 30, 45 y 60, que son **modeladas** (ver más abajo). Ver «Plan».
 
 > **Antes de usar esto con datos de personas, lee [`PRIVACIDAD-Y-HONRA.md`](../PRIVACIDAD-Y-HONRA.md).** La salud y las causas de muerte son datos sensibles, y los de un antepasado alcanzan a sus descendientes vivos. Esta carpeta solo guarda **estadística y vocabulario**, nunca datos de personas reales, y no ofrece ninguna función que mire a una persona o una familia. Ver «Qué no hace» y [`PRIVACIDAD.md`](PRIVACIDAD.md), que lista lo que habría que decidir antes de mostrar causas de muerte o enfermedades al lado de una persona.
 
@@ -19,13 +19,13 @@ Cifras que cambian con los datos. Las escribe `generar_tabla.py` y `--comprobar`
 
 <!-- resumen: lo escribe generar_tabla.py; no editar a mano -->
 - **Causas modernas:** 54; **términos históricos:** 813 en 20 de 20 idiomas (confianza alta: 647, media: 141, baja: 25).
-- **Términos revisados por una persona nativa:** 0 de 813.
+- **Términos revisados por una persona:** 0 de 813 (no se prevé revisión).
 - **Idiomas sin términos:** ninguno.
 - **Causas modernas sin ningún término histórico:** ninguna.
 - **Epidemias:** 28 (3 verificadas). **Enfermedades hereditarias:** 12. **Hitos de registro civil:** 6. **Países:** 208.
 - **Muertes en Londres:** 241 años (1629-1902).
-- **Esperanza de vida:** 37488 filas (206 países o regiones).
-- **Filas verificadas contra su fuente:** 37732 de 38588.
+- **Esperanza de vida:** 37493 filas (211 países o regiones).
+- **Filas verificadas contra su fuente:** 37737 de 38593.
 <!-- fin del resumen -->
 
 ## Por qué no basta la esperanza de vida al nacer
@@ -58,7 +58,7 @@ Es una **pista para leer un documento, no un diagnóstico**. Un mismo término p
 | Qué | Edad | Sexo | Años | Cómo se obtiene |
 |---|---|---|---|---|
 | Esperanza de vida al nacer | 0 | T (ambos) | 1800-2009 | Directa de la fuente: Gapminder hasta 1949 y la ONU (revisión 2017) desde 1950. |
-| Esperanza de vida al nacer, antes de 1800 | 0 | T | 1540-1799 | Directa de Riley y Clio Infra, vía Our World in Data, solo para **Reino Unido** (desde 1540), **Suecia**, **Finlandia** (desde 1750) y **Dinamarca** (1770). Sin edades mayores: no hay mortalidad infantil tan atrás. |
+| Esperanza de vida al nacer, antes de 1800 | 0 | T | 1540-1799 | Directa de Riley y Clio Infra, vía Our World in Data, solo para **Reino Unido** (desde 1540), **Suecia**, **Finlandia** (desde 1750) y **Dinamarca** (1770), y, para cada una de las cinco **regiones** (`R:África`, `R:América`, `R:Asia`, `R:Europa`, `R:Oceanía`), el valor «previo a la transición sanitaria» que Riley fija en 1770: no es una medición de esa década, sino el promedio de las estimaciones de los países de la región antes de que empezara su transición. Sin edades mayores: no hay mortalidad infantil tan atrás. |
 | Esperanza restante y supervivencia a los 5 años | 5 | T | 1800-2009 | **Derivada** de la esperanza al nacer y de la mortalidad de 0 a 5 años de Gapminder. |
 | Esperanza de vida al nacer por sexo | 0 | M y F | 1950-2009 | Directa de Gapminder (a partir de la ONU). |
 | Esperanza restante y supervivencia a los 15, 30, 45 y 60 años | 15, 30, 45, 60 | T | 1800-2009 | **Modelada** con el modelo log-cuadrático de Wilmoth et al. (2012), desde la esperanza al nacer y la mortalidad de 0 a 5 años. `calidad` C siempre, también después de 1950. |
@@ -81,11 +81,11 @@ Es una **pista para leer un documento, no un diagnóstico**. Un mismo término p
   | Época | Esperanza al nacer | Mortalidad de 0 a 5 años | De dónde sale |
   |---|---|---|---|
   | 1950-2009 | ±0,6 años | ±7 % | **Medido**: el percentil 80 de lo que discrepan las revisiones de la ONU entre sí (0,59 años) y las dos fuentes de mortalidad infantil, Gapminder y CME (6,6 %), en 1950-2009 |
-  | 1900-1949 | ±3 años | ±15 % | **Supuesto del proyecto** |
-  | 1800-1899 | ±5 años | ±20 % | **Supuesto del proyecto** |
-  | Antes de 1800 | ±6 años | ±25 % | **Supuesto del proyecto** |
+  | 1900-1949 | ±5 años | ±20 % | **Supuesto del proyecto**, prudente |
+  | 1800-1899 | ±8 años | ±25 % | **Supuesto del proyecto**, prudente |
+  | Antes de 1800 | ±10 años | ±30 % | **Supuesto del proyecto**, prudente |
 
-  Antes de 1950 no hay una segunda fuente independiente: Gapminder y Clio Infra salen de la misma compilación de Riley y casi no discrepan (mediana de 0,03 años), así que medir con ellas daría una precisión falsa. Esos anchos son un juicio mío para que ninguna cifra parezca más firme de lo que es, no una medición, y **son un piso, no un techo**: la incertidumbre real de una cifra de 1800 puede ser mayor. Los valores están en `BANDAS` de `preparar_datos.py`.
+  Antes de 1950 no hay una segunda fuente independiente: Gapminder y Clio Infra salen de la misma compilación de Riley y casi no discrepan (mediana de 0,03 años), así que medir con ellas daría una precisión falsa. Esos anchos son un juicio mío, deliberadamente **prudente** (se ensancharon a petición de la persona a cargo, el 21 de noviembre de 2026, para que cubran con holgura lo que la literatura suele dar para estimaciones de esas épocas), para que ninguna cifra parezca más firme de lo que es; no son una medición, y **son un piso, no un techo**: la incertidumbre real de una cifra de 1800 puede ser mayor. Los valores están en `BANDAS` de `preparar_datos.py`.
 - **Es una cifra de período, no de generación**: la mortalidad de esa década, aplicada a quien nace o cumple esa edad. No dice cuánto vivió una persona concreta ni una familia.
 - **Cada década es el promedio de sus 10 años** y se omite si falta alguno. No hay 2010 en adelante a propósito: la serie larga llega hasta 2015 y esa década quedaría incompleta.
 - **Países**: son los de `codigos_iso.csv` de `Listado-paises/` que tienen datos. Guernsey y la Isla de Man no tienen ninguna serie. Otros 15 solo tienen la serie por sexo desde 1950, sin los años anteriores ni la edad 5: Andorra, Bermudas, Dominica, Gibraltar, Islas Feroe, Islas Marshall, Jersey, Kosovo, Liechtenstein, Mónaco, Nauru, Palaos, San Cristóbal y Nieves, San Marino y Tuvalu. Un nombre de las fuentes que no sea un país ni esté en las listas de omitidos de `preparar_datos.py` hace fallar el script, para no perder un país sin enterarse.
@@ -102,7 +102,7 @@ Fijadas por commit y comprobadas con SHA-256 (`fuentes.sha256`). Identificadores
 | `londres-owid` | Muertes totales y por viruela en Londres, 1629-1902 | Our World in Data (`owid/owid-datasets`), a partir de Guy (1882) y de los informes del Registrar-General; ver su `datapackage.json` |
 | `thomas-2015-owid` | Muertes por cólera en Gran Bretaña en los brotes del siglo XIX | Our World in Data, a partir de Thomas (2015) y Pearson Schools and Colleges |
 
-`owid-larga+gapminder-0-5` es una fila derivada de `owid-larga` y `gapminder-0-5`. `logquad` es una fila **modelada** (ambos sexos): el modelo log-cuadrático (coeficientes de DemoTools, `modelo-logcuadratico-b.rda` en `fuentes.sha256`) aplicado a la esperanza de vida de `owid-larga` y a la mortalidad de 0 a 5 años de `gapminder-0-5`. `logquad-sexo` es lo mismo para mujeres y hombres (`-f.rda` y `-m.rda`), con la esperanza al nacer de `gapminder-sexo`. `riley-clio` es la esperanza de vida de Riley (2005) y Clio Infra (2015), vía Our World in Data (`esperanza-riley-clio-owid.csv`), de la que solo se usan las décadas anteriores a 1800; **su licencia (Clio Infra) no la he podido comprobar** y hay que verificarla antes de publicar esas 37 filas.
+`owid-larga+gapminder-0-5` es una fila derivada de `owid-larga` y `gapminder-0-5`. `logquad` es una fila **modelada** (ambos sexos): el modelo log-cuadrático (coeficientes de DemoTools, `modelo-logcuadratico-b.rda` en `fuentes.sha256`) aplicado a la esperanza de vida de `owid-larga` y a la mortalidad de 0 a 5 años de `gapminder-0-5`. `logquad-sexo` es lo mismo para mujeres y hombres (`-f.rda` y `-m.rda`), con la esperanza al nacer de `gapminder-sexo`. `riley-clio` es la esperanza de vida de Riley (2005) y Clio Infra (2015), vía Our World in Data (`esperanza-riley-clio-owid.csv`), de la que solo se usan las décadas anteriores a 1800; **su licencia (Clio Infra) no la he podido comprobar** y hay que verificarla antes de publicar esas 42 filas (las de los cuatro países y las de las cinco regiones). Se mantienen por decisión de la persona a cargo (21 de noviembre de 2026).
 
 **Licencias (pendiente de comprobar antes de publicar los datos):** `systema_globalis` declara en su README que Gapminder lo publica con **CC BY 4.0**. El repositorio `fasttrack` y el espejo `owid-datasets` no declaran ninguna licencia; Gapminder y Our World in Data publican sus datos con CC BY 4.0 según sus sitios, pero no pude comprobarlo desde el contenedor. En todo caso hay que **citar a Gapminder, a la ONU y a Our World in Data**. **No se copia ningún dato de la Human Mortality Database**: no se redistribuye. Existe una versión por edades (15 y 45) en Our World in Data que viene de sus tablas de período; no la copié por eso.
 
@@ -114,13 +114,18 @@ Fijadas por commit y comprobadas con SHA-256 (`fuentes.sha256`). Identificadores
 - **El alcance es por región y, a veces, por país.** `epidemias_en(1348, pais="IT")` incluye la peste negra (Italia es de Europa); con `pais="CL"` no. Una epidemia que nombra países solo alcanza a esos. La región es gruesa: «América» incluye a todo el continente aunque una epidemia no haya llegado a todas partes, y la columna `nota` lo dice cuando se sabe.
 - **Londres 1629-1902.** `muertes_londres(1665)` da 97 306 muertes en el año de la Gran Peste, y `exceso_de_muertes_londres(1665)` dice que fueron casi seis veces las de los años vecinos (la mediana de ±5 años). Sirve para ver años anormales (1665, 1636), no para estimar muertes de una persona. Es la ciudad de Londres de cada época, y no representa a Inglaterra ni a Gran Bretaña.
 
-## Revisión por hablantes nativos
+## Revisión del glosario (sin revisión nativa prevista)
 
-Casi todo el glosario lo escribió un asistente de IA y **ninguna persona nativa lo ha revisado todavía**. `datos/revisiones.csv` es el registro de quién ha revisado qué, y `revisiones.md` (generado) dice cuánto está cubierto por idioma y qué queda pendiente. Empieza vacío.
+El glosario lo escribió un asistente de IA y **nadie lo ha revisado**. **Decisión de la persona a cargo (18 de noviembre de 2026): no habrá revisión por hablantes nativos.** Por eso el glosario se queda como `borrador`, y lo único que respalda cada término es su **confianza** (`alta`, `media`, `baja`), que es un juicio del propio asistente, no una verificación. Hay que leerlo como una pista para entender un registro antiguo, nunca como un dato establecido: ante un término que importe, hay que contrastarlo con un diccionario histórico o con un especialista.
 
-**Cómo revisar:**
+Qué hay en lugar de una revisión nativa, que es poco:
 
-1. Abre `vista.html` en un navegador (un solo archivo, sin servidor ni conexión; nada sale de tu navegador) y entra en **«Revisar el glosario»**. Elige tu idioma.
+- **Comprobaciones mecánicas** (`generar_tabla.py --comprobar` y `pruebas.py`): cada término debe estar escrito en la escritura de su idioma (cirílico para el ruso, griego para el griego…; un término mal etiquetado falla), sus causas y códigos CIE-10 deben existir y tener la forma correcta, no puede haber términos repetidos, y los ambiguos salen con todas sus causas y con confianza `media` o `baja`. Eso detecta errores de etiquetado, **no errores de significado**.
+- **Los términos más dudosos llevan confianza `baja`** (la fiebre «a secas», «dentición», «croup»…) y los que no se conocían con seguridad no se incluyeron.
+
+Qué se conserva: `datos/revisiones.csv` (el registro de quién ha revisado qué, vacío), su informe `revisiones.md` y la pestaña «Revisar el glosario» de `vista.html` **siguen ahí por si alguna vez alguien (nativo o no) quiere revisar algo**; no se borran. Si lo hace, el procedimiento es:
+
+1. Abre `vista.html` en un navegador (un solo archivo, sin servidor ni conexión; nada sale de tu navegador) y entra en **«Revisar el glosario»**. Elige el idioma.
 2. Para cada término marca **correcto**, **corregir** o **dudoso**. Con «corregir» o «dudoso» la nota es obligatoria (qué cambiar, o por qué dudas). Escribe tu nombre (el que quieras publicar; ver [`PRIVACIDAD.md`](PRIVACIDAD.md)) y la fecha.
 3. Copia las filas que genera la página y añádelas al final de `datos/revisiones.csv` en un PR, o pásaselas a quien mantiene el proyecto; después corre `python3 generar_tabla.py` para regenerar `revisiones.md`.
 
@@ -144,10 +149,10 @@ Casi todo el glosario lo escribió un asistente de IA y **ninguna persona nativa
 | `js/mortalidad.js` | Port a JavaScript de `consultas.py`, sin dependencias: lo usa `vista.html` y sirve en Node (`node --test 'js/*.test.js'`). |
 | `datos/vectores.json` | Las respuestas de `consultas.py` a un conjunto fijo de entradas (generado). Los dos ports tienen que dar exactamente lo mismo. |
 | `por-idioma/<código>.md` | El glosario de cada idioma (generado). `por-idioma/README.md` es el índice. |
-| `datos/revisiones.csv` | El registro de quién ha revisado qué término del glosario (idioma, término, causa, huella, resultado, revisor, fecha y nota). Empieza vacío: ver «Revisión por hablantes nativos». |
-| `revisiones.md` | Cuánto del glosario revisó una persona nativa, por idioma, y qué requiere atención (generado). |
+| `datos/revisiones.csv` | El registro de quién ha revisado qué término del glosario (idioma, término, causa, huella, resultado, revisor, fecha y nota). Está vacío y no se prevé llenarlo: ver «Revisión del glosario». |
+| `revisiones.md` | Cuánto del glosario revisó una persona, por idioma, y qué requiere atención (generado). |
 | `PRIVACIDAD.md` | Qué guarda esta carpeta, qué impide el código y qué hay que decidir antes de mostrar causas de muerte en fichas de personas. |
-| `consultas.py` | Consultas en Python: `causa_moderna`, `epidemias_en`, `hitos_de`, `region_de`, `esperanza_restante`, `banda_esperanza`, `supervivencia`, `muertes_londres` y `exceso_de_muertes_londres`; `epidemias_en` filtra por año, región y país. |
+| `consultas.py` | Consultas en Python: `causa_moderna`, `epidemias_en`, `hitos_de`, `region_de`, `esperanza_restante`, `banda_esperanza`, `supervivencia`, las de edades de muerte (`probabilidad_de_llegar_a`, `supervivientes_esperados`, `fraccion_de_muertes_antes_de`, `edad_de_muerte_percentil` y `edades_de_muerte_comunes`), `muertes_londres` y `exceso_de_muertes_londres`; `epidemias_en` filtra por año, región y país. |
 | `descargar_fuentes.py` | Baja las fuentes de la esperanza de vida (fijadas por commit), comprueba `fuentes.sha256` y, con `--rehacer`, corre `preparar_datos.py`. |
 | `preparar_datos.py` | Arma `esperanza_vida.csv` desde esas fuentes: décadas, derivación a los 5 años, edades modeladas y cruce con los códigos de país. También escribe `londres_muertes.csv`, `paises.csv` y `modelo_logcuadratico.csv`. |
 | `modelo.py` | El modelo log-cuadrático de Wilmoth: una tabla de vida completa desde la mortalidad de 0 a 5 años y la esperanza al nacer. |
@@ -190,6 +195,9 @@ esperanza_restante("SE", 1805, 5)      # 47.3: años que le quedan a quien cumpl
 esperanza_restante("SE", 1805, 45)     # 22.7: a quien cumplió 45 (de los 15 años en adelante, modelada)
 banda_esperanza("SE", 1805, 45)        # (bajo, alto): antes de 1950 la banda es un supuesto
 esperanza_restante("GB", 1545)         # 36.4: Reino Unido antes de 1800, solo al nacer
+edades_de_muerte_comunes("CL", 1895)  # {'p10': 0.4, 'p25': 1.0, 'p50': 13.0, 'p75': 67.5, 'p90': 79.2}: edades de muerte, por década
+probabilidad_de_llegar_a("SE", 1805, 15)  # 0.63: de 10 recién nacidos, unos 6 llegaban a los 15
+supervivientes_esperados("SE", 1805, 6, 5)  # 4.1: de 6 nacimientos, en promedio unos 4 llegaban a los 5
 supervivencia("SE", 1805)              # 0.687: probabilidad de llegar a los 5
 esperanza_restante("ES", 1985, 0, "F") # por sexo, desde 1950
 ```
@@ -216,6 +224,22 @@ m.causaModerna('Hidropesía', 'spa');
 
 Los dos ports se prueban contra `datos/vectores.json`, que genera `generar_tabla.py` con `consultas.py`: **si cambias una consulta de Python, regenera con `python3 generar_tabla.py` y sigue el cambio en `php/src/Mortalidad.php` y `js/mortalidad.js`**; sus pruebas fallan si difieren en una sola respuesta. El port a JavaScript no tiene el plegado completo de mayúsculas de Unicode: cubre las diferencias que importan a los datos (ß y la sigma final).
 
+## Edades de muerte y supervivencia, por país y década
+
+Cinco consultas (en Python, PHP y JavaScript, y en la pestaña «Edades de muerte» de la vista) responden preguntas de **población**: «¿a qué edades se moría en Chile en los años 1890?» o «¿cuántos de seis niños nacidos en la Suecia de 1800 llegaban a los cinco años?». Salen de la tabla de vida que arma el modelo log-cuadrático (`modelo.py`) para ese país, esa década y ese sexo.
+
+| Consulta | Qué devuelve |
+|---|---|
+| `probabilidad_de_llegar_a(país, año, edad, sexo)` | La probabilidad (0 a 1) de que un recién nacido llegue con vida a esa edad (0 a 110). |
+| `supervivientes_esperados(país, año, nacidos, edad, sexo)` | `nacidos` por la probabilidad anterior: un valor esperado de la población (de 6 nacimientos, «4,1»), no lo que pasó en una familia. |
+| `fraccion_de_muertes_antes_de(país, año, edad, desde_edad, sexo)` | De quienes llegaban a `desde_edad`, la fracción que moría antes de cumplir `edad`. |
+| `edad_de_muerte_percentil(país, año, p, desde_edad, sexo)` | La edad por debajo de la cual había muerto la fracción `p` (con `p = 0,5`, la mediana). |
+| `edades_de_muerte_comunes(país, año, desde_edad, sexo)` | `p10`, `p25`, `p50`, `p75` y `p90`: de `p10` a `p90` está el 80 % central de las muertes. |
+
+**El contrato de privacidad** (decisión de la persona a cargo, 21 de noviembre de 2026: «solo estadística por país y década»): estas funciones **solo reciben país, año, sexo y edades o cantidades**; nunca una ficha, un nombre, un apellido ni un origen. Una prueba (`test_el_contrato_ninguna_funcion_recibe_una_persona`) lo fija: si alguien agrega un parámetro que no sea de esa lista (`PARAMETROS_PERMITIDOS` de `consultas.py`), falla. Son cifras de **toda una población**, modeladas (calidad C) y, antes de 1950, apenas estimaciones. **No sirven para decidir si algo es verosímil en una familia concreta** (la mortalidad infantil de una familia no es la de su país) **ni para inferir riesgos de salud de nadie**; la plataforma que las use debe decirlo, como lo dice la vista. No hay datos (`None`) antes de 1800, ni para países sin serie de mortalidad de 0 a 5 años; mujeres y hombres, solo desde 1950, con la mortalidad infantil de ambos sexos.
+
+Se prueban contra los mismos vectores que las demás consultas (`datos/vectores.json`): PHP y JavaScript dan lo mismo que Python.
+
 ## Qué no hace
 
 - **No diagnostica ni estima la causa de muerte de una persona.** `causa_moderna` devuelve las correspondencias posibles de un **término**, con su confianza.
@@ -228,7 +252,7 @@ Los dos ports se prueban contra `datos/vectores.json`, que genera `generar_tabla
 1. **Fase 1 (hecha):** esqueleto, esquemas, validador, glosario semilla (20 idiomas), epidemias, hereditarias e hitos de registro civil de partida, y CI.
 2. **Fase 2 (hecha):** esperanza de vida 1800-2009 por país, a los 0 y 5 años (medidas o derivadas) y a los 15, 30, 45 y 60 (modeladas), con las consultas `esperanza_restante` y `supervivencia`. **2b (hecha):** bandas de incertidumbre, mujeres y hombres a todas las edades (con la mortalidad infantil de ambos sexos) y, antes de 1800, la esperanza al nacer de Reino Unido, Suecia, Finlandia y Dinamarca. **Queda fuera:** edades mayores antes de 1800, y la mortalidad infantil por sexo (hace falta la ONU o el Banco Mundial por sexo). Reemplazar el modelo por tablas medidas de un país que las publique (el INE de Chile, por ejemplo) mejoraría las cifras donde las haya.
 3. **Fase 3 (hecha, en parte):** 28 epidemias, con las de América y Chile, y las muertes por año en Londres. **Falta verificarlas:** solo 3 cifras de cólera y la serie de Londres lo están; el resto es de memoria. Desde el contenedor no llega ninguna fuente de referencia (Wikipedia, OMS, SciELO…), solo GitHub, así que verificarlas y poner cifras para Chile (viruela de 1872, cólera de 1886) hay que hacerlo con acceso a esas fuentes.
-4. **Fase 4 (hecha, en parte):** el glosario creció a más de 800 términos y 54 causas, los códigos OMIM están verificados y hay un registro de revisión por hablantes nativos. **Falta lo que no puedo hacer yo:** que personas nativas revisen los términos (el glosario sigue en `borrador`), y ampliar los idiomas menos cubiertos (neerlandés, turco, griego, checo, ucraniano y árabe tienen entre 19 y 24 términos, sobre todo de las causas más comunes; las causas raras y los términos regionales o antiguos casi no están).
+4. **Fase 4 (hecha, en parte):** el glosario creció a más de 800 términos y 54 causas, los códigos OMIM están verificados y hay un registro de revisión que **no se prevé usar**: la persona a cargo decidió el 18 de noviembre de 2026 que no habrá revisión por hablantes nativos, así que el glosario sigue en `borrador` de forma permanente. **Queda:** ampliar los idiomas menos cubiertos (neerlandés, turco, griego, checo, ucraniano y árabe tienen entre 19 y 24 términos, sobre todo de las causas más comunes; las causas raras y los términos regionales o antiguos casi no están).
 5. **Fase 5 (hecha):** vista HTML (`vista.html`) y los ports a PHP y a JavaScript, probados con los mismos vectores.
 
 Fuentes previstas: Our World in Data, Gapminder, Clio-Infra y UN WPP (licencias abiertas); la Human Mortality Database no se redistribuye (solo se usa, a través del modelo de Wilmoth, su efecto en unos coeficientes). Para el glosario: las *Bills of Mortality*, la nosología de Farr, las clasificaciones de Bertillon y las revisiones de la CIE.

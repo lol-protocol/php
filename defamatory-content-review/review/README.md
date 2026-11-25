@@ -110,7 +110,7 @@ php bin/review-sheets.php dan da_50k.txt > review/dan.csv
 Sin lista de frecuencia (`php bin/review-sheets.php swa > review/swa.csv`) no hay
 `rango` ni sección `frecuente`. Se usaron las listas `<iso639-1>_50k.txt` de
 2018 (OpenSubtitles), salvo hin, jpn y tgl (`_full`, que tienen menos de 50.000
-palabras), yue (la de chino tradicional, `zh_tw`, como aproximación) y swa (no
-hay lista). Los rangos y la sección `frecuente` derivan de esas listas, que se
+palabras), yue y swa (no hay lista: la del cantonés no existe, y no se usa la de
+chino tradicional como sustituta). Los rangos y la sección `frecuente` derivan de esas listas, que se
 publican bajo [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 (Hermit Dave, FrequencyWords).

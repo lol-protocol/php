@@ -276,4 +276,13 @@ class PersonNameTest extends TestCase
 
         $this->assertSame('Mrs.', $name->toArray()['title']);
     }
+
+    /** empty("0") is true in PHP: a value of "0" must not be reported as empty (only a blank one is). */
+    public function testAZeroIsNotAnEmptyValue(): void
+    {
+        $this->assertSame('0', (new \PhoneDirectory\Entity\PersonName('0'))->getFullName());
+        $this->assertSame('0', (new \PhoneDirectory\Entity\PhoneDirectoryEntry(fullName: 'Ana', countryCode: 'ES', street: '0'))->getStreet());
+        $this->expectException(\InvalidArgumentException::class);
+        new \PhoneDirectory\Entity\PhoneDirectoryEntry(fullName: 'Ana', countryCode: 'ES', street: '  ');
+    }
 }

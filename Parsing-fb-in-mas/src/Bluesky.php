@@ -16,6 +16,11 @@ final class Bluesky extends Analizador
         return ['bsky.app'];
     }
 
+    protected function patronesDePublicacion(): array
+    {
+        return ['/post/'];
+    }
+
     protected function extraer(array $d, ?string $url): array
     {
         // «Ana Ejemplo (@ana.bsky.social)»; la dirección es bsky.app/profile/ana.bsky.social

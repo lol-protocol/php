@@ -11,7 +11,7 @@ otra base, nunca sobre la de producción.** Todo lo demás solo lee o solo anota
 
 ## Antes de empezar
 
-- [ ] Una **copia de seguridad reciente** y que sepas restaurar ([`DESPLIEGUE.md`](DESPLIEGUE.md), sección 11).
+- [ ] Una **copia de seguridad reciente** y que sepas restaurar ([`DESPLIEGUE.md`](DESPLIEGUE.md), sección 11), por ejemplo con `php bin/copias.php --verificar=ARCHIVO` (restaura la copia y cuenta las filas de cada tabla).
 - [ ] Una persona de confianza que **se preste a pedir sus propios datos** (paso 2), y que esté en la base.
 - [ ] Una **hoja aparte** (fuera del repositorio) para anotar fechas y qué se hizo, sin copiar datos de nadie.
 
@@ -54,6 +54,7 @@ ventana privada. **Mira:**
 - [ ] Que con la clave buena salgan los datos y **ningún nombre de un pariente**.
 - [ ] Que tras 5 claves malas el enlace dé 404 aunque pongas la buena, y que después de 3 aperturas también.
 - [ ] Que `php bin/persona.php entrega <id> --revocar` lo termine, y que el enlace inventado y el revocado den **la misma** 404.
+- [ ] Lo mismo se puede hacer desde el panel (`/0/4/`, «Crear una entrega con clave», en una solicitud pendiente): que el enlace y la clave salgan **una sola vez** (al recargar la página no vuelven) y que sean para la persona de esa solicitud.
 - [ ] Que mandar el enlace y la clave por **dos medios** no se te haga pesado: si lo es, no lo vas a hacer, y es la regla.
 
 Para los textos libres que la nombran sin estar ligados a ella, corre la simulación de la supresión (paso 5, sin
@@ -68,7 +69,7 @@ Con la copia de seguridad hecha, primero la **simulación**, que no cambia nada:
 php bin/persona.php rectificar <id> personas.apellidos='Quintana Soto' [--pedido=N]
 ```
 
-Dice «Se corregiría …», si cambia lo que ve un visitante y termina con «Nada cambió». Después, con `--confirmar`, lo hace
+Dice «Se corregiría …», si cambia lo que ve un visitante y termina con «Nada cambió». El panel (`/0/4/`, «Simular una corrección») dice lo mismo y tampoco cambia nada: comprueba que ambos coinciden. Después, con `--confirmar`, lo hace
 y dice `Anotada la corrección 1 (sin el valor).` Un dato que el comando no cubre se corrige a mano (sección «Rectificar»
 de [`SOLICITUDES.md`](SOLICITUDES.md)) y se anota con `php bin/persona.php rectificacion <id> <tabla.columna>`.
 
@@ -128,5 +129,5 @@ el JSON y que salga de la dirección propia del sitio (cuando exista).
 
 Anota en la hoja aparte, sin datos de nadie: qué pasos fallaron o confundieron, cuánto tardó cada uno y qué
 cambiarías. Con eso se decide lo que sigue pendiente en `SOLICITUDES.md` («Lo que falta»): el plazo de respuesta, el de
-conservación de la nota de cada solicitud, la entrega de lo oculto y la dirección del correo. Cuando lo hayas
+conservación de la nota de cada solicitud y la dirección del correo. Cuando lo hayas
 corrido, dilo y se actualiza la fila de ensayo de [`CUMPLIMIENTO-LEY-21719.md`](../../CUMPLIMIENTO-LEY-21719.md).

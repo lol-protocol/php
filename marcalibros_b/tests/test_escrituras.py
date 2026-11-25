@@ -76,3 +76,14 @@ def test_los_subconjuntos_son_pequenos_y_llevan_licencia():
     for datos in tx.escrituras()["fuentes"].values():
         assert (carpeta / datos["archivo"]).stat().st_size < 150_000
     assert (carpeta / "LICENCIA-Noto-OFL.txt").exists()
+
+
+def test_el_cjk_se_compone_mas_grande_y_el_resto_a_15():
+    for idioma in ("ja", "zh"):
+        bloques, _ = tx.componer(MUESTRAS[idioma], "", CAJA, idioma=idioma)
+        assert bloques[0]["tam"] == 17.0
+    for idioma in ("ar", "hi", None):
+        bloques, _ = tx.componer(MUESTRAS.get(idioma, "Hola"), "", CAJA, idioma=idioma)
+        assert bloques[0]["tam"] == 15.0
+    bloques, _ = tx.componer(MUESTRAS["ja"], "", CAJA, tam=12.0, idioma="ja")
+    assert bloques[0]["tam"] == 12.0  # un tamaño explícito manda

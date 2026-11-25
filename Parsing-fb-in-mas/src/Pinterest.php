@@ -21,6 +21,11 @@ final class Pinterest extends Analizador
         return ['pin', 'search', 'ideas', 'today', 'business', 'login', 'explore'];
     }
 
+    protected function patronesDePublicacion(): array
+    {
+        return ['^/pin/'];
+    }
+
     protected function extraer(array $d, ?string $url): array
     {
         // «Ana Ejemplo (anaejemplo) - Perfil | Pinterest»

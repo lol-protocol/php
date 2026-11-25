@@ -9,26 +9,24 @@ declare(strict_types=1);
 
 require __DIR__ . '/../src/cargar.php';
 
-use ParsingFbInMas\Exclusiones;
+use ParsingFbInMas\Cli;
 use ParsingFbInMas\Lote;
 use ParsingFbInMas\Wikidata;
 
 $archivos = [];
 $exclusiones = null;
+$uso = "Uso: php bin/wikidata-nombres.php volcado.json[.gz] perfiles.jsonl [--excluir=lista.txt]\nEsto no descarga el volcado: bájalo tú.\n";
+Cli::validar(array_slice($argv, 1), ['--excluir='], $uso);
+
 foreach (array_slice($argv, 1) as $arg) {
     if (str_starts_with($arg, '--excluir=')) {
-        try {
-            $exclusiones = Exclusiones::desdeArchivo(substr($arg, 10));
-        } catch (RuntimeException $e) {
-            fwrite(STDERR, $e->getMessage() . "\n");
-            exit(2);
-        }
+        $exclusiones = Cli::exclusiones(substr($arg, 10));
     } else {
         $archivos[] = $arg;
     }
 }
 if (count($archivos) !== 2 || Lote::esUrl($archivos[0]) || Lote::esUrl($archivos[1])) {
-    fwrite(STDERR, "Uso: php bin/wikidata-nombres.php volcado.json[.gz] perfiles.jsonl [--excluir=lista.txt]\nEsto no descarga el volcado: bájalo tú.\n");
+    fwrite(STDERR, $uso);
     exit(2);
 }
 

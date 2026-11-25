@@ -22,9 +22,11 @@ use RuntimeException;
  */
 abstract class HttpTestCase extends TestCase
 {
-    /** @var resource|null */
-    private static $servidor = null;
-    private static string $url = '';
+    /** @var list<resource> */
+    private static array $servidores = [];
+
+    /** @var list<string> la direccion de cada servidor, en el mismo orden */
+    private static array $urls = [];
     private static string $log = '';
 
     private ?string $cookieDeSesion = null;
@@ -32,7 +34,26 @@ abstract class HttpTestCase extends TestCase
     /** @var list<callable(): void> */
     private array $limpiezas = [];
 
+    /**
+     * Cuantos servidores (procesos de php -S) levanta la clase. Uno, que es lo normal: las peticiones se hacen de a
+     * una. Una prueba de concurrencia pide mas para que dos peticiones corran de verdad a la vez, cada una en su
+     * proceso y con su propia conexion a la base. No sirve PHP_CLI_SERVER_WORKERS: los trabajadores comparten el
+     * socket y, si dos conexiones llegan juntas, uno puede aceptar las dos y atenderlas una tras otra.
+     */
+    protected static function servidores(): int
+    {
+        return 1;
+    }
+
     public static function setUpBeforeClass(): void
+    {
+        self::$log = (string) tempnam(sys_get_temp_dir(), 'servidor-http-');
+        for ($i = 0; $i < static::servidores(); $i++) {
+            self::levantarUnServidor();
+        }
+    }
+
+    private static function levantarUnServidor(): void
     {
         // Un puerto libre: se le pide uno al sistema y se lo suelta enseguida.
         $socket = stream_socket_server('tcp://127.0.0.1:0');
@@ -42,7 +63,6 @@ abstract class HttpTestCase extends TestCase
         $puerto = (int) substr((string) strrchr((string) stream_socket_get_name($socket, false), ':'), 1);
         fclose($socket);
 
-        self::$log = (string) tempnam(sys_get_temp_dir(), 'servidor-http-');
         $servidor = proc_open(
             [PHP_BINARY, '-S', "127.0.0.1:{$puerto}", '-t', dirname(__DIR__, 2) . '/public'],
             [0 => ['file', '/dev/null', 'r'], 1 => ['file', self::$log, 'a'], 2 => ['file', self::$log, 'a']],
@@ -51,8 +71,8 @@ abstract class HttpTestCase extends TestCase
         if ($servidor === false) {
             throw new RuntimeException('No se pudo lanzar php -S.');
         }
-        self::$servidor = $servidor;
-        self::$url = "http://127.0.0.1:{$puerto}/index.php";
+        self::$servidores[] = $servidor;
+        self::$urls[] = "http://127.0.0.1:{$puerto}/index.php";
 
         for ($intento = 0; $intento < 100; $intento++) {
             $conexion = @fsockopen('127.0.0.1', $puerto);
@@ -67,11 +87,12 @@ abstract class HttpTestCase extends TestCase
 
     public static function tearDownAfterClass(): void
     {
-        if (is_resource(self::$servidor)) {
-            proc_terminate(self::$servidor);
-            proc_close(self::$servidor);
+        foreach (self::$servidores as $servidor) {
+            proc_terminate($servidor);
+            proc_close($servidor);
         }
-        self::$servidor = null;
+        self::$servidores = [];
+        self::$urls = [];
         @unlink(self::$log);
     }
 
@@ -163,34 +184,135 @@ abstract class HttpTestCase extends TestCase
      */
     private function pedir(string $query, ?array $datos): array
     {
-        $curl = curl_init(self::$url . '?' . $query);
+        $curl = self::manija($query, $datos, $this->cookieDeSesion);
+        $respuesta = curl_exec($curl);
+        if (!is_string($respuesta)) {
+            throw new RuntimeException('La peticion a ?' . $query . ' fallo: ' . curl_error($curl));
+        }
+        $resultado = self::interpretar($curl, $respuesta);
+
+        if (($cookie = self::cookieDe($resultado['cabeceras'])) !== null) {
+            $this->cookieDeSesion = $cookie;
+        }
+
+        return $resultado;
+    }
+
+    /**
+     * Una sesion de navegador aparte, con su propia cookie, que no toca la del test: dos personas distintas. Pide
+     * $query (la pagina de un formulario) y devuelve su cookie y su HTML, de donde salen los tokens. Hace falta una
+     * cookie por cada peticion de enParalelo(): PHP serializa las peticiones de una misma sesion (el archivo de
+     * sesion queda bloqueado), asi que con una sola no habria concurrencia.
+     *
+     * @return array{cookie: string, cuerpo: string}
+     */
+    protected function sesionAparte(string $query): array
+    {
+        $curl = self::manija($query, null, null);
+        $respuesta = curl_exec($curl);
+        if (!is_string($respuesta)) {
+            throw new RuntimeException('La peticion a ?' . $query . ' fallo: ' . curl_error($curl));
+        }
+        $resultado = self::interpretar($curl, $respuesta);
+        $cookie = self::cookieDe($resultado['cabeceras']);
+        if ($cookie === null) {
+            self::fail("?{$query} no abrio una sesion (no mando PHPSESSID).");
+        }
+
+        return ['cookie' => $cookie, 'cuerpo' => $resultado['cuerpo']];
+    }
+
+    /**
+     * Varias peticiones a la vez, cada una a un servidor distinto (la clase tiene que pedir al menos tantos con
+     * servidores()): procesos de verdad distintos. Cada una con su cookie (ver sesionAparte()); `despues` las
+     * escalona: segundos desde el inicio en que sale esa peticion, para que una caiga en medio de lo que hace la otra.
+     * Devuelve las respuestas en el orden pedido.
+     *
+     * @param list<array{query: string, cookie: string, datos?: array<string, scalar>, despues?: float}> $peticiones
+     * @return list<array{status: int, location: ?string, cuerpo: string, cabeceras: string}>
+     */
+    protected function enParalelo(array $peticiones): array
+    {
+        if (count($peticiones) > count(self::$urls)) {
+            self::fail(sprintf('Se pidieron %d peticiones en paralelo y la clase levanta %d servidores (servidores()).', count($peticiones), count(self::$urls)));
+        }
+        $multi = curl_multi_init();
+        $manijas = [];
+        $sinSalir = array_keys($peticiones);
+        $inicio = microtime(true);
+        $activas = 0;
+
+        do {
+            foreach ($sinSalir as $posicion => $indice) {
+                if (microtime(true) - $inicio >= ($peticiones[$indice]['despues'] ?? 0.0)) {
+                    $peticion = $peticiones[$indice];
+                    $manijas[$indice] = self::manija($peticion['query'], $peticion['datos'] ?? null, $peticion['cookie'], $indice);
+                    curl_multi_add_handle($multi, $manijas[$indice]);
+                    unset($sinSalir[$posicion]);
+                }
+            }
+            curl_multi_exec($multi, $activas);
+            if ($activas > 0) {
+                curl_multi_select($multi, 0.05);
+            } elseif ($sinSalir !== []) {
+                usleep(10_000);
+            }
+        } while ($activas > 0 || $sinSalir !== []);
+
+        $respuestas = [];
+        foreach ($manijas as $indice => $manija) {
+            $cuerpo = curl_multi_getcontent($manija);
+            if (!is_string($cuerpo) || curl_errno($manija) !== 0) {
+                throw new RuntimeException('La peticion paralela a ?' . $peticiones[$indice]['query'] . ' fallo: ' . curl_error($manija));
+            }
+            $respuestas[$indice] = self::interpretar($manija, $cuerpo);
+            curl_multi_remove_handle($multi, $manija);
+        }
+        curl_multi_close($multi);
+        ksort($respuestas);
+
+        return array_values($respuestas);
+    }
+
+    /** @param array<string, scalar>|null $datos null = GET */
+    private static function manija(string $query, ?array $datos, ?string $cookie, int $servidor = 0): \CurlHandle
+    {
+        $curl = curl_init(self::$urls[$servidor] . '?' . $query);
         curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => true,
             CURLOPT_FOLLOWLOCATION => false,
             CURLOPT_TIMEOUT => 20,
         ]);
-        if ($this->cookieDeSesion !== null && $this->cookieDeSesion !== '') {
-            curl_setopt($curl, CURLOPT_COOKIE, $this->cookieDeSesion);
+        if ($cookie !== null && $cookie !== '') {
+            curl_setopt($curl, CURLOPT_COOKIE, $cookie);
         }
         if ($datos !== null) {
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($datos));
         }
 
-        $respuesta = curl_exec($curl);
-        if (!is_string($respuesta)) {
-            throw new RuntimeException('La peticion a ?' . $query . ' fallo: ' . curl_error($curl));
-        }
-        $largoCabeceras = (int) curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-        $status = (int) curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
-        $cabeceras = substr($respuesta, 0, $largoCabeceras);
+        return $curl;
+    }
 
-        if (preg_match('/^Set-Cookie: (PHPSESSID=[^;\r\n]+)/mi', $cabeceras, $cookie) === 1) {
-            $this->cookieDeSesion = $cookie[1];
-        }
+    /** @return array{status: int, location: ?string, cuerpo: string, cabeceras: string} */
+    private static function interpretar(\CurlHandle $curl, string $respuesta): array
+    {
+        $largoCabeceras = (int) curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+        $cabeceras = substr($respuesta, 0, $largoCabeceras);
         $location = preg_match('/^Location: ([^\r\n]+)/mi', $cabeceras, $destino) === 1 ? $destino[1] : null;
 
-        return ['status' => $status, 'location' => $location, 'cuerpo' => substr($respuesta, $largoCabeceras), 'cabeceras' => $cabeceras];
+        return [
+            'status' => (int) curl_getinfo($curl, CURLINFO_RESPONSE_CODE),
+            'location' => $location,
+            'cuerpo' => substr($respuesta, $largoCabeceras),
+            'cabeceras' => $cabeceras,
+        ];
+    }
+
+    /** La cookie de sesion (PHPSESSID=...) que manda una respuesta, si manda una. */
+    private static function cookieDe(string $cabeceras): ?string
+    {
+        return preg_match('/^Set-Cookie: (PHPSESSID=[^;\r\n]+)/mi', $cabeceras, $cookie) === 1 ? $cookie[1] : null;
     }
 }

@@ -4,7 +4,8 @@
 # nombres raros y una rama a la que se empujó después de hacer la lista; MAXIMO no numérico falla;
 # sin rama por defecto conocida no borra; y el archivo RESULTADO trae «rama|sha|estado».
 # Prueba también informe-de-ramas.sh (la lista que usa el workflow): una rama huérfana, sin ancestro común
-# con master, no lo tumba ni sale en la lista.
+# con master, no lo tumba ni sale en la lista; una rama cuyo PR se fusionó y que sigue en ese commit sale en
+# la lista aunque master haya cambiado sus archivos, y una a la que se empujó después no sale.
 set -euo pipefail
 
 script="$(cd "$(dirname "$0")" && pwd)/borrar-ramas.sh"
@@ -56,7 +57,14 @@ espera "…y otra2 sigue ahí" test "$(remotas)" = "desarrollo master otra2 "
 
 # 5) informe-de-ramas.sh: la lista incluye vacías y fusionadas, y no la tumba una rama huérfana (sin merge-base)
 informe="$(dirname "$script")/informe-de-ramas.sh"
-mkdir "$tmp/bin" && printf '#!/usr/bin/env bash\n' >"$tmp/bin/gh" && chmod +x "$tmp/bin/gh" # gh de juguete: ningún PR abierto
+# gh de juguete: ningún PR abierto, y los PR cerrados y fusionados que dice PR_FUSIONADOS (un «rama sha» por línea)
+mkdir "$tmp/bin"
+cat >"$tmp/bin/gh" <<'GH'
+#!/usr/bin/env bash
+case "$*" in *state=closed*) [ -n "${PR_FUSIONADOS:-}" ] && cat "$PR_FUSIONADOS" ;; esac
+exit 0
+GH
+chmod +x "$tmp/bin/gh"
 git branch -q vacia master && git push -q origin vacia 2>/dev/null
 git checkout -q --orphan datos/huerfana && git rm -rfq . 2>/dev/null || true
 git commit -q --allow-empty -m datos && git push -q origin datos/huerfana 2>/dev/null && git checkout -q -f master
@@ -68,6 +76,21 @@ else
 fi
 espera "informe: la rama vacía sale en la lista" grep -qx "vacia $(git rev-parse origin/vacia)" "$tmp/informe.txt"
 espera "informe: la rama huérfana no sale" bash -c '! grep -q "^datos/huerfana " "$1"' _ "$tmp/informe.txt"
+
+# 6) ramas de PR fusionado con squash: master cambió después sus archivos (no «fusionada» por archivos), así que solo
+#    su PR dice que no aportan nada. «squash» sigue en el commit del PR; «squash-despues» recibió otro commit.
+git checkout -q -b squash master && echo uno >a.txt && git add a.txt && git commit -q -m pr && git push -q origin squash 2>/dev/null
+git checkout -q -b squash-despues master && echo dos >b.txt && git add b.txt && git commit -q -m pr2 && git push -q origin squash-despues 2>/dev/null
+punta_squash=$(git rev-parse squash)
+punta_despues=$(git rev-parse squash-despues)
+git commit -q --allow-empty -m "despues del PR" && git push -q origin squash-despues 2>/dev/null
+git checkout -q master && echo "otro contenido" >a.txt && git add a.txt && git commit -q -m "master cambia a.txt" && git push -q origin master 2>/dev/null
+git fetch -q origin
+printf 'squash %s\nsquash-despues %s\n' "$punta_squash" "$punta_despues" >"$tmp/prs.txt"
+PR_FUSIONADOS="$tmp/prs.txt" PATH="$tmp/bin:$PATH" BASE_REF=origin/master MIN_DIAS=0 LISTA_RAMAS="$tmp/informe2.txt" bash "$informe" >"$tmp/informe2.out" 2>&1 || mal "informe-de-ramas.sh falló con PR fusionados: $(tail -n 3 "$tmp/informe2.out" | tr '\n' ' ')"
+espera "informe: la rama de un PR fusionado sale en la lista" grep -qx "squash $punta_squash" "$tmp/informe2.txt"
+espera "informe: …y en la sección «Con su PR fusionado»" grep -q 'Con su PR fusionado' "$tmp/informe2.out"
+espera "informe: la rama a la que se empujó después del PR no sale" bash -c '! grep -q "^squash-despues " "$1"' _ "$tmp/informe2.txt"
 
 echo
 if [ "$fallos" -gt 0 ]; then echo "$fallos fallo(s)"; exit 1; fi
