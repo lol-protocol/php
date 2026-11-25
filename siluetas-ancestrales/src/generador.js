@@ -7,7 +7,7 @@ import { PRENDAS_POR_ID, PRENDAS } from './datos/prendas.js';
 import { ATUENDOS, ATUENDOS_POR_ID, REGIONES } from './datos/atuendos.js';
 import { MANDIBULAS_ID, PEINADOS, BARBAS, TOCADOS } from './cabeza.js';
 import { PATRONES_ID } from './patrones.js';
-import { CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria } from './cuerpo.js';
+import { CORPULENCIAS, POSTURAS, POSE_FIRME, SALUDOS_ESTILO, poseAleatoria } from './cuerpo.js';
 import { renderizar } from './svg.js';
 import { ETNIAS, ETNIAS_POR_ID } from './datos/etnias.js';
 import { distribucionColor, catalogoColores, muestrearColor, muestrearColorLibre, perfilDe, PERFILES } from './datos/colores-prendas.js';
@@ -409,7 +409,7 @@ export function generarPersona(opc = {}) {
   else {
     const perfilPose = opc.pose === 'segun-edad' ? (edad <= 12 ? 'infantil' : edad >= 65 ? 'mayor' : undefined) : (opc.pose === 'infantil' || opc.pose === 'mayor' ? opc.pose : undefined);
     pose = poseAleatoria(azar.hijo('pose'), 1, perfilPose);
-    if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(opc.pose.saludo ?? {}) } };
+    if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(SALUDOS_ESTILO[opc.pose.saludoEstilo] ?? {}), ...(opc.pose.saludo ?? {}) } };
     if (opc.postura !== undefined && !(opc.pose && opc.pose.angulos)) {
       const base = typeof opc.postura === 'number' ? opc.postura : (POSTURAS[opc.postura] ?? POSTURAS.relajada);
       pose.angulos = { 1: base + pose.angulos[1] * 0.2 - 1, '-1': base + pose.angulos['-1'] * 0.2 - 1 };
