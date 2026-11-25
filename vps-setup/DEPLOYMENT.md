@@ -109,6 +109,28 @@ Todo con `10_A-add-domain.sh` (detalle en [DOMAINS.md](DOMAINS.md)):
 ./remote-run.sh 10_A-add-domain.sh java.otro.com --type tomcat --context miapp --ssl      # app Java (requiere 02_A + 02_H)
 ```
 
+### Subir el código de una app: `10_C-deploy-app.sh`
+
+Las apps nacen con una página de ejemplo. Para poner tu código, desde un repositorio git (corre como el usuario de la
+app, no como root):
+
+```bash
+# repo público (https), la primera vez
+./remote-run.sh 10_C-deploy-app.sh tienda --repo https://github.com/tu/tienda.git
+# repo privado: una DEPLOY KEY de solo lectura (GitHub: Settings > Deploy keys; no le des permiso de escritura)
+ssh-keygen -t ed25519 -f ~/tienda_deploy -N ''          # y pega ~/tienda_deploy.pub como deploy key del repo
+scp ~/tienda_deploy usuario@IP:/tmp/                  # copia la privada al VPS (y bórrala de /tmp al terminar)
+./10_C-deploy-app.sh tienda --repo git@github.com:tu/tienda.git --key /tmp/tienda_deploy
+# las veces siguientes (como un "git pull"): instala dependencias y, en Python, reinicia y comprueba el servicio
+./10_C-deploy-app.sh tienda
+```
+
+Qué hace y qué no: aparta la página de ejemplo (a `/var/backups/vps-setup/deploy/`, no la borra); se niega si el repo
+trae un `.env` (pisaría el de la app, con su `DATABASE_URL`) o si hay cambios sin guardar en los archivos del repo; no
+acepta `usuario:clave` en la URL (quedaría guardado en `.git/config`). La llave se copia a
+`/var/lib/vps-setup/deploy-keys/<app>/` (solo de la app, 600), así que puedes borrar la que subiste a `/tmp`; la primera
+conexión confía en la huella del servidor (`accept-new`). Para volver a un commit anterior el script imprime el comando.
+
 Extras que no instala `install-all`: MariaDB (`02_G`), Tomcat (`02_H`, requiere `02_A`) y
 Whisper (`02_I`, descarga varios GB).
 
