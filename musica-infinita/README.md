@@ -7,6 +7,7 @@ Aplicación personal de música que no se acaba, hecha con las melodías de tus 
 - **Música infinita.** Aprende de las canciones que marques y compone sin parar. Va por secciones con su tonalidad, su tempo, su compás, su estilo y una forma (A A' B A…). Cita frases reales de tus canciones, llevadas a la tonalidad del momento y a veces adornadas, y las mezcla con frases nuevas al estilo de esas mismas canciones. Entre secciones modula (a la relativa, a la dominante, un tono más arriba…), y las frases libres pueden sonar en dórico, frigio, mixolidio o lidio. Cada frase cierra con su cadencia, y una segunda voz (la contramelodía) acompaña a la melodía.
 - **Buen sonido.** Trae instrumentos propios sintetizados en el navegador: piano aditivo, piano eléctrico FM, cuerdas pulsadas Karplus-Strong, campanas, cuerdas frotadas, pads, coro, vientos y batería. Si cargas una **SoundFont** (`.sf2` o `.sf3`), suena con muestras de instrumentos reales. La mezcla pasa por reverberación de convolución, eco sincronizado con el tempo, compresor y limitador.
 - **Visualizaciones.** Son seis: la **MilkDrop** (WebGL2: cada cuadro se dibuja sobre el anterior, acercado, girado y deformado, con la onda encima), el **espectro** clásico de barras con los picos que caen, el **osciloscopio** (con Lissajous), una **lluvia de notas** que muestra qué toca cada voz y lo que viene, **partículas** que nacen de cada nota y de cada golpe de bombo, y una curva de **Lissajous 3D** que gira con la señal estéreo. Siguen a la música: cada estilo trae su color y su grupo de ajustes de la MilkDrop, que cambian al empezar cada sección.
+- **Sesiones.** Guarda como **favorito** lo que suena (la semilla, los ajustes y las canciones en uso), arma **listas de reproducción** con favoritos y MIDI «tal cual», consulta el **historial** de lo que sonó y exporta o importa la sesión entera.
 - **Calidad sin pérdida.** Puedes grabar lo que suena en **FLAC** de 16 o 24 bits, o exportar los minutos que quieras en FLAC, WAV o MIDI. La exportación se calcula más rápido que el tiempo real y siempre da la misma música con la misma semilla.
 
 | | |
@@ -43,6 +44,19 @@ Atajos de teclado: **espacio** reproduce o pausa, **N** pasa a otra sección (o 
 ### Ajustes de la MilkDrop
 
 En el panel, «MilkDrop» deja elegir uno de los 12 ajustes de fábrica y editar en vivo su zoom, giro, ondulación, estela, color, brillo, la forma de la onda y el espejo. **Guardar como…** guarda el actual con tu nombre (queda en el navegador), **Borrar** quita uno propio, **Exportar** descarga tus ajustes en un JSON e **Importar** carga los de otra persona: los valores fuera de rango se recortan y lo inválido se descarta, con un aviso. **Fijar** evita que cambien solos al empezar cada sección. Cada estilo tiene su grupo de ajustes y su color: Ambiente va con azules y verdes y ajustes lentos, Pop con magentas y ajustes de pulso, Orquestal con dorados, Chiptune con verdes neón, Lo-fi con naranjas, y Cajita de música con lilas.
+
+### Sesiones: favoritos, listas e historial
+
+![El panel de sesiones](docs/capturas/sesiones.jpg)
+
+En el panel, «Sesiones» tiene cuatro partes. Todo queda en tu navegador.
+
+- **Favoritos.** **☆ Guardar lo que suena** guarda la semilla de la sesión, los ajustes del compositor (fidelidad, variación, color modal, contramelodía, cambios de compás, estilo y tempo) y qué canciones estaban en uso. **▶** lo toca desde el principio: repone los ajustes y las canciones, y empieza con esa semilla. La primera sección vuelve a ser la misma, y la música sigue igual que la primera vez mientras no muevas nada. Una misma configuración no se guarda dos veces. Si a un favorito le faltan canciones que ya no están en la biblioteca, o se guardó con otra versión del compositor (los favoritos guardan `G.VERSION`, que sube cuando un cambio hace que una semilla suene distinta; una prueba lo vigila), avisa y suena igual con lo que hay.
+- **Listas de reproducción.** Una lista mezcla favoritos (cada uno con los minutos que suena) y MIDI «tal cual» (suenan hasta que terminan). Se tocan en orden o al azar (sin repetir hasta agotar la vuelta) y, si quieres, en bucle. Avanzan solas, y al terminar sigue la música infinita. Un elemento que ya no existe (un favorito borrado, un MIDI que quitaste) se marca y se salta. Con **■ Parar lista** se detiene sin cortar la música.
+- **Historial.** Cada fila es una «corrida»: una semilla con su configuración, con los estilos que pasaron, las secciones y cuánto duró. **▶** la vuelve a oír desde el principio y **☆** la guarda como favorita. Si moviste los controles mientras sonaba, la corrida lleva «≈»: ya no sale de su semilla sola, y volver a oírla da la configuración del final. Guarda las últimas 200.
+- **Exportar e importar la sesión.** Un JSON con los favoritos, las listas, los ajustes de la aplicación y de la MilkDrop, y qué canciones están en uso. Con **incluir mis MIDI** lleva también esos archivos (los de ejemplo nunca: ya vienen con la aplicación); ese archivo pesa más y lleva la música de tus canciones, así que guárdalo para ti. Al importar, se une con lo que ya tienes: no repite un favorito que ya está, renombra los que chocan por nombre y ajusta las listas importadas a los favoritos que quedaron. Lo importado se sanea (números recortados, textos acotados, lo inválido se descarta con un aviso) y tiene topes: 200 favoritos, 50 listas, 500 canciones y 4 MB por MIDI.
+
+Una semilla que sacas de un favorito no queda guardada como «la semilla» de tus ajustes: al abrir la aplicación otra vez no suena siempre lo mismo. Solo la semilla que escribas tú en el panel queda guardada.
 
 ### Mejor sonido: una SoundFont
 
@@ -103,15 +117,17 @@ Todo es determinista con la semilla: el mismo generador da la misma música en v
 | `js/visual-puro.js` | Lo que las visualizaciones calculan sin dibujar: ajustes de la MilkDrop (validación, importación, estilos), partículas, proyección 3D, barras del espectro y lluvia de notas. |
 | `js/visualizador.js` | Las seis visualizaciones. Solo navegador. |
 | `js/panel-visual.js` | El panel de ajustes de la MilkDrop. Solo navegador. |
+| `js/sesiones.js` | Favoritos, historial, listas de reproducción y la exportación e importación de la sesión: validación, topes, fusión y elección del siguiente elemento. Funciones puras. |
+| `js/panel-sesiones.js` | El panel de sesiones y el reproductor de listas. Solo navegador. |
 | `js/planificador.js` | Cuánto se programa por delante, los tramos de la exportación y los nombres de archivo. |
-| `js/almacen.js` | IndexedDB (MIDI y SoundFont) y localStorage (ajustes). Solo navegador. |
+| `js/almacen.js` | IndexedDB (MIDI y SoundFont) y localStorage (ajustes, ajustes de la MilkDrop, favoritos, listas e historial). Solo navegador. |
 | `js/exportar.js` | Grabación en vivo a FLAC y exportación a FLAC, WAV o MIDI. Solo navegador. |
 | `js/app.js` | Interfaz, biblioteca y reproducción. Solo navegador. |
 | `docs/` | La [guía de MIDI](docs/GUIA-MIDI.md), las capturas y el GIF de este README. |
 | `pruebas/` | Pruebas en Node (`*.test.js`) y en Chromium (`navegador.js`). `ayudas/` arma una SoundFont mínima (con variante `.sf3`) y trae un decodificador FLAC de prueba. |
 | `eslint.config.cjs` | La configuración de ESLint (errores reales, no estilo). |
 
-Los módulos de lógica (`midi`, `teoria`, `analisis`, `ejemplos`, `generador`, `sf2`, `flac`, `dsp`, `visual-puro` y `planificador`) son funciones puras. Corren igual en el navegador, cargados como `<script>`, y en Node, con `require`. El resto toca el navegador (audio, canvas, WebGL, almacenamiento).
+Los módulos de lógica (`midi`, `teoria`, `analisis`, `ejemplos`, `generador`, `sf2`, `flac`, `dsp`, `visual-puro`, `planificador` y `sesiones`) son funciones puras. Corren igual en el navegador, cargados como `<script>`, y en Node, con `require`. El resto toca el navegador (audio, canvas, WebGL, almacenamiento).
 
 ## Pruebas
 
@@ -128,9 +144,9 @@ node --test --experimental-test-coverage --test-coverage-include='js/**' \
 npm install --no-save --no-package-lock eslint@10.15.0 @eslint/js@10.0.1 && npx eslint .
 ```
 
-La primera tanda prueba el MIDI (ida y vuelta, tempos, running status), la teoría, el análisis de los ejemplos, el generador (determinismo, continuidad, fidelidad, escala, estilos, modos, cadencias, contramelodía y compás), el lector de SoundFont (zonas, moduladores y sus curvas, LFO, envolvente de modulación, muestras enlazadas y `.sf3`), el FLAC, las recetas del sintetizador, la parte pura de las visualizaciones, el planificador y el rendimiento y la memoria en sesiones largas (una hora de música se genera de una vez, doce horas no acumulan memoria y el costo por cuadro no crece). Para el FLAC hay tres comprobaciones: la ida y vuelta exacta con un decodificador propio que verifica los CRC y el MD5, la lectura bit a bit con ffmpeg (si está instalado) y la afinación de las recetas. Los módulos de lógica quedan por encima del 90 % de líneas cubiertas.
+La primera tanda prueba el MIDI (ida y vuelta, tempos, running status), la teoría, el análisis de los ejemplos, el generador (determinismo, continuidad, fidelidad, escala, estilos, modos, cadencias, contramelodía y compás), el lector de SoundFont (zonas, moduladores y sus curvas, LFO, envolvente de modulación, muestras enlazadas y `.sf3`), el FLAC, las recetas del sintetizador, la parte pura de las visualizaciones, el planificador, las sesiones (favoritos, historial, listas, exportar e importar, con topes y saneo), una guarda que obliga a subir la versión del compositor si una semilla fija cambia de sonido, y el rendimiento y la memoria en sesiones largas (una hora de música se genera de una vez, doce horas no acumulan memoria y el costo por cuadro no crece). Para el FLAC hay tres comprobaciones: la ida y vuelta exacta con un decodificador propio que verifica los CRC y el MD5, la lectura bit a bit con ffmpeg (si está instalado) y la afinación de las recetas. Los módulos de lógica quedan por encima del 90 % de líneas cubiertas.
 
-La segunda abre la aplicación en Chromium: arranca y suena, cada una de las seis visualizaciones deja píxeles dibujados, el color y los ajustes siguen al estilo, el panel de ajustes de la MilkDrop (elegir, editar, guardar, exportar, importar con recorte y descartes, y borrar) funciona, una SoundFont con vibrato y envolvente de modulación suena, una `.sf3` con Ogg Vorbis hecho por ffmpeg se decodifica y suena, las voces y las notas de la visualización tienen tope, y un FLAC exportado se verifica. Necesita el paquete `playwright`; en las sesiones en la nube ya está instalado globalmente: `NODE_PATH=$(npm root -g) node pruebas/navegador.js`.
+La segunda abre la aplicación en Chromium: arranca y suena, cada una de las seis visualizaciones deja píxeles dibujados, el color y los ajustes siguen al estilo, el panel de ajustes de la MilkDrop (elegir, editar, guardar, exportar, importar con recorte y descartes, y borrar) funciona, un favorito repone sus ajustes y canciones y suena su misma primera sección, el historial marca los cambios en vivo, una lista avanza sola entre favoritos y MIDI y al terminar reanuda la música infinita, la sesión exportada vuelve entera al importarla (sin duplicar al repetirlo), una SoundFont con vibrato y envolvente de modulación suena, una `.sf3` con Ogg Vorbis hecho por ffmpeg se decodifica y suena, las voces y las notas de la visualización tienen tope, y un FLAC exportado se verifica. Necesita el paquete `playwright`; en las sesiones en la nube ya está instalado globalmente: `NODE_PATH=$(npm root -g) node pruebas/navegador.js`.
 
 `.github/workflows/pruebas-musica-infinita.yml` corre las pruebas con cobertura, ESLint y la de Chromium cuando cambia esta carpeta.
 
@@ -139,6 +155,7 @@ La segunda abre la aplicación en Chromium: arranca y suena, cada una de las sei
 - La detección de melodía es una heurística. Si un MIDI tiene la melodía en una pista grave o repartida entre varias, puede elegir otra pista, y no hay todavía un selector manual de pista. La tonalidad y los acordes también pueden salir errados en música muy cromática o modal. La [guía de MIDI](docs/GUIA-MIDI.md) explica cómo revisarlo y corregirlo.
 - Las citas solo toman la melodía y la armonía de la canción, no su arreglo: el acompañamiento lo pone el estilo.
 - Todo se probó con instrumentos propios y con SoundFont de prueba, no con una SoundFont comercial grande: el balance de volúmenes con GeneralUser GS o FluidR3_GM puede pedir ajustes.
+- Un favorito reproduce la misma música mientras el compositor sea de la misma versión y las canciones sigan en la biblioteca. Si mueves los controles mientras suena, lo que oyes ya no sale de la semilla sola (la corrida del historial lo marca con «≈»). Al importar una sesión, la semilla escrita a mano que traiga entre sus ajustes no reinicia la música que está sonando: vale desde que empiezas de nuevo.
 - Los moduladores de la SoundFont que dependen de controles MIDI y los enlazados entre moduladores no se aplican (ver arriba).
 - La MilkDrop necesita WebGL2; sin WebGL2 se ve una versión más simple en canvas 2D.
 - «Cargar carpeta» depende de `webkitdirectory`, que no está en todos los navegadores. Siempre se puede arrastrar la carpeta o elegir varios archivos.

@@ -136,6 +136,58 @@
         <small>Arrastra archivos .mid, .sf2 o .sf3 a la ventana. Las canciones marcadas son las que el generador aprende y cita. «Tal cual» toca el MIDI sin cambiarlo.</small>
         <ul id="lista" class="lista"></ul>
       </fieldset>
+
+      <fieldset class="sesiones" id="panel-sesiones">
+        <legend>Sesiones</legend>
+
+        <details open id="s-favoritos">
+          <summary>Favoritos <span id="s-n-fav" class="estado"></span></summary>
+          <div class="fila"><button id="fav-guardar">☆ Guardar lo que suena</button></div>
+          <small>Guarda la semilla, los ajustes y las canciones en uso. Al tocarlo suena igual que la primera vez, desde el principio, siempre que las canciones sigan en la biblioteca.</small>
+          <ul id="lista-fav" class="items"></ul>
+        </details>
+
+        <details id="s-listas">
+          <summary>Listas de reproducción <span id="s-n-listas" class="estado"></span></summary>
+          <div class="fila">
+            <select id="lista-sel" aria-label="Lista"></select>
+            <button id="lista-nueva">+ Nueva</button>
+            <button id="lista-renombrar">✎</button>
+            <button id="lista-borrar">Borrar</button>
+            <label class="chk"><input id="lista-aleatorio" type="checkbox"> al azar</label>
+            <label class="chk"><input id="lista-repetir" type="checkbox"> repetir</label>
+            <button id="lista-tocar">▶ Tocar lista</button>
+            <button id="lista-parar">■ Parar lista</button>
+          </div>
+          <div class="fila">
+            <select id="lista-agregar-fav" aria-label="Favorito a agregar"></select>
+            <input id="lista-minutos" type="number" min="1" max="120" value="5" aria-label="Minutos"> min
+            <button id="lista-agregar-fav-btn">+ favorito</button>
+            <select id="lista-agregar-midi" aria-label="MIDI a agregar"></select>
+            <button id="lista-agregar-midi-btn">+ MIDI tal cual</button>
+          </div>
+          <ol id="lista-items" class="items"></ol>
+          <div id="lista-estado" class="estado"></div>
+        </details>
+
+        <details id="s-historial">
+          <summary>Historial <span id="s-n-hist" class="estado"></span></summary>
+          <div class="fila"><button id="hist-borrar">Borrar historial</button></div>
+          <small>Cada fila es una corrida: una semilla con su configuración. «≈» quiere decir que moviste los controles mientras sonaba, y volver a oírla no da exactamente lo mismo.</small>
+          <ul id="lista-hist" class="items"></ul>
+        </details>
+
+        <details id="s-sesion">
+          <summary>Exportar e importar la sesión</summary>
+          <div class="fila">
+            <label class="chk"><input id="ses-incluir-midi" type="checkbox"> incluir mis MIDI</label>
+            <button id="ses-exportar">Exportar sesión</button>
+            <label class="chk"><input id="ses-aplicar-ajustes" type="checkbox" checked> aplicar los ajustes al importar</label>
+            <label class="archivo">Importar sesión <input id="ses-importar" type="file" accept=".json,application/json"></label>
+          </div>
+          <small>Lleva los favoritos, las listas, los ajustes de la aplicación y de la MilkDrop y qué canciones están en uso. Con «incluir mis MIDI» lleva también esos archivos: el archivo pesa más y lleva la música de esas canciones, así que guárdalo para ti.</small>
+        </details>
+      </fieldset>
     </div>
   </section>
 
@@ -154,6 +206,8 @@
   <script src="js/planificador.js"></script>
   <script src="js/exportar.js"></script>
   <script src="js/panel-visual.js"></script>
+  <script src="js/sesiones.js"></script>
+  <script src="js/panel-sesiones.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
