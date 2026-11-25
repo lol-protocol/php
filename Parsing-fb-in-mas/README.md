@@ -121,8 +121,10 @@ segundo recorrido del volcado, lee solo las líneas que se pidieron y se detiene
 lugares ganan `lugar_nacimiento_nombre` y `lugar_muerte_nombre`. **El nombre de un pariente solo se resuelve si
 el propio volcado lo da por fallecido**: un hijo o una hija de alguien que murió puede estar vivo, y de una
 persona viva no se saca el nombre; esos parientes quedan con su identificador, `nombre` en null y un aviso. Los
-parientes que están en la lista de exclusión se quitan del perfil. **Límite:** carga en memoria todos los perfiles de
-`wikidata.jsonl` (necesita recorrerlos dos veces), a diferencia del resto de los programas, que leen línea por línea.
+parientes que están en la lista de exclusión se quitan del perfil. Lee `wikidata.jsonl` en streaming: primero recoge solo los identificadores que piden los perfiles, luego recorre el
+volcado, y al final vuelve a leer los perfiles de uno en uno y los escribe. En memoria hay un perfil y los
+identificadores pedidos, así que el archivo de perfiles puede ser tan grande como se quiera (la entrada tiene que ser
+un archivo, no `stdin`, porque se lee dos veces).
 
 ## La API de WikiTree
 
