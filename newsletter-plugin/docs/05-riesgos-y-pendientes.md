@@ -28,7 +28,7 @@ Necesarias antes de implementar.
 3. **Lista de campos sensibles:** la valida Conce junto con el contrato (decisión 10).
 4. **Ley 21.719 aplicada al newsletter:** revisada en docs/06 (21-nov-2026, actualizada el 25-nov-2026). Falta cotejarla con el texto oficial.
 5. **Versión mínima de PHP:** se fija al implementar. No bloquea los documentos.
-6. **Plazos de conservación** (25-nov-2026): se decidió cambiar algunos de los propuestos en docs/06, sección 3, punto 4. Falta indicar cuáles y el plazo nuevo.
+6. **Plazos de conservación** (25-nov-2026): se decidió cambiar los cuatro propuestos en docs/06, sección 3, punto 4. Faltan los plazos nuevos.
 7. **Encargado del correo** (25-nov-2026): falta el nombre del proveedor y el país de sus servidores (docs/06, sección 3, punto 5).
 
 ## Riesgos

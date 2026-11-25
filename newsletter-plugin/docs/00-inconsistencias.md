@@ -25,7 +25,7 @@ Registro de contradicciones encontradas durante el diseño, con la resolución p
 | 19 | Base del aviso sensible | Interés legítimo, con una ponderación documentada (decisión 12 de docs/05). Falta confirmarla con el texto oficial. | Decidido (25-nov-2026) |
 | 20 | Arranque del boletín | Sin fecha por ahora; no se fija hasta cerrar docs/06. | Decidido (25-nov-2026) |
 | 21 | Correo del boletín | Lo envía un proveedor externo, que va como encargado. Faltan su nombre y el país de sus servidores (docs/06, sección 3, punto 5). | Pendiente de datos |
-| 22 | Plazos de conservación | Se cambian algunos de los propuestos en docs/06, sección 3, punto 4. Falta indicar cuáles y el plazo nuevo. | Pendiente de datos |
+| 22 | Plazos de conservación | Se cambian los cuatro propuestos en docs/06, sección 3, punto 4. Faltan los plazos nuevos. | Pendiente de datos |
 
 ## Notas
 - Quedan abiertas: la 5 (se decide al implementar), la 8 y la 15 (las valida Conce con el contrato), la 16 (cotejar con el texto oficial), la 17 (se fija al implementar), la 21 y la 22 (faltan datos del usuario).
