@@ -34,7 +34,7 @@ function leerCsv(nombre) {
 }
 
 const tablas = {};
-for (const n of ['paises', 'causas_modernas', 'causas_historicas', 'epidemias', 'hitos_registro', 'londres_muertes', 'esperanza_vida', 'modelo_logcuadratico', 'revisiones']) {
+for (const n of ['paises', 'causas_modernas', 'causas_historicas', 'epidemias', 'hitos_registro', 'londres_muertes', 'inglaterra_tasas', 'esperanza_vida', 'modelo_logcuadratico', 'revisiones']) {
   tablas[n] = leerCsv(n);
 }
 const m = Mortalidad.crear(tablas);
@@ -94,6 +94,27 @@ test('muertes en Londres y su exceso', () => {
     assert.equal(obtenido === null ? null : obtenido.totales, totales, `totales ${anio}`);
     assert.equal(obtenido === null ? null : obtenido.viruela, viruela, `viruela ${anio}`);
     casi(exceso, m.excesoDeMuertesLondres(anio), `exceso ${anio}`);
+  }
+});
+
+test('tasas de Inglaterra y años de mortalidad anormal', () => {
+  for (const [anio, tasas, exceso] of vectores.inglaterra.puntos) {
+    const obtenidas = m.tasasInglaterra(anio);
+    assert.equal(obtenidas === null, tasas === null, `punto ${anio}`);
+    if (tasas !== null) {
+      casi(tasas.natalidad, obtenidas.natalidad, `natalidad ${anio}`);
+      casi(tasas.mortalidad, obtenidas.mortalidad, `mortalidad ${anio}`);
+    }
+    casi(exceso, m.excesoDeMortalidadInglaterra(anio), `exceso ${anio}`);
+  }
+  for (const [clave, umbral] of [['anormales', 1.15], ['anormales_1_3', 1.3]]) {
+    const esperados = vectores.inglaterra[clave];
+    const obtenidos = m.aniosDeMortalidadAnormalInglaterra(umbral);
+    assert.equal(obtenidos.length, esperados.length, clave);
+    esperados.forEach((e, i) => {
+      assert.equal(obtenidos[i].anio, e.anio, clave);
+      casi(e.exceso, obtenidos[i].exceso, `${clave} ${e.anio}`);
+    });
   }
 });
 

@@ -44,6 +44,7 @@ class Plantilla(unittest.TestCase):
         escribir(self.datos, "hitos_registro", [("CL", "civil", "1885", "", "borrador", "")])
         escribir(self.datos, "modelo_logcuadratico", [(sexo, str(e), "-1", "1", "0", "0") for sexo in modelo.SEXOS for e in modelo.EDADES])
         escribir(self.datos, "londres_muertes", [("1665", "97306", "655", "verificado", "londres-owid")])
+        escribir(self.datos, "inglaterra_tasas", [("1541", "39.84", "29.41", "verificado", "wrigley-schofield-owid")])
         escribir(self.datos, "esperanza_vida", [])
         # validar() lee de comun.DATOS a través de leer_csv(DATOS / ...), que generar_tabla importó.
         parche = mock.patch.object(g, "DATOS", self.datos)
@@ -157,6 +158,20 @@ class ValidadorPaisesYLondresTest(Plantilla):
     def test_londres_anio_repetido(self):
         escribir(self.datos, "londres_muertes", [("1665", "10", "1", "verificado", "x"), ("1665", "11", "1", "verificado", "x")])
         self.assertTrue(any("repetido" in e for e in self.errores()))
+
+    def test_inglaterra_anio_repetido_o_desordenado(self):
+        escribir(self.datos, "inglaterra_tasas", [("1546", "37", "31", "verificado", "x"), ("1541", "39", "29", "verificado", "x")])
+        self.assertTrue(any("fuera de orden" in e for e in self.errores()))
+        escribir(self.datos, "inglaterra_tasas", [("1541", "39", "29", "verificado", "x"), ("1541", "38", "30", "verificado", "x")])
+        self.assertTrue(any("fuera de orden" in e for e in self.errores()))
+
+    def test_inglaterra_tasa_fuera_de_rango(self):
+        self.cambiar("inglaterra_tasas", 0, "mortalidad", "290")
+        self.assertTrue(any("mortalidad" in e and "tasa por mil" in e for e in self.errores()))
+
+    def test_inglaterra_verificado_exige_fuente(self):
+        self.cambiar("inglaterra_tasas", 0, "fuente", "")
+        self.assertTrue(any("verificado" in e for e in self.errores()))
 
     def test_londres_verificado_exige_fuente(self):
         self.cambiar("londres_muertes", 0, "fuente", "")
@@ -700,6 +715,20 @@ class LondresYColeraTest(unittest.TestCase):
                     pd.comprobar_colera(ruta, [malo])
 
 
+class InglaterraTest(unittest.TestCase):
+    def test_construir_inglaterra_salta_los_vacios_y_ordena(self):
+        cab = ["Entity", "Year", "Crude Birth Rate (per 1,000) (X)", "Crude Death Rate (per 1,000) (X)"]
+        with tempfile.TemporaryDirectory() as tmp:
+            ruta = Path(tmp) / "i.csv"
+            with ruta.open("w", encoding="utf-8", newline="") as f:
+                e = csv.writer(f)
+                e.writerow(cab)
+                e.writerows([["England", 1546, 37.06, 31.24], ["England", 1541, 39.84, 29.41], ["England", 1543, "", 30.0]])
+            self.assertEqual(pd.construir_inglaterra(ruta), [
+                [1541, "39.84", "29.41", "verificado", pd.FUENTE_INGLATERRA],
+                [1546, "37.06", "31.24", "verificado", pd.FUENTE_INGLATERRA]])
+
+
 class FuentesTest(unittest.TestCase):
     def test_el_manifiesto_cubre_todas_las_fuentes(self):
         self.assertEqual(set(descargar_fuentes.leer_manifiesto()), set(descargar_fuentes.FUENTES))
@@ -919,6 +948,43 @@ class ConsultasEpidemiasYLondresTest(unittest.TestCase):
         self.assertLess(consultas.exceso_de_muertes_londres(1666), 1)
         self.assertAlmostEqual(consultas.exceso_de_muertes_londres(1800), 1.0, delta=0.4)
 
+    def test_tasas_de_inglaterra(self):
+        self.assertEqual(consultas.tasas_inglaterra(1541), {"natalidad": 39.84, "mortalidad": 29.41})
+        self.assertIsNone(consultas.tasas_inglaterra(1542))  # hasta 1861 solo hay un punto cada cinco años
+        self.assertIsNotNone(consultas.tasas_inglaterra(1900))
+        self.assertIsNone(consultas.tasas_inglaterra(1500))
+
+    def test_la_serie_de_inglaterra_es_la_de_1541_a_2015_y_quinquenal_hasta_1861(self):
+        anios = [a for a, _n, _m in consultas._tasas_de_inglaterra()]
+        self.assertEqual((anios[0], anios[-1]), (1541, 2015))
+        self.assertEqual(anios, sorted(set(anios)))
+        self.assertTrue(all(b - a == 5 for a, b in zip(anios, anios[1:]) if b <= 1861))
+
+    def test_exceso_de_mortalidad_en_inglaterra(self):
+        self.assertIsNone(consultas.exceso_de_mortalidad_inglaterra(1541))  # extremo: sin vecinos de un lado
+        self.assertIsNone(consultas.exceso_de_mortalidad_inglaterra(1542))
+        # Los quinquenios de 1556 (gripe de 1557-59) y 1561 y el de 1681 sobresalen; 1900 no.
+        for anio in (1556, 1561, 1681, 1918):
+            self.assertGreater(consultas.exceso_de_mortalidad_inglaterra(anio), 1.15, anio)
+        self.assertLess(consultas.exceso_de_mortalidad_inglaterra(1900), 1.1)
+
+    def test_anios_de_mortalidad_anormal_en_inglaterra(self):
+        anormales = consultas.anios_de_mortalidad_anormal_inglaterra()
+        anios = [a["anio"] for a in anormales]
+        self.assertEqual(anios, sorted(anios))
+        self.assertIn(1561, anios)
+        self.assertIn(1918, anios)
+        self.assertTrue(all(a["exceso"] >= 1.15 for a in anormales))
+        mas_estricto = [a["anio"] for a in consultas.anios_de_mortalidad_anormal_inglaterra(1.2)]
+        self.assertTrue(set(mas_estricto) < set(anios))
+        self.assertEqual(consultas.anios_de_mortalidad_anormal_inglaterra(99), [])
+
+    def test_exceso_de_inglaterra_con_una_serie_conocida(self):
+        serie = ((1, 0, 10.0), (2, 0, 10.0), (3, 0, 30.0), (4, 0, 10.0), (5, 0, 10.0))
+        with mock.patch.object(consultas, "_tasas_de_inglaterra", lambda: serie):
+            self.assertEqual(consultas.exceso_de_mortalidad_inglaterra(3), 3.0)
+            self.assertIsNone(consultas.exceso_de_mortalidad_inglaterra(2))  # solo 3 vecinos con dato
+
     def test_exceso_con_una_serie_conocida(self):
         # Vecinos 100, 100, 100, 100 y el año a medir con 300: la mediana es 100 y el exceso, 3.
         serie = {a: (100, 0) for a in range(1, 6)} | {6: (300, 0)}
@@ -955,6 +1021,13 @@ class VistaTest(unittest.TestCase):
         self.assertEqual(tablas["epidemias"]["columnas"], g.COLUMNAS["epidemias"])
         for fila in tablas["esperanza_vida"]["filas"]:
             self.assertEqual(len(fila), len(tablas["esperanza_vida"]["columnas"]))
+
+    def test_las_causas_delicadas_de_la_vista_son_causas_que_existen(self):
+        import re as _re
+        bloque = _re.search(r"var DELICADAS = \{([^}]*)\}", self.html).group(1)
+        ids = set(_re.findall(r"(\w+): 1", bloque))
+        self.assertEqual(ids, {"suicidio", "locura", "sifilis", "lepra", "muerte_de_parto", "fiebre_puerperal"})
+        self.assertLessEqual(ids, {c["id"] for c in self.datos["causas_modernas"]})
 
     def test_un_cierre_de_script_en_los_datos_no_rompe_la_pagina(self):
         datos = {**self.datos, "causas_historicas": self.datos["causas_historicas"] + [
