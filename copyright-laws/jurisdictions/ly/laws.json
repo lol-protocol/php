@@ -5,14 +5,14 @@
     "region": "middle_east_africa",
     "law_name": "Law No. 9 of 1968 Issuing the Copyright Protection Law",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years (commonly reported; 50 years from publication for posthumous works, Art. 22) (unconfirmed)",
-    "author_rights": "Economic rights (unconfirmed)",
+    "term_of_protection": "Author's life + 25 years, but not less than 50 years from first publication (Art. 20); anonymous or pseudonymous works 25 years from publication (Art. 21)",
+    "author_rights": "Economic (financial utilization) rights, plus moral rights: attribution and protection against changes (Art. 9); withdrawal for serious moral reasons (Art. 43)",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "No orphan-works provision in the law text",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Yes (deposit of the work with the Copyright Protection Office within one month of publication (secondary source; unconfirmed)",
-    "enforcement_body": "Copyright Protection Office, Ministry of Culture (unconfirmed)",
+    "enforcement_body": "Copyright Protection Office at the Ministry of Culture and Information, where works must be deposited",
     "treaties_signatory": "Berne",
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/text/234541",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/10149",
@@ -34,19 +34,19 @@
         "checked": "2026-10-16"
       },
       "term_of_protection": {
-        "url": "https://webiis05.mondaq.com/marine-shipping/8111/summary-of-the-copyright-registration-system-in-libya",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.wipo.int/wipolex/en/text/234541",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "author_rights": {
-        "url": "https://www.wipo.int/wipolex/en/legislation/details/10149",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.wipo.int/wipolex/en/text/234541",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
-        "url": "https://www.wipo.int/wipolex/en/legislation/details/10149",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.wipo.int/wipolex/en/text/234541",
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "registration_required": {
         "url": "https://webiis05.mondaq.com/marine-shipping/8111/summary-of-the-copyright-registration-system-in-libya",
@@ -55,8 +55,8 @@
       },
       "enforcement_body": {
         "url": "https://www.agip.com/Agip-Country-Service/de/100/C",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "treaties_signatory": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Libya.html",
@@ -65,6 +65,30 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "enforcement_body",
+        "from": "Copyright Protection Office, Ministry of Culture (unconfirmed)",
+        "to": "Copyright Protection Office at the Ministry of Culture and Information, where works must be deposited"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "No orphan-works provision in the law text"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Economic (financial utilization) rights, plus moral rights: attribution and protection against changes (Art. 9); withdrawal for serious moral reasons (Art. 43)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "term_of_protection",
+        "from": "Author's life + 50 years (commonly reported; 50 years from publication for posthumous works, Art. 22) (unconfirmed)",
+        "to": "Author's life + 25 years, but not less than 50 years from first publication (Art. 20); anonymous or pseudonymous works 25 years from publication (Art. 21)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",
