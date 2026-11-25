@@ -991,7 +991,7 @@
       ],
       "por_defecto": true,
       "al_apagar": "no_disponible",
-      "nota": "Ocultar un pedido de retiro de datos sería peor que avisar que no está disponible por ahora (derechos de la persona; ver RECLAMOS.md). Política supuesta, confirmar.",
+      "nota": "Apagada se muestra como «no disponible» y no se oculta: ocultar un pedido de retiro de datos sería peor que avisar (derechos de la persona; ver RECLAMOS.md). Política confirmada por la persona.",
       "supuesto": false
     },
     {
@@ -1258,7 +1258,7 @@
         "gen.privacidad"
       ],
       "por_defecto": true,
-      "supuesto": true,
+      "supuesto": false,
       "min_opciones": 0,
       "opciones": [
         {
@@ -1295,7 +1295,7 @@
         "gen.privacidad"
       ],
       "por_defecto": true,
-      "supuesto": true,
+      "supuesto": false,
       "min_opciones": 0,
       "opciones": [
         {
