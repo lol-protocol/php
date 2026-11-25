@@ -8,9 +8,9 @@
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Full exclusive rights",
     "moral_rights": "Strong moral rights protection",
-    "orphan_works": "Collective management required",
-    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
-    "fair_use_exceptions": "Educational exceptions",
+    "orphan_works": "Diligent search and permitted use by cultural institutions (ss 61-61c UrhG)",
+    "digital_protection": "Protection of technological measures (s. 95a UrhG)",
+    "fair_use_exceptions": "Statutory limitations incl. teaching and research (ss 60a-60c UrhG)",
     "registration_required": "No",
     "enforcement_body": "Federal Ministry of Justice and Consumer Protection (BMJV)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
@@ -27,9 +27,42 @@
         "url": "https://www.lobbyregister.bundestag.de/inhalte-der-interessenvertretung/regelungsvorhabensuche/RV0027623/506429",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "orphan_works": {
+        "url": "https://www.gesetze-im-internet.de/urhg/BJNR012730965.html",
+        "confidence": "medium",
+        "checked": "2026-11-25"
+      },
+      "digital_protection": {
+        "url": "https://www.gesetze-im-internet.de/urhg/BJNR012730965.html",
+        "confidence": "medium",
+        "checked": "2026-11-25"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.gesetze-im-internet.de/urhg/BJNR012730965.html",
+        "confidence": "medium",
+        "checked": "2026-11-25"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "fair_use_exceptions",
+        "from": "Educational exceptions",
+        "to": "Statutory limitations incl. teaching and research (ss 60a-60c UrhG)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "digital_protection",
+        "from": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
+        "to": "Protection of technological measures (s. 95a UrhG)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Collective management required",
+        "to": "Diligent search and permitted use by cultural institutions (ss 61-61c UrhG)"
+      },
       {
         "date": "2026-11-25",
         "field": "linked_resources",

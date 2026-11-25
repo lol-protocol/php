@@ -8,9 +8,9 @@
     "term_of_protection": "Author's life + 50 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
-    "orphan_works": "Orphan works licensing scheme",
-    "digital_protection": "Digital Millennium Act",
-    "fair_use_exceptions": "Fair use copying",
+    "orphan_works": "No orphan works regime in the Act (use needs permission or a licence)",
+    "digital_protection": "Technological protection measures (ss 226-226E)",
+    "fair_use_exceptions": "Fair dealing (criticism; review; news reporting; research or private study; ss 41-43)",
     "registration_required": "No",
     "enforcement_body": "IP New Zealand / Courts",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
@@ -22,8 +22,52 @@
     "data_status": "curated",
     "confidence": "",
     "last_checked": "",
-    "sources": {},
+    "sources": {
+      "term_of_protection": {
+        "url": "https://www.legislation.govt.nz/act/public/1994/0143/latest/whole.html",
+        "confidence": "high",
+        "checked": "2026-11-25"
+      },
+      "moral_rights": {
+        "url": "https://www.legislation.govt.nz/act/public/1994/0143/latest/whole.html",
+        "confidence": "high",
+        "checked": "2026-11-25"
+      },
+      "digital_protection": {
+        "url": "https://www.legislation.govt.nz/act/public/1994/0143/latest/whole.html",
+        "confidence": "high",
+        "checked": "2026-11-25"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.legislation.govt.nz/act/public/1994/0143/latest/whole.html",
+        "confidence": "high",
+        "checked": "2026-11-25"
+      },
+      "orphan_works": {
+        "url": "https://www.legislation.govt.nz/act/public/1994/0143/latest/whole.html",
+        "confidence": "medium",
+        "checked": "2026-11-25"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "fair_use_exceptions",
+        "from": "Fair use copying",
+        "to": "Fair dealing (criticism; review; news reporting; research or private study; ss 41-43)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "digital_protection",
+        "from": "Digital Millennium Act",
+        "to": "Technological protection measures (ss 226-226E)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Orphan works licensing scheme",
+        "to": "No orphan works regime in the Act (use needs permission or a licence)"
+      },
       {
         "date": "2026-11-25",
         "field": "linked_resources",
