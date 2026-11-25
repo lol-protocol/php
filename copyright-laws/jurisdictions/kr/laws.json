@@ -31,6 +31,18 @@
     },
     "changes": [
       {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://elaw.klri.re.kr/eng_service/lawView.do?hseq=40403&lang=ENG",
+        "to": "https://www.kipo.go.kr/"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.kipo.go.kr/",
+        "to": "https://elaw.klri.re.kr/eng_service/lawView.do?hseq=40403&lang=ENG"
+      },
+      {
         "date": "2026-10-14",
         "field": "enforcement_body",
         "from": "Korean Intellectual Property Office",

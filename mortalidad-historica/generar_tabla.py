@@ -33,6 +33,7 @@ COLUMNAS = {
     "hitos_registro": ["codigo", "tipo", "desde", "nota", "estado", "fuente"],
     "modelo_logcuadratico": ["sexo", "edad", "ax", "bx", "cx", "vx"],
     "londres_muertes": ["anio", "muertes_totales", "muertes_viruela", "estado", "fuente"],
+    "inglaterra_tasas": ["anio", "natalidad", "mortalidad", "estado", "fuente"],
     "esperanza_vida": ["codigo", "desde", "hasta", "sexo", "edad", "esperanza_restante",
                        "supervivencia_hasta_edad", "incertidumbre_baja", "incertidumbre_alta", "calidad",
                        "estado", "fuente"],
@@ -318,6 +319,27 @@ def validar_londres(error):
     return filas
 
 
+def validar_inglaterra(error):
+    filas = _leer("inglaterra_tasas", error)
+    if filas is None:
+        return []
+    anterior = None
+    for i, f in enumerate(filas, start=2):
+        anio = _entero(f["anio"], 1500, 2100)
+        if anio is None:
+            error("inglaterra_tasas", i, f"anio «{f['anio']}» no es un año")
+        elif anterior is not None and anio <= anterior:
+            error("inglaterra_tasas", i, f"anio {anio} repetido o fuera de orden (el anterior es {anterior})")
+        if anio is not None:
+            anterior = anio
+        for columna in ("natalidad", "mortalidad"):
+            valor = _numero(f[columna])
+            if valor is None or valor != valor or not 0 < valor < 100:
+                error("inglaterra_tasas", i, f"{columna} «{f[columna]}» no es una tasa por mil razonable (entre 0 y 100)")
+        _estado_y_fuente("inglaterra_tasas", i, f, error)
+    return filas
+
+
 def validar_esperanza_vida(error, paises):
     filas = _leer("esperanza_vida", error)
     if filas is None:
@@ -369,6 +391,7 @@ def validar():
         "hereditarias": validar_hereditarias(error),
         "hitos_registro": validar_hitos(error, paises),
         "londres_muertes": validar_londres(error),
+        "inglaterra_tasas": validar_inglaterra(error),
         "modelo_logcuadratico": validar_modelo(error),
         "revisiones": validar_revisiones(error),
         "esperanza_vida": validar_esperanza_vida(error, paises),
@@ -578,6 +601,13 @@ def vectores(datos):
         m = consultas.muertes_londres(anio)
         londres.append([anio, None if m is None else m["totales"], None if m is None else m["viruela"],
                         consultas.exceso_de_muertes_londres(anio)])
+    tasas = [f["anio"] for f in datos["inglaterra_tasas"]]
+    inglaterra = {
+        "puntos": [[int(a), consultas.tasas_inglaterra(int(a)), consultas.exceso_de_mortalidad_inglaterra(int(a))]
+                   for a in tasas] + [[1542, consultas.tasas_inglaterra(1542), consultas.exceso_de_mortalidad_inglaterra(1542)]],
+        "anormales": consultas.anios_de_mortalidad_anormal_inglaterra(),
+        "anormales_1_3": consultas.anios_de_mortalidad_anormal_inglaterra(1.3),
+    }
     huellas = [[f["termino"], f["idioma"], f["causa_id"], f["confianza"], huella(f["termino"], f["idioma"], f["causa_id"], f["confianza"])]
                for f in historicas[::25]] + [["", "", "", "", huella("", "", "", "")], ["Schlagfluß", "deu", "ictus", "alta", huella("Schlagfluß", "deu", "ictus", "alta")]]
     plausibilidad = []
@@ -603,13 +633,14 @@ def vectores(datos):
         "hitos_de": [[c, [[h["tipo"], int(h["desde"])] for h in consultas.hitos_de(c)]] for c in ("CL", "FR", "GB", "ES", "ZZ")],
         "esperanza": esperanza,
         "londres": londres,
+        "inglaterra": inglaterra,
     }
 
 
 def tablas_para_la_vista(datos):
     """Las tablas en columnas que incrusta vista.html: {nombre: {"columnas": [...], "filas": [[...]]}}."""
     tablas = {}
-    for nombre in ("paises", "causas_modernas", "causas_historicas", "epidemias", "hitos_registro", "londres_muertes", "revisiones", "modelo_logcuadratico"):
+    for nombre in ("paises", "causas_modernas", "causas_historicas", "epidemias", "hitos_registro", "londres_muertes", "inglaterra_tasas", "revisiones", "modelo_logcuadratico"):
         columnas = COLUMNAS[nombre]
         tablas[nombre] = {"columnas": columnas, "filas": [[f[c] for c in columnas] for f in datos[nombre]]}
     # La esperanza de vida es la tabla grande: solo las columnas que usan las consultas, y con números.
@@ -646,7 +677,7 @@ def resumen(datos):
     hist = datos["causas_historicas"]
     por_conf = Counter(f["confianza"] for f in hist)
     estados = Counter(f["estado"] for tabla in ("causas_historicas", "epidemias", "hereditarias", "hitos_registro",
-                                                 "londres_muertes", "esperanza_vida") for f in datos[tabla])
+                                                 "londres_muertes", "inglaterra_tasas", "esperanza_vida") for f in datos[tabla])
     sin_terminos = sorted(set(IDIOMAS) - {f["idioma"] for f in hist})
     usadas = {f["causa_id"] for f in hist}
     sin_uso = sorted(c["id"] for c in datos["causas_modernas"] if c["id"] not in usadas)
@@ -665,6 +696,8 @@ def resumen(datos):
         f"**Países:** {len(datos['paises'])}.",
         f"- **Muertes en Londres:** {len(datos['londres_muertes'])} años"
         + (f" ({datos['londres_muertes'][0]['anio']}-{datos['londres_muertes'][-1]['anio']})." if datos["londres_muertes"] else "."),
+        f"- **Tasas de Inglaterra y Gales:** {len(datos['inglaterra_tasas'])} registros"
+        + (f" ({datos['inglaterra_tasas'][0]['anio']}-{datos['inglaterra_tasas'][-1]['anio']})." if datos["inglaterra_tasas"] else "."),
         f"- **Esperanza de vida:** {len(ev)} filas"
         + (f" ({len({f['codigo'] for f in ev})} países o regiones)." if ev else " (todavía sin datos)."),
         f"- **Filas verificadas contra su fuente:** {estados['verificado']} de {sum(estados.values())}.",

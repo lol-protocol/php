@@ -14,7 +14,7 @@ descendientes vivos. Por eso esta carpeta se mantiene a propósito del lado de l
 | Dato | ¿De personas? | Comentario |
 |---|---|---|
 | Esperanza de vida, mortalidad, bandas | No | Cifras de población por país y década; salen de fuentes abiertas. |
-| Epidemias, muertes por año en Londres | No | Totales de una ciudad o un país, no de personas. |
+| Epidemias, muertes por año en Londres, tasas de Inglaterra | No | Totales de una ciudad o un país, no de personas. |
 | Glosario de causas de defunción | No | Vocabulario: qué significaba «hidropesía» en un registro. |
 | Enfermedades hereditarias | No, pero **delicado** | Condiciones y las poblaciones donde su frecuencia es mayor. Atribuida a una persona o a una familia, esa información sería sensible (salud y origen étnico a la vez): aquí no se atribuye a nadie. |
 | `datos/revisiones.csv` | **Sí: de quien revisa** | Lleva el nombre que cada revisor escribe y la fecha, y queda en el historial de git. Se usa el nombre que la persona quiera publicar; si pide que se quite, se quita la fila (el historial de git conserva la anterior). |
@@ -60,6 +60,12 @@ tomadas:
    riesgo de…» sobre un descendiente vivo sería **perfilado de salud**, y no debe salir de estos datos.
 7. **Causas especialmente delicadas** (suicidio, enfermedad mental, sífilis, lepra, partos): decidir si se muestran
    por defecto o solo a quien las pida. El glosario las incluye porque aparecen en los registros, no para destacarlas.
+   **Lo que hace hoy `vista.html`** (decisión de la persona a cargo, 25 de noviembre de 2026): en la consulta del
+   glosario, un término que puede significar una de esas causas (`suicidio`, `locura`, `sifilis`, `lepra`,
+   `muerte_de_parto` y `fiebre_puerperal`) sale **detrás de un aviso** con un botón «Mostrar de todos modos»; el aviso se
+   repone al cambiar de término. Es solo la vista: los datos, `causa_moderna` y los ports no cambian, y la pestaña
+   opcional «Revisar el glosario» no lo aplica (la usa quien revisa vocabulario). Lo que decida la plataforma para sus
+   fichas es otra cosa y sigue abierto.
 
 ## 4. Preguntas abiertas
 

@@ -8,14 +8,14 @@
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Adaptation & translation rights",
     "moral_rights": "Moral rights recognized",
-    "orphan_works": "Compulsory licensing exists",
-    "digital_protection": "DMCA-equivalent",
+    "orphan_works": "Use after a ruling of the Commissioner of the Agency for Cultural Affairs when the owner is unknown (art. 67)",
+    "digital_protection": "Protection of technological protection measures (arts. 2(1)(xx) and 30(1)(ii))",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
     "enforcement_body": "Agency for Cultural Affairs (Bunkacho)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.jpo.go.jp/",
+    "linked_resources": "https://laws.e-gov.go.jp/law/345AC0000000048/",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
@@ -27,9 +27,59 @@
         "url": "https://www.bunka.go.jp/english/policy/copyright/",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://laws.e-gov.go.jp/law/345AC0000000048/",
+        "confidence": "high",
+        "checked": "2026-11-25"
+      },
+      "moral_rights": {
+        "url": "https://laws.e-gov.go.jp/law/345AC0000000048/",
+        "confidence": "high",
+        "checked": "2026-11-25"
+      },
+      "digital_protection": {
+        "url": "https://laws.e-gov.go.jp/law/345AC0000000048/",
+        "confidence": "high",
+        "checked": "2026-11-25"
+      },
+      "orphan_works": {
+        "url": "https://laws.e-gov.go.jp/law/345AC0000000048/",
+        "confidence": "medium",
+        "checked": "2026-11-25"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "digital_protection",
+        "from": "DMCA-equivalent",
+        "to": "Protection of technological protection measures (arts. 2(1)(xx) and 30(1)(ii))"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Compulsory licensing exists",
+        "to": "Use after a ruling of the Commissioner of the Agency for Cultural Affairs when the owner is unknown (art. 67)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.jpo.go.jp/",
+        "to": "https://laws.e-gov.go.jp/law/345AC0000000048/"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.japaneselawtranslation.go.jp/en/laws/view/4207",
+        "to": "https://www.jpo.go.jp/"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.jpo.go.jp/",
+        "to": "https://www.japaneselawtranslation.go.jp/en/laws/view/4207"
+      },
       {
         "date": "2026-10-14",
         "field": "enforcement_body",

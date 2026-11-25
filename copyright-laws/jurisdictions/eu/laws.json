@@ -8,22 +8,46 @@
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Reproduction & distribution",
     "moral_rights": "Paternity & integrity",
-    "orphan_works": "Limited license scheme",
-    "digital_protection": "EUCD compliance",
+    "orphan_works": "Permitted use by cultural institutions after a diligent search (Directive 2012/28/EU)",
+    "digital_protection": "Legal protection of technological measures (art. 6 Directive 2001/29/EC)",
     "fair_use_exceptions": "Private use exceptions",
     "registration_required": "No",
     "enforcement_body": "National IP Offices & Court System",
     "treaties_signatory": "TRIPS/WCT/WPPT",
     "treaties_not_party": "Berne",
-    "linked_resources": "https://euipo.europa.eu/",
+    "linked_resources": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32001L0029",
     "notes": "Describes the harmonised EU framework. The EU itself is not a party to the Berne Convention (all its Member States are); it is a party to TRIPS, the WCT and the WPPT",
     "pending_change": "New Commission copyright proposal expected in 2027 (call for evidence May 2026)",
     "pending_date": "",
     "data_status": "curated",
     "confidence": "",
     "last_checked": "",
-    "sources": {},
+    "sources": {
+      "digital_protection": {
+        "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32001L0029",
+        "confidence": "high",
+        "checked": "2026-11-25"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "digital_protection",
+        "from": "EUCD compliance",
+        "to": "Legal protection of technological measures (art. 6 Directive 2001/29/EC)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Limited license scheme",
+        "to": "Permitted use by cultural institutions after a diligent search (Directive 2012/28/EU)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://euipo.europa.eu/",
+        "to": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32001L0029"
+      },
       {
         "date": "2026-10-09",
         "field": "treaties_signatory",
