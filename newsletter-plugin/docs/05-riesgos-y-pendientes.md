@@ -18,6 +18,7 @@ Registradas también en docs/00-inconsistencias.md.
 12. **Base del aviso sensible** (25-nov-2026): interés legítimo, con una ponderación documentada. Falta confirmar con el texto oficial que la ley acepte esa base para este caso.
 13. **Arranque del boletín** (25-nov-2026): sin fecha por ahora. No se fija hasta cerrar docs/06.
 14. **Correo** (25-nov-2026): lo envía un proveedor externo, que va como encargado. Falta su nombre y el país de sus servidores.
+15. **Plazos de conservación** (25-nov-2026): `queue_item`, 30 días después del envío; `send_log` y `profile_snapshot`, 6 meses; `sensitive_event`, mientras exista la ficha; `subscriptions`, 6 meses desde la baja. Siguen como supuesto hasta cotejarlos con el texto oficial.
 
 ## Decisiones pendientes
 
@@ -28,8 +29,7 @@ Necesarias antes de implementar.
 3. **Lista de campos sensibles:** la valida Conce junto con el contrato (decisión 10).
 4. **Ley 21.719 aplicada al newsletter:** revisada en docs/06 (21-nov-2026, actualizada el 25-nov-2026). Falta cotejarla con el texto oficial.
 5. **Versión mínima de PHP:** se fija al implementar. No bloquea los documentos.
-6. **Plazos de conservación** (25-nov-2026): se decidió cambiar los cuatro propuestos en docs/06, sección 3, punto 4. Faltan los plazos nuevos.
-7. **Encargado del correo** (25-nov-2026): falta el nombre del proveedor y el país de sus servidores (docs/06, sección 3, punto 5).
+6. **Encargado del correo** (25-nov-2026): falta el nombre del proveedor y el país de sus servidores (docs/06, sección 3, punto 5).
 
 ## Riesgos
 
@@ -38,6 +38,7 @@ Necesarias antes de implementar.
 - **Umbrales de perfil sin datos reales:** los 7, 14 y 30 días son supuestos. Calibrar con datos de uso.
 - **Carril de notificaciones sin documentar:** el adaptador concentra el riesgo. Si cambia la firma, solo cambia el adaptador.
 - **Ley 21.719 y el newsletter:** el boletín no estaba en el registro de tratamientos del repo. docs/06 lo cubre. Rige desde el 1-dic-2026 según las fuentes del repo; falta el texto oficial (pendiente 4).
+- **Plazo de `sensitive_event`:** «mientras exista la ficha» es el más largo de los cuatro (decisión 15). Hay que poder justificarlo ante la ley (docs/06, sección 4, pregunta 9).
 - **Carga de pruebas:** las pruebas suman entre 35 % y 45 % adicional a la estimación de LOC.
 
 ## Supuestos sin validar
@@ -46,10 +47,10 @@ Marcados como **[SUPUESTO]** en los documentos:
 - Lista de campos sensibles (ampliada, sin validar; la valida Conce).
 - Umbrales de perfil: valores iniciales (decisión 5).
 - Interés legítimo como base del aviso sensible, con la ponderación por documentar (decisión 12).
+- Plazos de conservación decididos (decisión 15), sin cotejar con el texto oficial.
 - Umbral de colección para el perfil coleccionista (M a definir).
 - Reintentos de correo: máximo 3.
 - Envío POS el día 15 a las 09:00 hora de Santiago, sin fecha firme para el primer envío.
-- Plazos de conservación propuestos en docs/06, sección 3 (punto 4).
 - Casos típicos de los diagramas Gantt (docs/gantt/), ilustrativos.
 
 ## Estado de madurez
