@@ -31,6 +31,18 @@
     },
     "changes": [
       {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.retsinformation.dk/eli/lta/2023/1144",
+        "to": "https://www.dkpto.dk/"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.dkpto.dk/",
+        "to": "https://www.retsinformation.dk/eli/lta/2023/1144"
+      },
+      {
         "date": "2026-10-14",
         "field": "enforcement_body",
         "from": "Danish Patent Office",

@@ -9,7 +9,7 @@
     "author_rights": "Economic & moral rights",
     "moral_rights": "Moral rights not transferable by contract",
     "orphan_works": "Orphan works provisions modelled on Directive 2012/28/EU (2016 amendment; Art. 20, 69e-69f)",
-    "digital_protection": "Technological measures protected under art. 186; circumvention of effective TPMs treated as infringement (2016 amendment); RMI article not confirmed (unconfirmed)",
+    "digital_protection": "Art. 186: circumvention of effective technological measures and trafficking in circumvention devices treated as infringement; art. 185: removal or alteration of electronic rights-management information is an infringement",
     "fair_use_exceptions": "Closed list of free uses incl. TDM (2024), parody/pastiche, accessible-format copies",
     "registration_required": "No (voluntary deposit and recording available)",
     "enforcement_body": "Intellectual Property Office of Montenegro; Ministry of Economic Development",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-11-26",
     "sources": {
       "moral_rights": {
         "url": "https://wipo.int/documents/d/copyright/docs-en-registration-replies-montenegro.pdf",
@@ -29,9 +29,9 @@
         "checked": "2026-10-14"
       },
       "digital_protection": {
-        "url": "https://members.wto.org/crnattachments/2016/IP/MNE/16_5029_00_e.pdf",
-        "confidence": "low",
-        "checked": "2026-10-15"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/22248",
+        "confidence": "medium",
+        "checked": "2026-11-26"
       },
       "fair_use_exceptions": {
         "url": "https://bdkadvokati.com/montenegro-amends-the-copyright-act-to-catch-up-with-advances-in-the-digital-era",
@@ -40,6 +40,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "digital_protection",
+        "from": "Technological measures protected under art. 186; circumvention of effective TPMs treated as infringement (2016 amendment); RMI article not confirmed (unconfirmed)",
+        "to": "Art. 186: circumvention of effective technological measures and trafficking in circumvention devices treated as infringement; art. 185: removal or alteration of electronic rights-management information is an infringement"
+      },
       {
         "date": "2026-10-15",
         "field": "digital_protection",

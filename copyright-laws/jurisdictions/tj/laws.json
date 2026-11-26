@@ -10,7 +10,7 @@
     "moral_rights": "Not specified",
     "orphan_works": "Not specified (unconfirmed)",
     "digital_protection": "Not specified",
-    "fair_use_exceptions": "UNKNOWN (Art. 7 excludes official legal texts, state symbols, news facts and folklore from protection) (unconfirmed)",
+    "fair_use_exceptions": "Yes (Art. 21: incidental, non-commercial reproduction of architecture, photos and graphic art permanently in public places; Art. 7 excludes official texts, state symbols, news facts, folklore)",
     "registration_required": "Not specified",
     "enforcement_body": "Division on Copyright and Related Rights, Ministry of Culture",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/zh/legislation/details/23537",
@@ -50,8 +50,8 @@
       },
       "fair_use_exceptions": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Tajikistan.html",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "enforcement_body": {
         "url": "https://www.wipo.int/en/web/country-profiles/contact?code=TJ",
@@ -65,6 +65,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "fair_use_exceptions",
+        "from": "UNKNOWN (Art. 7 excludes official legal texts, state symbols, news facts and folklore from protection) (unconfirmed)",
+        "to": "Yes (Art. 21: incidental, non-commercial reproduction of architecture, photos and graphic art permanently in public places; Art. 7 excludes official texts, state symbols, news facts, folklore)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

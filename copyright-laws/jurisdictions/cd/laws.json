@@ -8,7 +8,7 @@
     "term_of_protection": "Author's life + 50 years (Art. 74); photographs 25 years from first publication (Art. 77)",
     "author_rights": "Economic rights",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Not specified (no orphan-works licence or exception in the law; Art. 12 treats the publisher named on an anonymous work as representing the author until the author reveals identity)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-18",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://wipo.int/wipolex/en/details.jsp?id=7511",
@@ -45,8 +45,8 @@
       },
       "orphan_works": {
         "url": "https://wipo.int/wipolex/en/details.jsp?id=7511",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-26"
       },
       "treaties_signatory": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Democratic_Republic_of_the_Congo.html",
@@ -55,6 +55,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Not specified (no orphan-works licence or exception in the law; Art. 12 treats the publisher named on an anonymous work as representing the author until the author reveals identity)"
+      },
       {
         "date": "2026-10-18",
         "field": "enforcement_body",

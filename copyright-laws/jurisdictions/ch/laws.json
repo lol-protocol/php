@@ -25,6 +25,18 @@
     "sources": {},
     "changes": [
       {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.fedlex.admin.ch/eli/cc/1993/1798_1798_1798/en",
+        "to": "https://www.sbfi.admin.ch/"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.sbfi.admin.ch/",
+        "to": "https://www.fedlex.admin.ch/eli/cc/1993/1798_1798_1798/en"
+      },
+      {
         "date": "2026-10-08",
         "field": "treaties_signatory",
         "from": "Berne/TRIPS/WCT",
