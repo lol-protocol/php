@@ -968,6 +968,12 @@ class ConsultasEpidemiasYLondresTest(unittest.TestCase):
             self.assertGreater(consultas.exceso_de_mortalidad_inglaterra(anio), 1.15, anio)
         self.assertLess(consultas.exceso_de_mortalidad_inglaterra(1900), 1.1)
 
+    def test_la_peste_de_londres_de_1665_no_se_nota_en_la_tasa_nacional(self):
+        # El README lo cita: lo local no es lo nacional. Si cambian los datos, hay que cambiar el texto.
+        self.assertLess(consultas.exceso_de_mortalidad_inglaterra(1661), 1.0)
+        self.assertGreater(consultas.exceso_de_mortalidad_inglaterra(1561), 1.25)
+        self.assertNotIn(1661, [a["anio"] for a in consultas.anios_de_mortalidad_anormal_inglaterra()])
+
     def test_anios_de_mortalidad_anormal_en_inglaterra(self):
         anormales = consultas.anios_de_mortalidad_anormal_inglaterra()
         anios = [a["anio"] for a in anormales]
