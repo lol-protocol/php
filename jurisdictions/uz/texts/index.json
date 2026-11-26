@@ -1,0 +1,36 @@
+[
+    {
+        "slug": "law-on-copyright-and-related-rights-no-42-of-20-july-2006-as-amended-to-2021",
+        "law": "Law on Copyright and Related Rights (No. 42 of 20 July 2006, as amended to 2021)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/5201",
+        "file": "law-on-copyright-and-related-rights-no-42-of-20-july-2006-as-amended-to-2021.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:23:19Z",
+        "checkedAt": "2026-11-25T22:23:19Z",
+        "etag": "W/\"2da48-IScBZ3W0RQf3c2No/ufmVCGjkI0\"",
+        "lastModified": null,
+        "sha256": "65c211205bb1093f7893d8d500892191d2afd6f53b2a6242bfe7120ec3606644",
+        "chars": 120450
+    },
+    {
+        "slug": "law-on-copyright-and-related-rights-no-42-of-20-july-2006-as-amended-to-2021--857813ac",
+        "law": "Law on Copyright and Related Rights (No. 42 of 20 July 2006, as amended to 2021) (fair_use_exceptions)",
+        "source": "https://www.wipo.org/edocs/mdocs/copyright/en/wipo_cr_tbs_15/wipo_cr_tbs_15_z_ref_uzbekistan.pdf",
+        "status": "skipped",
+        "error": "no readable text (the page probably needs JavaScript)",
+        "checkedAt": "2026-11-25T22:23:25Z"
+    },
+    {
+        "slug": "law-on-copyright-and-related-rights-no-42-of-20-july-2006-as-amended-to-2021--d0350cef",
+        "law": "Law on Copyright and Related Rights (No. 42 of 20 July 2006, as amended to 2021) (digital_protection)",
+        "source": "https://review.tsul.uz/index.php/yfa/article/download/443/413/812",
+        "file": "law-on-copyright-and-related-rights-no-42-of-20-july-2006-as-amended-to-2021--d0350cef.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:23:24Z",
+        "checkedAt": "2026-11-25T22:23:24Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "ae16022fd07338f11627d32d6d8c81a6b99110fe4eda2a4cccfa568b480a0544",
+        "chars": 30836
+    }
+]

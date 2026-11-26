@@ -1,0 +1,28 @@
+[
+    {
+        "slug": "danish-copyright-law",
+        "law": "Danish Copyright Law",
+        "source": "https://www.dkpto.dk/",
+        "file": "danish-copyright-law.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:31:37Z",
+        "checkedAt": "2026-11-26T18:31:37Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "2457fd2162b4b95d20e8ab6cc2b9f15b405e90a55db92d7f4113621a12b5a927",
+        "chars": 1265
+    },
+    {
+        "slug": "danish-copyright-law--126e5eae",
+        "law": "Danish Copyright Law (enforcement_body)",
+        "source": "https://digitalpolicyalert.org/event/37845-ministry-of-culture-closes-consultation-on-bill-amending-copyright-act-introducing-performance-protection-and-protection-against-digitally-generated-imitations-20250654dk",
+        "file": "danish-copyright-law--126e5eae.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:31:39Z",
+        "checkedAt": "2026-11-26T18:31:39Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "a7b1e9c8ebe9fa7b28feb51513b5147cb405c54e3e4a8e13430c8aa63015bd6f",
+        "chars": 1520
+    }
+]

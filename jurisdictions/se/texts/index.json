@@ -1,0 +1,28 @@
+[
+    {
+        "slug": "swedish-copyright-act",
+        "law": "Swedish Copyright Act",
+        "source": "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1960729-om-upphovsratt-till-litterara-och_sfs-1960-729/",
+        "file": "swedish-copyright-act.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:33:50Z",
+        "checkedAt": "2026-11-26T18:33:50Z",
+        "etag": "\"117un2db9lzer8w\"",
+        "lastModified": null,
+        "sha256": "8348466358b6e486bcc887262e5f9a5670b77f2d3703c3533530d1d25cd57cf9",
+        "chars": 140347
+    },
+    {
+        "slug": "swedish-copyright-act--099b5f1c",
+        "law": "Swedish Copyright Act (enforcement_body)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/10375",
+        "file": "swedish-copyright-act--099b5f1c.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:33:51Z",
+        "checkedAt": "2026-11-26T18:33:51Z",
+        "etag": "W/\"1a9b6-ME+ZqcAYACl8hrdBNTPGzEfgsdM\"",
+        "lastModified": null,
+        "sha256": "3a5a5689f9b102ebceb3813b5ecaf29900858d95a46c4eddcbe1432913e04a78",
+        "chars": 52381
+    }
+]

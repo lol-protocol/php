@@ -1,0 +1,36 @@
+[
+    {
+        "slug": "copyright-and-neighbouring-rights-protection-and-literary-and-artistic-works-act",
+        "law": "Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/19710",
+        "file": "copyright-and-neighbouring-rights-protection-and-literary-and-artistic-works-act.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:01:29Z",
+        "checkedAt": "2026-11-25T22:01:29Z",
+        "etag": "W/\"1ee22-lVbawZaAHCI6M8Iiid82DG29vyA\"",
+        "lastModified": null,
+        "sha256": "5479e27269adf19d61021b6e8bc661d356e4361de9b6c1242a240824980e083a",
+        "chars": 44310
+    },
+    {
+        "slug": "copyright-and-neighbouring-rights-protection-and-literary-and-artistic-works-act--8530dd06",
+        "law": "Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013 (fair_use_exceptions)",
+        "source": "https://dti.eui.eu/database/page/36",
+        "status": "skipped",
+        "error": "robots.txt answered with a server error, so the site is not fetched",
+        "checkedAt": "2026-11-25T22:01:31Z"
+    },
+    {
+        "slug": "copyright-and-neighbouring-rights-protection-and-literary-and-artistic-works-act--9a8c00e0",
+        "law": "Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013 (term_of_protection)",
+        "source": "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/Sudan",
+        "file": "copyright-and-neighbouring-rights-protection-and-literary-and-artistic-works-act--9a8c00e0.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:01:30Z",
+        "checkedAt": "2026-11-25T22:01:30Z",
+        "etag": null,
+        "lastModified": "Wed, 25 Nov 2026 18:11:52 GMT",
+        "sha256": "643f9e55ba06c1d57f0433d20adbda72b1a84ee62cdfe558cb07461ecb854ba0",
+        "chars": 10361
+    }
+]

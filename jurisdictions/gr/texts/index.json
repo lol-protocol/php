@@ -1,0 +1,18 @@
+[
+    {
+        "slug": "greek-copyright-law",
+        "law": "Greek Copyright Law",
+        "source": "https://www.culture.gr/",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-26T18:32:16Z"
+    },
+    {
+        "slug": "greek-copyright-law--56dc0ee6",
+        "law": "Greek Copyright Law (enforcement_body)",
+        "source": "https://opi.gr/en/hco/about-o-p-i/",
+        "status": "skipped",
+        "error": "no readable text (the page probably needs JavaScript)",
+        "checkedAt": "2026-11-26T18:32:18Z"
+    }
+]

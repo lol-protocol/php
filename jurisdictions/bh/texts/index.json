@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "law-no-22-of-2006-on-the-protection-of-copyright-and-neighboring-rights-as-amend",
+        "law": "Law No. 22 of 2006 on the Protection of Copyright and Neighboring Rights (as amended up to Law No. 5 of 2014)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/19867",
+        "file": "law-no-22-of-2006-on-the-protection-of-copyright-and-neighboring-rights-as-amend.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T21:58:30Z",
+        "checkedAt": "2026-11-25T21:58:30Z",
+        "etag": "W/\"1fd5a-9gyYckg1GsthWEpJYeLaL6/UHBY\"",
+        "lastModified": null,
+        "sha256": "570a6890963f54179a23a75d051924448b06449eea6ca6bc373694d286176c81",
+        "chars": 79557
+    },
+    {
+        "slug": "law-no-22-of-2006-on-the-protection-of-copyright-and-neighboring-rights-as-amend--eeb5a2e3",
+        "law": "Law No. 22 of 2006 on the Protection of Copyright and Neighboring Rights (as amended up to Law No. 5 of 2014) (digital_protection)",
+        "source": "https://www.iipa.org/files/uploads/2017/12/2007SPEC301BAHRAIN.pdf",
+        "file": "law-no-22-of-2006-on-the-protection-of-copyright-and-neighboring-rights-as-amend--eeb5a2e3.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T21:58:34Z",
+        "checkedAt": "2026-11-25T21:58:34Z",
+        "etag": null,
+        "lastModified": "Fri, 25 Feb 2022 20:36:00 GMT",
+        "sha256": "b4fdeefb2befd0126654fc1a01e5eccca0749de3aadbdabfe96dbeabbb673504",
+        "chars": 22734
+    },
+    {
+        "slug": "law-no-22-of-2006-on-the-protection-of-copyright-and-neighboring-rights-as-amend--fa9c12f5",
+        "law": "Law No. 22 of 2006 on the Protection of Copyright and Neighboring Rights (as amended up to Law No. 5 of 2014) (moral_rights)",
+        "source": "https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/bh/bh030en.html",
+        "file": "law-no-22-of-2006-on-the-protection-of-copyright-and-neighboring-rights-as-amend--fa9c12f5.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T21:58:33Z",
+        "checkedAt": "2026-11-25T21:58:33Z",
+        "etag": "W/\"1fd5a-+wvRRn3O/TFQN1ALzuxdDmoopd8\"",
+        "lastModified": null,
+        "sha256": "570a6890963f54179a23a75d051924448b06449eea6ca6bc373694d286176c81",
+        "chars": 79557
+    }
+]

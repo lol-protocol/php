@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "law-no-491-of-24-november-1948-on-the-protection-of-literary-and-artistic-works-",
+        "law": "Law No. 491 of 24 November 1948 on the protection of literary and artistic works (as amended to Law No. 1.313 of 29 June 2006)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/9056",
+        "file": "law-no-491-of-24-november-1948-on-the-protection-of-literary-and-artistic-works-.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:56Z",
+        "checkedAt": "2026-11-25T11:20:56Z",
+        "etag": "W/\"e8d3-PPV4q+QopCM0Sel311pjUGWx1T0\"",
+        "lastModified": null,
+        "sha256": "17bad1d406b623a39ef17f7410c70f13377cb2a7c6ded6b6e91400972cf96418",
+        "chars": 14401
+    },
+    {
+        "slug": "law-no-491-of-24-november-1948-on-the-protection-of-literary-and-artistic-works---422a6eab",
+        "law": "Law No. 491 of 24 November 1948 on the protection of literary and artistic works (as amended to Law No. 1.313 of 29 June 2006) (enforcement_body)",
+        "source": "https://www.wipo.int/fr/web/country-profiles/mc",
+        "file": "law-no-491-of-24-november-1948-on-the-protection-of-literary-and-artistic-works---422a6eab.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:59Z",
+        "checkedAt": "2026-11-25T11:20:59Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "80e5778e2999731e43814c1798441ce2594ccfe2e820b6fa7c038e5492879bfe",
+        "chars": 5524
+    },
+    {
+        "slug": "law-no-491-of-24-november-1948-on-the-protection-of-literary-and-artistic-works---764378c2",
+        "law": "Law No. 491 of 24 November 1948 on the protection of literary and artistic works (as amended to Law No. 1.313 of 29 June 2006) (term_of_protection, registration_required, treaties_signatory)",
+        "source": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Monaco.html",
+        "file": "law-no-491-of-24-november-1948-on-the-protection-of-literary-and-artistic-works---764378c2.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:57Z",
+        "checkedAt": "2026-11-25T11:20:57Z",
+        "etag": "W/\"7f58ed54cc4f96fd6e1a6b847b652688\"",
+        "lastModified": "Tue, 14 Jan 2025 08:49:08 GMT",
+        "sha256": "0a1dd2ff1e6a0484d854c35537f9a8a4ddd270750755eb5232d7046880a8453d",
+        "chars": 6563
+    }
+]

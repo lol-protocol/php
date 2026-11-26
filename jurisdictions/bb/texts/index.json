@@ -1,0 +1,70 @@
+[
+    {
+        "slug": "copyright-act-cap-300-copyright-act-1998-no-4-of-1998-revised-to-2006-amended-by",
+        "law": "Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",
+        "source": "https://www.wipo.int/wipolex/en/text/125059",
+        "file": "copyright-act-cap-300-copyright-act-1998-no-4-of-1998-revised-to-2006-amended-by.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:18:51Z",
+        "checkedAt": "2026-11-25T11:18:51Z",
+        "etag": "W/\"22b70-VJufCu0tVS4Q/NFvH8daDzA9+tU\"",
+        "lastModified": null,
+        "sha256": "e7f2a22de8e1a81fb56e1142655eb965eb025e71d7c1abc7da2f8802b1a9ff87",
+        "chars": 59755
+    },
+    {
+        "slug": "copyright-act-cap-300-copyright-act-1998-no-4-of-1998-revised-to-2006-amended-by--2ee1807c",
+        "law": "Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004) (law_name, term_of_protection)",
+        "source": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Barbados.html",
+        "file": "copyright-act-cap-300-copyright-act-1998-no-4-of-1998-revised-to-2006-amended-by--2ee1807c.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:18:52Z",
+        "checkedAt": "2026-11-25T11:18:52Z",
+        "etag": "W/\"f5d322a7fadb5a7ef45792a202478d73\"",
+        "lastModified": "Tue, 14 Jan 2025 08:54:45 GMT",
+        "sha256": "92eb1e74dadd0f74e90907565812e78d6ae57e1db9f77ea635dfb08241a29e37",
+        "chars": 6435
+    },
+    {
+        "slug": "copyright-act-cap-300-copyright-act-1998-no-4-of-1998-revised-to-2006-amended-by--378ace3c",
+        "law": "Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004) (treaties_signatory)",
+        "source": "https://wipo.int/wipolex/en/treaties/notifications/details/treaty_wppt_93",
+        "file": "copyright-act-cap-300-copyright-act-1998-no-4-of-1998-revised-to-2006-amended-by--378ace3c.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:18:58Z",
+        "checkedAt": "2026-11-25T11:18:58Z",
+        "etag": "W/\"6ad9-8bat+KDT/HHuB6Ta3qh7nWW186o\"",
+        "lastModified": null,
+        "sha256": "c1aab1a85c9bbec37048e43ec85fdd2444e971fdf41e828c08c5eb9608317890",
+        "chars": 610
+    },
+    {
+        "slug": "copyright-act-cap-300-copyright-act-1998-no-4-of-1998-revised-to-2006-amended-by--4f8aa141",
+        "law": "Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004) (fair_use_exceptions)",
+        "source": "https://governmentprintery.gov.bb/?p=2899",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-25T11:18:56Z"
+    },
+    {
+        "slug": "copyright-act-cap-300-copyright-act-1998-no-4-of-1998-revised-to-2006-amended-by--801e1942",
+        "law": "Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004) (protection_type, author_rights, orphan_works, registration_required, enforcement_body)",
+        "source": "https://caipo.gov.bb/?p=4857",
+        "status": "skipped",
+        "error": "disallowed by robots.txt",
+        "checkedAt": "2026-11-25T11:18:53Z"
+    },
+    {
+        "slug": "copyright-act-cap-300-copyright-act-1998-no-4-of-1998-revised-to-2006-amended-by--d73c9845",
+        "law": "Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004) (digital_protection)",
+        "source": "https://www.iipa.org/files/uploads/2020/02/2020SPEC301BARBADOS.pdf",
+        "file": "copyright-act-cap-300-copyright-act-1998-no-4-of-1998-revised-to-2006-amended-by--d73c9845.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:18:55Z",
+        "checkedAt": "2026-11-25T11:18:55Z",
+        "etag": null,
+        "lastModified": "Fri, 25 Feb 2022 20:35:56 GMT",
+        "sha256": "f4a24bc6bbbd2c7f4512bdf9bcf31865fd421010c35cf5ceb38fd8fc4727878e",
+        "chars": 4776
+    }
+]

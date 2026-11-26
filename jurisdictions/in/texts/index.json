@@ -1,0 +1,10 @@
+[
+    {
+        "slug": "copyright-act-1957",
+        "law": "Copyright Act 1957",
+        "source": "https://copyright.gov.in/",
+        "status": "error",
+        "error": "SSL certificate problem: unable to get local issuer certificate",
+        "checkedAt": "2026-11-26T18:32:36Z"
+    }
+]

@@ -1,0 +1,75 @@
+[
+    {
+        "slug": "law-no-94-036-of-18-september-1995-on-literary-and-artistic-property",
+        "law": "Law No. 94-036 of 18 September 1995 on Literary and Artistic Property",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/8318",
+        "file": "law-no-94-036-of-18-september-1995-on-literary-and-artistic-property.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:29Z",
+        "checkedAt": "2026-11-25T22:21:29Z",
+        "etag": "W/\"bcae-FQbaOXa1Iu6wuKncVWEdxMYKRxI\"",
+        "lastModified": null,
+        "sha256": "a3aace360d989039017934cd0aa3697e95164d89ddcf33f8881fe9eb5a087827",
+        "chars": 6803
+    },
+    {
+        "slug": "law-no-94-036-of-18-september-1995-on-literary-and-artistic-property--56418fd8",
+        "law": "Law No. 94-036 of 18 September 1995 on Literary and Artistic Property (registration_required)",
+        "source": "https://wipo.int/documents/d/copyright/docs-fr-registration-replies-madagascar.pdf",
+        "file": "law-no-94-036-of-18-september-1995-on-literary-and-artistic-property--56418fd8.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:37Z",
+        "checkedAt": "2026-11-25T22:21:37Z",
+        "etag": null,
+        "lastModified": "Wed, 20 Nov 2024 13:43:26 GMT",
+        "sha256": "603f8b85c37c6c0e617689ccec32d830a33ae4d70dd018d2f3a5a90ed7b4ad07",
+        "chars": 5135
+    },
+    {
+        "slug": "law-no-94-036-of-18-september-1995-on-literary-and-artistic-property--56fd5a79",
+        "law": "Law No. 94-036 of 18 September 1995 on Literary and Artistic Property (protection_type)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/8316",
+        "file": "law-no-94-036-of-18-september-1995-on-literary-and-artistic-property--56fd5a79.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:30Z",
+        "checkedAt": "2026-11-25T22:21:30Z",
+        "etag": "W/\"10348-cnwZSps3ige+4wCg7BHZYJh8J3g\"",
+        "lastModified": null,
+        "sha256": "2866cc0a37d994b3b6f553388ec5318a800207e0e41ab225e85e43c73334d89d",
+        "chars": 14975
+    },
+    {
+        "slug": "law-no-94-036-of-18-september-1995-on-literary-and-artistic-property--9884a498",
+        "law": "Law No. 94-036 of 18 September 1995 on Literary and Artistic Property (author_rights, orphan_works)",
+        "source": "https://www.assemblee-nationale.mg/wp-content/uploads/2020/11/Loi-n°-94-036-Portant-sur-la-Propriété-Littéraire-et-Artistique..pdf",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-25T22:21:35Z"
+    },
+    {
+        "slug": "law-no-94-036-of-18-september-1995-on-literary-and-artistic-property--ae91b878",
+        "law": "Law No. 94-036 of 18 September 1995 on Literary and Artistic Property (treaties_signatory)",
+        "source": "https://www.wipo.int/wipolex/en/treaties/ShowResults?code=MG",
+        "file": "law-no-94-036-of-18-september-1995-on-literary-and-artistic-property--ae91b878.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:38Z",
+        "checkedAt": "2026-11-25T22:21:38Z",
+        "etag": "W/\"8998-jR7hZB79gdAfOAsac51uZAEftvA\"",
+        "lastModified": null,
+        "sha256": "c05398a71a534098ed3fd336b06a8fd0cc69ee62738eed9123aae883b8a614aa",
+        "chars": 1163
+    },
+    {
+        "slug": "law-no-94-036-of-18-september-1995-on-literary-and-artistic-property--d8c28a7d",
+        "law": "Law No. 94-036 of 18 September 1995 on Literary and Artistic Property (term_of_protection)",
+        "source": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Madagascar.html",
+        "file": "law-no-94-036-of-18-september-1995-on-literary-and-artistic-property--d8c28a7d.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:32Z",
+        "checkedAt": "2026-11-25T22:21:32Z",
+        "etag": "W/\"cc52948b03db5ea36fd37a2e52657b15\"",
+        "lastModified": "Tue, 14 Jan 2025 08:49:04 GMT",
+        "sha256": "70941de232f30df35415b4a1f1d9909fa131162b0b2d373b1652a2f1fed082b4",
+        "chars": 4726
+    }
+]

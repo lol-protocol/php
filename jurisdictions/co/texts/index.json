@@ -1,0 +1,28 @@
+[
+    {
+        "slug": "colombian-copyright-law-law-23-of-1982",
+        "law": "Colombian Copyright Law (Law 23 of 1982)",
+        "source": "https://www.mincultura.gov.co/",
+        "file": "colombian-copyright-law-law-23-of-1982.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:31:29Z",
+        "checkedAt": "2026-11-26T18:31:29Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "cec529275e3561e3d3d13f2e2b0902bb50b540f49fbabadae467789b2793eb53",
+        "chars": 661
+    },
+    {
+        "slug": "colombian-copyright-law-law-23-of-1982--2256c48a",
+        "law": "Colombian Copyright Law (Law 23 of 1982) (enforcement_body)",
+        "source": "https://gpg-pdf.chambers.com/doing-business-in-2025/662",
+        "file": "colombian-copyright-law-law-23-of-1982--2256c48a.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:31:31Z",
+        "checkedAt": "2026-11-26T18:31:31Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "e51791cf13a7dffe3614818a3c363d797feb6a4d15f79730f14c8c91fa140603",
+        "chars": 3952
+    }
+]

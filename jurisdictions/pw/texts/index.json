@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "republic-of-palau-copyright-act-of-2003-rppl-no-6-38",
+        "law": "Republic of Palau Copyright Act of 2003 (RPPL No. 6-38)",
+        "source": "https://www.wipo.int/wipolex/en/text/201049",
+        "file": "republic-of-palau-copyright-act-of-2003-rppl-no-6-38.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:42Z",
+        "checkedAt": "2026-11-25T22:00:42Z",
+        "etag": "W/\"14b3d-IE0U523jDluvg+MoQMEm/iPKZdY\"",
+        "lastModified": null,
+        "sha256": "edee41e061b34956cd362f0292b75017d78522fc26eb3d5fbda5523d6fc2f3ef",
+        "chars": 34943
+    },
+    {
+        "slug": "republic-of-palau-copyright-act-of-2003-rppl-no-6-38--15dcdb06",
+        "law": "Republic of Palau Copyright Act of 2003 (RPPL No. 6-38) (term_of_protection)",
+        "source": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Palau.html",
+        "file": "republic-of-palau-copyright-act-of-2003-rppl-no-6-38--15dcdb06.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:46Z",
+        "checkedAt": "2026-11-25T22:00:46Z",
+        "etag": "W/\"8e6302ef8f7b2f09c4cc79e607f3ee84\"",
+        "lastModified": "Tue, 14 Jan 2025 08:49:02 GMT",
+        "sha256": "5143543120c115f9b2b4e1138469d256c9a02f375c5a70c290b7bce7d565c1d8",
+        "chars": 6938
+    },
+    {
+        "slug": "republic-of-palau-copyright-act-of-2003-rppl-no-6-38--e2a2ac7d",
+        "law": "Republic of Palau Copyright Act of 2003 (RPPL No. 6-38) (law_name, protection_type, author_rights, orphan_works)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/8122",
+        "file": "republic-of-palau-copyright-act-of-2003-rppl-no-6-38--e2a2ac7d.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:44Z",
+        "checkedAt": "2026-11-25T22:00:44Z",
+        "etag": "W/\"12911-/1F1dqXOmIW9pxacByB540hERho\"",
+        "lastModified": null,
+        "sha256": "60ef72263aca6a5b2a5f005a701057fef66cd906edecd72c84504178cf7e2b88",
+        "chars": 34974
+    }
+]

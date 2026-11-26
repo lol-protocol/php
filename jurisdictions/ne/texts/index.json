@@ -1,0 +1,67 @@
+[
+    {
+        "slug": "ordinance-no-2010-95-of-23-december-2010-on-copyright-neighbouring-rights-and-tr",
+        "law": "Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions",
+        "source": "https://oapi.int/wp-content/uploads/2025/04/Ordonnance2010Niger.pdf",
+        "file": "ordinance-no-2010-95-of-23-december-2010-on-copyright-neighbouring-rights-and-tr.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:31Z",
+        "checkedAt": "2026-11-25T22:00:31Z",
+        "etag": null,
+        "lastModified": "Thu, 10 Apr 2025 03:16:10 GMT",
+        "sha256": "163df75ec1661cde8d8e026542b62780614818d3545eab7ef0581cdfaf1c92cb",
+        "chars": 96532
+    },
+    {
+        "slug": "ordinance-no-2010-95-of-23-december-2010-on-copyright-neighbouring-rights-and-tr--02593785",
+        "law": "Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions (moral_rights)",
+        "source": "https://www.wipo.int/wipolex/en/text/583875",
+        "file": "ordinance-no-2010-95-of-23-december-2010-on-copyright-neighbouring-rights-and-tr--02593785.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:35Z",
+        "checkedAt": "2026-11-25T22:00:35Z",
+        "etag": "W/\"12a4c-OpToXXVwtteSTyrXBu4n25Zhk60\"",
+        "lastModified": null,
+        "sha256": "7bcd28625ab61cc0aacf9b6ebac4dba26f5b545e1d0a733e42cb84d02248a5d6",
+        "chars": 6787
+    },
+    {
+        "slug": "ordinance-no-2010-95-of-23-december-2010-on-copyright-neighbouring-rights-and-tr--13439920",
+        "law": "Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions (term_of_protection)",
+        "source": "https://c.enwp.org/wiki/Commons:CRT/Niger",
+        "file": "ordinance-no-2010-95-of-23-december-2010-on-copyright-neighbouring-rights-and-tr--13439920.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:34Z",
+        "checkedAt": "2026-11-25T22:00:34Z",
+        "etag": null,
+        "lastModified": "Wed, 25 Nov 2026 18:11:52 GMT",
+        "sha256": "e0337556d02158cbafb70b389e7696ccd16d6f1dc244ca39e842ccf388c6f95c",
+        "chars": 10624
+    },
+    {
+        "slug": "ordinance-no-2010-95-of-23-december-2010-on-copyright-neighbouring-rights-and-tr--2e63211e",
+        "law": "Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions (law_name, protection_type, author_rights, orphan_works)",
+        "source": "https://www.wipo.int/wipolex/fr/legislation/details/22769",
+        "file": "ordinance-no-2010-95-of-23-december-2010-on-copyright-neighbouring-rights-and-tr--2e63211e.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:32Z",
+        "checkedAt": "2026-11-25T22:00:32Z",
+        "etag": "W/\"9858-SQnTaAUiA3VMJmNjKVjSPOw+/M8\"",
+        "lastModified": null,
+        "sha256": "64f51bacc2f698e5b0a4e2e99494c7c8f61467a83d05203512f556cb40e37a14",
+        "chars": 1274
+    },
+    {
+        "slug": "ordinance-no-2010-95-of-23-december-2010-on-copyright-neighbouring-rights-and-tr--d938bfaa",
+        "law": "Ordinance No. 2010-95 of 23 December 2010 on Copyright, Neighbouring Rights and Traditional Cultural Expressions (enforcement_body)",
+        "source": "https://oapi.int/wp-content/uploads/2025/04/Statuts_BNDA.pdf",
+        "file": "ordinance-no-2010-95-of-23-december-2010-on-copyright-neighbouring-rights-and-tr--d938bfaa.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:37Z",
+        "checkedAt": "2026-11-25T22:00:37Z",
+        "etag": null,
+        "lastModified": "Thu, 10 Apr 2025 03:53:05 GMT",
+        "sha256": "48de6c60d39d2d56f588f0c1c68927d476dcfa958b6f1cbc74ed8b9a2b990457",
+        "chars": 27950
+    }
+]

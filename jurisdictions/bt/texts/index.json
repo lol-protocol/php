@@ -1,0 +1,54 @@
+[
+    {
+        "slug": "the-copyright-act-of-the-kingdom-of-bhutan-2001",
+        "law": "The Copyright Act of the Kingdom of Bhutan, 2001",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/5213",
+        "file": "the-copyright-act-of-the-kingdom-of-bhutan-2001.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:00Z",
+        "checkedAt": "2026-11-25T11:19:00Z",
+        "etag": "W/\"16f9d-iEthtSGyhItOsnuzz+cHA8jZKy0\"",
+        "lastModified": null,
+        "sha256": "6400f926d3f4c84ef08af18ebe6bb8c0ec37ed614e113b081d9d3a4dfe4b32d4",
+        "chars": 38714
+    },
+    {
+        "slug": "the-copyright-act-of-the-kingdom-of-bhutan-2001--84b97ceb",
+        "law": "The Copyright Act of the Kingdom of Bhutan, 2001 (term_of_protection)",
+        "source": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Bhutan.html",
+        "file": "the-copyright-act-of-the-kingdom-of-bhutan-2001--84b97ceb.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:01Z",
+        "checkedAt": "2026-11-25T11:19:01Z",
+        "etag": "W/\"7a947ada43a21d5afa2d57fdfc19bacd\"",
+        "lastModified": "Tue, 14 Jan 2025 08:54:47 GMT",
+        "sha256": "ad72bbd6301b73b816d93c2082e2144aab1b66e4bc762f8a3c8e81822da42533",
+        "chars": 7543
+    },
+    {
+        "slug": "the-copyright-act-of-the-kingdom-of-bhutan-2001--90c87494",
+        "law": "The Copyright Act of the Kingdom of Bhutan, 2001 (registration_required, enforcement_body)",
+        "source": "https://wipo.int/documents/d/copyright/docs-en-registration-replies-bhutan.pdf",
+        "file": "the-copyright-act-of-the-kingdom-of-bhutan-2001--90c87494.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:03Z",
+        "checkedAt": "2026-11-25T11:19:03Z",
+        "etag": null,
+        "lastModified": "Wed, 20 Nov 2024 12:14:43 GMT",
+        "sha256": "25006a22678097168707bf467598febdd4c5020728605e81887965fd4bfe3f40",
+        "chars": 8338
+    },
+    {
+        "slug": "the-copyright-act-of-the-kingdom-of-bhutan-2001--a089a4d8",
+        "law": "The Copyright Act of the Kingdom of Bhutan, 2001 (treaties_signatory)",
+        "source": "https://www.wipo.int/wipolex/en/treaties/notifications/details/treaty_berne_243",
+        "file": "the-copyright-act-of-the-kingdom-of-bhutan-2001--a089a4d8.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:04Z",
+        "checkedAt": "2026-11-25T11:19:04Z",
+        "etag": "W/\"6cbb-QoD3rYsH/F0j98Tv2QV9Umq+ZHA\"",
+        "lastModified": null,
+        "sha256": "c5b9ccc6f9e7278a2f9fd3eee5a13c919d7ecf566e8329bbc5569ad3db362665",
+        "chars": 984
+    }
+]

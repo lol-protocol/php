@@ -1,0 +1,70 @@
+[
+    {
+        "slug": "law-no-l-2019-0028-an-of-7-june-2019-on-literary-and-artistic-property-replaced-",
+        "law": "Law No. L/2019/0028/AN of 7 June 2019 on Literary and Artistic Property (replaced Law 043/APN/CP/80 of 1980); implementing decree of 20 June 2022",
+        "source": "https://www.wipo.int/wipolex/zh/legislation/details/13654",
+        "file": "law-no-l-2019-0028-an-of-7-june-2019-on-literary-and-artistic-property-replaced-.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:29Z",
+        "checkedAt": "2026-11-25T11:20:29Z",
+        "etag": "W/\"16c47-NRoF40bkJRATmAKWUVdujeA7Kbc\"",
+        "lastModified": null,
+        "sha256": "bd465d75d9a3d6786d0cea82e03ca6b92b7a28fa3f6f2584fec9a72ae600f421",
+        "chars": 50400
+    },
+    {
+        "slug": "law-no-l-2019-0028-an-of-7-june-2019-on-literary-and-artistic-property-replaced---1672df80",
+        "law": "Law No. L/2019/0028/AN of 7 June 2019 on Literary and Artistic Property (replaced Law 043/APN/CP/80 of 1980); implementing decree of 20 June 2022 (treaties_signatory)",
+        "source": "https://www.wipo.int/wipolex/en/treaties/notifications/details/treaty_wppt_33",
+        "file": "law-no-l-2019-0028-an-of-7-june-2019-on-literary-and-artistic-property-replaced---1672df80.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:35Z",
+        "checkedAt": "2026-11-25T11:20:35Z",
+        "etag": "W/\"6b49-2z+l/E9WlUw9KNc/njCX0vquhXk\"",
+        "lastModified": null,
+        "sha256": "d4baa6eb1b471dbadb5fb8654c48f0a7c8c855ad93d1d3ef514baa7a42a43d89",
+        "chars": 663
+    },
+    {
+        "slug": "law-no-l-2019-0028-an-of-7-june-2019-on-literary-and-artistic-property-replaced---2a34b771",
+        "law": "Law No. L/2019/0028/AN of 7 June 2019 on Literary and Artistic Property (replaced Law 043/APN/CP/80 of 1980); implementing decree of 20 June 2022 (law_name, enforcement_body)",
+        "source": "https://www.labase-lextenso.fr/l-essentiel-droits-africains-des-affaires/2022-n10/guinee-precision-des-regles-applicables-aux-droits-d-auteurs-et-droits-voisins-DAA201c6",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-25T11:20:30Z"
+    },
+    {
+        "slug": "law-no-l-2019-0028-an-of-7-june-2019-on-literary-and-artistic-property-replaced---51aa4a35",
+        "law": "Law No. L/2019/0028/AN of 7 June 2019 on Literary and Artistic Property (replaced Law 043/APN/CP/80 of 1980); implementing decree of 20 June 2022 (protection_type, orphan_works, digital_protection)",
+        "source": "https://www.labase-lextenso.fr/l-essentiel-droits-africains-des-affaires/2020-n1/guinee-reforme-du-droit-d-auteur-et-des-droits-voisins-DAA112t3",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-25T11:20:31Z"
+    },
+    {
+        "slug": "law-no-l-2019-0028-an-of-7-june-2019-on-literary-and-artistic-property-replaced---e0bdbc79",
+        "law": "Law No. L/2019/0028/AN of 7 June 2019 on Literary and Artistic Property (replaced Law 043/APN/CP/80 of 1980); implementing decree of 20 June 2022 (term_of_protection)",
+        "source": "https://c.enwp.org/wiki/Commons_talk:Copyright_rules_by_territory",
+        "file": "law-no-l-2019-0028-an-of-7-june-2019-on-literary-and-artistic-property-replaced---e0bdbc79.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:32Z",
+        "checkedAt": "2026-11-25T11:20:32Z",
+        "etag": null,
+        "lastModified": "Tue, 24 Nov 2026 13:04:31 GMT",
+        "sha256": "ad2062bff58225f92466af3852902cd9379ce4d4811d0389d22799a8e3ebbaa1",
+        "chars": 6737
+    },
+    {
+        "slug": "law-no-l-2019-0028-an-of-7-june-2019-on-literary-and-artistic-property-replaced---eb5c34dc",
+        "law": "Law No. L/2019/0028/AN of 7 June 2019 on Literary and Artistic Property (replaced Law 043/APN/CP/80 of 1980); implementing decree of 20 June 2022 (fair_use_exceptions)",
+        "source": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Guinea.html",
+        "file": "law-no-l-2019-0028-an-of-7-june-2019-on-literary-and-artistic-property-replaced---eb5c34dc.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:34Z",
+        "checkedAt": "2026-11-25T11:20:34Z",
+        "etag": "W/\"5ac32f03536478c55d4b635863186ee2\"",
+        "lastModified": "Tue, 14 Jan 2025 08:49:21 GMT",
+        "sha256": "47395276a6fc48b6710d3a21e819c7962935864a9d83f86191b5911577b0c955",
+        "chars": 6243
+    }
+]

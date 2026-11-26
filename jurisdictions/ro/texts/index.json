@@ -1,0 +1,10 @@
+[
+    {
+        "slug": "romanian-copyright-law",
+        "law": "Romanian Copyright Law",
+        "source": "https://www.orda.ro/",
+        "status": "error",
+        "error": "SSL certificate problem: unable to get local issuer certificate",
+        "checkedAt": "2026-11-26T18:33:37Z"
+    }
+]

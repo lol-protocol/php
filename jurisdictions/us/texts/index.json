@@ -1,0 +1,28 @@
+[
+    {
+        "slug": "copyright-act-17-usc",
+        "law": "Copyright Act (17 USC)",
+        "source": "https://www.copyright.gov/title17/",
+        "file": "copyright-act-17-usc.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:34:21Z",
+        "checkedAt": "2026-11-26T18:34:21Z",
+        "etag": null,
+        "lastModified": "Tue, 21 Jul 2026 17:45:38 GMT",
+        "sha256": "912879df1dca175993c7dfe39ec1b9a6346c8247574d6ca35accaa3acc083f05",
+        "chars": 4076
+    },
+    {
+        "slug": "copyright-act-17-usc--5d603c00",
+        "law": "Copyright Act (17 USC) (term_of_protection)",
+        "source": "https://www.copyright.gov/title17/92chap3.html",
+        "file": "copyright-act-17-usc--5d603c00.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:34:22Z",
+        "checkedAt": "2026-11-26T18:34:22Z",
+        "etag": null,
+        "lastModified": "Thu, 18 Jun 2026 07:03:28 GMT",
+        "sha256": "4d80a084d3980febfdf4194df27bcaa38b834e066ea093d996f27cd74bdffc2c",
+        "chars": 22583
+    }
+]

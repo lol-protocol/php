@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "copyright-act-2004-act-no-10-of-2004",
+        "law": "Copyright Act, 2004 (Act No. 10 of 2004)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/9346",
+        "file": "copyright-act-2004-act-no-10-of-2004.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:24Z",
+        "checkedAt": "2026-11-25T11:20:24Z",
+        "etag": "W/\"8b72-T5CelDFoPekLTNPSLWzBiKCTTzI\"",
+        "lastModified": null,
+        "sha256": "9dace79602eaea00c8ac6c6b9d07a1ba2bd671782c082a2d2df4a3db08e2b58c",
+        "chars": 1562
+    },
+    {
+        "slug": "copyright-act-2004-act-no-10-of-2004--815f54b5",
+        "law": "Copyright Act, 2004 (Act No. 10 of 2004) (enforcement_body)",
+        "source": "https://www.musicinafrica.net/node/13993",
+        "file": "copyright-act-2004-act-no-10-of-2004--815f54b5.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:27Z",
+        "checkedAt": "2026-11-25T11:20:27Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "a36db6dfb757479b3e8d11652c23e34c6993b478576f7fe9ae01475c48d633d6",
+        "chars": 9880
+    },
+    {
+        "slug": "copyright-act-2004-act-no-10-of-2004--9a8f133d",
+        "law": "Copyright Act, 2004 (Act No. 10 of 2004) (term_of_protection)",
+        "source": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Gambia.html",
+        "file": "copyright-act-2004-act-no-10-of-2004--9a8f133d.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:25Z",
+        "checkedAt": "2026-11-25T11:20:25Z",
+        "etag": "W/\"cfa34b7739c40e183bbe07407a3f6c95\"",
+        "lastModified": "Tue, 14 Jan 2025 08:54:15 GMT",
+        "sha256": "d68bd22ffb4cace47da342f34b666f3eedf0ffc1471ae2bf654bebc0ff110dd8",
+        "chars": 6296
+    }
+]

@@ -1,0 +1,80 @@
+[
+    {
+        "slug": "legislative-decree-no-62-of-2013-on-copyright-and-neighbouring-rights-replaced-l",
+        "law": "Legislative Decree No. 62 of 2013 on Copyright and Neighbouring Rights (replaced Law No. 12/2001)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/17231",
+        "file": "legislative-decree-no-62-of-2013-on-copyright-and-neighbouring-rights-replaced-l.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:23:10Z",
+        "checkedAt": "2026-11-25T22:23:10Z",
+        "etag": "W/\"21e39-07AgWnSFIXpqOrtX1aXFe1qv9Zs\"",
+        "lastModified": null,
+        "sha256": "19d041d8cbe7b227f24e431ee819f168cf68de9874d3a7986bc8144f7154bdeb",
+        "chars": 53375
+    },
+    {
+        "slug": "legislative-decree-no-62-of-2013-on-copyright-and-neighbouring-rights-replaced-l--1fb187b4",
+        "law": "Legislative Decree No. 62 of 2013 on Copyright and Neighbouring Rights (replaced Law No. 12/2001) (fair_use_exceptions)",
+        "source": "https://www.agip.com/Agip-Country-Service/en/160/C/3",
+        "file": "legislative-decree-no-62-of-2013-on-copyright-and-neighbouring-rights-replaced-l--1fb187b4.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:23:16Z",
+        "checkedAt": "2026-11-25T22:23:16Z",
+        "etag": null,
+        "lastModified": "Sun, 23 Aug 2026 07:36:47 GMT",
+        "sha256": "c5d1da903e59780ba926025757a91d00a6189592ea249a253dacb4a46d620346",
+        "chars": 5142
+    },
+    {
+        "slug": "legislative-decree-no-62-of-2013-on-copyright-and-neighbouring-rights-replaced-l--728cc489",
+        "law": "Legislative Decree No. 62 of 2013 on Copyright and Neighbouring Rights (replaced Law No. 12/2001) (moral_rights)",
+        "source": "https://en.wikipedia.org/wiki/Copyright_law_of_Syria",
+        "file": "legislative-decree-no-62-of-2013-on-copyright-and-neighbouring-rights-replaced-l--728cc489.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:23:14Z",
+        "checkedAt": "2026-11-25T22:23:14Z",
+        "etag": null,
+        "lastModified": "Tue, 17 Nov 2026 19:54:12 GMT",
+        "sha256": "ce6f826d449982a6594037f672b580004b1f4a41623d8a361d8068d616e4bd99",
+        "chars": 6299
+    },
+    {
+        "slug": "legislative-decree-no-62-of-2013-on-copyright-and-neighbouring-rights-replaced-l--9fa79ae0",
+        "law": "Legislative Decree No. 62 of 2013 on Copyright and Neighbouring Rights (replaced Law No. 12/2001) (protection_type)",
+        "source": "https://www.agip.com/News/en/news/4680",
+        "file": "legislative-decree-no-62-of-2013-on-copyright-and-neighbouring-rights-replaced-l--9fa79ae0.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:23:11Z",
+        "checkedAt": "2026-11-25T22:23:11Z",
+        "etag": null,
+        "lastModified": "Thu, 19 Sep 2013 11:37:14 GMT",
+        "sha256": "956b8481fa26fa4274e71c72ad429f25f4a8654ae0d76938990451e3c293fa83",
+        "chars": 790
+    },
+    {
+        "slug": "legislative-decree-no-62-of-2013-on-copyright-and-neighbouring-rights-replaced-l--cd05b468",
+        "law": "Legislative Decree No. 62 of 2013 on Copyright and Neighbouring Rights (replaced Law No. 12/2001) (term_of_protection, author_rights, orphan_works, registration_required)",
+        "source": "https://www.agip.com/Agip-Country-Service/en/160/C",
+        "file": "legislative-decree-no-62-of-2013-on-copyright-and-neighbouring-rights-replaced-l--cd05b468.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:23:13Z",
+        "checkedAt": "2026-11-25T22:23:13Z",
+        "etag": null,
+        "lastModified": "Sun, 23 Aug 2026 07:36:47 GMT",
+        "sha256": "83c4f0f87b8e1b19510388cb6f0739cb58ec9a42e42f4382a44b2be69812d172",
+        "chars": 3104
+    },
+    {
+        "slug": "legislative-decree-no-62-of-2013-on-copyright-and-neighbouring-rights-replaced-l--f43bf0ad",
+        "law": "Legislative Decree No. 62 of 2013 on Copyright and Neighbouring Rights (replaced Law No. 12/2001) (enforcement_body)",
+        "source": "https://www.wipo.int/en/web/country-profiles/contact?code=SY",
+        "file": "legislative-decree-no-62-of-2013-on-copyright-and-neighbouring-rights-replaced-l--f43bf0ad.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:23:17Z",
+        "checkedAt": "2026-11-25T22:23:17Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "a58002fa43219ecf1da91576b0ca61a584934eab900ab93107c768256e01e57a",
+        "chars": 852
+    }
+]

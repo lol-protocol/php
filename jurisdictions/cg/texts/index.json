@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "law-no-24-82-of-july-7-1982-on-copyright-and-related-rights",
+        "law": "Law No. 24-82 of July 7, 1982 on Copyright and Related Rights",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/642",
+        "file": "law-no-24-82-of-july-7-1982-on-copyright-and-related-rights.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:22:17Z",
+        "checkedAt": "2026-11-25T22:22:17Z",
+        "etag": "W/\"17ed0-RKsdOd6NIhej4rlaJc65/udcQYU\"",
+        "lastModified": null,
+        "sha256": "e011c38fc38c1547057396c9ad3f4d58fd06ed3f36c245932f5ec15b0ed65eb3",
+        "chars": 53324
+    },
+    {
+        "slug": "law-no-24-82-of-july-7-1982-on-copyright-and-related-rights--645b150e",
+        "law": "Law No. 24-82 of July 7, 1982 on Copyright and Related Rights (enforcement_body)",
+        "source": "https://www.musicinafrica.net/node/15693",
+        "file": "law-no-24-82-of-july-7-1982-on-copyright-and-related-rights--645b150e.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:22:22Z",
+        "checkedAt": "2026-11-25T22:22:22Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "17a4a223c82bc1402ed950eb6114960ac8958dc2aa45b7dd759631d354f04227",
+        "chars": 5051
+    },
+    {
+        "slug": "law-no-24-82-of-july-7-1982-on-copyright-and-related-rights--a75774f4",
+        "law": "Law No. 24-82 of July 7, 1982 on Copyright and Related Rights (term_of_protection, treaties_signatory)",
+        "source": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Republic_of_the_Congo.html",
+        "file": "law-no-24-82-of-july-7-1982-on-copyright-and-related-rights--a75774f4.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:22:19Z",
+        "checkedAt": "2026-11-25T22:22:19Z",
+        "etag": "W/\"de022d34eb41b636aaff3dec0323c705\"",
+        "lastModified": "Tue, 14 Jan 2025 08:48:52 GMT",
+        "sha256": "8d95e28b6ffd17c0a9bb5d7d30d27b8f3d71df0c87cf43b24ea67e3b74238f7d",
+        "chars": 7029
+    }
+]

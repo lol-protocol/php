@@ -1,0 +1,15 @@
+[
+    {
+        "slug": "copyright-law-lda",
+        "law": "Copyright Law (LDA)",
+        "source": "https://www.sbfi.admin.ch/",
+        "file": "copyright-law-lda.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:33:55Z",
+        "checkedAt": "2026-11-26T18:33:55Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "a190014b979cd2c050cab1c432fd7cfd0a0632457085266f84aedd0fa079f1ba",
+        "chars": 543
+    }
+]

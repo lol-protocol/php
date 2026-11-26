@@ -1,0 +1,23 @@
+[
+    {
+        "slug": "copyright-act-auteurswet",
+        "law": "Copyright Act (Auteurswet)",
+        "source": "https://wetten.overheid.nl/BWBR0001886/",
+        "file": "copyright-act-auteurswet.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:33:00Z",
+        "checkedAt": "2026-11-26T18:33:00Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "16b01958b80ee4b973a106ad6f934c31ed5946921463542dbf01e797f2da9d90",
+        "chars": 166750
+    },
+    {
+        "slug": "copyright-act-auteurswet--829a5c58",
+        "law": "Copyright Act (Auteurswet) (enforcement_body)",
+        "source": "https://internetconsultatie.nl/acr2/document/8899",
+        "status": "skipped",
+        "error": "disallowed by robots.txt",
+        "checkedAt": "2026-11-26T18:33:02Z"
+    }
+]

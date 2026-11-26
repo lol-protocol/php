@@ -1,0 +1,18 @@
+[
+    {
+        "slug": "finnish-copyright-law",
+        "law": "Finnish Copyright Law",
+        "source": "https://www.finlex.fi/fi/laki/ajantasa/1961/19610404",
+        "status": "skipped",
+        "error": "no readable text (the page probably needs JavaScript)",
+        "checkedAt": "2026-11-26T18:31:52Z"
+    },
+    {
+        "slug": "finnish-copyright-law--c26ce5b6",
+        "law": "Finnish Copyright Law (enforcement_body)",
+        "source": "https://stm.fi/en/web/okm/copyright",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-26T18:31:56Z"
+    }
+]

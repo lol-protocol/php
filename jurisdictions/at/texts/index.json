@@ -1,0 +1,28 @@
+[
+    {
+        "slug": "austrian-copyright-act",
+        "law": "Austrian Copyright Act",
+        "source": "https://www.patentamt.at/",
+        "file": "austrian-copyright-act.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:31:12Z",
+        "checkedAt": "2026-11-26T18:31:12Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "868ff5f111dcffc05c006411a4ec3abe491bd98467eda22169fb2312b47670d9",
+        "chars": 4121
+    },
+    {
+        "slug": "austrian-copyright-act--49cd7c41",
+        "law": "Austrian Copyright Act (enforcement_body)",
+        "source": "https://www.urheberrecht.org/events/20190503_Auinger.pdf",
+        "file": "austrian-copyright-act--49cd7c41.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:31:15Z",
+        "checkedAt": "2026-11-26T18:31:15Z",
+        "etag": "\"75d3-5b331672cb570\"",
+        "lastModified": "Tue, 03 Nov 2020 10:34:09 GMT",
+        "sha256": "4d22bdbd11494ad7775a1cbdc8ebe24bbd7457856ef306367d4a4c5a0d595924",
+        "chars": 1429
+    }
+]

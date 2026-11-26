@@ -1,0 +1,23 @@
+[
+    {
+        "slug": "copyright-related-rights-act",
+        "law": "Copyright & Related Rights Act",
+        "source": "https://www.uprp.pl/",
+        "status": "error",
+        "error": "Failed to connect to www.uprp.pl port 443 after 10001 ms: Timeout was reached",
+        "checkedAt": "2026-11-26T18:33:32Z"
+    },
+    {
+        "slug": "copyright-related-rights-act--48fe7a25",
+        "law": "Copyright & Related Rights Act (enforcement_body)",
+        "source": "https://www.gov.pl/web/kultura/departament-prawa-autorskiego-i-filmu",
+        "file": "copyright-related-rights-act--48fe7a25.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:33:35Z",
+        "checkedAt": "2026-11-26T18:33:35Z",
+        "etag": "W/\"04b19142f88538bcf6c4485bbb3a86414\"",
+        "lastModified": null,
+        "sha256": "2215d61884fd329f25ed5a4ea7f5b41837c351095353c14247c45b1304a82c13",
+        "chars": 3789
+    }
+]

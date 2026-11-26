@@ -1,0 +1,44 @@
+[
+    {
+        "slug": "law-on-copyright-and-related-rights-official-gazette-of-montenegro-37-2011-as-am",
+        "law": "Law on Copyright and Related Rights (Official Gazette of Montenegro 37/2011, as amended to 100/2024)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/22248",
+        "file": "law-on-copyright-and-related-rights-official-gazette-of-montenegro-37-2011-as-am.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:43Z",
+        "checkedAt": "2026-11-25T22:21:43Z",
+        "etag": "W/\"2f8e7-+Es1h64UO3lncHkxFuPPXiJt+GA\"",
+        "lastModified": null,
+        "sha256": "4da673d1d3e8bcf10f6cc408e66fc884ee46fa7204f6cf1c6fce7fab59d02be9",
+        "chars": 139053
+    },
+    {
+        "slug": "law-on-copyright-and-related-rights-official-gazette-of-montenegro-37-2011-as-am--253ff072",
+        "law": "Law on Copyright and Related Rights (Official Gazette of Montenegro 37/2011, as amended to 100/2024) (moral_rights)",
+        "source": "https://wipo.int/documents/d/copyright/docs-en-registration-replies-montenegro.pdf",
+        "file": "law-on-copyright-and-related-rights-official-gazette-of-montenegro-37-2011-as-am--253ff072.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:45Z",
+        "checkedAt": "2026-11-25T22:21:45Z",
+        "etag": null,
+        "lastModified": "Wed, 20 Nov 2024 12:20:57 GMT",
+        "sha256": "6804f8696511bc969798d5bb3ff45125b8b8ef283f9ffd0b5a678e3f02a98ec8",
+        "chars": 28391
+    },
+    {
+        "slug": "law-on-copyright-and-related-rights-official-gazette-of-montenegro-37-2011-as-am--c22373b0",
+        "law": "Law on Copyright and Related Rights (Official Gazette of Montenegro 37/2011, as amended to 100/2024) (fair_use_exceptions)",
+        "source": "https://bdkadvokati.com/montenegro-amends-the-copyright-act-to-catch-up-with-advances-in-the-digital-era",
+        "status": "skipped",
+        "error": "no readable text (the page probably needs JavaScript)",
+        "checkedAt": "2026-11-25T22:21:48Z"
+    },
+    {
+        "slug": "law-on-copyright-and-related-rights-official-gazette-of-montenegro-37-2011-as-am--c2420040",
+        "law": "Law on Copyright and Related Rights (Official Gazette of Montenegro 37/2011, as amended to 100/2024) (digital_protection)",
+        "source": "https://members.wto.org/crnattachments/2016/IP/MNE/16_5029_00_e.pdf",
+        "status": "skipped",
+        "error": "disallowed by robots.txt",
+        "checkedAt": "2026-11-25T22:21:46Z"
+    }
+]

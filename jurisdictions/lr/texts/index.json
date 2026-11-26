@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "liberia-intellectual-property-act-2016-title-24-liberian-code-of-laws-revised-ap",
+        "law": "Liberia Intellectual Property Act, 2016 (Title 24, Liberian Code of Laws Revised; approved 14 June 2016; replaced the 1997 Copyright Law)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/16994",
+        "file": "liberia-intellectual-property-act-2016-title-24-liberian-code-of-laws-revised-ap.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:16Z",
+        "checkedAt": "2026-11-25T22:21:16Z",
+        "etag": "W/\"9e19-tvCXdL1Xc7JtPzlew+yLTZNWk34\"",
+        "lastModified": null,
+        "sha256": "9d4eb47bea04886f48d7eff29affa0b7e2255b8e00cbdc4fa8b0083fea4b8b08",
+        "chars": 2176
+    },
+    {
+        "slug": "liberia-intellectual-property-act-2016-title-24-liberian-code-of-laws-revised-ap--3b841c3a",
+        "law": "Liberia Intellectual Property Act, 2016 (Title 24, Liberian Code of Laws Revised; approved 14 June 2016; replaced the 1997 Copyright Law) (enforcement_body)",
+        "source": "https://spoor.com/new-ip-act-in-liberia/",
+        "file": "liberia-intellectual-property-act-2016-title-24-liberian-code-of-laws-revised-ap--3b841c3a.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:22Z",
+        "checkedAt": "2026-11-25T22:21:22Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "e671c0ee179f4108337cf40e090dc5b976611a91a7957c5b65c4713e26812bfc",
+        "chars": 29219
+    },
+    {
+        "slug": "liberia-intellectual-property-act-2016-title-24-liberian-code-of-laws-revised-ap--5f887e65",
+        "law": "Liberia Intellectual Property Act, 2016 (Title 24, Liberian Code of Laws Revised; approved 14 June 2016; replaced the 1997 Copyright Law) (term_of_protection)",
+        "source": "https://c.enwp.org/wiki/Commons:FOP_Liberia",
+        "file": "liberia-intellectual-property-act-2016-title-24-liberian-code-of-laws-revised-ap--5f887e65.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:18Z",
+        "checkedAt": "2026-11-25T22:21:18Z",
+        "etag": null,
+        "lastModified": "Wed, 25 Nov 2026 18:11:52 GMT",
+        "sha256": "e8b2dc3b1b7817ad358bf9fa1c4e9ee146e8216358c9ce04693daa56ea36278a",
+        "chars": 6374
+    }
+]

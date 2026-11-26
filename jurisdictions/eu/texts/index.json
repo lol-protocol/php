@@ -1,0 +1,15 @@
+[
+    {
+        "slug": "infosoc-directive-2001-29-ec",
+        "law": "InfoSoc Directive (2001/29/EC)",
+        "source": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32001L0029",
+        "file": "infosoc-directive-2001-29-ec.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:31:50Z",
+        "checkedAt": "2026-11-26T18:31:50Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "d476cc902a5cea8c6b511efe9d68052ce7ef8079f73f2daa4dd6137028da27f3",
+        "chars": 54111
+    }
+]

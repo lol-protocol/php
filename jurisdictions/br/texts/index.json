@@ -1,0 +1,28 @@
+[
+    {
+        "slug": "law-no-9-610-1998",
+        "law": "Law No. 9,610/1998",
+        "source": "https://legis.senado.leg.br/norma/551486/publicacao/15716667",
+        "file": "law-no-9-610-1998.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:31:21Z",
+        "checkedAt": "2026-11-26T18:31:21Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "1b7e8a924505f97761fcafae88659c73d3b2084ab3a1d4cadafc489d78734f43",
+        "chars": 49908
+    },
+    {
+        "slug": "law-no-9-610-1998--08e500cb",
+        "law": "Law No. 9,610/1998 (digital_protection)",
+        "source": "https://www.conjur.com.br/wp-content/uploads/2023/09/lei-9610.pdf",
+        "file": "law-no-9-610-1998--08e500cb.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:31:23Z",
+        "checkedAt": "2026-11-26T18:31:23Z",
+        "etag": "W/\"6514670a-5b186\"",
+        "lastModified": "Wed, 27 Sep 2023 17:31:54 GMT",
+        "sha256": "91ff1a9166a77939bc8163ea9197e0e21ea5b83759191667107affc2200c9536",
+        "chars": 50823
+    }
+]

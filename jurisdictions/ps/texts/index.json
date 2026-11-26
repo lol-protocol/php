@@ -1,0 +1,36 @@
+[
+    {
+        "slug": "copyright-act-1911-uk-as-extended-to-palestine-by-order-in-council-of-21-march-1",
+        "law": "Copyright Act 1911 (UK) as extended to Palestine by Order in Council of 21 March 1924, with the Copyright Ordinance 1924 (Mandate-era law, never replaced; a 2013 draft Palestinian copyright law was not adopted because the Legislative Council was suspended)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/2377",
+        "file": "copyright-act-1911-uk-as-extended-to-palestine-by-order-in-council-of-21-march-1.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:22:06Z",
+        "checkedAt": "2026-11-25T22:22:06Z",
+        "etag": "W/\"fc0a-716DUDzzhDs+TnmyK+VKivaUsZ8\"",
+        "lastModified": null,
+        "sha256": "818d869905fa24225b2e897e6c4b1e8e7dc8bace92e005c5978b767f99fc2a3c",
+        "chars": 18092
+    },
+    {
+        "slug": "copyright-act-1911-uk-as-extended-to-palestine-by-order-in-council-of-21-march-1--b1813a40",
+        "law": "Copyright Act 1911 (UK) as extended to Palestine by Order in Council of 21 March 1924, with the Copyright Ordinance 1924 (Mandate-era law, never replaced; a 2013 draft Palestinian copyright law was not adopted because the Legislative Council was suspended) (term_of_protection, orphan_works)",
+        "source": "https://commons.wikipedia.com/wiki/Commons:CRT/State_of_Palestine",
+        "file": "copyright-act-1911-uk-as-extended-to-palestine-by-order-in-council-of-21-march-1--b1813a40.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:22:11Z",
+        "checkedAt": "2026-11-25T22:22:11Z",
+        "etag": null,
+        "lastModified": "Wed, 25 Nov 2026 18:11:54 GMT",
+        "sha256": "b18cdd0fcda35379f35e79e21ca700f4016879ba23687cbd3047408de7254720",
+        "chars": 6654
+    },
+    {
+        "slug": "copyright-act-1911-uk-as-extended-to-palestine-by-order-in-council-of-21-march-1--b40ce3aa",
+        "law": "Copyright Act 1911 (UK) as extended to Palestine by Order in Council of 21 March 1924, with the Copyright Ordinance 1924 (Mandate-era law, never replaced; a 2013 draft Palestinian copyright law was not adopted because the Legislative Council was suspended) (law_name, digital_protection)",
+        "source": "https://fsuproceedings.usim.edu.my/index.php/inpac/article/download/126/95/350",
+        "status": "error",
+        "error": "HTTP 500",
+        "checkedAt": "2026-11-25T22:22:10Z"
+    }
+]

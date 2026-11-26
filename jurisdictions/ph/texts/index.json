@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "intellectual-property-code",
+        "law": "Intellectual Property Code",
+        "source": "https://lawphil.net/statutes/repacts/ra1997/ra_8293_1997.html",
+        "file": "intellectual-property-code.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:33:06Z",
+        "checkedAt": "2026-11-26T18:33:06Z",
+        "etag": "\"6691d3b5-3630b\"",
+        "lastModified": "Sat, 13 Jul 2024 01:09:09 GMT",
+        "sha256": "4f7b2cceaefec21cd832367dbd041235b1d226f1f262d1bde7819b1fe17e3ae3",
+        "chars": 195485
+    },
+    {
+        "slug": "intellectual-property-code--d468d36e",
+        "law": "Intellectual Property Code (enforcement_body)",
+        "source": "https://www.ipophil.gov.ph/?p=16643",
+        "file": "intellectual-property-code--d468d36e.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:33:21Z",
+        "checkedAt": "2026-11-26T18:33:21Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "759df87a5fd2a63143c7f94f7f4a7085eeeb982e35c81b831ac3846eca4c4b9a",
+        "chars": 3708
+    },
+    {
+        "slug": "intellectual-property-code--f60257ae",
+        "law": "Intellectual Property Code (digital_protection)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/12953",
+        "file": "intellectual-property-code--f60257ae.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:33:08Z",
+        "checkedAt": "2026-11-26T18:33:08Z",
+        "etag": "W/\"9885-kJmB32yijHgjJPisibozOR8S71U\"",
+        "lastModified": null,
+        "sha256": "0c0b29043e84b59c34f88ad059310b015d6c268e874ab9ab496619a2d67fad22",
+        "chars": 436
+    }
+]

@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "copyright-act-cap-252-revised-edition-2020",
+        "law": "Copyright Act, Cap. 252 (Revised Edition 2020)",
+        "source": "https://www.belipo.bz/wp-content/uploads/2024/01/Cap_252_Copyright_Act-Revised-2020.pdf",
+        "file": "copyright-act-cap-252-revised-edition-2020.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T21:58:37Z",
+        "checkedAt": "2026-11-25T21:58:37Z",
+        "etag": "\"ae586-60f5222274dc0\"",
+        "lastModified": "Fri, 19 Jan 2024 20:14:55 GMT",
+        "sha256": "a2b94ce02089f47c951525b362b48535c7290db9a3423bf61b980eb1801d0856",
+        "chars": 214555
+    },
+    {
+        "slug": "copyright-act-cap-252-revised-edition-2020--4f3ef388",
+        "law": "Copyright Act, Cap. 252 (Revised Edition 2020) (term_of_protection, enforcement_body)",
+        "source": "https://www.belipo.bz/copyright/",
+        "file": "copyright-act-cap-252-revised-edition-2020--4f3ef388.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T21:58:39Z",
+        "checkedAt": "2026-11-25T21:58:39Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "21895980d951f3b14a5c482ac665404f7cfd451f08745b2bb2c46cff32fdd227",
+        "chars": 12898
+    },
+    {
+        "slug": "copyright-act-cap-252-revised-edition-2020--6fffa223",
+        "law": "Copyright Act, Cap. 252 (Revised Edition 2020) (treaties_signatory)",
+        "source": "https://wipo.int/wipolex/zh/treaties/notifications/details/treaty_berne_215",
+        "file": "copyright-act-cap-252-revised-edition-2020--6fffa223.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T21:58:42Z",
+        "checkedAt": "2026-11-25T21:58:42Z",
+        "etag": "W/\"6ae8-0YNs1n2bGx00lvd6g+edqWiZqa8\"",
+        "lastModified": null,
+        "sha256": "b62c09d070a887b456a2b63409b630264fd94e7e3667e8d342d1735f43cc96ae",
+        "chars": 860
+    }
+]

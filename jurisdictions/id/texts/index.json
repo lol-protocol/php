@@ -1,0 +1,23 @@
+[
+    {
+        "slug": "law-no-28-of-2014",
+        "law": "Law No. 28 of 2014",
+        "source": "https://www.dgip.go.id/",
+        "file": "law-no-28-of-2014.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:32:38Z",
+        "checkedAt": "2026-11-26T18:32:38Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "7dcda967274fed45720a000bfbdf5a3dfac3f5b6a3c84a8f0bb2b2822c610723",
+        "chars": 4552
+    },
+    {
+        "slug": "law-no-28-of-2014--57653a69",
+        "law": "Law No. 28 of 2014 (digital_protection)",
+        "source": "https://ssek.com/blog/copyright-management-information-in-indonesia/",
+        "status": "error",
+        "error": "SSL certificate problem: unable to get local issuer certificate",
+        "checkedAt": "2026-11-26T18:32:39Z"
+    }
+]

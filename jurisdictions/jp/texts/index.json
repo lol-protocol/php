@@ -1,0 +1,23 @@
+[
+    {
+        "slug": "copyright-law-act-no-48-of-1970",
+        "law": "Copyright Law (Act No. 48 of 1970)",
+        "source": "https://laws.e-gov.go.jp/law/345AC0000000048/",
+        "status": "skipped",
+        "error": "no readable text (the page probably needs JavaScript)",
+        "checkedAt": "2026-11-26T18:32:44Z"
+    },
+    {
+        "slug": "copyright-law-act-no-48-of-1970--9710b90c",
+        "law": "Copyright Law (Act No. 48 of 1970) (enforcement_body)",
+        "source": "https://www.bunka.go.jp/english/policy/copyright/",
+        "file": "copyright-law-act-no-48-of-1970--9710b90c.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:32:46Z",
+        "checkedAt": "2026-11-26T18:32:46Z",
+        "etag": "\"463d-64c150fab58db\"",
+        "lastModified": "Tue, 03 Mar 2026 02:00:01 GMT",
+        "sha256": "0a15cebad616a3a007dc7f221b2d649f67a229383f95b6fcb5c8d914d6540442",
+        "chars": 4117
+    }
+]

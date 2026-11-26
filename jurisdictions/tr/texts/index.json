@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "law-no-5846",
+        "law": "Law No. 5846",
+        "source": "https://www.turkpatent.gov.tr/",
+        "file": "law-no-5846.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:34:01Z",
+        "checkedAt": "2026-11-26T18:34:01Z",
+        "etag": "\"492bko501q9hwt\"",
+        "lastModified": null,
+        "sha256": "82ddca3dfebe45bf735674a029e158cfb295d341017b00a05d3c4462d0a8511d",
+        "chars": 1170
+    },
+    {
+        "slug": "law-no-5846--306f3ccb",
+        "law": "Law No. 5846 (enforcement_body)",
+        "source": "https://www.wipo.int/en/web/country-profiles/contact?code=TR",
+        "file": "law-no-5846--306f3ccb.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:34:06Z",
+        "checkedAt": "2026-11-26T18:34:06Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "ec72c8e61bb164d6dd8aee6fb97b1fbbcbe782e9fc4b1307706b572bc21e0a6e",
+        "chars": 948
+    },
+    {
+        "slug": "law-no-5846--4abdbefe",
+        "law": "Law No. 5846 (digital_protection)",
+        "source": "https://www.morogluarseven.com/insights/ma-gazette-en/ma-gazette-edition-113-11-march-2022/the-scope-of-crime-of-circumventing-technological-measures-regarding-intellectual-and-artistic-works-is-extended/",
+        "file": "law-no-5846--4abdbefe.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:34:04Z",
+        "checkedAt": "2026-11-26T18:34:04Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "f84c82e5227e558bdc559fc481ddcc262affff2e781c382be8ff070bd3b0c21e",
+        "chars": 2493
+    }
+]

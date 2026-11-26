@@ -1,0 +1,54 @@
+[
+    {
+        "slug": "copyright-and-neighbouring-rights-act-2018-act-no-4-of-2018",
+        "law": "Copyright and Neighbouring Rights Act, 2018 (Act No. 4 of 2018)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/18374",
+        "file": "copyright-and-neighbouring-rights-act-2018-act-no-4-of-2018.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:39Z",
+        "checkedAt": "2026-11-25T11:19:39Z",
+        "etag": "W/\"2cd12-FGpqIdwdN3s6lQUWQXn7Fj9v9YM\"",
+        "lastModified": null,
+        "sha256": "79bcb3b2ed53eca56d9cc7138c15a3bbe5131310f74cd97e65b89d3b400a7bf0",
+        "chars": 130044
+    },
+    {
+        "slug": "copyright-and-neighbouring-rights-act-2018-act-no-4-of-2018--6163deac",
+        "law": "Copyright and Neighbouring Rights Act, 2018 (Act No. 4 of 2018) (term_of_protection)",
+        "source": "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/Eswatini",
+        "file": "copyright-and-neighbouring-rights-act-2018-act-no-4-of-2018--6163deac.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:40Z",
+        "checkedAt": "2026-11-25T11:19:40Z",
+        "etag": null,
+        "lastModified": "Tue, 24 Nov 2026 23:34:12 GMT",
+        "sha256": "2a3fc7de1dc1126b3bbf49580fa9e4c0edc1d54c177fd3afda57e746cac2996f",
+        "chars": 5579
+    },
+    {
+        "slug": "copyright-and-neighbouring-rights-act-2018-act-no-4-of-2018--6b50a751",
+        "law": "Copyright and Neighbouring Rights Act, 2018 (Act No. 4 of 2018) (treaties_signatory)",
+        "source": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Eswatini.html",
+        "file": "copyright-and-neighbouring-rights-act-2018-act-no-4-of-2018--6b50a751.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:46Z",
+        "checkedAt": "2026-11-25T11:19:46Z",
+        "etag": "W/\"8cdace7e0e61a48cba068ba0e5acaec4\"",
+        "lastModified": "Tue, 14 Jan 2025 08:54:28 GMT",
+        "sha256": "38d0fe406eff9da5c79310e5d1ee6f14e0df4dab21475d447232080911480772",
+        "chars": 5663
+    },
+    {
+        "slug": "copyright-and-neighbouring-rights-act-2018-act-no-4-of-2018--8b3ee6ab",
+        "law": "Copyright and Neighbouring Rights Act, 2018 (Act No. 4 of 2018) (enforcement_body)",
+        "source": "https://www.eswatiniobserver.com/?p=13498",
+        "file": "copyright-and-neighbouring-rights-act-2018-act-no-4-of-2018--8b3ee6ab.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:44Z",
+        "checkedAt": "2026-11-25T11:19:44Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "25c104e25372564ceb0052dd0dca28769318ff22f0d7df0abfa92f9b84c51672",
+        "chars": 10251
+    }
+]

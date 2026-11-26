@@ -1,0 +1,49 @@
+[
+    {
+        "slug": "law-no-35-2016-on-copyright-and-other-related-rights-as-amended-by-law-no-37-202",
+        "law": "Law No. 35/2016 on Copyright and Other Related Rights (as amended by Law No. 37/2022)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/21610",
+        "file": "law-no-35-2016-on-copyright-and-other-related-rights-as-amended-by-law-no-37-202.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:18:18Z",
+        "checkedAt": "2026-11-25T11:18:18Z",
+        "etag": "W/\"c8fb-UPZEuhgzzMZ87lSqGb+3jsuVStw\"",
+        "lastModified": null,
+        "sha256": "b5c64e14fac19cd830ce1867dc343062f4ea08fb54cfcd2cd34b8c99f7bb8c98",
+        "chars": 553
+    },
+    {
+        "slug": "law-no-35-2016-on-copyright-and-other-related-rights-as-amended-by-law-no-37-202--23a06671",
+        "law": "Law No. 35/2016 on Copyright and Other Related Rights (as amended by Law No. 37/2022) (fair_use_exceptions)",
+        "source": "https://www.unodc.org/cld/uploads/res/legislation/law-no--35-2016-on-copyright-and-related-rights_html/Law_No_35-2016_on_Copyright_and_Related_Rights.pdf",
+        "file": "law-no-35-2016-on-copyright-and-other-related-rights-as-amended-by-law-no-37-202--23a06671.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:18:26Z",
+        "checkedAt": "2026-11-25T11:18:26Z",
+        "etag": null,
+        "lastModified": "Wed, 14 Aug 2019 12:48:06 GMT",
+        "sha256": "5e1daf0f9dafb0c6ed311f4edcb8883cae1203292ae5fc0d949ea9395b3f8a3c",
+        "chars": 243631
+    },
+    {
+        "slug": "law-no-35-2016-on-copyright-and-other-related-rights-as-amended-by-law-no-37-202--797b47de",
+        "law": "Law No. 35/2016 on Copyright and Other Related Rights (as amended by Law No. 37/2022) (digital_protection)",
+        "source": "https://ip-documents.info/2021/IP/ALB/21_0681_00_e.pdf",
+        "status": "skipped",
+        "error": "disallowed by robots.txt",
+        "checkedAt": "2026-11-25T11:18:21Z"
+    },
+    {
+        "slug": "law-no-35-2016-on-copyright-and-other-related-rights-as-amended-by-law-no-37-202--7ee81fe4",
+        "law": "Law No. 35/2016 on Copyright and Other Related Rights (as amended by Law No. 37/2022) (moral_rights)",
+        "source": "https://www.mondaq.com/Article/491146",
+        "file": "law-no-35-2016-on-copyright-and-other-related-rights-as-amended-by-law-no-37-202--7ee81fe4.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:18:19Z",
+        "checkedAt": "2026-11-25T11:18:19Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "f4adaa5fc9f16c7f208ea6f312f6793b2c4425dd6727e4f78d5e8bc0995a2dc8",
+        "chars": 11627
+    }
+]

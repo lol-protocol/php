@@ -1,0 +1,28 @@
+[
+    {
+        "slug": "copyright-designs-and-patents-act-1988",
+        "law": "Copyright, Designs and Patents Act 1988",
+        "source": "https://www.legislation.gov.uk/ukpga/1988/48/contents",
+        "file": "copyright-designs-and-patents-act-1988.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:34:11Z",
+        "checkedAt": "2026-11-26T18:34:11Z",
+        "etag": null,
+        "lastModified": "Thu, 12 Nov 2026 17:32:01 GMT",
+        "sha256": "58720b1bbbab30c02c4032140a02affa2c3ca5ffdbbba937f1d33e1babf642d1",
+        "chars": 72656
+    },
+    {
+        "slug": "copyright-designs-and-patents-act-1988--527bd43f",
+        "law": "Copyright, Designs and Patents Act 1988 (term_of_protection, moral_rights, fair_use_exceptions, orphan_works)",
+        "source": "https://www.legislation.gov.uk/ukpga/1988/48/part/I",
+        "file": "copyright-designs-and-patents-act-1988--527bd43f.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:34:19Z",
+        "checkedAt": "2026-11-26T18:34:19Z",
+        "etag": null,
+        "lastModified": "Thu, 26 Nov 2026 17:05:01 GMT",
+        "sha256": "46b987670adf2f4fcc96dff14dfbdba13c4b599be82994d963efc31d2f467e69",
+        "chars": 407892
+    }
+]

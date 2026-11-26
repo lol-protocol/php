@@ -1,0 +1,23 @@
+[
+    {
+        "slug": "german-copyright-act-urhg",
+        "law": "German Copyright Act (UrhG)",
+        "source": "https://www.gesetze-im-internet.de/urhg/BJNR012730965.html",
+        "status": "error",
+        "error": "Failed to connect to www.gesetze-im-internet.de port 443 after 10001 ms: Timeout was reached",
+        "checkedAt": "2026-11-26T18:32:11Z"
+    },
+    {
+        "slug": "german-copyright-act-urhg--10903b80",
+        "law": "German Copyright Act (UrhG) (enforcement_body)",
+        "source": "https://www.lobbyregister.bundestag.de/inhalte-der-interessenvertretung/regelungsvorhabensuche/RV0027623/506429",
+        "file": "german-copyright-act-urhg--10903b80.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:32:14Z",
+        "checkedAt": "2026-11-26T18:32:14Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "f176c63e2d9e52486eb7dbcf4fd334b77e30c108943b57c34a6be74f4e067ff9",
+        "chars": 1335
+    }
+]

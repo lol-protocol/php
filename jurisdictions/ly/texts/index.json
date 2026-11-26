@@ -1,0 +1,67 @@
+[
+    {
+        "slug": "law-no-9-of-1968-issuing-the-copyright-protection-law",
+        "law": "Law No. 9 of 1968 Issuing the Copyright Protection Law",
+        "source": "https://www.wipo.int/wipolex/en/text/234541",
+        "file": "law-no-9-of-1968-issuing-the-copyright-protection-law.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:36Z",
+        "checkedAt": "2026-11-25T11:20:36Z",
+        "etag": "W/\"ecb4-2Vhdopl2RU/CcetelgrK2HbyjmE\"",
+        "lastModified": null,
+        "sha256": "ff78ef035e1e8f847f9478219b65aa0bcdb2af071f7f83eac549467e8e3d6d75",
+        "chars": 29616
+    },
+    {
+        "slug": "law-no-9-of-1968-issuing-the-copyright-protection-law--32588c30",
+        "law": "Law No. 9 of 1968 Issuing the Copyright Protection Law (law_name, protection_type, author_rights, orphan_works)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/10149",
+        "file": "law-no-9-of-1968-issuing-the-copyright-protection-law--32588c30.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:38Z",
+        "checkedAt": "2026-11-25T11:20:38Z",
+        "etag": "W/\"116c1-gm4QnpFQMyJttIzVFEr12mSg2XM\"",
+        "lastModified": null,
+        "sha256": "6cc2f738b3d51321b64d8ea140d1ffa77fb0463f788b10f280f243de9ac91eb9",
+        "chars": 29796
+    },
+    {
+        "slug": "law-no-9-of-1968-issuing-the-copyright-protection-law--9fe3ffec",
+        "law": "Law No. 9 of 1968 Issuing the Copyright Protection Law (term_of_protection, registration_required)",
+        "source": "https://webiis05.mondaq.com/marine-shipping/8111/summary-of-the-copyright-registration-system-in-libya",
+        "file": "law-no-9-of-1968-issuing-the-copyright-protection-law--9fe3ffec.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:40Z",
+        "checkedAt": "2026-11-25T11:20:40Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "dc8b8eb5477df7dcc0f0887c822180cd6bc189f773d75bf45cd86cfcdfb1de3d",
+        "chars": 3424
+    },
+    {
+        "slug": "law-no-9-of-1968-issuing-the-copyright-protection-law--fa9773a7",
+        "law": "Law No. 9 of 1968 Issuing the Copyright Protection Law (enforcement_body)",
+        "source": "https://www.agip.com/Agip-Country-Service/de/100/C",
+        "file": "law-no-9-of-1968-issuing-the-copyright-protection-law--fa9773a7.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:42Z",
+        "checkedAt": "2026-11-25T11:20:42Z",
+        "etag": null,
+        "lastModified": "Sun, 23 Aug 2026 07:36:47 GMT",
+        "sha256": "d13e3d1930c71d75d27a6ac9138830fe6e0664edc6acdd105b9e67a3533310e5",
+        "chars": 1884
+    },
+    {
+        "slug": "law-no-9-of-1968-issuing-the-copyright-protection-law--fc445965",
+        "law": "Law No. 9 of 1968 Issuing the Copyright Protection Law (treaties_signatory)",
+        "source": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Libya.html",
+        "file": "law-no-9-of-1968-issuing-the-copyright-protection-law--fc445965.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:43Z",
+        "checkedAt": "2026-11-25T11:20:43Z",
+        "etag": "W/\"9c46f55c619528d0a7089f04e830e01d\"",
+        "lastModified": "Tue, 14 Jan 2025 08:49:17 GMT",
+        "sha256": "0c97f7e7ec9894fd4a7d02d450bd9f33cb0e5ba1b8be7b89fc07637204729e92",
+        "chars": 8045
+    }
+]

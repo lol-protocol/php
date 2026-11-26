@@ -1,0 +1,75 @@
+[
+    {
+        "slug": "law-no-1-021-of-30-december-2005-on-the-protection-of-copyright-and-related-righ",
+        "law": "Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights",
+        "source": "https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/bi/bi005en.pdf",
+        "file": "law-no-1-021-of-30-december-2005-on-the-protection-of-copyright-and-related-righ.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T21:58:43Z",
+        "checkedAt": "2026-11-25T21:58:43Z",
+        "etag": "W/\"1afb2-m0nvDzqSZ+iISp7/N11YvXBnpwI\"",
+        "lastModified": null,
+        "sha256": "bb6bf2ee4bf5c4380af4e0316c08bea5858cf79b72791dda45c881c733fa1cc0",
+        "chars": 63115
+    },
+    {
+        "slug": "law-no-1-021-of-30-december-2005-on-the-protection-of-copyright-and-related-righ--3180201f",
+        "law": "Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights (treaties_signatory)",
+        "source": "https://www.wipo.int/wipolex/en/treaties/parties/remarks/BI/15",
+        "file": "law-no-1-021-of-30-december-2005-on-the-protection-of-copyright-and-related-righ--3180201f.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T21:58:55Z",
+        "checkedAt": "2026-11-25T21:58:55Z",
+        "etag": "W/\"6f31-nLeKwA5vsDUDkQd2kthszCZ9WjM\"",
+        "lastModified": null,
+        "sha256": "9a1951138609a88ebffa9f965da6aae4a23b825cc846290d917edb746349d5fd",
+        "chars": 307
+    },
+    {
+        "slug": "law-no-1-021-of-30-december-2005-on-the-protection-of-copyright-and-related-righ--774c1f71",
+        "law": "Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights (law_name, protection_type)",
+        "source": "https://www.wipo.int/wipolex/en/details.jsp?id=8323",
+        "file": "law-no-1-021-of-30-december-2005-on-the-protection-of-copyright-and-related-righ--774c1f71.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T21:58:46Z",
+        "checkedAt": "2026-11-25T21:58:46Z",
+        "etag": "W/\"1afb2-si2nKnfu+/gdGZH5EAoTnaKcGFE\"",
+        "lastModified": null,
+        "sha256": "bb6bf2ee4bf5c4380af4e0316c08bea5858cf79b72791dda45c881c733fa1cc0",
+        "chars": 63115
+    },
+    {
+        "slug": "law-no-1-021-of-30-december-2005-on-the-protection-of-copyright-and-related-righ--801957f9",
+        "law": "Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights (moral_rights)",
+        "source": "https://www.memoireonline.com/11/11/4955/m_De-la-protection-des-droits-de-propriete-litteraire-et-artistique-en-droit-positif-burundais3.html",
+        "file": "law-no-1-021-of-30-december-2005-on-the-protection-of-copyright-and-related-righ--801957f9.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T21:58:51Z",
+        "checkedAt": "2026-11-25T21:58:51Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "f236e9f284dbc9cafd734d1c27989d7e58dc943b13a97635915bfb16d8657c69",
+        "chars": 66292
+    },
+    {
+        "slug": "law-no-1-021-of-30-december-2005-on-the-protection-of-copyright-and-related-righ--b4ae959e",
+        "law": "Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights (term_of_protection)",
+        "source": "https://c.enwp.org/wiki/Commons:CRT/Burundi",
+        "file": "law-no-1-021-of-30-december-2005-on-the-protection-of-copyright-and-related-righ--b4ae959e.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T21:58:49Z",
+        "checkedAt": "2026-11-25T21:58:49Z",
+        "etag": null,
+        "lastModified": "Wed, 25 Nov 2026 18:11:52 GMT",
+        "sha256": "7b4d21929fff6d2ac4a12baaed4be0caf72a1db0b405cdb4e3ef511021aebc53",
+        "chars": 10735
+    },
+    {
+        "slug": "law-no-1-021-of-30-december-2005-on-the-protection-of-copyright-and-related-righ--b9e3e863",
+        "law": "Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights (fair_use_exceptions)",
+        "source": "https://dti.eui.eu/database/page/258",
+        "status": "skipped",
+        "error": "robots.txt answered with a server error, so the site is not fetched",
+        "checkedAt": "2026-11-25T21:58:54Z"
+    }
+]

@@ -1,0 +1,28 @@
+[
+    {
+        "slug": "law-no-75-of-2019-on-copyright-and-related-rights",
+        "law": "Law No. 75 of 2019 on Copyright and Related Rights",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/19908",
+        "file": "law-no-75-of-2019-on-copyright-and-related-rights.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:09Z",
+        "checkedAt": "2026-11-25T22:21:09Z",
+        "etag": "W/\"92ce-/Q0+VPHpWqm9X7wmoVIfj9ndYFg\"",
+        "lastModified": null,
+        "sha256": "d3016bed27b635d532862805436916ebf3da55b231e959c8e0a23527ae81d9a6",
+        "chars": 1441
+    },
+    {
+        "slug": "law-no-75-of-2019-on-copyright-and-related-rights--56f58742",
+        "law": "Law No. 75 of 2019 on Copyright and Related Rights (digital_protection)",
+        "source": "https://infojustice.knowledgegov.org/?p=38003",
+        "file": "law-no-75-of-2019-on-copyright-and-related-rights--56f58742.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:13Z",
+        "checkedAt": "2026-11-25T22:21:13Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "93d1821bb064c46edb63a6ce00cf5bb167bbcf184eaaadc795d6e9acc6ed3753",
+        "chars": 5782
+    }
+]

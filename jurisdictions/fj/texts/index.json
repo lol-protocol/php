@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "copyright-act-1999-act-no-11-of-1999",
+        "law": "Copyright Act 1999 (Act No. 11 of 1999)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/1542",
+        "file": "copyright-act-1999-act-no-11-of-1999.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:47Z",
+        "checkedAt": "2026-11-25T11:19:47Z",
+        "etag": "W/\"55667-Ex+ydY3dCP89clXXYAz0rZu/mGg\"",
+        "lastModified": null,
+        "sha256": "973301f3678e86bf38981174e819d8c0f33cb86c3bb45f08b7179d2407bcbce1",
+        "chars": 285710
+    },
+    {
+        "slug": "copyright-act-1999-act-no-11-of-1999--84c05510",
+        "law": "Copyright Act 1999 (Act No. 11 of 1999) (fair_use_exceptions, registration_required, enforcement_body)",
+        "source": "https://ag.gov.fj/copyrights/",
+        "file": "copyright-act-1999-act-no-11-of-1999--84c05510.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:20:22Z",
+        "checkedAt": "2026-11-25T11:20:22Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "fd0b10a4f0362f5761c21bd23c916ca83b3b406d8ae6eb6a9153fda2a196f3f4",
+        "chars": 6511
+    },
+    {
+        "slug": "copyright-act-1999-act-no-11-of-1999--bcd117b3",
+        "law": "Copyright Act 1999 (Act No. 11 of 1999) (term_of_protection, treaties_signatory)",
+        "source": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Fiji.html",
+        "file": "copyright-act-1999-act-no-11-of-1999--bcd117b3.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:49Z",
+        "checkedAt": "2026-11-25T11:19:49Z",
+        "etag": "W/\"fb533c6b8ab74f40308a9ae50ea4a8d5\"",
+        "lastModified": "Tue, 14 Jan 2025 08:54:31 GMT",
+        "sha256": "7f485feb21ebc09f3521a445af622805ae713e422cbd594d6c5f6ebaa05de76a",
+        "chars": 7720
+    }
+]

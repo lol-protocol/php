@@ -1,0 +1,8 @@
+---
+source: "https://www.wipo.int/wipolex/en/treaties/parties/remarks/CU/15"
+law: "Law No. 154 on the Copyright of the Author and the Performing Artist (2022) (treaties_signatory)"
+title: "WIPO Lex"
+fetched: "2026-11-25T11:19:36Z"
+---
+
+Laws Treaties Judgments Browse By Jurisdiction Treaties Collection Contracting Parties/Signatories Berne Convention Cuba Dates Accession: November 20, 1996 Entry into force: February 20, 1997 Act(s) Article(s) Signature Instrument Entry into Force Paris Act (1971) Accession : November 20, 1996 February 20, 1997 Declarations, Reservations Paris Act (1971): Pursuant to Article I of the Appendix of the Paris Act, a notification was deposited, on September 3, 2014, in which this State availed itself of the faculties provided for in Articles II and III of the said Appendix. The relevant declaration was effective from December 3, 2014, until October 10, 2024. (see Berne Notification No. 270) Paris Act (1971): Pursuant to Article I of the Appendix of the Paris Act, a notification was deposited on June 28, 2004, in which this State availed itself of the faculties provided for in Articles II and III of the said Appendix. The relevant declaration was effective from October 10, 2004, until October 10, 2014. (see Berne Notification No. 238) Accession to the Paris Act (1971) included a notification in which the Government of the Republic of Cuba declared that it availed itself of the faculties provided for in Article II and III of the said Appendix. The relevant declaration was effective from February 20, 1997, until October 10, 2004. (see Berne Notification No. 176) Paris Act (1971): With the declaration provided for in Article 33(2) relating to the International Court of Justice. (see Berne Notification No. 176)

@@ -1,0 +1,31 @@
+[
+    {
+        "slug": "law-on-copyright-and-related-rights-law-no-115-iq-of-5-june-1996-as-amended-to-2",
+        "law": "Law on Copyright and Related Rights (Law No. 115-IQ of 5 June 1996, as amended to 2023)",
+        "source": "https://copag.copat.gov.az/en/agentlik-haqqinda",
+        "status": "error",
+        "error": "SSL certificate problem: unable to get local issuer certificate",
+        "checkedAt": "2026-11-25T21:58:22Z"
+    },
+    {
+        "slug": "law-on-copyright-and-related-rights-law-no-115-iq-of-5-june-1996-as-amended-to-2--d0d5639b",
+        "law": "Law on Copyright and Related Rights (Law No. 115-IQ of 5 June 1996, as amended to 2023) (digital_protection, fair_use_exceptions)",
+        "source": "https://copat.gov.az/docs/Qanunvericilik/Qanunlar/English/Law-Copyright%20and%20related%20rights.pdf?_t=1539265273",
+        "status": "error",
+        "error": "SSL certificate problem: unable to get local issuer certificate",
+        "checkedAt": "2026-11-25T21:58:28Z"
+    },
+    {
+        "slug": "law-on-copyright-and-related-rights-law-no-115-iq-of-5-june-1996-as-amended-to-2--e5949f2f",
+        "law": "Law on Copyright and Related Rights (Law No. 115-IQ of 5 June 1996, as amended to 2023) (moral_rights)",
+        "source": "https://ferenda.lagen.nu/dom/echr/001-218927",
+        "file": "law-on-copyright-and-related-rights-law-no-115-iq-of-5-june-1996-as-amended-to-2--e5949f2f.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T21:58:26Z",
+        "checkedAt": "2026-11-25T21:58:26Z",
+        "etag": "\"8122bf7e1cb91ec3a36a4dff30f4e94b\"",
+        "lastModified": "Wed, 07 Oct 2026 22:28:02 GMT",
+        "sha256": "8b973cba0f04e70ff5a48f601940804dc9ec3a00ddd0a63ad333d451b3ff3698",
+        "chars": 28580
+    }
+]

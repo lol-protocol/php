@@ -1,0 +1,75 @@
+[
+    {
+        "slug": "law-no-154-on-the-copyright-of-the-author-and-the-performing-artist-2022",
+        "law": "Law No. 154 on the Copyright of the Author and the Performing Artist (2022)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/21621",
+        "file": "law-no-154-on-the-copyright-of-the-author-and-the-performing-artist-2022.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:19Z",
+        "checkedAt": "2026-11-25T11:19:19Z",
+        "etag": "W/\"1c9c8-N133oBr1Q5/TQyPYGsfBvnAqkd8\"",
+        "lastModified": null,
+        "sha256": "0b8ee0b8cc6c039c38d5a145bfb4f638c2beb63b4adc3b147f5e708945fc448b",
+        "chars": 75054
+    },
+    {
+        "slug": "law-no-154-on-the-copyright-of-the-author-and-the-performing-artist-2022--06babdf5",
+        "law": "Law No. 154 on the Copyright of the Author and the Performing Artist (2022) (law_name, term_of_protection, moral_rights, digital_protection)",
+        "source": "https://www.wipo.int/wipolex/edocs/lexdocs/laws/es/cu/cu097es_1.pdf",
+        "file": "law-no-154-on-the-copyright-of-the-author-and-the-performing-artist-2022--06babdf5.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:20Z",
+        "checkedAt": "2026-11-25T11:19:20Z",
+        "etag": "W/\"1c9c8-XReevSDc3HykTTlwN7GEOoBFjmg\"",
+        "lastModified": null,
+        "sha256": "0b8ee0b8cc6c039c38d5a145bfb4f638c2beb63b4adc3b147f5e708945fc448b",
+        "chars": 75054
+    },
+    {
+        "slug": "law-no-154-on-the-copyright-of-the-author-and-the-performing-artist-2022--646da490",
+        "law": "Law No. 154 on the Copyright of the Author and the Performing Artist (2022) (enforcement_body)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/10650",
+        "file": "law-no-154-on-the-copyright-of-the-author-and-the-performing-artist-2022--646da490.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:34Z",
+        "checkedAt": "2026-11-25T11:19:34Z",
+        "etag": "W/\"b0c4-LSY/A6Al0ETJWMhsTgmcMpTnMm0\"",
+        "lastModified": null,
+        "sha256": "30f0d473528fc0bcd6ad4cc2b4687b8850fb82d42652bd34584f2ebb97aa11b3",
+        "chars": 5912
+    },
+    {
+        "slug": "law-no-154-on-the-copyright-of-the-author-and-the-performing-artist-2022--6cf0e779",
+        "law": "Law No. 154 on the Copyright of the Author and the Performing Artist (2022) (orphan_works, fair_use_exceptions)",
+        "source": "https://files.sld.cu/bmn/files/2018/05/La-Propiedad-Intelectual.pdf",
+        "status": "error",
+        "error": "Failed to connect to files.sld.cu port 443 after 10002 ms: Timeout was reached",
+        "checkedAt": "2026-11-25T11:19:33Z"
+    },
+    {
+        "slug": "law-no-154-on-the-copyright-of-the-author-and-the-performing-artist-2022--cb2df80c",
+        "law": "Law No. 154 on the Copyright of the Author and the Performing Artist (2022) (protection_type)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/10651",
+        "file": "law-no-154-on-the-copyright-of-the-author-and-the-performing-artist-2022--cb2df80c.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:21Z",
+        "checkedAt": "2026-11-25T11:19:21Z",
+        "etag": "W/\"c390-mlA7czXmk+jSduKIXuZHbiMckPU\"",
+        "lastModified": null,
+        "sha256": "a34c5c3287d3fae435d713f71ee4ecebf90b4d92865c8753c82112182ea70645",
+        "chars": 11789
+    },
+    {
+        "slug": "law-no-154-on-the-copyright-of-the-author-and-the-performing-artist-2022--fc87dbd3",
+        "law": "Law No. 154 on the Copyright of the Author and the Performing Artist (2022) (treaties_signatory)",
+        "source": "https://www.wipo.int/wipolex/en/treaties/parties/remarks/CU/15",
+        "file": "law-no-154-on-the-copyright-of-the-author-and-the-performing-artist-2022--fc87dbd3.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:19:36Z",
+        "checkedAt": "2026-11-25T11:19:36Z",
+        "etag": "W/\"77f3-hMhDX9NwK+zVc63dFerIf0PfcTc\"",
+        "lastModified": null,
+        "sha256": "ff49560d8251cf80b1980480bb7f4bc94c999bca47c2b43b66b5de3397f7273c",
+        "chars": 1526
+    }
+]

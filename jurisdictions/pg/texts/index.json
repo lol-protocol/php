@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "copyright-and-neighbouring-rights-act-2000-act-no-21-of-2000",
+        "law": "Copyright and Neighbouring Rights Act 2000 (Act No. 21 of 2000)",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/3427",
+        "file": "copyright-and-neighbouring-rights-act-2000-act-no-21-of-2000.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:47Z",
+        "checkedAt": "2026-11-25T22:00:47Z",
+        "etag": "W/\"15705-tmBGaD+CGP4pklRZKz0qE6KdZYU\"",
+        "lastModified": null,
+        "sha256": "74a703baf35b367ae57035a52756018af12e800e789a57db28aecfd59661b4cf",
+        "chars": 46710
+    },
+    {
+        "slug": "copyright-and-neighbouring-rights-act-2000-act-no-21-of-2000--2f35ce92",
+        "law": "Copyright and Neighbouring Rights Act 2000 (Act No. 21 of 2000) (term_of_protection, moral_rights, treaties_signatory)",
+        "source": "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/Papua_New_Guinea",
+        "file": "copyright-and-neighbouring-rights-act-2000-act-no-21-of-2000--2f35ce92.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:49Z",
+        "checkedAt": "2026-11-25T22:00:49Z",
+        "etag": null,
+        "lastModified": "Wed, 25 Nov 2026 18:11:52 GMT",
+        "sha256": "64204fdddfbeaa2236d0c0fed87e202976b87bc94975fae47de1b2dea788a1ca",
+        "chars": 4759
+    },
+    {
+        "slug": "copyright-and-neighbouring-rights-act-2000-act-no-21-of-2000--833d269f",
+        "law": "Copyright and Neighbouring Rights Act 2000 (Act No. 21 of 2000) (registration_required)",
+        "source": "https://blog.ipleaders.in/overview-of-copyright-law-in-papua-new-guinea/",
+        "file": "copyright-and-neighbouring-rights-act-2000-act-no-21-of-2000--833d269f.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:51Z",
+        "checkedAt": "2026-11-25T22:00:51Z",
+        "etag": null,
+        "lastModified": "Wed, 25 Nov 2026 22:00:51 GMT",
+        "sha256": "2bca0c6f348e228a541bf374d718cda8c47b8e8ff14db949424d106d6efc7b88",
+        "chars": 30334
+    }
+]

@@ -1,0 +1,28 @@
+[
+    {
+        "slug": "hungarian-copyright-act",
+        "law": "Hungarian Copyright Act",
+        "source": "https://net.jogtar.hu/jogszabaly?docid=99900076.tv",
+        "file": "hungarian-copyright-act.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:32:29Z",
+        "checkedAt": "2026-11-26T18:32:29Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "eee933c0e677373d5d0bf8e75f2ba56ba519cb8c1051adab6fb309bb6e12f8e4",
+        "chars": 204660
+    },
+    {
+        "slug": "hungarian-copyright-act--cba8d3f9",
+        "law": "Hungarian Copyright Act (enforcement_body)",
+        "source": "https://sztnh.gov.hu/en/home/about-us",
+        "file": "hungarian-copyright-act--cba8d3f9.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:32:33Z",
+        "checkedAt": "2026-11-26T18:32:33Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "9efcecd8ffde063d6eabfa85911ac4ea9816c59b3df1012d144be58b951aaba5",
+        "chars": 4743
+    }
+]

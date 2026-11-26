@@ -1,0 +1,23 @@
+[
+    {
+        "slug": "law-no-65-00-on-copyright",
+        "law": "Law No. 65-00 on Copyright",
+        "source": "https://www.wipo.int/wipolex/en/legislation/details/1191",
+        "file": "law-no-65-00-on-copyright.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:20:40Z",
+        "checkedAt": "2026-11-25T22:20:40Z",
+        "etag": "W/\"2bb31-phPhBUbx4fubyeyo+Zi9HllCN6E\"",
+        "lastModified": null,
+        "sha256": "f267656c184ca1a2cc764d4e7c0613999d83722865b0f83bebb4254116e99498",
+        "chars": 124848
+    },
+    {
+        "slug": "law-no-65-00-on-copyright--fe5822df",
+        "law": "Law No. 65-00 on Copyright (digital_protection)",
+        "source": "https://www.wipo.org/edocs/mdocs/lac/es/ompi_jpi_jda_gdl_04/ompi_jpi_jda_gdl_04_2_rd.pdf",
+        "status": "skipped",
+        "error": "no readable text (the page probably needs JavaScript)",
+        "checkedAt": "2026-11-25T22:20:42Z"
+    }
+]

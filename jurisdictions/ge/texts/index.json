@@ -1,0 +1,41 @@
+[
+    {
+        "slug": "law-of-georgia-on-copyright-and-related-rights-law-no-2112-iis-of-22-june-1999-a",
+        "law": "Law of Georgia on Copyright and Related Rights (Law No. 2112-IIS of 22 June 1999, as amended)",
+        "source": "https://www.wipo.int/wipolex/en/details.jsp?id=8740",
+        "file": "law-of-georgia-on-copyright-and-related-rights-law-no-2112-iis-of-22-june-1999-a.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:20:49Z",
+        "checkedAt": "2026-11-25T22:20:49Z",
+        "etag": "W/\"6b7fa-0laZEvfPtNJUI0o33pb7AmqCAP0\"",
+        "lastModified": null,
+        "sha256": "b3b3a6fcc4bc5b4aa17bec327f6e2aa4dad3142d5655a361c4a19c2ec65ac45f",
+        "chars": 204942
+    },
+    {
+        "slug": "law-of-georgia-on-copyright-and-related-rights-law-no-2112-iis-of-22-june-1999-a--639c676a",
+        "law": "Law of Georgia on Copyright and Related Rights (Law No. 2112-IIS of 22 June 1999, as amended) (fair_use_exceptions)",
+        "source": "https://www.wipo.int/wipolex/en/text/481370",
+        "file": "law-of-georgia-on-copyright-and-related-rights-law-no-2112-iis-of-22-june-1999-a--639c676a.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:03Z",
+        "checkedAt": "2026-11-25T22:21:03Z",
+        "etag": "W/\"25ff9-KaWhC00qR0aGZSbxKb/aZZ4tgQs\"",
+        "lastModified": null,
+        "sha256": "18809a0afeabef880571f58ebe911c54d825b0fa8af262e74e93c387f3e2c4e6",
+        "chars": 101943
+    },
+    {
+        "slug": "law-of-georgia-on-copyright-and-related-rights-law-no-2112-iis-of-22-june-1999-a--840f122a",
+        "law": "Law of Georgia on Copyright and Related Rights (Law No. 2112-IIS of 22 June 1999, as amended) (digital_protection)",
+        "source": "https://matsne.gov.ge/en/document/view/16198",
+        "file": "law-of-georgia-on-copyright-and-related-rights-law-no-2112-iis-of-22-june-1999-a--840f122a.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:21:02Z",
+        "checkedAt": "2026-11-25T22:21:02Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "a485a0538b90e0712aa573c2a716a831a6193200e32d0755c2bbb0d2b51edf8d",
+        "chars": 184756
+    }
+]

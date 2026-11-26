@@ -1,0 +1,36 @@
+[
+    {
+        "slug": "copyright-act-1987",
+        "law": "Copyright Act 1987",
+        "source": "https://www.myipo.gov.my/",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-26T18:32:53Z"
+    },
+    {
+        "slug": "copyright-act-1987--b834fbfb",
+        "law": "Copyright Act 1987 (digital_protection)",
+        "source": "https://www.wipo.int/wipolex/en/text/597931",
+        "file": "copyright-act-1987--b834fbfb.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:32:54Z",
+        "checkedAt": "2026-11-26T18:32:54Z",
+        "etag": "W/\"4516b-VuolsvIb8aevYpOYZcptesJMzZA\"",
+        "lastModified": null,
+        "sha256": "8782db7379cc364682bce7c29a4778e5cb841d4fca2123e2587a63f8ba4c4bb5",
+        "chars": 174813
+    },
+    {
+        "slug": "copyright-act-1987--c0508ee1",
+        "law": "Copyright Act 1987 (enforcement_body)",
+        "source": "https://gpg-pdf.chambers.com/Trade-Marks-and-Copyright-2026/295/",
+        "file": "copyright-act-1987--c0508ee1.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:32:56Z",
+        "checkedAt": "2026-11-26T18:32:56Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "3af7438dd967c9970f7cf472ed9fc8933a60d97603c050b84bc13d3b22dbb259",
+        "chars": 3414
+    }
+]

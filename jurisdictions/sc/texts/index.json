@@ -1,0 +1,49 @@
+[
+    {
+        "slug": "copyright-act-2014-act-no-5-of-2014-in-force-1-august-2014-repealed-copyright-ac",
+        "law": "Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",
+        "source": "https://commons.laws.africa/akn/sc/act/2014/5/media/publication/sc-act-2014-5-publication-document.pdf",
+        "status": "skipped",
+        "error": "disallowed by robots.txt",
+        "checkedAt": "2026-11-25T11:21:22Z"
+    },
+    {
+        "slug": "copyright-act-2014-act-no-5-of-2014-in-force-1-august-2014-repealed-copyright-ac--95f625ff",
+        "law": "Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984) (fair_use_exceptions)",
+        "source": "https://generisonline.com/an-overview-of-copyright-protection-laws-in-seychelles/",
+        "file": "copyright-act-2014-act-no-5-of-2014-in-force-1-august-2014-repealed-copyright-ac--95f625ff.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:21:27Z",
+        "checkedAt": "2026-11-25T11:21:27Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "077bdd500b644ebaceacf941240c7b0055d63b63fc02ca991cc0949a404494a5",
+        "chars": 19889
+    },
+    {
+        "slug": "copyright-act-2014-act-no-5-of-2014-in-force-1-august-2014-repealed-copyright-ac--97a358b8",
+        "law": "Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984) (law_name, protection_type, author_rights, orphan_works, registration_required)",
+        "source": "https://www.wipo.int/wipolex/en/details.jsp?id=15300",
+        "file": "copyright-act-2014-act-no-5-of-2014-in-force-1-august-2014-repealed-copyright-ac--97a358b8.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:21:23Z",
+        "checkedAt": "2026-11-25T11:21:23Z",
+        "etag": "W/\"987d-jimpdaskrsMOseywFNUgdbhqoCI\"",
+        "lastModified": null,
+        "sha256": "6e076f9cdfa6baf250a27fa252d5568f2e17d88102ae59cc468975b7f19e71ab",
+        "chars": 1582
+    },
+    {
+        "slug": "copyright-act-2014-act-no-5-of-2014-in-force-1-august-2014-repealed-copyright-ac--9afe7412",
+        "law": "Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984) (term_of_protection)",
+        "source": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Seychelles.html",
+        "file": "copyright-act-2014-act-no-5-of-2014-in-force-1-august-2014-repealed-copyright-ac--9afe7412.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T11:21:25Z",
+        "checkedAt": "2026-11-25T11:21:25Z",
+        "etag": "W/\"fe5ff8adf372f1b88337e8552852f82e\"",
+        "lastModified": "Tue, 14 Jan 2025 08:48:44 GMT",
+        "sha256": "4b418c72d0ba6c5c2e54f03c48ed37a514ac994a108a9b15b86df544be6d961e",
+        "chars": 7503
+    }
+]

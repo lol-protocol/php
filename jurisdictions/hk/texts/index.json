@@ -1,0 +1,23 @@
+[
+    {
+        "slug": "copyright-ordinance",
+        "law": "Copyright Ordinance",
+        "source": "https://www.ipd.gov.hk/",
+        "status": "skipped",
+        "error": "no readable text (the page probably needs JavaScript)",
+        "checkedAt": "2026-11-26T18:32:23Z"
+    },
+    {
+        "slug": "copyright-ordinance--535fae1a",
+        "law": "Copyright Ordinance (digital_protection)",
+        "source": "https://www.wipo.int/wipolex/ru/text/202338",
+        "file": "copyright-ordinance--535fae1a.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:32:24Z",
+        "checkedAt": "2026-11-26T18:32:24Z",
+        "etag": "W/\"de451-KsZQGFjRQh09D3vRW5yrl40Efjo\"",
+        "lastModified": null,
+        "sha256": "68b261be45a8b2d397a3970690781d299a7091dfb2a3e602e50657f7f42e8d84",
+        "chars": 169383
+    }
+]

@@ -1,0 +1,23 @@
+[
+    {
+        "slug": "law-on-copyright-of-1993",
+        "law": "Law on Copyright of 1993",
+        "source": "https://www.wipo.int/wipolex/zh/legislation/details/3989",
+        "file": "law-on-copyright-of-1993.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-19T15:31:01Z",
+        "checkedAt": "2026-11-19T15:31:01Z",
+        "etag": "W/\"4ffa4-8UItx0LCA+roNK1GWeGkgC+1QA4\"",
+        "lastModified": null,
+        "sha256": "c3ba56f0f4c687cd8752bdf95aa0fdc11933efac8e934eb4d1f458726a4dc5f2",
+        "chars": 258382
+    },
+    {
+        "slug": "law-on-copyright-of-1993--825d958f",
+        "law": "Law on Copyright of 1993 (digital_protection)",
+        "source": "https://www.wipo.int/wipolex/es/text/130136",
+        "status": "skipped",
+        "error": "no readable text (the page probably needs JavaScript, and the browser found none either)",
+        "checkedAt": "2026-11-19T15:31:02Z"
+    }
+]

@@ -1,0 +1,28 @@
+[
+    {
+        "slug": "czech-copyright-law",
+        "law": "Czech Copyright Law",
+        "source": "https://www.zakonyprolidi.cz/cs/2000-121",
+        "file": "czech-copyright-law.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:31:33Z",
+        "checkedAt": "2026-11-26T18:31:33Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "4d2bbd264a3843aae2bd5878ee9b3f3b9a89ceea55f27d0b6b1c3f37c0b29d45",
+        "chars": 262505
+    },
+    {
+        "slug": "czech-copyright-law--ba6862f2",
+        "law": "Czech Copyright Law (enforcement_body)",
+        "source": "https://www.wipo.int/en/web/country-profiles/contact?code=CZ",
+        "file": "czech-copyright-law--ba6862f2.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T18:31:35Z",
+        "checkedAt": "2026-11-26T18:31:35Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "6b17ff3c992b71b55995e3aa4a025d39ddfc834ba67efa1136ec04b52e16a2b5",
+        "chars": 761
+    }
+]

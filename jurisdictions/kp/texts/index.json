@@ -1,0 +1,36 @@
+[
+    {
+        "slug": "law-on-copyright-of-the-dprk-decree-no-2141-of-2001-amended-up-to-decree-no-1532",
+        "law": "Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",
+        "source": "https://www.wipo.int/wipolex/zh/legislation/details/9722",
+        "file": "law-on-copyright-of-the-dprk-decree-no-2141-of-2001-amended-up-to-decree-no-1532.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:39Z",
+        "checkedAt": "2026-11-25T22:00:39Z",
+        "etag": "W/\"13ea5-abD6yT4hmDNP6J4elsbO9t+8PY0\"",
+        "lastModified": null,
+        "sha256": "7ed9a13d7f587090ad1b55d2f6332068b94aaa1e37bac98639db68e5f81ea462",
+        "chars": 22025
+    },
+    {
+        "slug": "law-on-copyright-of-the-dprk-decree-no-2141-of-2001-amended-up-to-decree-no-1532--4bae5fec",
+        "law": "Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006) (term_of_protection)",
+        "source": "https://en.wikipedia.org/wiki/Copyright_law_of_North_Korea",
+        "file": "law-on-copyright-of-the-dprk-decree-no-2141-of-2001-amended-up-to-decree-no-1532--4bae5fec.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-25T22:00:40Z",
+        "checkedAt": "2026-11-25T22:00:40Z",
+        "etag": null,
+        "lastModified": "Tue, 17 Nov 2026 19:50:31 GMT",
+        "sha256": "00d1c59dd262a36847c436be80d97e5c7b08f38e5dddd12e4c76c92d03b9c077",
+        "chars": 2673
+    },
+    {
+        "slug": "law-on-copyright-of-the-dprk-decree-no-2141-of-2001-amended-up-to-decree-no-1532--7caded81",
+        "law": "Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006) (fair_use_exceptions, treaties_signatory)",
+        "source": "https://www.nkeconwatch.com/2007/08/02/everything-youve-ever-wanted-to-know-about-the-north-korean-copyright-act/",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-25T22:00:41Z"
+    }
+]
