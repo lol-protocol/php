@@ -20,7 +20,7 @@
   (`'bio-topics'`); el valor por defecto es `chat-topics`, así que **el comportamiento de siempre no cambia**
   (que «tengo cáncer» siga aprobándose en un chat es a propósito). Nunca bloquea: va a revisión.
 - **Mensajes de salida en 13 idiomas más** (`nor`, `dan`, `fin`, `hun`, `ell`, `bul`, `slk`, `ind`, `vie`,
-  `tha`, `tgl`, `isl` y `yue`): 31 de los 33 idiomas (falta solo el suajili). Traducciones propias, sin revisión
+  `tha`, `tgl`, `isl` y `yue`): 32 de los 33 idiomas, `spa` incluido (falta solo el suajili). Traducciones propias, sin revisión
   nativa. `yue` está en cantonés escrito y solo atiende la etiqueta `yue`.
 
 - **`Loader` y `Http\TextMarks`, para quien usa la librería sin Composer** (url-routing y sistema-nuevo, que
