@@ -131,6 +131,7 @@ section[hidden] { display: none; }
     <label>Tu nombre <input id="rev-revisor" type="text" autocomplete="name"></label>
     <label>Fecha <input id="rev-fecha" type="date"></label>
     <label class="casilla"><span><input id="rev-ocultar" type="checkbox" checked> Ocultar los ya revisados</span></label>
+    <label class="casilla"><span><input id="rev-delicadas" type="checkbox"> Mostrar también las causas delicadas (suicidio, enfermedad mental, sífilis, lepra, parto)</span></label>
   </div>
   <div id="rev-tabla"></div>
   <h3>Filas para <code>revisiones.csv</code></h3>
@@ -184,6 +185,19 @@ section[hidden] { display: none; }
   // Causas que se muestran detrás de un aviso (los datos y las consultas no cambian; es solo la vista). Ver PRIVACIDAD.md, §3.7.
   var DELICADAS = { suicidio: 1, locura: 1, sifilis: 1, lepra: 1, muerte_de_parto: 1, fiebre_puerperal: 1 };
   var reveladoPara = '';
+  // Las series de 4 o más códigos consecutivos («X60, …, X84») se acortan a «X60–X84»; igual que cie10_compacto de comun.py.
+  function cie10Compacto(codigos) {
+    var salida = [], i = 0;
+    while (i < codigos.length) {
+      var j = i;
+      while (j + 1 < codigos.length && codigos[j].indexOf('.') < 0 && codigos[j + 1].indexOf('.') < 0 &&
+             codigos[j + 1].charAt(0) === codigos[j].charAt(0) && parseInt(codigos[j + 1].slice(1), 10) === parseInt(codigos[j].slice(1), 10) + 1) j++;
+      if (j - i + 1 >= 4) salida.push(codigos[i] + '–' + codigos[j]);
+      else for (var k = i; k <= j; k++) salida.push(codigos[k]);
+      i = j + 1;
+    }
+    return salida.join(', ');
+  }
   function causas() {
     var termino = $('causa-termino').value.trim();
     var idioma = $('causa-idioma').value;
@@ -206,7 +220,7 @@ section[hidden] { display: none; }
     }
     var cuerpo = h('tbody');
     r.forEach(function (x) {
-      cuerpo.appendChild(h('tr', {}, h('td', {}, x.nombre), h('td', {}, x.cie10.join(', ')), h('td', {}, h('span', { 'class': 'etiqueta' }, x.confianza)), h('td', {}, x.nota)));
+      cuerpo.appendChild(h('tr', {}, h('td', {}, x.nombre), h('td', {}, cie10Compacto(x.cie10)), h('td', {}, h('span', { 'class': 'etiqueta' }, x.confianza)), h('td', {}, x.nota)));
     });
     salida.appendChild(h('table', { dir: 'ltr' }, h('thead', {}, h('tr', {}, h('th', {}, 'Causa moderna posible'), h('th', {}, 'CIE-10'), h('th', {}, 'Confianza'), h('th', {}, 'Nota'))), cuerpo));
   }
@@ -448,7 +462,10 @@ section[hidden] { display: none; }
   function revision() {
     var idioma = $('rev-idioma').value, ocultar = $('rev-ocultar').checked;
     var tabla = limpiar($('rev-tabla'));
-    var lista = terminos.filter(function (t) { return t.idioma === idioma && !(ocultar && yaRevisado(t)); });
+    var delicadas = $('rev-delicadas').checked;
+    var lista = terminos.filter(function (t) { return t.idioma === idioma && !(ocultar && yaRevisado(t)) && (delicadas || DELICADAS[t.causa_id] !== 1); });
+    var ocultas = terminos.filter(function (t) { return t.idioma === idioma && !delicadas && DELICADAS[t.causa_id] === 1 && !(ocultar && yaRevisado(t)); }).length;
+    if (ocultas) tabla.appendChild(h('p', { 'class': 'nota' }, ocultas + ' términos de causas delicadas están ocultos: marca «Mostrar también las causas delicadas» para revisarlos.'));
     var info = IDIOMAS.filter(function (i) { return i[0] === idioma; })[0];
     if (!lista.length) { tabla.appendChild(h('p', { 'class': 'vacio' }, 'No hay términos por revisar en este idioma.')); salidaRevision(); return; }
     var cuerpo = h('tbody');
@@ -467,7 +484,7 @@ section[hidden] { display: none; }
     tabla.appendChild(h('table', {}, h('thead', {}, h('tr', {}, h('th', {}, 'Término'), h('th', {}, 'Causa moderna que se le asigna'), h('th', {}, 'Confianza'), h('th', {}, '¿Es correcto?'), h('th', {}, 'Nota'))), cuerpo));
     salidaRevision();
   }
-  ['rev-idioma', 'rev-ocultar'].forEach(function (id) { $(id).addEventListener('change', revision); });
+  ['rev-idioma', 'rev-ocultar', 'rev-delicadas'].forEach(function (id) { $(id).addEventListener('change', revision); });
   ['rev-revisor', 'rev-fecha'].forEach(function (id) { $(id).addEventListener('input', salidaRevision); });
   $('rev-copiar').addEventListener('click', function () {
     var texto = $('rev-salida').value;

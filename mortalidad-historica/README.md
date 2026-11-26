@@ -154,7 +154,7 @@ Qué se conserva: `datos/revisiones.csv` (el registro de quién ha revisado qué
 | `php/src/Mortalidad.php` | Port a PHP de `consultas.py` (necesita las extensiones `intl` y `mbstring`). Se prueba con `php php/pruebas/ejecutar.php` y PHPStan nivel `max`. |
 | `js/mortalidad.js` | Port a JavaScript de `consultas.py`, sin dependencias: lo usa `vista.html` y sirve en Node (`node --test 'js/*.test.js'`). |
 | `datos/vectores.json` | Las respuestas de `consultas.py` a un conjunto fijo de entradas (generado). Los dos ports tienen que dar exactamente lo mismo. |
-| `por-idioma/<código>.md` | El glosario de cada idioma (generado). `por-idioma/README.md` es el índice. |
+| `por-idioma/<código>.md` | El glosario de cada idioma (generado), con los términos de causas delicadas (suicidio, enfermedad mental, sífilis, lepra, parto) en un desplegable cerrado aparte de la tabla (ver `PRIVACIDAD.md`, §3.7). `por-idioma/README.md` es el índice. |
 | `datos/revisiones.csv` | El registro de quién ha revisado qué término del glosario (idioma, término, causa, huella, resultado, revisor, fecha y nota). Está vacío y no se prevé llenarlo: ver «Revisión del glosario». |
 | `revisiones.md` | Cuánto del glosario revisó una persona, por idioma, y qué requiere atención (generado). |
 | `PRIVACIDAD.md` | Qué guarda esta carpeta, qué impide el código y qué hay que decidir antes de mostrar causas de muerte en fichas de personas. |

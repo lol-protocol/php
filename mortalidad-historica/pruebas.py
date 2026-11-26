@@ -1026,8 +1026,38 @@ class VistaTest(unittest.TestCase):
         import re as _re
         bloque = _re.search(r"var DELICADAS = \{([^}]*)\}", self.html).group(1)
         ids = set(_re.findall(r"(\w+): 1", bloque))
-        self.assertEqual(ids, {"suicidio", "locura", "sifilis", "lepra", "muerte_de_parto", "fiebre_puerperal"})
+        self.assertEqual(ids, set(comun.CAUSAS_DELICADAS))
         self.assertLessEqual(ids, {c["id"] for c in self.datos["causas_modernas"]})
+        self.assertIn('id="rev-delicadas"', self.html)
+
+    def test_las_paginas_por_idioma_ponen_las_causas_delicadas_en_un_desplegable(self):
+        for codigo in comun.IDIOMAS:
+            pagina = g.pagina_idioma(codigo, self.datos)
+            delicadas = [f for f in self.datos["causas_historicas"] if f["idioma"] == codigo and f["causa_id"] in comun.CAUSAS_DELICADAS]
+            if not delicadas:
+                self.assertNotIn("<details>", pagina, codigo)
+                continue
+            antes, _, despues = pagina.partition("<details>")
+            self.assertIn("</details>", despues, codigo)
+            for f in delicadas:
+                self.assertNotIn(f"| {f['termino']} |", antes, (codigo, f["termino"]))
+                self.assertIn(f"| {f['termino']} |", despues, (codigo, f["termino"]))
+            self.assertIn(f"{len(delicadas)} términos de causas delicadas", despues, codigo)
+        # La causa delicada sale solo en el desplegable: la tabla de arriba no la nombra.
+        self.assertNotIn("Suicidio", g.pagina_idioma("spa", self.datos).partition("<details>")[0])
+
+    def test_cie10_compacto(self):
+        self.assertEqual(comun.cie10_compacto(["A15", "A16", "A17", "A18", "A19"]), "A15–A19")
+        self.assertEqual(comun.cie10_compacto(["A50", "A51", "A52"]), "A50, A51, A52")  # 3 seguidos: no se acorta
+        self.assertEqual(comun.cie10_compacto(["I50", "R60"]), "I50, R60")
+        self.assertEqual(comun.cie10_compacto(["W74", "T75.1"]), "W74, T75.1")
+        self.assertEqual(comun.cie10_compacto(["I60", "I61", "I62", "I63", "I64", "K00.7"]), "I60–I64, K00.7")
+        self.assertEqual(comun.cie10_compacto([]), "")
+
+    def test_los_cie10_de_sifilis_y_suicidio_estan_completos(self):
+        cie = {c["id"]: c["cie10"].split(";") for c in self.datos["causas_modernas"]}
+        self.assertEqual(cie["sifilis"], ["A50", "A51", "A52", "A53"])
+        self.assertEqual(cie["suicidio"], [f"X{n}" for n in range(60, 85)])
 
     def test_un_cierre_de_script_en_los_datos_no_rompe_la_pagina(self):
         datos = {**self.datos, "causas_historicas": self.datos["causas_historicas"] + [

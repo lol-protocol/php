@@ -17,8 +17,8 @@ import consultas
 import modelo
 
 from comun import (
-    CALIDADES, CONFIANZAS, DATOS, ESTADOS, GRUPOS_CAUSA, HERENCIAS, IDIOMAS, INICIOS, POR_IDIOMA, RAIZ,
-    RE_FECHA, RESULTADOS_REVISION, escritura_coherente, huella,
+    CALIDADES, CAUSAS_DELICADAS, CONFIANZAS, DATOS, ESTADOS, GRUPOS_CAUSA, HERENCIAS, IDIOMAS, INICIOS, POR_IDIOMA, RAIZ,
+    RE_FECHA, RESULTADOS_REVISION, cie10_compacto, escritura_coherente, huella,
     RE_CIE10, RE_ID, RE_MONDO, RE_PAIS, REGIONES, SEXOS, leer_csv,
 )
 
@@ -422,17 +422,36 @@ def pagina_idioma(codigo, datos):
         "",
     ]
     if filas:
+        def tabla(grupo):
+            salida = ["| Término | Causa moderna | CIE-10 | Confianza | Nota | Estado |", "|---|---|---|---|---|---|"]
+            for f in grupo:
+                m = modernas[f["causa_id"]]
+                rango = ""
+                if f["desde"] or f["hasta"]:
+                    rango = f" ({f['desde'] or '…'}–{f['hasta'] or '…'})"
+                nota = (f["nota"] + rango).strip()
+                salida.append(f"| {f['termino']} | {m['nombre_spa']} | {cie10_compacto(m['cie10'].split(';'))} | "
+                              f"{f['confianza']} | {nota} | {f['estado']} |")
+            return salida
+        corrientes = [f for f in filas if f["causa_id"] not in CAUSAS_DELICADAS]
+        delicadas = [f for f in filas if f["causa_id"] in CAUSAS_DELICADAS]
         if rtl:
             lineas += ['<div dir="rtl">', ""]
-        lineas += ["| Término | Causa moderna | CIE-10 | Confianza | Nota | Estado |", "|---|---|---|---|---|---|"]
-        for f in filas:
-            m = modernas[f["causa_id"]]
-            rango = ""
-            if f["desde"] or f["hasta"]:
-                rango = f" ({f['desde'] or '…'}–{f['hasta'] or '…'})"
-            nota = (f["nota"] + rango).strip()
-            lineas.append(f"| {f['termino']} | {m['nombre_spa']} | {m['cie10'].replace(';', ', ')} | "
-                          f"{f['confianza']} | {nota} | {f['estado']} |")
+        lineas += tabla(corrientes)
+        if delicadas:
+            lineas += [
+                "",
+                "<details>",
+                f"<summary>{len(delicadas)} términos de causas delicadas (suicidio, enfermedad mental, sífilis, lepra, parto): "
+                "mostrar</summary>",
+                "",
+                "Son vocabulario de los registros antiguos, no un diagnóstico, y no dicen nada de ninguna persona: están "
+                "porque los registros los usaban. Ver [`PRIVACIDAD.md`](../PRIVACIDAD.md), §3.7.",
+                "",
+                *tabla(delicadas),
+                "",
+                "</details>",
+            ]
         if rtl:
             lineas += ["", "</div>"]
     return "\n".join(lineas) + "\n"
