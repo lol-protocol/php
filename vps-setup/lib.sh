@@ -196,6 +196,8 @@ app_has_code() {
 # comprometida no lee el codigo, el .env ni la base de las demas.
 # ---------------------------------------------------------------------------
 APP_USER_PREFIX=${APP_USER_PREFIX:-app-}
+# Llaves de despliegue (10_C): una carpeta por app, del usuario de la app y modo 700.
+DEPLOY_KEYS_DIR=${DEPLOY_KEYS_DIR:-/var/lib/vps-setup/deploy-keys}
 
 app_user_name() { echo "${APP_USER_PREFIX}$1"; }
 
@@ -539,6 +541,23 @@ validate_docroot() {
     [[ "$1" =~ ^[A-Za-z0-9._-]+(/[A-Za-z0-9._-]+)*$ ]] && [[ "$1" != *..* ]]
 }
 
+# Rama de git: letras, digitos, ".", "_", "-" y "/"; no empieza con "-" ni "/", sin ".." ni "//" ni final "/".
+validate_branch() {
+    [[ "$1" =~ ^[A-Za-z0-9._][A-Za-z0-9._/-]{0,99}$ ]] && [[ "$1" != *..* && "$1" != *//* && "$1" != */ && "$1" != *.lock ]]
+}
+
+# URL de un repositorio git: https://host/ruta, git@host:ruta (scp) o ssh://git@host/ruta. Sin usuario:clave en la URL
+# (quedaria guardada en .git/config), sin consultas ni espacios, y sin que empiece con "-" (se leeria como opcion).
+# DEPLOY_ALLOW_LOCAL=1 (solo para pruebas) admite una ruta absoluta.
+validate_repo_url() {
+    local u=$1
+    [ "${#u}" -le 300 ] && [[ "$u" != -* && "$u" != *..* ]] || return 1
+    [[ "$u" =~ ^https://[A-Za-z0-9.-]+(:[0-9]+)?/[A-Za-z0-9._~/%+-]+$ ]] && return 0
+    [[ "$u" =~ ^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+:[A-Za-z0-9._~/-]+$ ]] && return 0
+    [[ "$u" =~ ^ssh://[A-Za-z0-9._-]+@[A-Za-z0-9.-]+(:[0-9]+)?/[A-Za-z0-9._~/-]+$ ]] && return 0
+    [ "${DEPLOY_ALLOW_LOCAL:-0}" = 1 ] && [[ "$u" =~ ^/[A-Za-z0-9._/-]+$ ]]
+}
+
 # Puerto TCP local para una app (fuera del rango privilegiado).
 validate_port() {
     [[ "$1" =~ ^[0-9]{4,5}$ ]] && [ "$1" -ge 1024 ] && [ "$1" -le 65535 ]
@@ -595,6 +614,8 @@ require_valid() {
         appuser)      hint="como maximo $((32 - ${#APP_USER_PREFIX})) caracteres (su usuario de sistema es ${APP_USER_PREFIX}<nombre>, y Linux admite 32)" ;;
         size)         hint="un numero seguido de K, M o G (ej. 20M)" ;;
         workers)      hint="un entero positivo (ej. 3)" ;;
+        branch)       hint="una rama de git (ej. main, release/1.2): letras, digitos, '.', '_', '-' y '/'" ;;
+        repo_url)     hint="https://host/dueno/repo.git, git@host:dueno/repo.git o ssh://git@host/dueno/repo.git (sin usuario:clave en la URL)" ;;
         docroot)      hint="una subcarpeta de la app como public o web/public (letras, digitos, '.', '_' y '-'; sin '..')" ;;
         duration)     hint="un numero seguido de s o m (ej. 120s)" ;;
         name)         hint="minusculas, digitos, '_' y '-' (max. 63), debe empezar con letra o digito" ;;
