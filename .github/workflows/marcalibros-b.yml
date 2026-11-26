@@ -75,8 +75,9 @@ jobs:
             marcalibros-${{ runner.os }}-py3.13-
 
       # Un proceso por movimiento, tantos a la vez como nucleos (4 en ubuntu-24.04): el resultado es el
-      # mismo que con `build.py --all` (mismos bytes) y el job pasa de unos 21 a unos 16 minutos. No es
-      # mas porque cada SVG abre su propio Chromium para el QA y los procesos compiten por la maquina.
+      # mismo que con `build.py --all` (mismos bytes). El ahorro es modesto y variable (en las ejecuciones
+      # medidas, entre 0 y 6 minutos sobre los 21-25 del build en serie): cada SVG abre su propio Chromium
+      # para el QA y los procesos compiten por la maquina.
       - name: Generar el catalogo completo
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
