@@ -482,6 +482,26 @@ cambia:
   si se agrega tiene que pedir la fecha de nuevo.
 - Una base con clientes que ya eran menores no frena la migración, y siguen siendo editables en lo demás.
 
+**Anonimizar un cliente** (migración `022`). En la ficha del cliente, «Anonimizar cliente» pide escribir su
+email para confirmar y borra su **nombre, email y ciudad** (quedan «Cliente anonimizado #id», un email
+`anonimizado-id@anonimizado.invalid` que sigue siendo único, y «(anonimizada)»). Con él se anonimiza su usuario
+del funnel (nombre y email) y se reescribe, sin esos datos, la entrada de auditoría de su alta. **Quedan** su país,
+idioma, género, rango de edad y todas sus boletas, pagos y notas: las cifras, la cartera y la segmentación no
+cambian (salvo el top de ciudades, donde pasa a una ciudad «(anonimizada)»). Un cliente anonimizado no recibe boletas
+ni pagos nuevos (trigger `exigir_cliente_no_anonimizado`), no sale en los desplegables, y sus boletas se pueden
+anular como siempre.
+
+- **Se puede deshacer 7 días** (`AnonimizacionRepository::PLAZO_DIAS`). Los originales se guardan aparte, en
+  `datos_anonimizados` y `datos_anonimizados_funnel`, con su `vence_en`; la ficha ofrece «Deshacer la anonimización»
+  hasta entonces. Si el email original lo tomó otro cliente mientras tanto, deshacer avisa y no cambia nada.
+- **Pasado el plazo es definitivo**: `php bin/purgar_anonimizados.php` borra los originales vencidos. Va en el cron, una
+  vez por día (`17 3 * * *  cd /ruta/cobros-ingresos-funnels && php bin/purgar_anonimizados.php`). Sin ese cron los
+  datos personales **siguen guardados** después de los 7 días, aunque la pantalla ya no ofrezca deshacer.
+- Durante el plazo los datos personales siguen en la base (en esas dos tablas): es el precio de poder arrepentirse. Y
+  **los respaldos hechos antes de anonimizar los conservan**: si hace falta que desaparezcan de verdad, hay que
+  depurarlos según la retención que se quiera.
+- La auditoría registra «anonimizar» y «deshacer» con el id del cliente, sin ningún dato personal.
+
 **Mayoría de edad.** La app rechaza a un cliente que no haya cumplido la edad de
 mayoría de **su país** al crearlo (el controlador lo valida antes y dice cuál es la edad;
 `ClienteRepository::crear` lo vuelve a exigir para cualquier otro camino de la app; el trigger de la
@@ -636,6 +656,7 @@ src/
                       CobranzaRepository (esa cartera por cliente),
                       FlujoDeCajaRepository (esa cartera por mes de vencimiento),
                       HistorialDeTasasRepository (el historial de las tasas de cambio) y
+                      AnonimizacionRepository (anonimizar a un cliente y deshacerlo),
                       FunnelRepository (conversión por etapa, canal, país, género y edad;
                       ingresos por canal) y
                       SegmentacionRepository (top país/ciudad/idioma/género/edad,
@@ -757,7 +778,8 @@ database/
                         importar mayúsculas, 016 = monedas reemplazadas, 017 =
                         mayoría de edad de Puerto Rico, 018 = el historial de las
                         tasas de cambio, 019 = montos con tres decimales, 020 = la tasa de
-                        la fecha de cada fila nueva, 021 = solo el rango de edad)
+                        la fecha de cada fila nueva, 021 = solo el rango de edad, 022 = anonimizar
+                        clientes)
 bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
@@ -768,6 +790,8 @@ bin/                    los comandos, todos con `php bin/<comando>.php`:
                         vez por día)
   estado.php             el estado en una pantalla: base, migraciones, tasas y respaldos
                         (termina con 1 si algo pide atención; ver «Estado del sistema»)
+  purgar_anonimizados.php borra los datos originales de los clientes anonimizados cuyo plazo
+                        para deshacer venció (cron, una vez por día; ver «Anonimizar un cliente»)
   recrear_con_datos_de_ejemplo.php   SOLO desarrollo: rearma la base y carga datos de ejemplo
 views/                  plantillas PHP: una carpeta por sección o entidad (dashboard,
                         boletas, cobranza, flujo, pagos, notas, clientes, funnel, cohortes, tasas, auditoria) y en
