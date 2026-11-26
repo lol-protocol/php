@@ -3,6 +3,7 @@
 //
 //   npm run translations                                  coverage per language
 //   npm run translations -- --missing=spa > todo.jsonl    values without a Spanish translation, as {"id","text"} lines
+//   npm run translations -- --prune                       drop the translations whose English text was edited since (they are not published)
 //   npm run translations -- --import=spa --todo=todo.jsonl --done=done.jsonl
 //                                                         merge {"id","t"} lines (same ids as todo.jsonl) into the CSV
 // The key of a translation is the exact English text: when a value is edited its translation stops being used
@@ -14,7 +15,7 @@ import { createTranslations, importedRows } from "../../leyes-comunes/translatio
 // The coverage, the missing list and the import are shared with the other laws module; see
 // ../../leyes-comunes/translations-core.js. This file supplies only this project's dataset.
 export { importedRows };
-export const { coverage, missing, main } = createTranslations({ dataset });
+export const { coverage, missing, pruned, main } = createTranslations({ dataset });
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   try {
