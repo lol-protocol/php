@@ -87,14 +87,14 @@ section[hidden] { display: none; }
   </div>
   <div id="esp-grafico" role="img" aria-label="Gráfico de la esperanza de vida por década"></div>
   <div id="esp-tabla"></div>
-  <p class="nota"><strong>Al nacer</strong> está arrastrada por la mortalidad infantil: quien sobrevivía a la infancia podía esperar vivir bastante más (las líneas de arriba son la edad media a la que llegaba quien cumplía cada edad). Antes de 1950 son estimaciones que interpolan pocos datos reales; los valores iguales en varias décadas seguidas son supuestos. Las **bandas** (casilla de arriba) desde 1950 son la discrepancia entre fuentes; **antes de 1950 son un supuesto del proyecto, no una medición**: no hay una segunda fuente independiente. Antes de 1800 solo hay la esperanza al nacer de Reino Unido, Suecia, Finlandia y Dinamarca. Mujeres y hombres usan la mortalidad infantil de ambos sexos, que no hay por sexo. <strong>De los 15 años en adelante las cifras son modeladas</strong> (modelo log-cuadrático de Wilmoth et al.), no medidas, con calidad C en todas las épocas. Cifras de período de toda la población, no de una generación ni de una persona.</p>
+  <p class="nota"><strong>Al nacer</strong> está arrastrada por la mortalidad infantil: quien sobrevivía a la infancia podía esperar vivir bastante más (las líneas de arriba son la edad media a la que llegaba quien cumplía cada edad). Antes de 1950 son estimaciones que interpolan pocos datos reales; los valores iguales en varias décadas seguidas son supuestos. Las <strong>bandas</strong> (casilla de arriba) desde 1950 son la discrepancia entre fuentes; <strong>antes de 1950 son un supuesto del proyecto, no una medición</strong>: no hay una segunda fuente independiente. Antes de 1800 solo hay la esperanza al nacer de Reino Unido, Suecia, Finlandia y Dinamarca. Mujeres y hombres usan la mortalidad infantil de ambos sexos, que no hay por sexo. <strong>De los 15 años en adelante las cifras son modeladas</strong> (modelo log-cuadrático de Wilmoth et al.), no medidas, con calidad C en todas las épocas. Cifras de período de toda la población, no de una generación ni de una persona.</p>
 </section>
 
 <section id="muertes" hidden>
   <h2>¿A qué edades se moría en un país y una década?</h2>
   <div class="controles">
     <label>País <select id="mue-pais"></select></label>
-    <label>Año <input id="mue-anio" type="number" value="1895" min="1950" max="2009"></label>
+    <label>Año <input id="mue-anio" type="number" value="1895" min="1800" max="2009"></label>
     <label>Sexo <select id="mue-sexo"><option value="T">Ambos</option><option value="F">Mujeres (desde 1950)</option><option value="M">Hombres (desde 1950)</option></select></label>
     <label>De quienes llegaban a los <select id="mue-desde"><option value="0">0 años (todos los nacidos)</option><option value="5">5 años</option><option value="15">15 años</option><option value="30">30 años</option><option value="45">45 años</option><option value="60">60 años</option></select></label>
   </div>

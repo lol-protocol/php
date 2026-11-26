@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Valida los CSV de datos/ y genera por-idioma/*.md y el bloque «Resumen» del README.
+"""Valida los CSV de datos/ y genera lo que se deriva de ellos: por-idioma/*.md, epidemias.md, revisiones.md,
+datos/vectores.json, vista.html y el bloque «Resumen» del README.
 
   python3 generar_tabla.py              # valida y regenera la salida
   python3 generar_tabla.py --comprobar  # valida y falla si la salida no está al día (no escribe)

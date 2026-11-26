@@ -4,12 +4,13 @@ Datos para leer con criterio las edades, las enfermedades y las causas de muerte
 
 - **Esperanza de vida a lo largo de los siglos**, por país o región, sexo y **edad** (no solo al nacer; ver «Por qué no basta la esperanza de vida al nacer»).
 - **Epidemias y pandemias** (28, de la peste de Justiniano a la gripe de 1968), con sus años, regiones y, cuando hace falta, países, para notar cuándo una serie de muertes en una familia tiene una explicación. Se leen de corrido en [`epidemias.md`](epidemias.md).
-- **Las muertes por año en Londres, 1629-1902** (Bills of Mortality y los registros que las siguieron): la única serie anual de muertes de esta carpeta, con la que se ve cuánto se disparó un año como 1665.
+- **Las muertes por año en Londres, 1629-1902** (Bills of Mortality y los registros que las siguieron): la única serie anual de **muertes** (no de tasas) de esta carpeta, con la que se ve cuánto se disparó un año como 1665.
 - **Un glosario de causas de defunción históricas** («hidropesía», «alferecía», «Schwindsucht», «bexigas»…) en 20 idiomas (más de 800 términos: entre 46 y 101 en español, inglés, alemán, francés, italiano, latín y portugués, y entre 19 y 32 en los otros 13 idiomas), con la causa moderna a la que suelen corresponder y qué tan segura es esa correspondencia, y **sin revisión por hablantes nativos prevista** (ver «Revisión del glosario»).
+- **Las tasas de natalidad y mortalidad de Inglaterra y Gales, 1541-2015** (Wrigley y Schofield y el registro civil): un punto cada cinco años hasta 1861 y anual después, con una consulta que marca los períodos de mortalidad anormal.
 - **Enfermedades hereditarias**, como contexto médico y poblacional.
 - **Cuándo empezó el registro civil** en cada país, para saber qué fiabilidad esperar de una edad o una causa.
 
-> **Estado: fase 2 (esperanza de vida).** La esperanza de vida (≈37 500 filas, con bandas de incertidumbre) viene de fuentes abiertas fijadas por commit y se rehace con un script (`estado=verificado`: la fila es lo que dice su fuente; la calidad de la fuente es otra cosa, ver `calidad` y «Esperanza de vida: de dónde sale y cómo leerla»). También son `verificado` las muertes por año en Londres (1629-1902) y tres cifras de cólera en Gran Bretaña. Todo lo demás sigue siendo un **borrador escrito por un asistente de IA**: el glosario, casi todas las epidemias, las hereditarias y los hitos de registro civil no están verificados contra una fuente (`estado=borrador`) y **nadie ha revisado los términos ni se prevé una revisión por hablantes nativos** (ver «Revisión del glosario»). La esperanza de vida cubre las edades 0 y 5 (medidas o derivadas) y 15, 30, 45 y 60, que son **modeladas** (ver más abajo). Ver «Plan».
+> **Estado: fase 2 (esperanza de vida).** La esperanza de vida (≈37 500 filas, con bandas de incertidumbre) viene de fuentes abiertas fijadas por commit y se rehace con un script (`estado=verificado`: la fila es lo que dice su fuente; la calidad de la fuente es otra cosa, ver `calidad` y «Esperanza de vida: de dónde sale y cómo leerla»). También son `verificado` las muertes por año en Londres (1629-1902), las tasas de Inglaterra y Gales (1541-2015), y tres cifras de cólera en Gran Bretaña (los códigos OMIM de las hereditarias están comprobados contra MONDO, pero sus filas siguen en `borrador`). Todo lo demás sigue siendo un **borrador escrito por un asistente de IA**: el glosario, casi todas las epidemias, las hereditarias y los hitos de registro civil no están verificados contra una fuente (`estado=borrador`) y **nadie ha revisado los términos ni se prevé una revisión por hablantes nativos** (ver «Revisión del glosario»). La esperanza de vida cubre las edades 0 y 5 (medidas o derivadas) y 15, 30, 45 y 60, que son **modeladas** (ver más abajo). Ver «Plan».
 
 > **Antes de usar esto con datos de personas, lee [`PRIVACIDAD-Y-HONRA.md`](../PRIVACIDAD-Y-HONRA.md).** La salud y las causas de muerte son datos sensibles, y los de un antepasado alcanzan a sus descendientes vivos. Esta carpeta solo guarda **estadística y vocabulario**, nunca datos de personas reales, y no ofrece ninguna función que mire a una persona o una familia. Ver «Qué no hace» y [`PRIVACIDAD.md`](PRIVACIDAD.md), que lista lo que habría que decidir antes de mostrar causas de muerte o enfermedades al lado de una persona.
 
@@ -72,7 +73,7 @@ Es una **pista para leer un documento, no un diagnóstico**. Un mismo término p
 - **Es una extrapolación.** El modelo describe cómo suele repartirse la mortalidad por edades en poblaciones con esa mortalidad infantil y esa esperanza de vida, y se ajustó con poblaciones que tuvieron registro. Aplicado a Nigeria en 1800 o a Chile en 1850 supone que se parecían a ellas; las entradas (e0 y 5q0) son ya estimaciones. No hay bandas de error.
 - **Se validó contra el ejemplo publicado de DemoTools** (ambos sexos, 5q0 = 0,05 y e0 = 65): coincide con menos de 0,01 años de diferencia hasta los 75 (53,98 contra 53,98 a los 15; 16,09 contra 16,09 a los 60). Mi implementación simplifica la edad media de muerte de los menores de 5 años (afecta menos de 0,01 años a las edades de 15 o más), y está escrita desde el artículo y no copia el código de DemoTools. Las pruebas comprueban eso y que la esperanza a los 5 años derivada y la del modelo cuadren.
 - **Mujeres y hombres son una aproximación**: usan la mortalidad de 0 a 5 años de ambos sexos, que no existe por sexo en las fuentes. Con un error del 15 % en esa mortalidad, el modelo cambia las esperanzas de 15 a 60 años en unos ±0,3 años si la mortalidad infantil es baja y hasta ±1,2 si es alta; las diferencias reales entre niños y niñas están dentro de ese orden.
-- **Hay décadas en que el modelo no puede cuadrar** la esperanza al nacer con la mortalidad de 0 a 5 años de la fuente (5 en total): esas filas no se escriben, y `esperanza_restante` devuelve `None`.
+- **Hay décadas en que el modelo no puede cuadrar** la esperanza al nacer con la mortalidad de 0 a 5 años de la fuente (20 décadas de país: 5 de ambos sexos, todas de Barbados entre 1860 y 1900, y 15 de mujeres u hombres): esas filas no se escriben, y `esperanza_restante` devuelve `None`.
 
 **Qué hay que saber antes de usar una cifra:**
 
@@ -148,7 +149,7 @@ Qué se conserva: `datos/revisiones.csv` (el registro de quién ha revisado qué
 | `epidemias.md` | Las epidemias en orden cronológico (generado). |
 | `datos/hereditarias.csv` | Id, nombres, herencia, OMIM, su término MONDO (con el que se verificó), dónde es mayor la frecuencia, inicio típico, nota, `estado` y `fuente`. |
 | `datos/hitos_registro.csv` | País (ISO alfa-2), tipo (`civil` o `parroquial`), año desde el que hay registros, nota, `estado` y `fuente`. |
-| `datos/esperanza_vida.csv` | País (ISO alfa-2) o región (`R:Europa`…), período, sexo (`M`, `F`, `T`), edad, esperanza **restante** (años que le quedan a esa edad), probabilidad de sobrevivir hasta esa edad, banda de incertidumbre (vacía hoy), calidad (`A` registro civil completo, `B` reconstrucción parcial o estimación de un organismo, `C` estimación o modelo), `estado` y `fuente`. Ver «Esperanza de vida». Se genera con `preparar_datos.py`. |
+| `datos/esperanza_vida.csv` | País (ISO alfa-2) o región (`R:Europa`…), período, sexo (`M`, `F`, `T`), edad, esperanza **restante** (años que le quedan a esa edad), probabilidad de sobrevivir hasta esa edad, banda de incertidumbre (`incertidumbre_baja` e `incertidumbre_alta`: medida desde 1950, supuesta antes), calidad (`A` registro civil completo, `B` reconstrucción parcial o estimación de un organismo, `C` estimación o modelo), `estado` y `fuente`. Ver «Esperanza de vida». Se genera con `preparar_datos.py`. |
 | `vista.html` | Una vista web de todo (glosario, epidemias, esperanza de vida con gráfico, Londres e Inglaterra): un solo archivo que se abre en el navegador, sin servidor ni conexión. Se genera desde `vista_plantilla.html`, con `js/mortalidad.js` y los datos incrustados. |
 | `php/src/Mortalidad.php` | Port a PHP de `consultas.py` (necesita las extensiones `intl` y `mbstring`). Se prueba con `php php/pruebas/ejecutar.php` y PHPStan nivel `max`. |
 | `js/mortalidad.js` | Port a JavaScript de `consultas.py`, sin dependencias: lo usa `vista.html` y sirve en Node (`node --test 'js/*.test.js'`). |
@@ -164,7 +165,7 @@ Qué se conserva: `datos/revisiones.csv` (el registro de quién ha revisado qué
 | `leer_rda.py` | Lector mínimo de archivos `.rda` de R (solo datos; no ejecuta nada), para extraer los coeficientes del modelo. |
 | `datos/modelo_logcuadratico.csv` | Los coeficientes `ax`, `bx`, `cx` y `vx` del modelo para los 24 grupos de edad (CC BY-SA 3.0 IGO; ver «Fuentes»). |
 | `fuentes.sha256` | SHA-256 de cada fuente. |
-| `generar_tabla.py` | Valida los CSV y genera `por-idioma/` y el «Resumen» de este README. |
+| `generar_tabla.py` | Valida los CSV y genera `por-idioma/`, `epidemias.md`, `revisiones.md`, `datos/vectores.json`, `vista.html` y el «Resumen» de este README. |
 | `comun.py` | Constantes (idiomas, regiones, valores permitidos) y lectura de CSV. |
 | `pruebas.py` | Pruebas del validador, de la generación y de las consultas. |
 
@@ -172,7 +173,7 @@ Los códigos de país y las cinco regiones son los de [`Listado-paises/`](../Lis
 
 ### `estado` y `fuente`
 
-Toda fila lleva `estado`: `borrador` (escrita sin comprobar contra una fuente) o `verificado` (sale de la fuente citada). Un dato `verificado` **debe** traer su `fuente`; el validador lo exige. `verificado` dice que la fila es lo que dice su fuente, **no que la fuente sea exacta**: eso lo dice `calidad`. Hoy solo la esperanza de vida es `verificado` (la genera un script desde fuentes fijadas); lo demás es `borrador`.
+Toda fila lleva `estado`: `borrador` (escrita sin comprobar contra una fuente) o `verificado` (sale de la fuente citada). Un dato `verificado` **debe** traer su `fuente`; el validador lo exige. `verificado` dice que la fila es lo que dice su fuente, **no que la fuente sea exacta**: eso lo dice `calidad`. Hoy son `verificado` la esperanza de vida, las muertes de Londres y las tasas de Inglaterra (las genera un script desde fuentes fijadas) y tres cifras de cólera; lo demás es `borrador`.
 
 ### Idiomas
 
@@ -190,7 +191,8 @@ python3 descargar_fuentes.py --destino fuentes --rehacer
 ```
 
 ```python
-from consultas import causa_moderna, epidemias_en, hitos_de, esperanza_restante, supervivencia, banda_esperanza
+from consultas import (causa_moderna, epidemias_en, hitos_de, esperanza_restante, supervivencia, banda_esperanza,
+                       edades_de_muerte_comunes, probabilidad_de_llegar_a, supervivientes_esperados)
 
 causa_moderna("Hidropesía", "spa")     # ignora mayúsculas y tildes: «hidropesia» da lo mismo
 epidemias_en(1348, "Europa")           # epidemias que cubren ese año y esa región
@@ -256,7 +258,7 @@ Se prueban contra los mismos vectores que las demás consultas (`datos/vectores.
 
 1. **Fase 1 (hecha):** esqueleto, esquemas, validador, glosario semilla (20 idiomas), epidemias, hereditarias e hitos de registro civil de partida, y CI.
 2. **Fase 2 (hecha):** esperanza de vida 1800-2009 por país, a los 0 y 5 años (medidas o derivadas) y a los 15, 30, 45 y 60 (modeladas), con las consultas `esperanza_restante` y `supervivencia`. **2b (hecha):** bandas de incertidumbre, mujeres y hombres a todas las edades (con la mortalidad infantil de ambos sexos) y, antes de 1800, la esperanza al nacer de Reino Unido, Suecia, Finlandia y Dinamarca. **Queda fuera:** edades mayores antes de 1800, y la mortalidad infantil por sexo (hace falta la ONU o el Banco Mundial por sexo). Reemplazar el modelo por tablas medidas de un país que las publique (el INE de Chile, por ejemplo) mejoraría las cifras donde las haya.
-3. **Fase 3 (hecha, en parte):** 28 epidemias, con las de América y Chile, y las muertes por año en Londres. **Falta verificarlas:** solo 3 cifras de cólera y la serie de Londres lo están; el resto es de memoria. Desde el contenedor no llega ninguna fuente de referencia (Wikipedia, OMS, SciELO…), solo GitHub, así que verificarlas y poner cifras para Chile (viruela de 1872, cólera de 1886) hay que hacerlo con acceso a esas fuentes.
+3. **Fase 3 (hecha, en parte):** 28 epidemias, con las de América y Chile, las muertes por año en Londres y las tasas de Inglaterra desde 1541. **Falta verificar las epidemias:** solo 3 cifras de cólera lo están (las series de Londres e Inglaterra sí); el resto es de memoria. Desde el contenedor no llega ninguna fuente de referencia (Wikipedia, OMS, SciELO…), solo GitHub, así que verificarlas y poner cifras para Chile (viruela de 1872, cólera de 1886) hay que hacerlo con acceso a esas fuentes.
 4. **Fase 4 (hecha, en parte):** el glosario creció a más de 800 términos y 54 causas, los códigos OMIM están verificados y hay un registro de revisión que **no se prevé usar**: la persona a cargo decidió el 18 de noviembre de 2026 que no habrá revisión por hablantes nativos, así que el glosario sigue en `borrador` de forma permanente. **Queda:** ampliar los idiomas menos cubiertos (neerlandés, turco, griego, checo, ucraniano y árabe tienen entre 19 y 24 términos, sobre todo de las causas más comunes; las causas raras y los términos regionales o antiguos casi no están).
 5. **Fase 5 (hecha):** vista HTML (`vista.html`) y los ports a PHP y a JavaScript, probados con los mismos vectores.
 
