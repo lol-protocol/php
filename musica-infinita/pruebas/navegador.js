@@ -278,6 +278,227 @@ async function principal() {
   assert.ok(largo.infos < 50, 'avisos de sección acumulados: ' + largo.infos);
   paso('sesión larga: voces ≤ ' + largo.voces + ', notas de la visualización ≤ ' + largo.notas);
 
+  // ---------------------------------------------------------------- sesiones: favoritos, historial, listas, exportar e importar
+  const respuestas = [];
+  pagina.on('dialog', function (d) { d.accept(respuestas.length ? respuestas.shift() : d.defaultValue()); });
+  await pagina.evaluate(function () {
+    window.MusicaInfinita.estado.panelFijo = true; // que el panel no se esconda solo
+    document.getElementById('ajustes').hidden = false;
+    for (const id of ['s-favoritos', 's-listas', 's-historial', 's-sesion']) document.getElementById(id).open = true;
+  });
+  await pagina.waitForTimeout(500);
+  const sesion = function (f) { return pagina.evaluate(f); };
+  // ajustes conocidos y una semilla de la sesión, para guardarla como favorito
+  await sesion(function () {
+    for (const [id, v] of [['fidelidad', 0.8], ['contra', 0.9]]) {
+      const el = document.getElementById(id);
+      el.value = v;
+      el.dispatchEvent(new Event('input'));
+    }
+  });
+  await pagina.evaluate(function () { return window.MusicaInfinita.aplicarConfiguracion({ semilla: 'semilla-uno', ajustes: { estilo: 'pop', fidelidad: 0.8, contra: 0.9 }, canciones: window.MusicaInfinita.estado.canciones.filter(function (c) { return c.analisis; }).map(function (c) { return c.id; }), generador: window.Generador.VERSION }); });
+  await pagina.waitForTimeout(900);
+  respuestas.push('Mi favorita');
+  await pagina.click('#fav-guardar');
+  await pagina.waitForTimeout(300);
+  let ses = await sesion(function () {
+    const d = window.MusicaInfinita.estado.panelSesiones.datos;
+    return { n: d.favoritos.length, f: d.favoritos[0], filas: document.querySelectorAll('#lista-fav li').length, guardado: JSON.parse(localStorage.getItem('musica-infinita:sesiones')).favoritos.length };
+  });
+  assert.equal(ses.n, 1);
+  assert.equal(ses.f.nombre, 'Mi favorita');
+  assert.equal(ses.f.semilla, 'semilla-uno');
+  assert.equal(ses.f.ajustes.estilo, 'pop');
+  assert.equal(ses.f.generador, 1);
+  assert.equal(ses.filas, 1);
+  assert.equal(ses.guardado, 1);
+  // la misma configuración no se guarda dos veces
+  respuestas.push('Otra vez');
+  await pagina.click('#fav-guardar');
+  await pagina.waitForTimeout(200);
+  assert.equal(await sesion(function () { return window.MusicaInfinita.estado.panelSesiones.datos.favoritos.length; }), 1);
+  paso('guarda un favorito con su semilla, ajustes y canciones, y no lo repite');
+
+  // el historial lleva la corrida; mover un control en vivo la marca «con cambios»
+  ses = await sesion(function () { return window.MusicaInfinita.estado.panelSesiones.datos.historial.filter(function (h) { return h.semilla === 'semilla-uno'; }).map(function (h) { return { limpia: h.limpia, secciones: h.secciones, estilos: h.estilos }; }); });
+  assert.equal(ses.length, 1, 'la corrida de semilla-uno no está en el historial');
+  assert.equal(ses[0].limpia, true);
+  assert.deepEqual(ses[0].estilos, ['Pop']);
+  await sesion(function () {
+    const el = document.getElementById('contra');
+    el.value = 0.1;
+    el.dispatchEvent(new Event('input'));
+    window.MusicaInfinita.siguienteSeccion();
+  });
+  await pagina.waitForTimeout(900);
+  ses = await sesion(function () { return window.MusicaInfinita.estado.panelSesiones.datos.historial.filter(function (h) { return h.semilla === 'semilla-uno'; }).map(function (h) { return { limpia: h.limpia, contra: h.ajustes.contra }; }); });
+  assert.equal(ses.length, 1);
+  assert.equal(ses[0].limpia, false);
+  assert.equal(ses[0].contra, 0.1);
+  assert.ok((await sesion(function () { return document.querySelectorAll('#lista-hist li').length; })) >= 1);
+  paso('el historial anota las corridas y marca las que tuvieron cambios en vivo');
+
+  // tocar el favorito: vuelve a poner sus ajustes y suena su misma primera sección
+  await sesion(function () {
+    const MI = window.MusicaInfinita;
+    for (const [id, v] of [['fidelidad', 0.1], ['contra', 0.0]]) {
+      const el = document.getElementById(id);
+      el.value = v;
+      el.dispatchEvent(new Event('input'));
+    }
+    return MI.aplicarConfiguracion({ semilla: 'otra-semilla', ajustes: { estilo: 'chip' }, canciones: [], generador: 1 });
+  });
+  await pagina.waitForTimeout(500);
+  await pagina.mouse.move(300, 300);
+  await pagina.locator('#lista-fav li button', { hasText: '▶' }).first().click();
+  await pagina.waitForTimeout(1200);
+  const rep = await sesion(function () {
+    const MI = window.MusicaInfinita;
+    const e = MI.estado;
+    const f = e.panelSesiones.datos.favoritos[0];
+    const cs = f.canciones.map(function (id) { return e.canciones.find(function (c) { return c.id === id; }).analisis; });
+    const g = new window.Generador.Generador(Object.assign({ canciones: cs, semilla: f.semilla }, f.ajustes));
+    const info = g.eventosHasta(1).find(function (x) { return x.tipo === 'info'; });
+    return {
+      semilla: e.semillaSesion,
+      fidelidad: Number(document.getElementById('fidelidad').value),
+      contra: Number(document.getElementById('contra').value),
+      estilo: document.getElementById('estilo').value,
+      activas: e.canciones.filter(function (c) { return c.activo && c.analisis; }).length,
+      de: f.canciones.length,
+      detalle: document.getElementById('detalle').textContent,
+      esperado: info.estilo + ' · ' + info.tonalidad + ' · ' + info.compas + ' · ' + Math.round(info.bpm) + ' bpm',
+      ajustesGuardados: JSON.parse(localStorage.getItem('musica-infinita:ajustes')).semilla,
+    };
+  });
+  assert.equal(rep.semilla, 'semilla-uno');
+  assert.equal(rep.fidelidad, 0.8);
+  assert.equal(rep.contra, 0.9);
+  assert.equal(rep.estilo, 'pop');
+  assert.equal(rep.activas, rep.de, 'las canciones en uso no son las del favorito');
+  assert.ok(rep.detalle.indexOf(rep.esperado) >= 0, 'otra primera sección: «' + rep.detalle + '» no trae «' + rep.esperado + '»');
+  assert.ok(rep.detalle.indexOf('semilla semilla-uno') >= 0);
+  assert.equal(rep.ajustesGuardados, '', 'la semilla de un favorito no debe quedar guardada con los ajustes');
+  paso('tocar un favorito repone sus ajustes y canciones y suena su misma primera sección: ' + rep.esperado);
+
+  // una canción que falta se avisa y no rompe nada
+  await sesion(function () {
+    const d = window.MusicaInfinita.estado.panelSesiones.datos;
+    d.favoritos.push(Object.assign({}, d.favoritos[0], { id: 'fantasma', nombre: 'Con canción borrada', semilla: 'sem-fantasma', canciones: d.favoritos[0].canciones.concat(['propio:no-existe:1']), generador: 99 }));
+    window.MusicaInfinita.estado.panelSesiones.pintar();
+  });
+  await pagina.locator('#lista-fav li', { hasText: 'Con canción borrada' }).locator('button', { hasText: '▶' }).click();
+  await pagina.waitForTimeout(700);
+  const aviso = await sesion(function () { return document.getElementById('aviso').textContent; });
+  assert.ok(/1 canción\(es\).*ya no están/.test(aviso) && /otra versión del compositor/.test(aviso), aviso);
+  paso('un favorito con una canción borrada o de otra versión del compositor avisa y suena igual');
+
+  // listas: favorito, MIDI tal cual y otro favorito; avanzan solas
+  respuestas.push('Mi lista');
+  await pagina.click('#lista-nueva');
+  await pagina.waitForTimeout(200);
+  await pagina.selectOption('#lista-agregar-fav', { index: 0 });
+  await pagina.fill('#lista-minutos', '1');
+  await pagina.click('#lista-agregar-fav-btn');
+  await pagina.selectOption('#lista-agregar-midi', { label: 'mi-cancion' });
+  await pagina.click('#lista-agregar-midi-btn');
+  await pagina.selectOption('#lista-agregar-fav', { index: 1 });
+  await pagina.fill('#lista-minutos', '5');
+  await pagina.click('#lista-agregar-fav-btn');
+  const l0 = await sesion(function () { return window.MusicaInfinita.estado.panelSesiones.datos.listas[0].items.map(function (i) { return i.tipo + ':' + i.minutos; }); });
+  assert.deepEqual(l0, ['favorito:1', 'midi:undefined', 'favorito:5']);
+  await pagina.click('#lista-tocar');
+  await pagina.waitForTimeout(1500);
+  const paso1 = await sesion(function () { const e = window.MusicaInfinita.estado; return { semilla: e.semillaSesion, modo: e.modo, indice: e.panelSesiones.lista().indice, texto: document.getElementById('lista-estado').textContent }; });
+  assert.equal(paso1.semilla, 'semilla-uno');
+  assert.equal(paso1.indice, 0);
+  assert.match(paso1.texto, /elemento 1 de 3/);
+  // se acaba el tiempo del favorito: sigue el MIDI tal cual
+  await sesion(function () { const e = window.MusicaInfinita.estado; e.panelSesiones.lista().hasta = e.ctx.currentTime; });
+  await pagina.waitForTimeout(1500);
+  const paso2 = await sesion(function () { const e = window.MusicaInfinita.estado; return { modo: e.modo, midi: e.midiActual && e.midiActual.nombre, indice: e.panelSesiones.lista().indice }; });
+  assert.deepEqual(paso2, { modo: 'midi', midi: 'mi-cancion', indice: 1 });
+  // al terminar el MIDI, sigue el último favorito
+  await pagina.waitForFunction(function () { return window.MusicaInfinita.estado.modo === 'infinito'; }, null, { timeout: 30000 });
+  await pagina.waitForTimeout(800);
+  const paso3 = await sesion(function () { const e = window.MusicaInfinita.estado; return { semilla: e.semillaSesion, indice: e.panelSesiones.lista().indice, favorito: e.panelSesiones.datos.favoritos[1].semilla }; });
+  assert.equal(paso3.indice, 2);
+  assert.equal(paso3.semilla, paso3.favorito);
+  // al acabarse la lista, sigue la música infinita y la lista queda detenida
+  await sesion(function () { const e = window.MusicaInfinita.estado; e.panelSesiones.lista().hasta = e.ctx.currentTime; });
+  await pagina.waitForTimeout(1200);
+  const fin = await sesion(function () { const e = window.MusicaInfinita.estado; return { lista: e.panelSesiones.lista(), modo: e.modo, tocando: e.tocando, aviso: document.getElementById('aviso').textContent }; });
+  assert.equal(fin.lista, null);
+  assert.equal(fin.modo, 'infinito');
+  assert.ok(fin.tocando);
+  assert.match(fin.aviso, /La lista terminó/);
+  paso('una lista toca un favorito, un MIDI tal cual y otro favorito, avanzando sola, y al terminar sigue la música infinita');
+
+  // una lista que termina en un MIDI reanuda la música infinita; y los elementos rotos se saltan
+  await sesion(function () {
+    const d = window.MusicaInfinita.estado.panelSesiones.datos;
+    d.listas.push({ id: 'l-rota', nombre: 'Rota', modo: 'orden', repetir: false, items: [{ tipo: 'favorito', ref: 'no-existe', minutos: 1 }, { tipo: 'midi', ref: 'propio:mi-cancion:' + window.MusicaInfinita.estado.canciones.find(function (c) { return c.nombre === 'mi-cancion'; }).bytes.length }] });
+    window.MusicaInfinita.estado.panelSesiones.tocarLista('l-rota');
+  });
+  await pagina.waitForTimeout(1500);
+  assert.equal(await sesion(function () { return window.MusicaInfinita.estado.modo; }), 'midi', 'se saltó el roto y tocó el MIDI');
+  await pagina.waitForFunction(function () { return window.MusicaInfinita.estado.modo === 'infinito'; }, null, { timeout: 30000 });
+  await pagina.waitForTimeout(500);
+  assert.equal(await sesion(function () { return window.MusicaInfinita.estado.panelSesiones.lista(); }), null);
+  assert.ok(await sesion(function () { return window.MusicaInfinita.estado.tocando && window.MusicaInfinita.estado.motor.voces.length >= 0; }));
+  paso('una lista que termina en un MIDI reanuda la música infinita, y salta lo que ya no existe');
+
+  // exportar la sesión con los MIDI, borrar todo e importarla de vuelta
+  await sesion(function () { const el = document.getElementById('fidelidad'); el.value = 0.35; el.dispatchEvent(new Event('input')); });
+  await pagina.check('#ses-incluir-midi');
+  const descargaSesion = pagina.waitForEvent('download', { timeout: 20000 });
+  await pagina.click('#ses-exportar');
+  const sj = await descargaSesion;
+  const textoSesion = require('node:fs').readFileSync(await sj.path(), 'utf8');
+  const exportada = JSON.parse(textoSesion);
+  assert.equal(exportada.formato, 'musica-infinita-sesion');
+  assert.equal(exportada.version, 1);
+  assert.ok(exportada.favoritos.length >= 2 && exportada.listas.length >= 2);
+  assert.equal(exportada.ajustes.fidelidad, 0.35);
+  assert.deepEqual(exportada.canciones.filter(function (c) { return c.midi; }).map(function (c) { return c.nombre; }), ['mi-cancion']);
+  assert.ok(exportada.canciones.filter(function (c) { return c.id.indexOf('ejemplo:') === 0; }).every(function (c) { return !c.midi; }), 'los ejemplos no se exportan');
+  assert.ok(/\.json$/.test(sj.suggestedFilename()) && /sesion/.test(sj.suggestedFilename()));
+  // borrar favoritos, listas y el MIDI
+  await sesion(function () {
+    const MI = window.MusicaInfinita;
+    const d = MI.estado.panelSesiones.datos;
+    d.favoritos.length = 0;
+    d.listas.length = 0;
+    MI.estado.canciones.splice(MI.estado.canciones.findIndex(function (c) { return c.nombre === 'mi-cancion'; }), 1);
+    const el = document.getElementById('fidelidad');
+    el.value = 0.95;
+    el.dispatchEvent(new Event('input'));
+    MI.estado.panelSesiones.pintar();
+  });
+  await pagina.setInputFiles('#ses-importar', { name: 'sesion.json', mimeType: 'application/json', buffer: Buffer.from(textoSesion) });
+  await pagina.waitForTimeout(1200);
+  const importada = await sesion(function () {
+    const e = window.MusicaInfinita.estado;
+    const d = e.panelSesiones.datos;
+    const c = e.canciones.find(function (x) { return x.nombre === 'mi-cancion'; });
+    return { favoritos: d.favoritos.length, listas: d.listas.length, midi: !!(c && c.analisis), fidelidad: Number(document.getElementById('fidelidad').value), aviso: document.getElementById('aviso').textContent, filas: document.querySelectorAll('#lista-fav li').length };
+  });
+  assert.ok(importada.favoritos >= 2 && importada.listas >= 2);
+  assert.ok(importada.midi, 'el MIDI no volvió a la biblioteca');
+  assert.equal(importada.fidelidad, 0.35, 'no se aplicaron los ajustes importados');
+  assert.equal(importada.filas, importada.favoritos);
+  assert.match(importada.aviso, /Sesión importada/);
+  // importar dos veces no duplica
+  await pagina.setInputFiles('#ses-importar', { name: 'sesion.json', mimeType: 'application/json', buffer: Buffer.from(textoSesion) });
+  await pagina.waitForTimeout(800);
+  assert.equal(await sesion(function () { return window.MusicaInfinita.estado.panelSesiones.datos.favoritos.length; }), importada.favoritos, 'importar dos veces repitió favoritos');
+  // un archivo que no es una sesión no rompe nada
+  await pagina.setInputFiles('#ses-importar', { name: 'malo.json', mimeType: 'application/json', buffer: Buffer.from('{"hola":1}') });
+  await pagina.waitForTimeout(400);
+  assert.match(await sesion(function () { return document.getElementById('aviso').textContent; }), /No se pudo importar: El archivo no es una sesión/);
+  paso('exporta la sesión con sus MIDI, y al importarla vuelven favoritos, listas, MIDI y ajustes, sin duplicar al repetir');
+  await sesion(function () { window.MusicaInfinita.estado.panelFijo = false; });
+
   // exportar 15 s en FLAC (con la SoundFont de prueba)
   const descarga = pagina.waitForEvent('download', { timeout: 180000 });
   await pagina.evaluate(function () { return window.MusicaInfinita.exportarAudio(0.25, 'flac16', 'prueba', function () {}); });
@@ -351,6 +572,46 @@ async function principal() {
   assert.equal(await pagina.evaluate(function () { return window.MusicaInfinita.estado.canciones.find(function (x) { return x.nombre === 'dos-pistas'; }).analisis.melodia.length; }), 64);
   assert.deepEqual(await pagina.evaluate(function () { return JSON.parse(localStorage.getItem('musica-infinita:pistas')); }), {});
   paso('elegir a mano la pista de melodía: re-analiza, se guarda, sobrevive a recargar y se puede volver a la automática');
+
+  // un favorito recuerda la pista de melodía: guardarlo con el cello elegido, volver a la automática, tocarlo
+  // y comprobar que el cello vuelve (y que un favorito sin elección, de la melodía automática, la repone)
+  await pagina.evaluate(function () { document.getElementById('ajustes').hidden = false; for (const d of document.querySelectorAll('details')) d.open = true; });
+  const claveCello = await pagina.evaluate(function () { return window.MusicaInfinita.estado.canciones.find(function (x) { return x.nombre === 'dos-pistas'; }).candidatas.find(function (x) { return x.nombre === 'Cello'; }).clave; });
+  await pagina.mouse.move(330, 300);
+  await pagina.locator('#lista li', { hasText: 'dos-pistas' }).locator('select.pista').selectOption(claveCello);
+  await pagina.waitForTimeout(300);
+  await pagina.evaluate(function () { window.MusicaInfinita.estado.panelFijo = true; });
+  await pagina.mouse.move(340, 300);
+  await pagina.click('#fav-guardar');
+  await pagina.waitForTimeout(300);
+  const favCello = await pagina.evaluate(function () {
+    const d = window.MusicaInfinita.estado.panelSesiones.datos;
+    const id = window.MusicaInfinita.estado.canciones.find(function (x) { return x.nombre === 'dos-pistas'; }).id;
+    return { n: d.favoritos.length, pista: d.favoritos[d.favoritos.length - 1].pistas[id], id: id };
+  });
+  assert.equal(favCello.pista, claveCello, 'el favorito no guardó la pista elegida');
+  // otro favorito de la misma música pero con la melodía automática
+  await pagina.locator('#lista li', { hasText: 'dos-pistas' }).locator('select.pista').selectOption({ index: 0 });
+  await pagina.waitForTimeout(300);
+  await pagina.mouse.move(350, 300);
+  await pagina.click('#fav-guardar');
+  await pagina.waitForTimeout(300);
+  assert.equal(await pagina.evaluate(function () { return window.MusicaInfinita.estado.panelSesiones.datos.favoritos.length; }), favCello.n + 1, 'la misma semilla con otra pista es otro favorito');
+  // ahora la automática; tocar el del cello repone el cello
+  const tocar = async function (indice) {
+    await pagina.mouse.move(360, 300);
+    await pagina.locator('#lista-fav li').nth(indice).locator('button', { hasText: '▶' }).click();
+    await pagina.waitForTimeout(1000);
+    return pagina.evaluate(function () {
+      const c = window.MusicaInfinita.estado.canciones.find(function (x) { return x.nombre === 'dos-pistas'; });
+      return { notas: c.analisis.melodia.length, auto: c.analisis.melodiaAutomatica, guardada: JSON.parse(localStorage.getItem('musica-infinita:pistas'))[c.id] || null };
+    });
+  };
+  const conCello = await tocar(favCello.n - 1);
+  assert.deepEqual([conCello.notas, conCello.auto, conCello.guardada], [24, false, claveCello], 'tocar el favorito no repuso el cello');
+  const conAuto = await tocar(favCello.n);
+  assert.deepEqual([conAuto.notas, conAuto.auto, conAuto.guardada], [64, true, null], 'tocar el favorito de la melodía automática no la repuso');
+  paso('un favorito recuerda la pista de melodía elegida (y la automática), y tocarlo la repone');
 
   await navegador.close();
   assert.deepEqual(errores, [], 'errores en la página');

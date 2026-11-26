@@ -9,9 +9,6 @@ use App\Etiquetas;
 /** @var array $notasCredito */
 /** @var array|null $viajeFunnel */
 
-$nacimiento = new DateTimeImmutable($cliente['fecha_nacimiento']);
-$edad = $nacimiento->diff(new DateTimeImmutable('today'))->y;
-
 $boletasVigentes = array_filter($boletas, static fn (array $b): bool => !$b['anulada']);
 $pagosVigentes = array_filter($pagos, static fn (array $p): bool => !$p['anulada']);
 $totalFacturado = array_sum(array_column($boletasVigentes, 'monto'));
@@ -35,7 +32,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
         <div class="campo"><span class="label">Ciudad</span><span class="valor"><?= e($cliente['ciudad']) ?></span></div>
         <div class="campo"><span class="label">Idioma</span><span class="valor"><?= e($cliente['idioma']) ?></span></div>
         <div class="campo"><span class="label">Género</span><span class="valor"><?= e($cliente['genero']) ?></span></div>
-        <div class="campo"><span class="label">Edad</span><span class="valor"><?= $edad ?> años</span></div>
+        <div class="campo"><span class="label">Rango de edad (al alta)</span><span class="valor"><?= e($cliente['rango_de_edad']) ?></span></div>
         <div class="campo"><span class="label">Segmento</span><span class="valor"><?= e($cliente['segmento']) ?></span></div>
         <div class="campo"><span class="label">Cliente desde</span><span class="valor"><?= e($cliente['fecha_alta']) ?></span></div>
         <div class="campo"><span class="label">Moneda</span><span class="valor"><?= e($cliente['moneda_codigo']) ?> (<?= e($cliente['moneda_simbolo']) ?>)</span></div>

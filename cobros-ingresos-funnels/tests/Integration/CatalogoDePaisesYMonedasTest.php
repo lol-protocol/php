@@ -61,8 +61,8 @@ final class CatalogoDePaisesYMonedasTest extends IntegracionTestCase
         $this->migrarUnaBaseVacia();
 
         $filas = Database::connection()->exec(
-            "INSERT INTO clientes (nombre, email, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
-             VALUES ('Alta de prueba', 'alta.de.prueba@example.test', CURRENT_DATE, 'AR', 'Buenos Aires', 'Espanol', 'Femenino', '1990-01-01')"
+            "INSERT INTO clientes (nombre, email, fecha_alta, pais_codigo, ciudad, idioma, genero, rango_de_edad)
+             VALUES ('Alta de prueba', 'alta.de.prueba@example.test', CURRENT_DATE, 'AR', 'Buenos Aires', 'Espanol', 'Femenino', '35-44')"
         );
 
         self::assertSame(1, $filas);
@@ -210,8 +210,8 @@ final class CatalogoDePaisesYMonedasTest extends IntegracionTestCase
         $this->migrarUnaBaseVacia();
         $db = Database::connection();
         $db->exec(
-            "INSERT INTO clientes (nombre, email, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
-             VALUES ('Cliente de Harare', 'harare@example.test', CURRENT_DATE, 'ZW', 'Harare', 'Ingles', 'Femenino', '1990-01-01')"
+            "INSERT INTO clientes (nombre, email, fecha_alta, pais_codigo, ciudad, idioma, genero, rango_de_edad)
+             VALUES ('Cliente de Harare', 'harare@example.test', CURRENT_DATE, 'ZW', 'Harare', 'Ingles', 'Femenino', '35-44')"
         );
 
         $moneda = $db->query("SELECT p.moneda_codigo FROM clientes c JOIN paises p ON p.codigo = c.pais_codigo WHERE c.email = 'harare@example.test'")->fetchColumn();

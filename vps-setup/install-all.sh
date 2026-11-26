@@ -287,6 +287,7 @@ echo "  - Java + Tomcat:      bash ./02_A-install-java.sh && bash ./02_H-install
 echo "  - Whisper (audio):    bash ./02_I-install-python-whisper.sh"
 echo "  - Aplicacion PHP:     bash ./06_A-setup-php-app.sh nombre-app dominio.com"
 echo "  - Aplicacion Python:  bash ./06_B-setup-python-app.sh nombre-app dominio.com [puerto]"
+echo "  - Codigo de una app:  bash ./10_C-deploy-app.sh nombre-app --repo git@github.com:tu/repo.git --key ~/deploy_key"
 echo "  - Servidor DNS propio (solo si tu registrador no tiene DNS Management): bash ./06_C-setup-dns-server.sh dominio.com IP"
 echo "  - App Java (Tomcat) con su propio dominio: bash ./06_D-setup-tomcat-app.sh dominio.com mi-app"
 echo ""

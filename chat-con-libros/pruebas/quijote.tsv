@@ -1,0 +1,58 @@
+# Preguntas sobre ejemplos/quijote.txt, para medir la búsqueda de los libros largos. Tres columnas separadas por tabuladores:
+#   pregunta | capítulos aceptables («I-VIII» es la Parte I, cap. VIII; varios separados por «;») | palabras que la
+#   frase elegida debería tener, con que tenga una (separadas por «|»; sin importar mayúsculas ni acentos)
+# Las primeras 37 preguntas salieron de leer los títulos de los capítulos; las 16 últimas son de cosas que NO están en los títulos.
+¿Qué pasó con los molinos de viento?	I-VIII	gigantes|aspas
+¿Cómo se llamaba el caballo de don Quijote?	I-I	Rocinante
+¿Qué libros quemaron el cura y el barbero?	I-VI	Amadís|corral|fuego|hoguera
+¿Cómo lo armaron caballero en la venta?	I-III	espaldarazo|pescozada|velar las armas|vela de las armas|ceremonia
+¿Qué le pasó al muchacho Andrés al que azotaba su amo?	I-IV;I-XXXI	Andrés
+¿Qué le prometió don Quijote a Sancho para que fuera su escudero?	I-VII	ínsula
+¿Cómo fue la pelea con el vizcaíno?	I-VIII;I-IX	vizcaíno
+¿Qué dijo don Quijote sobre la edad dorada a los cabreros?	I-XI	dichosa edad|siglos dichosos|edad dorada
+¿Quién era la pastora Marcela?	I-XII;I-XIII;I-XIV	Marcela
+¿Qué es el bálsamo de Fierabrás?	I-X;I-XVII	bálsamo
+¿Por qué mantearon a Sancho?	I-XVII	manta|mantear
+¿Qué pasó con los rebaños de ovejas?	I-XVIII	ovejas|carneros|ejército|manada
+¿Por qué lo llamaron el Caballero de la Triste Figura?	I-XIX	Triste Figura
+¿Qué eran los batanes que asustaron a Sancho?	I-XX	batanes
+¿Qué es el yelmo de Mambrino?	I-XXI;I-XLIV;I-XLV	yelmo|bacía
+¿Qué pasó cuando liberó a los galeotes?	I-XXII	galeotes|forzados
+¿Quién es Ginés de Pasamonte?	I-XXII;II-XXVII	Ginés|Pasamonte
+¿Qué penitencia hizo don Quijote en Sierra Morena?	I-XXV;I-XXVI	penitencia|Beltenebros
+¿De qué trata la novela del Curioso impertinente?	I-XXXIII;I-XXXIV;I-XXXV	Anselmo|Lotario|Camila
+¿Por qué atacó los cueros de vino?	I-XXXV;I-XXXVI	cueros
+¿Qué dijo don Quijote de las armas y las letras?	I-XXXVII;I-XXXVIII	letras
+¿Cómo encantó Sancho a Dulcinea?	II-X	labradora|labradoras|pollina|pollinas
+¿Qué pasó con la carreta de las Cortes de la Muerte?	II-XI	Muerte|carreta
+¿Quién era el Caballero de los Espejos?	II-XII;II-XIV;II-XV	Sansón|bachiller|Espejos
+¿Qué pasó con los leones?	II-XVII	león|leones
+¿Qué pasó en las bodas de Camacho?	II-XX;II-XXI	Basilio|Quiteria|Camacho
+¿Qué vio don Quijote en la cueva de Montesinos?	II-XXII;II-XXIII	Durandarte|Belerma|palacio|vi
+¿Qué hacía el mono adivino de maese Pedro?	II-XXV;II-XXVII	mono
+¿Cómo fue la aventura del barco encantado?	II-XXIX	barco
+¿Qué es Clavileño?	II-XL;II-XLI	Clavileño
+¿Qué consejos le dio don Quijote a Sancho antes de gobernar?	II-XLII;II-XLIII	consejo|consejos|has de|procura
+¿Cómo gobernó Sancho la ínsula Barataria?	II-XLV;II-XLVII;II-XLIX;II-LI	gobierno|gobernador|sentencia|juzgar
+¿Qué hacía el médico Pedro Recio?	II-XLVII	Recio|comer|comida|manjar
+¿Quién es Roque Guinart?	II-LX;II-LXI	Roque
+¿Qué es la cabeza encantada?	II-LXII	cabeza
+¿Quién venció a don Quijote en Barcelona?	II-LXIV;II-LXV	Blanca Luna
+¿Cómo murió don Quijote?	II-LXXIV	testamento|Alonso Quijano|dio su espíritu|espíritu
+# --- sobre cosas que no salen en los títulos ---
+¿Quién es Maritornes?	I-XVI;I-XLIII;I-XLIV	Maritornes
+¿Quién es Teresa Panza?	II-V;II-L;II-LII	Teresa
+¿Qué pasó con Altisidora?	II-XLVI;II-LVII;II-LXIX;II-LXX	Altisidora
+¿Quién es Ricote?	II-LIV;II-LXIII;II-LXV	Ricote
+¿Quién era Tosilos?	II-LVI;II-LXVI	Tosilos
+¿Qué dijo Merlín para desencantar a Dulcinea?	II-XXXV	azotes|Merlín
+¿Cuántos azotes tenía que darse Sancho?	II-XXXV;II-XXXVI;II-LXXI	tres mil|azotes
+¿Quién era el capitán Viedma?	I-XLII	Viedma
+¿Qué le pasó a Cardenio con Luscinda?	I-XXIV;I-XXVII;I-XXVIII;I-XXXVI	Luscinda
+¿Quién es Dorotea?	I-XXVIII;I-XXIX;I-XXX;I-XXXVI	Dorotea
+¿Qué pensaba don Quijote de la poesía?	II-XVI;II-XVIII	poesía|poeta
+¿Cuál era el verdadero nombre de don Quijote?	I-I;II-LXXIV	Quijano|Quijada|Quesada|Quejana
+¿Quién era el cura y qué hacía?	I-VI;I-XXVI;I-XXVII	cura
+¿Qué comía don Quijote antes de volverse loco?	I-I	olla|salpicón|duelos|lantejas
+¿Qué es la orden de caballería?	I-III;I-IV	orden de caballería
+¿Quién es Sansón Carrasco?	II-III;II-IV;II-VII;II-XV;II-LXV	Sansón

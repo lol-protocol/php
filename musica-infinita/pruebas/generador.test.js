@@ -297,3 +297,22 @@ test('las citas salen de canciones del mismo compás de la sección', function (
   const buenas = en3.filter(function (i) { return tres.has(i.cancion); }).length;
   assert.ok(buenas / en3.length > 0.7, 'citas en 3/4 de canciones en 3/4: ' + buenas + ' de ' + en3.length);
 });
+
+// ------------------------------------------------------------ versión del compositor
+
+test('la versión del compositor es un entero positivo', function () {
+  assert.ok(Number.isInteger(G.VERSION) && G.VERSION >= 1);
+});
+
+test('guarda de la versión: la música de una semilla fija no cambia sin subir G.VERSION', function () {
+  // Los favoritos guardan una semilla y sus ajustes, y prometen que vuelve a sonar igual. Si un
+  // cambio en el compositor hace que esta semilla suene distinta, este hash cambia: hay que
+  // subir G.VERSION (así los favoritos viejos avisan que pueden sonar distinto) y poner aquí el
+  // hash nuevo.
+  const evs = new G.Generador({ canciones: CANCIONES, semilla: 'guarda-de-version', fidelidad: 0.6, variacion: 0.4, colorModal: 0.3, contra: 0.6, cambiosCompas: 0.15, estilo: 'auto', tempo: 1 }).eventosHasta(240);
+  const resumen = evs.map(function (e) {
+    return e.tipo === 'info' ? ['i', Math.round(e.t * 1e4), e.estilo, e.tonalidad, e.compas, e.material, e.cancion, e.frase].join(',') : [Math.round(e.t * 1e4), Math.round(e.dur * 1e4), e.nota, e.vel, e.canal, e.programa].join(',');
+  }).join(';');
+  const hash = require('node:crypto').createHash('sha256').update(resumen).digest('hex').slice(0, 16);
+  assert.equal(hash, 'bb350cda0a86f276', 'hash actual: ' + hash + ' (versión ' + G.VERSION + ')');
+});

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Avisos;
+use App\ClienteMenorDeEdad;
 use App\EnvioUnico;
 use App\MayoriaDeEdad;
 use App\Paginacion;
@@ -51,7 +52,7 @@ final class ClientesController
     /**
      * Nadie nacio despues de hoy. Las dos fechas son Y-m-d y ya validadas, asi
      * que alcanza con compararlas como texto. Que ademas sea mayor de edad, segun
-     * el pais, se revisa aparte (MayoriaDeEdad::cumplida()).
+     * el pais, se revisa aparte (MayoriaDeEdad::cumplida()). La fecha solo sirve para eso: no se guarda, queda el rango de edad.
      */
     public static function nacimientoNoEsFuturo(string $fechaNacimiento, string $hoy): bool
     {
@@ -183,6 +184,9 @@ final class ClientesController
                         return '?page=cliente&id=' . $id . '&creado=1';
                     });
                     Peticion::redirigir($destino);
+                } catch (ClienteMenorDeEdad $e) {
+                    // La validacion de arriba ya lo habria dicho: esto es por si el repositorio y el controlador se desfasan.
+                    $error = $e->getMessage();
                 } catch (\PDOException $e) {
                     $error = Validacion::mensajeDeConflicto($e, 'cliente');
                 }

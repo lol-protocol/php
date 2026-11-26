@@ -86,5 +86,24 @@
     return out;
   }
 
-  raiz.Almacen = { BD: BD, guardarAjustes: guardarAjustes, cargarAjustes: cargarAjustes, guardarPresets: guardarPresets, cargarPresets: cargarPresets, guardarPistas: guardarPistas, cargarPistas: cargarPistas };
+  /** Favoritos, listas e historial en bruto: quien los lee los sanea (sesiones.js). */
+  function guardarSesiones(datos) {
+    try {
+      raiz.localStorage.setItem('musica-infinita:sesiones', JSON.stringify(datos));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function cargarSesiones() {
+    try {
+      const d = JSON.parse(raiz.localStorage.getItem('musica-infinita:sesiones') || '{}');
+      return d && typeof d === 'object' ? d : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  raiz.Almacen = { BD: BD, guardarAjustes: guardarAjustes, cargarAjustes: cargarAjustes, guardarPresets: guardarPresets, cargarPresets: cargarPresets, guardarPistas: guardarPistas, cargarPistas: cargarPistas, guardarSesiones: guardarSesiones, cargarSesiones: cargarSesiones };
 })(window);

@@ -37,9 +37,9 @@ final class IngresosPorCanalTest extends IntegracionTestCase
     private function usuario(string $canal, string $visita, bool $convertido = false, ?int $clienteId = null): void
     {
         Database::connection()->prepare(
-            "INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, fecha_nacimiento,
+            "INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, rango_de_edad,
                                           fecha_visita, fecha_registro, fecha_lead, fecha_conversion, cliente_id)
-             VALUES (:nombre, :email, :canal, 'US', 'Miami', 'Ingles', 'No especifica', '1985-05-05',
+             VALUES (:nombre, :email, :canal, 'US', 'Miami', 'Ingles', 'No especifica', '35-44',
                      :visita, :etapa, :etapa, :etapa, :cliente)"
         )->execute([
             ':nombre' => 'Usuario ' . ++$this->secuencia, ':email' => 'u-' . uniqid() . '@example.com', ':canal' => $canal,
