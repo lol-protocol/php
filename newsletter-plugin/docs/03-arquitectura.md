@@ -53,7 +53,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-  A["Cron día 15 a las 09:00 hora Santiago"] --> B["Leer suscriptores activos de POS"]
+  A["Cron horario: ¿es el día 15 a las 09:00 hora Santiago?"] --> B["Leer suscriptores activos de POS"]
   B --> C["Segmentar: coleccionista o explorador"]
   C --> D["ContentProvider POS arma fragmentos del mes"]
   D --> E{"¿Hay contenido?"}

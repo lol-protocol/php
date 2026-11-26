@@ -16,7 +16,7 @@ Describe qué hace el plugin con firmas que no dependen del lenguaje (el lenguaj
 - **Regla sensible** y **adaptador de notificaciones** (solo Conce).
 - **Preferencias de aviso** (solo Conce): guardan si cada destinatario apagó los avisos sensibles.
 - **Recepción de la clasificación de cambios sensibles**, que el host entrega con el evento. El submódulo `defamatory-content-review/` no se consulta desde el plugin.
-- **Scheduler:** cron horario en Conce y fecha fija en POS.
+- **Scheduler:** cron horario (UTC) en ambas plataformas. En Conce evalúa las ventanas de cada usuario; en POS solo envía el día 15 a las 09:00, hora de Santiago (docs/01, §7).
 - **Registro** de envíos y eventos.
 
 ---
