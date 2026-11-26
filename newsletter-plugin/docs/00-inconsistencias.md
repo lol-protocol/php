@@ -34,8 +34,9 @@ Registro de contradicciones encontradas durante el diseño, con la resolución p
 | 28 | Auditoría de coherencia | Se alinearon docs/01, docs/02, docs/03, docs/04, docs/06, CLAUDE.md, el README y los Gantt con las decisiones sobre la clasificación del host, el stack, los plazos y la baja de los avisos. Los escenarios de perfil siguen ahora la regla de docs/01, §2.1 (ocasional: de 15 a 90 días). | Resuelto (26-nov-2026) |
 | 29 | Formato de la clasificación | El host manda en `clasificacion` las categorías sensibles que detectó; el plugin las compara con su lista y decide si el aviso nombra el campo. Los identificadores son una propuesta (docs/02). | Decidido (26-nov-2026) |
 | 30 | Estado de cada destinatario | `sensitive_event` guarda `estado_titular` y `estado_afectada` en la misma fila. | Decidido (26-nov-2026) |
-| 31 | Servidor del PostgreSQL del plugin | Sin decidir dónde corre (en el VPS del host o en un servidor aparte) ni en qué país. | Pendiente de decisión |
+| 31 | Servidor del PostgreSQL del plugin | Corre en el VPS del host de cada plataforma, junto al cron, y comparte su país. Falta saber en qué país está ese VPS. | Decidido (26-nov-2026); falta el país del VPS |
+| 32 | Fechas del Gantt de implementación | Se dejan como referencia orientativa, con la nota de que el arranque no tiene fecha firme. | Decidido (26-nov-2026) |
 
 ## Notas
-- Quedan abiertas: la 5 (se decide al implementar), la 8 y la 15 (las valida Conce con el contrato), la 16 (cotejar con el texto oficial), la 17 (se fija al implementar) la 21 (falta el nombre del proveedor de correo y el país de sus servidores) y la 31 (dónde corre el PostgreSQL del plugin).
+- Quedan abiertas: la 5 (se decide al implementar), la 8 y la 15 (las valida Conce con el contrato), la 16 (cotejar con el texto oficial), la 17 (se fija al implementar) la 21 (falta el nombre del proveedor de correo y el país de sus servidores) y la 31 (falta el país del VPS del host).
 - Un supuesto no validado no es una decisión. Ver docs/05-riesgos-y-pendientes.md.

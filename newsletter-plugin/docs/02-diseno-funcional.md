@@ -48,7 +48,7 @@ EventoSensible = { id, arbol_id, ref_registro, tipo_cambio, clasificacion: [cate
 
 ## 3. Modelo de datos
 
-Almacenamiento propio por integración, en un PostgreSQL propio del plugin (decidido el 26-nov-2026). Ninguna tabla es compartida entre plataformas.
+Almacenamiento propio por integración, en un PostgreSQL propio del plugin, que corre en el VPS del host (decidido el 26-nov-2026). Ninguna tabla es compartida entre plataformas.
 
 - `subscriptions(user_id, status, zona_horaria, opt_in_at, baja_at)`: `status` toma `pendiente_de_confirmar`, `activa` o `baja`, y `opt_in_at` es el momento de la confirmación (doble confirmación, docs/01, §4) **[PROPUESTA]**
 - `profile_snapshot(user_id, calculado_at, perfil, señales)`

@@ -27,6 +27,8 @@ Registradas también en docs/00-inconsistencias.md.
 21. **Framework** (26-nov-2026): ninguno; PHP plano con PDO, como el resto del repo.
 22. **Base de datos** (26-nov-2026): un PostgreSQL propio del plugin, una base por integración (docs/02, §3).
 23. **Estado por destinatario** (26-nov-2026): `sensitive_event` guarda `estado_titular` y `estado_afectada` en la misma fila.
+24. **Servidor del PostgreSQL del plugin** (26-nov-2026): corre en el VPS del host de cada plataforma, junto al cron, y comparte su país.
+25. **Fechas del Gantt de implementación** (26-nov-2026): se dejan como referencia orientativa, con la nota de que el arranque no tiene fecha firme (docs/gantt/conce-implementacion.md).
 
 ## Decisiones pendientes
 
@@ -38,7 +40,7 @@ Necesarias antes de implementar.
 4. **Ley 21.719 aplicada al newsletter:** revisada en docs/06 (21-nov-2026, actualizada el 25-nov-2026). Falta cotejarla con el texto oficial.
 5. **Versión mínima de PHP:** se fija al implementar. No bloquea los documentos.
 6. **Encargado del correo** (25-nov-2026): falta el nombre del proveedor y el país de sus servidores (docs/06, sección 3, punto 5).
-7. **Servidor del PostgreSQL del plugin** (26-nov-2026): sin decidir dónde corre (en el VPS del host o en un servidor aparte) ni en qué país (docs/06, sección 3, punto 5).
+7. **País del VPS del host** (26-nov-2026): el cron y el PostgreSQL del plugin corren allí; falta saber en qué país está (docs/06, sección 3, punto 5).
 
 ## Riesgos
 
@@ -48,7 +50,7 @@ Necesarias antes de implementar.
 - **Carril de notificaciones solo propuesto:** Conce todavía no validó las firmas de docs/02. El adaptador concentra el riesgo: si cambia la firma, solo cambia el adaptador.
 - **Ley 21.719 y el newsletter:** el boletín no estaba en el registro de tratamientos del repo. docs/06 lo cubre. Rige desde el 1-dic-2026 según las fuentes del repo; falta el texto oficial (pendiente 4).
 - **Plazo de `sensitive_event`:** «mientras exista la ficha» es el más largo de los cuatro (decisión 15). Hay que poder justificarlo ante la ley (docs/06, sección 4, pregunta 9).
-- **Infraestructura propia del plugin:** el PostgreSQL propio suma un servidor que mantener, respaldar y cubrir en la hoja de fugas (docs/06, filas 12 y 15).
+- **PostgreSQL propio del plugin:** corre en el VPS del host, así que no suma un servidor, pero sí una base que respaldar y cubrir en la hoja de fugas (docs/06, filas 12 y 15).
 - **Carga de pruebas:** las pruebas suman entre 35 % y 45 % adicional a la estimación de LOC.
 
 ## Supuestos sin validar
