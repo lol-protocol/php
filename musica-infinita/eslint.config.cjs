@@ -20,7 +20,7 @@ const nodo = {
   require: 'readonly', module: 'writable', __dirname: 'readonly', process: 'readonly', Buffer: 'readonly', console: 'readonly',
   setTimeout: 'readonly', clearTimeout: 'readonly', performance: 'readonly', TextEncoder: 'readonly', TextDecoder: 'readonly',
   window: 'readonly', document: 'readonly', Event: 'readonly', File: 'readonly', localStorage: 'readonly', URL: 'readonly',
-  OfflineAudioContext: 'readonly', Blob: 'readonly', // dentro de page.evaluate, que corre en el navegador
+  OfflineAudioContext: 'readonly', Blob: 'readonly', getComputedStyle: 'readonly', // dentro de page.evaluate, que corre en el navegador
 };
 
 module.exports = [

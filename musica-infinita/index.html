@@ -8,16 +8,21 @@
   <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
-  <canvas id="lienzo" aria-label="Visualización de la música"></canvas>
-
-  <div id="inicio" class="inicio">
+  <section id="inicio" class="inicio" aria-label="Bienvenida">
     <h1>Música infinita</h1>
     <p>Música que no se acaba, hecha con las melodías de tus MIDI, y visualizaciones como las de Winamp.</p>
     <button id="empezar" class="grande">▶ Empezar</button>
     <p class="nota">Todo pasa en tu navegador: los MIDI y la SoundFont que cargues se guardan aquí y no se suben a ningún lado.</p>
-  </div>
+  </section>
 
-  <section id="pantallita" class="pantallita" aria-live="polite">
+  <!-- La aplicación está «inerte» (sin foco ni lectura) mientras se ve la bienvenida: así el teclado
+       y los lectores de pantalla no se meten detrás de ella. app.js lo quita al pulsar «Empezar». -->
+  <main id="aplicacion" aria-label="Música infinita" inert>
+  <canvas id="lienzo" role="img" aria-label="Visualización de la música"></canvas>
+
+  <!-- Sin aria-live a propósito: se actualiza con cada bloque de música y un lector de pantalla
+       lo leería sin parar. Los avisos de lo que hace la persona van en #aviso (role=status). -->
+  <section id="pantallita" class="pantallita" aria-label="Lo que suena">
     <div class="lcd">
       <div id="titulo" class="titulo">—</div>
       <div id="detalle" class="detalle"></div>
@@ -33,7 +38,8 @@
       <button id="siguiente" title="Otra sección (N)">⏭</button>
       <label class="vol">🔊 <input id="volumen" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volumen"></label>
       <select id="modo-visual" title="Visualización (V)" aria-label="Visualización"></select>
-      <label class="chk" title="Cambiar de visualización sola cada minuto"><input id="auto-visual" type="checkbox"> auto</label>
+      <label class="chk" title="Cambiar de visualización sola cada minuto (no con «menos movimiento»)"><input id="auto-visual" type="checkbox"> auto</label>
+      <label class="chk" title="Visualizaciones más calmas: sin latidos de brillo, más lentas. Por omisión sigue lo que pide el sistema."><input id="movimiento-reducido" type="checkbox"> menos movimiento</label>
       <button id="pantalla" title="Pantalla completa (F)">⛶</button>
       <button id="grabar" title="Grabar lo que suena en FLAC (R)">● Grabar</button>
       <span id="tiempo-grabacion" class="tiempo"></span>
@@ -190,6 +196,7 @@
       </fieldset>
     </div>
   </section>
+  </main>
 
   <script src="js/midi.js"></script>
   <script src="js/teoria.js"></script>

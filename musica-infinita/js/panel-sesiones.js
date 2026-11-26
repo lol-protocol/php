@@ -122,7 +122,7 @@
       }
       const nombre = raiz.prompt('Nombre del favorito:', nombreSugerido || 'Semilla ' + conf.semilla);
       if (nombre == null) return;
-      const f = S.crearFavorito({ nombre: nombre, semilla: conf.semilla, ajustes: conf.ajustes, canciones: conf.canciones, generador: conf.generador }, datos.favoritos, opciones);
+      const f = S.crearFavorito({ nombre: nombre, semilla: conf.semilla, ajustes: conf.ajustes, canciones: conf.canciones, pistas: conf.pistas, generador: conf.generador }, datos.favoritos, opciones);
       if (!f) return;
       const r = S.agregarFavorito(datos.favoritos, f);
       if (r.duplicado) {

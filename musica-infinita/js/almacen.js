@@ -68,6 +68,24 @@
     }
   }
 
+  /** La pista de melodía que la persona eligió en cada MIDI: {idDeLaCanción: clave}. Solo claves bien formadas. */
+  function guardarPistas(mapa) {
+    try {
+      raiz.localStorage.setItem('musica-infinita:pistas', JSON.stringify(mapa));
+    } catch (e) { /* sin almacenamiento */ }
+  }
+
+  function cargarPistas() {
+    const out = {};
+    try {
+      const d = JSON.parse(raiz.localStorage.getItem('musica-infinita:pistas') || '{}');
+      for (const id of Object.keys(d || {})) {
+        if (typeof d[id] === 'string' && (d[id] === 'todas' || /^\d{1,4}:\d{1,2}$/.test(d[id]))) out[id] = d[id];
+      }
+    } catch (e) { /* datos dañados: ninguna elección */ }
+    return out;
+  }
+
   /** Favoritos, listas e historial en bruto: quien los lee los sanea (sesiones.js). */
   function guardarSesiones(datos) {
     try {
@@ -87,5 +105,5 @@
     }
   }
 
-  raiz.Almacen = { BD: BD, guardarAjustes: guardarAjustes, cargarAjustes: cargarAjustes, guardarPresets: guardarPresets, cargarPresets: cargarPresets, guardarSesiones: guardarSesiones, cargarSesiones: cargarSesiones };
+  raiz.Almacen = { BD: BD, guardarAjustes: guardarAjustes, cargarAjustes: cargarAjustes, guardarPresets: guardarPresets, cargarPresets: cargarPresets, guardarPistas: guardarPistas, cargarPistas: cargarPistas, guardarSesiones: guardarSesiones, cargarSesiones: cargarSesiones };
 })(window);

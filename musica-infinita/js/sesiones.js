@@ -128,9 +128,36 @@
     return out;
   }
 
-  /** ¿Dos configuraciones (semilla, ajustes y canciones) dan la misma música? */
+  /**
+   * La pista de melodía elegida a mano en cada canción: {idDeLaCanción: clave} (la clave es `pista:canal`
+   * o `todas`). Una canción que no aparece usa la melodía automática. Solo claves bien formadas.
+   */
+  function sanearPistas(p) {
+    const out = {};
+    if (!p || typeof p !== 'object' || Array.isArray(p)) return out;
+    let n = 0;
+    for (const id of Object.keys(p)) {
+      if (n >= MAX.canciones) break;
+      if (id.length > 300 || typeof p[id] !== 'string') continue;
+      if (p[id] === 'todas' || /^\d{1,4}:\d{1,2}$/.test(p[id])) {
+        out[id] = p[id];
+        n++;
+      }
+    }
+    return out;
+  }
+
+  function mismasPistas(a, b) {
+    const x = Object.keys(a || {});
+    const y = Object.keys(b || {});
+    if (x.length !== y.length) return false;
+    for (const k of x) if (a[k] !== b[k]) return false;
+    return true;
+  }
+
+  /** ¿Dos configuraciones (semilla, ajustes, canciones y pistas de melodía) dan la misma música? */
   function mismaConfiguracion(a, b) {
-    return a.semilla === b.semilla && mismosAjustes(a.ajustes || {}, b.ajustes || {}) && mismasCanciones(a.canciones || [], b.canciones || []);
+    return a.semilla === b.semilla && mismosAjustes(a.ajustes || {}, b.ajustes || {}) && mismasCanciones(a.canciones || [], b.canciones || []) && mismasPistas(a.pistas, b.pistas);
   }
 
   // ------------------------------------------------------------ identificadores
@@ -158,6 +185,7 @@
       semilla: semilla,
       ajustes: sanearAjustes(f.ajustes, opciones),
       canciones: sanearCanciones(f.canciones),
+      pistas: sanearPistas(f.pistas),
       generador: Number.isFinite(Number(f.generador)) ? Number(f.generador) : 0,
       creado: typeof f.creado === 'string' ? f.creado.slice(0, 40) : '',
     };
@@ -175,6 +203,7 @@
       semilla: datos.semilla,
       ajustes: datos.ajustes,
       canciones: datos.canciones,
+      pistas: datos.pistas,
       generador: datos.generador,
       creado: new Date(ahora).toISOString(),
     }, opciones);
@@ -221,10 +250,11 @@
     const estilos = info && info.estilo ? [info.estilo] : [];
     if (ultima && ultima.semilla === conf.semilla) {
       const e = Object.assign({}, ultima);
-      if (!mismosAjustes(e.ajustes, conf.ajustes) || !mismasCanciones(e.canciones, conf.canciones)) {
+      if (!mismosAjustes(e.ajustes, conf.ajustes) || !mismasCanciones(e.canciones, conf.canciones) || !mismasPistas(e.pistas, conf.pistas)) {
         e.limpia = false;
         e.ajustes = Object.assign({}, conf.ajustes);
         e.canciones = conf.canciones.slice();
+        e.pistas = Object.assign({}, conf.pistas);
       }
       e.hasta = hora;
       e.secciones = Math.max(e.secciones, info && info.seccion ? info.seccion : 0);
@@ -239,6 +269,7 @@
       semilla: conf.semilla,
       ajustes: Object.assign({}, conf.ajustes),
       canciones: conf.canciones.slice(),
+      pistas: Object.assign({}, conf.pistas),
       generador: conf.generador,
       limpia: true,
       desde: hora,
@@ -269,6 +300,7 @@
       semilla: semilla,
       ajustes: sanearAjustes(h.ajustes, opciones),
       canciones: sanearCanciones(h.canciones),
+      pistas: sanearPistas(h.pistas),
       generador: Number.isFinite(Number(h.generador)) ? Number(h.generador) : 0,
       limpia: h.limpia !== false,
       desde: typeof h.desde === 'string' ? h.desde.slice(0, 40) : '',
@@ -566,6 +598,7 @@
     sanearAjustes: sanearAjustes,
     sanearAjustesApp: sanearAjustesApp,
     mismaConfiguracion: mismaConfiguracion,
+    sanearPistas: sanearPistas,
     nuevoId: nuevoId,
     validarFavorito: validarFavorito,
     crearFavorito: crearFavorito,

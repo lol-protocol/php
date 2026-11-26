@@ -257,3 +257,45 @@ test('lluvia de notas: «ahora» al 78 %, lo que viene a la derecha, y fuera de 
   assert.ok(VP.rectNota({ nota: 90, t: 10, dur: 1, canal: 0 }, 10, W, H).y < VP.rectNota({ nota: 40, t: 10, dur: 1, canal: 0 }, 10, W, H).y);
   assert.ok(VP.rectNota({ nota: 36, t: 10, dur: 1, canal: 9 }, 10, W, H).y > H * 0.9);
 });
+
+// ------------------------------------------------------------ menos movimiento
+
+test('suavizarPreset: k = 1 no cambia nada y k = 0 casi quieta la imagen', function () {
+  for (const p of VP.PRESETS) {
+    const igual = VP.suavizarPreset(p, 1);
+    for (const c of VP.CLAVES_NUMERICAS) assert.ok(Math.abs(igual[c] - p[c]) < 1e-12, p.nombre + ': ' + c + ' cambió con k = 1');
+    const q = VP.suavizarPreset(p, 0);
+    assert.equal(q.zoom, 1);
+    assert.ok(Math.abs(q.rot) === 0, 'rot debe quedar en 0 (-0 vale)');
+    assert.ok(Math.abs(q.warp) === 0, 'warp debe quedar en 0 (-0 vale)');
+    assert.ok(Math.abs(q.tono) === 0, 'tono debe quedar en 0 (-0 vale)');
+    assert.ok(q.brillo <= 1);
+    assert.ok(q.decay >= Math.min(p.decay, 0.985));
+    // la forma de la onda, el espejo y el nombre no se tocan
+    assert.equal(q.onda, p.onda);
+    assert.equal(q.caleido, p.caleido);
+    assert.equal(q.nombre, p.nombre);
+  }
+});
+
+test('suavizarPreset: cada parámetro se acerca a la quietud de forma monótona y queda dentro de los rangos válidos', function () {
+  const p = VP.PRESETS.find(function (x) { return x.nombre === 'Pulso'; });
+  let previo = null;
+  for (const k of [1, 0.75, 0.5, 0.35, 0.1, 0]) {
+    const q = VP.suavizarPreset(p, k);
+    assert.ok(VP.validar(q) !== null);
+    for (const c of VP.CLAVES_NUMERICAS) assert.ok(q[c] >= VP.LIMITES[c].min - 1e-12 && q[c] <= VP.LIMITES[c].max + 1e-12, c + ' fuera de rango con k=' + k);
+    if (previo) {
+      assert.ok(Math.abs(q.zoom - 1) <= Math.abs(previo.zoom - 1) + 1e-12);
+      assert.ok(Math.abs(q.rot) <= Math.abs(previo.rot) + 1e-12);
+      assert.ok(q.decay >= previo.decay - 1e-12, 'la estela debe alargarse');
+    }
+    previo = q;
+  }
+  // no muta el original, y k fuera de rango se recorta
+  const copia = JSON.parse(JSON.stringify(p));
+  VP.suavizarPreset(p, 0.3);
+  assert.deepEqual(p, copia);
+  assert.deepEqual(VP.suavizarPreset(p, 7), VP.suavizarPreset(p, 1));
+  assert.deepEqual(VP.suavizarPreset(p, -3), VP.suavizarPreset(p, 0));
+});

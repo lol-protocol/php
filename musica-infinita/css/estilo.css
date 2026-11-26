@@ -1,6 +1,6 @@
 :root {
   --fondo: #05060a;
-  --panel: rgba(14, 18, 28, 0.82);
+  --panel: rgba(14, 18, 28, 0.9); /* opaco a propósito: el texto tenue sigue legible aunque detrás haya una visualización blanca (ver pruebas/contraste.test.js) */
   --borde: rgba(120, 160, 255, 0.18);
   --texto: #dfe6f3;
   --tenue: #8d99ae;
@@ -69,7 +69,7 @@ select option { background: #151a26; }
   transition: opacity .6s;
 }
 .lcd {
-  background: rgba(0, 10, 4, 0.62);
+  background: rgba(0, 10, 4, 0.8);
   border: 1px solid rgba(125, 255, 155, 0.25);
   border-radius: 6px;
   padding: .45rem .7rem;
@@ -142,12 +142,13 @@ hr { border: 0; border-top: 1px solid var(--borde); }
 .lista { list-style: none; margin: .5rem 0 0; padding: 0; max-height: 34vh; overflow: auto; }
 .lista li {
   display: grid;
-  grid-template-columns: auto 1fr auto auto auto;
+  grid-template-columns: auto 1fr auto auto auto auto;
   gap: .5rem;
   align-items: center;
   padding: .25rem .2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
+.lista li select.pista { max-width: 17rem; font-size: .8rem; padding: .15rem .3rem; text-overflow: ellipsis; }
 .lista li .meta { color: var(--tenue); font-size: .8rem; white-space: nowrap; }
 .lista li.sonando .nombre { color: var(--acento); }
 .lista li .nombre { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -180,6 +181,12 @@ body.arrastrando::after {
 
 @media (max-width: 600px) {
   .vol input { width: 4.5rem; }
-  .lista li { grid-template-columns: auto 1fr auto auto; }
+  .lista li { grid-template-columns: auto 1fr auto auto auto; }
+  .lista li select.pista { max-width: 9rem; }
   .lista li .meta { display: none; }
+}
+
+/* Quien pide menos movimiento al sistema no ve cómo aparecen y desaparecen los paneles. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }

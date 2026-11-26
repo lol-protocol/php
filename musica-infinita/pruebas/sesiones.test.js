@@ -328,3 +328,44 @@ test('fusionar: no repite lo que ya está, renombra los choques y ajusta las lis
   assert.deepEqual(r.presets.map(function (p) { return p.nombre; }).sort(), ['Mío', 'Túnel (mío)']);
   assert.equal(r.presets.find(function (p) { return p.nombre === 'Mío'; }).zoom, VP.PRESETS[3].zoom);
 });
+
+// ------------------------------------------------------------ pistas de melodía elegidas a mano
+
+test('pistas: solo claves bien formadas, y cuentan para decir si dos configuraciones son la misma', function () {
+  assert.deepEqual(S.sanearPistas({ a: '1:0', b: 'todas', c: 'xx', d: 7, e: '12345:1', f: '3:12', g: '3:123' }), { a: '1:0', b: 'todas', f: '3:12' });
+  assert.deepEqual(S.sanearPistas(null), {});
+  assert.deepEqual(S.sanearPistas(['1:0']), {});
+  assert.deepEqual(S.sanearPistas({ ['x'.repeat(301)]: '1:0' }), {});
+  const base = { semilla: 's', ajustes: AJ, canciones: ['a', 'b'] };
+  assert.ok(S.mismaConfiguracion(Object.assign({ pistas: {} }, base), base), 'sin pistas es lo mismo que pistas vacías');
+  assert.ok(S.mismaConfiguracion(Object.assign({ pistas: { a: '1:0' } }, base), Object.assign({ pistas: { a: '1:0' } }, base)));
+  assert.ok(!S.mismaConfiguracion(Object.assign({ pistas: { a: '1:0' } }, base), Object.assign({ pistas: { a: '2:1' } }, base)));
+  assert.ok(!S.mismaConfiguracion(Object.assign({ pistas: { a: '1:0' } }, base), base));
+});
+
+test('pistas: el favorito las guarda, no se repite igual con otra pista y vuelven al exportar e importar', function () {
+  const f1 = fav('Con cello', 'p', { pistas: { 'propio:x:10': '1:1' } });
+  assert.deepEqual(f1.pistas, { 'propio:x:10': '1:1' });
+  const sin = fav('Automática', 'p', { ahora: 2000 });
+  assert.deepEqual(sin.pistas, {});
+  const r = S.agregarFavorito([sin], f1);
+  assert.equal(r.duplicado, null, 'la misma semilla con otra pista es otra música');
+  assert.equal(r.lista.length, 2);
+  assert.ok(S.agregarFavorito(r.lista, Object.assign({}, f1, { id: 'otro' })).duplicado);
+  const txt = S.exportarSesion({ ajustes: {}, favoritos: [f1, sin], listas: [], presets: [], canciones: [], estilos: ESTILOS });
+  const i = S.importarSesion(txt, { estilos: ESTILOS });
+  assert.deepEqual(i.favoritos.map(function (f) { return f.pistas; }), [{ 'propio:x:10': '1:1' }, {}]);
+  // un favorito de antes de poder elegir pistas (sin el campo) se lee con las pistas vacías
+  const viejo = S.validarFavorito({ id: 'v', semilla: 's', nombre: 'viejo', ajustes: {}, canciones: [] });
+  assert.deepEqual(viejo.pistas, {});
+});
+
+test('pistas: cambiar la pista en vivo marca la corrida del historial con cambios', function () {
+  let h = S.registrarSeccion([], Object.assign({}, CONF, { pistas: {} }), { seccion: 1 }, 1000);
+  assert.deepEqual(h[0].pistas, {});
+  h = S.registrarSeccion(h, Object.assign({}, CONF, { pistas: { a: '1:0' } }), { seccion: 2 }, 2000);
+  assert.equal(h.length, 1);
+  assert.equal(h[0].limpia, false);
+  assert.deepEqual(h[0].pistas, { a: '1:0' });
+  assert.deepEqual(S.validarCorrida({ id: 'h', semilla: 's', pistas: { a: 'todas', b: 'malo' } }).pistas, { a: 'todas' });
+});
