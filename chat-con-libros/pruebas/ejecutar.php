@@ -18,6 +18,7 @@ use ChatLibros\GeneradorError;
 use ChatLibros\Indice;
 use ChatLibros\Libro;
 use ChatLibros\Normaliza;
+use ChatLibros\Parafrasea;
 use ChatLibros\Sinonimos;
 use ChatLibros\Ventanas;
 
@@ -266,6 +267,11 @@ comprobar('pregunta vacía, no texto o demasiado larga es 400', $pedir($api, $bu
     && $pedir($api, $buenas, ['pregunta' => str_repeat('a', Api::MAX_PREGUNTA + 1)] + $valido)['codigo'] === 400
     && $pedir($api, $buenas, ['pregunta' => str_repeat('a', Api::MAX_PREGUNTA)] + $valido)['codigo'] === 200);
 comprobar('un modo desconocido es 400', $pedir($api, $buenas, ['modo' => 'otro'] + $valido)['codigo'] === 400);
+comprobar('un estilo desconocido es 400', $pedir($api, $buenas, ['estilo' => 'barroco'] + $valido)['codigo'] === 400);
+$sobreQuijote = ['libro' => 'ejemplos/quijote.txt', 'pregunta' => '¿Qué pasó con los molinos de viento?'];
+comprobar('la web responde el Quijote en estilo moderno y, si se pide, en original',
+    str_contains($pedir($api, $buenas, $sobreQuijote)['cuerpo']['texto'] ?? '', 'Mire usted')
+    && str_contains($pedir($api, $buenas, ['estilo' => 'original'] + $sobreQuijote)['cuerpo']['texto'] ?? '', 'vuestra merced'));
 comprobar('un historial mal formado es 400', $pedir($api, $buenas, ['historial' => 'x'] + $valido)['codigo'] === 400
     && $pedir($api, $buenas, ['historial' => [['pregunta' => 'a']]] + $valido)['codigo'] === 400
     && $pedir($api, $buenas, ['historial' => [['pregunta' => str_repeat('a', Api::MAX_TURNO + 1), 'respuesta' => 'b']]] + $valido)['codigo'] === 400
@@ -412,9 +418,89 @@ comprobar('el primer resultado trae la palabra clave en al menos 36 de 53', $pas
 comprobar('la búsqueda para libros largos supera con claridad a la de párrafos', $capLargo >= $capParrafos + 8 && $pasLargo > $pasParrafos, "capítulo $capLargo vs $capParrafos, pasaje $pasLargo vs $pasParrafos");
 comprobar('armar el índice del Quijote tarda menos de 10 s', $segundosIndice < 10.0, sprintf('%.1f s', $segundosIndice));
 $respuesta = $largo->responder('¿Qué pasó con los molinos de viento?');
-comprobar('«los molinos de viento» cita el capítulo VIII de la primera parte', str_contains($respuesta, '[Parte I, cap. VIII:') && str_contains($respuesta, 'molinos de viento'), $respuesta);
+comprobar('«los molinos de viento» cita el capítulo VIII de la primera parte', str_contains($respuesta, 'la primera parte, capítulo VIII') && str_contains($respuesta, 'molinos de viento'), $respuesta);
 comprobar('algo que el Quijote no dice responde «no encuentro»', str_starts_with($largo->responder('¿Cómo se configura un router wifi?'), 'No encuentro eso'));
 comprobar('el modo de párrafos y el largo coinciden con la muestra: el cuento no cambia', (new Conversador($libro, $sinonimos))->responder('¿qué pasa con el reloj?') === (new Conversador($libro, $sinonimos, Ajustes::parrafos()))->responder('¿qué pasa con el reloj?'));
+
+echo "Parafrasea (estilo moderno y original, solo para libros largos)\n";
+$tablas = "$raiz/datos/modernizar.json";
+$par = new Parafrasea($tablas);
+comprobar('modernizar cambia «vuestra merced» y respeta la mayúscula', $par->modernizar('Vuestra merced mande, y vuestras mercedes callen.') === 'Usted mande, y ustedes callen.');
+comprobar('modernizar actualiza la ortografía de la época', $par->modernizar('Agora lo mesmo, ansí lo vido della.') === 'Ahora lo mismo, así lo vio de ella.');
+comprobar('modernizar no toca una palabra que contiene la vieja', $par->modernizar('Mesmerizar la agorafobia.') === 'Mesmerizar la agorafobia.');
+comprobar('modernizar pasa «decille» a «decirle» y cambia «yelmo» por «casco»', $par->modernizar('Fue a decille del yelmo.') === 'Fue a decirle del casco.');
+comprobar('enclitico pasa «díjole» a «le dijo» y «llegóse» a «se llegó»', $par->enclitico('díjole') === 'le dijo' && $par->enclitico('llegóse') === 'se llegó'
+    && $par->enclitico('seguíale') === 'le seguía' && $par->enclitico('mirábanle') === 'le miraban' && $par->enclitico('pusiéronle') === 'le pusieron');
+comprobar('enclitico no toca «sólo», «envíanos», «Euríalo» ni los gerundios', $par->enclitico('sólo') === null && $par->enclitico('envíanos') === null
+    && $par->enclitico('euríalo') === null && $par->enclitico('diciéndole') === null && $par->enclitico('mesa') === null);
+comprobar('dialogo convierte la raya en «Sancho respondió: «…»»', $par->dialogo('— Mire vuestra merced —respondió Sancho— que aquellos no son gigantes.')
+    === 'Sancho respondió: «Mire vuestra merced, que aquellos no son gigantes.»'
+    || $par->dialogo('— Mire vuestra merced —respondió Sancho— que aquellos no son gigantes.') === 'Sancho respondió: «Mire vuestra merced que aquellos no son gigantes.»');
+comprobar('dialogo deja la narración fuera de las comillas', $par->dialogo('—Vamos —dijo Sancho. Y se fueron.') === 'Sancho dijo: «Vamos» Y se fueron.');
+comprobar('dialogo no toca lo que no empieza con raya', $par->dialogo('Llegó Sancho y dijo algo.') === 'Llegó Sancho y dijo algo.');
+$pasaje = 'Era un día de calor. Don Quijote vio unos molinos de viento en el campo, y dijo que eran gigantes. Sancho calló.';
+comprobar('elegir se queda con la oración que más tiene de la pregunta', str_contains($par->elegir($pasaje, Normaliza::terminos('molinos de viento')), 'molinos de viento'));
+comprobar('elegir no se queda con una pregunta si hay otra oración igual de buena', !str_starts_with($par->elegir('¿Dónde están los molinos? Los molinos están allí, muy cerca de la venta del camino real.', Normaliza::terminos('molinos')), '¿'));
+comprobar('elegir le suma la respuesta a una pregunta', str_contains($par->elegir('¿Dónde están los molinos? Allí.', Normaliza::terminos('molinos')), 'Allí.'));
+comprobar('presentacion según la pregunta', str_starts_with($par->presentacion('¿Quién es Sancho?', 'Parte II, cap. V: x'), 'De eso habla la segunda parte, capítulo V:')
+    && str_starts_with($par->presentacion('¿Por qué lloró?', 'Parte I, cap. I: x'), 'La razón está en la primera parte, capítulo I:'));
+comprobar('comprobar acepta lo que sale del pasaje y de las tablas', $par->comprobar('Ahora usted lo vio.', 'Agora vuestra merced lo vido.') === false
+    || $par->comprobar('ahora usted', 'agora vuestra merced') === true);
+comprobar('comprobar rechaza una palabra que no sale de ningún lado', $par->comprobar('Sancho se fue volando', 'Sancho se fue') === false);
+comprobar('comprobar rechaza un texto que no es UTF-8 válido', $par->comprobar("Sancho \xC3", 'Sancho') === false);
+$lleno = $par->responder(Normaliza::terminos('molinos'), '¿qué pasó con los molinos?', 'Parte I, cap. VIII: x', '— Mire vuestra merced —respondió Sancho— que son molinos de viento.', Parafrasea::MODERNO);
+comprobar('responder en moderno agrega el texto original debajo', $lleno['parafraseado'] && str_contains($lleno['texto'], 'Sancho respondió: «Mire usted')
+    && str_contains($lleno['texto'], "Texto original: «— Mire vuestra merced"), $lleno['texto']);
+$crudo = $par->responder(Normaliza::terminos('molinos'), '¿qué pasó con los molinos?', 'Parte I, cap. VIII: x', '— Mire vuestra merced —respondió Sancho— que son molinos de viento.', Parafrasea::ORIGINAL);
+comprobar('responder en original no cambia ni una palabra', !$crudo['parafraseado'] && str_contains($crudo['texto'], 'vuestra merced') && !str_contains($crudo['texto'], 'usted'), $crudo['texto']);
+$sinCambios = $par->responder(Normaliza::terminos('calor'), '¿qué pasó?', 'Parte I, cap. I: x', 'Era un día de calor.', Parafrasea::MODERNO);
+comprobar('si el texto ya está en español de hoy no repite el original', !$sinCambios['parafraseado'] && !str_contains($sinCambios['texto'], 'Texto original'));
+
+echo "El Quijote en dos estilos\n";
+$estilos = new Conversador($quijote, $sinonimosQuijote);
+comprobar('un libro largo se responde con paráfrasis, en estilo moderno', $estilos->parafrasea() && $estilos->estilo() === Parafrasea::MODERNO);
+$moderno = $estilos->responder('¿Qué pasó con los molinos de viento?');
+comprobar('moderno: «Mire usted» y el original debajo', str_contains($moderno, 'Mire usted') && str_contains($moderno, 'Texto original: «— Mire vuestra merced'), $moderno);
+comprobar('«/original» cambia el estilo y lo dice', str_contains($estilos->responder('/original'), 'Estilo original') && $estilos->estilo() === Parafrasea::ORIGINAL);
+$original = $estilos->responder('¿Qué pasó con los molinos de viento?');
+comprobar('original: el texto de Cervantes, sin «usted» ni «Texto original»', str_contains($original, 'vuestra merced') && !str_contains($original, 'Mire usted') && !str_contains($original, 'Texto original'), $original);
+comprobar('«/moderno» vuelve al español de hoy', str_contains($estilos->responder('/moderno'), 'Estilo moderno') && $estilos->estilo() === Parafrasea::MODERNO);
+comprobar('un estilo desconocido es un error', (static function () use ($estilos): bool {
+    try {
+        $estilos->conEstilo('barroco');
+        return false;
+    } catch (\InvalidArgumentException) {
+        return true;
+    }
+})());
+comprobar('en el cuento corto no hay paráfrasis y «/original» lo dice', !$conversador->parafrasea() && str_contains($conversador->responder('/original'), 'libros largos')
+    && $conversador->estilo() === Parafrasea::MODERNO);
+comprobar('la paráfrasis agrega el segundo pasaje como «También»', str_contains($estilos->responder('¿Qué es el yelmo de Mambrino?'), "\n\nTambién: [Parte "));
+
+// La garantía sobre todo el libro: ninguna paráfrasis de ningún pasaje inventa una palabra.
+$todasLasVentanas = Ventanas::partir($quijote->pasajes, 3, 1, 150);
+$pesosTodas = [];
+$rechazadas = 0;
+$parLibro = new Parafrasea($tablas);
+foreach ($todasLasVentanas as $v) {
+    $elegido = $parLibro->elegir($v['texto'], Normaliza::terminos('¿qué pasó?'));
+    $intro = $parLibro->presentacion('¿qué pasó?', $v['capitulo']);
+    $nuevo = $parLibro->modernizar($parLibro->dialogo($elegido));
+    if ($nuevo !== $elegido && !$parLibro->comprobar("$intro $nuevo", $v['texto'] . " $intro")) {
+        $rechazadas++;
+    }
+}
+comprobar('ninguna de las ' . count($todasLasVentanas) . ' ventanas del Quijote produce una palabra inventada', $rechazadas === 0, "$rechazadas rechazadas");
+
+// ¿La frase que se muestra es la que importa? Mismas 53 preguntas, mirando solo la respuesta principal.
+$frase = 0;
+$estilos->conEstilo(Parafrasea::ORIGINAL);
+foreach ($preguntas as [$pregunta, $esperados, $claves]) {
+    $principal = explode("\n\n", $estilos->responder($pregunta))[0];
+    $frase += (int) $tieneClave($principal, $claves);
+}
+echo "  frase mostrada con la palabra clave: $frase de $n\n";
+comprobar('la respuesta principal trae la palabra clave en al menos 36 de 53', $frase >= 36, "$frase de $n");
 
 echo "\n$total pruebas, $fallos fallos\n";
 exit($fallos === 0 ? 0 : 1);
