@@ -2,7 +2,7 @@
 // checking the values marked "(unconfirmed)" against the text of their sources.
 //
 // The whole round, in the order it is done:
-//   1. verify plan   lists the countries that still have unconfirmed values, writes one task file per country
+//   1. verify plan   lists the countries that still have unconfirmed values (--curated: and the never-checked rows), writes one task file per country
 //                    (tasks/<code>.json: the law, the field and the current value) and the `solo` list to paste
 //                    into the "Leyes - textos de las fuentes" workflow (laws-textos-oficiales.yml), plus PROMPT.md,
 //                    the instructions an agent (or a person) follows for each country;
@@ -20,9 +20,12 @@ import { createApplyResearch, readResearch } from "./apply-research-core.js";
 
 const MARK = /\(unconfirmed\)\s*$/i;
 
-/** The countries that still have values marked unconfirmed: `{ code, values: [{ law, field, current }] }`, most values first. */
-export function planVerification({ dataset, skip = [], only = [], limit = Infinity }) {
-  const { COLUMNS, MASTER_CSV, loadMaster } = dataset;
+/**
+ * The countries that still have values marked unconfirmed: `{ code, values: [{ law, field, current }] }`, most values first.
+ * With `curated`, the rows that were never checked (no last_checked) bring their descriptive values too, marked or not.
+ */
+export function planVerification({ dataset, skip = [], only = [], limit = Infinity, curated = false }) {
+  const { COLUMNS, MASTER_CSV, TRANSLATED_FIELDS, loadMaster } = dataset;
   const { records } = loadMaster(MASTER_CSV);
   const byCountry = new Map();
   for (const record of records) {
@@ -30,7 +33,8 @@ export function planVerification({ dataset, skip = [], only = [], limit = Infini
     if (skip.includes(code) || (only.length && !only.includes(code))) continue;
     for (const field of COLUMNS) {
       const value = record[field] ?? "";
-      if (MARK.test(value)) {
+      const neverChecked = curated && !(record.last_checked ?? "").trim() && TRANSLATED_FIELDS.includes(field) && value.trim() && !/^not specified$/i.test(value.trim());
+      if (MARK.test(value) || neverChecked) {
         if (!byCountry.has(code)) byCountry.set(code, []);
         byCountry.get(code).push({ law: record.law_name, field, current: value.replace(MARK, "") });
       }
@@ -121,7 +125,7 @@ export function createVerify({ dataset, parse }) {
     const [command] = argv.filter((a) => !a.startsWith("--"));
     const dir = option("out") ?? option("from");
     if (command === "plan" && dir) {
-      const plan = planVerification({ dataset, skip: list("skip"), only: list("only"), limit: Number(option("limit")) || Infinity });
+      const plan = planVerification({ dataset, skip: list("skip"), only: list("only"), limit: Number(option("limit")) || Infinity, curated: argv.includes("--curated") });
       const solo = writePlan(plan, dir, { texts: option("texts") ?? undefined, project: dataset.MODULE });
       const total = plan.reduce((n, c) => n + c.values.length, 0);
       console.log(`${plan.length} countries, ${total} unconfirmed values → ${dir}/tasks and ${dir}/PROMPT.md`);
@@ -136,7 +140,7 @@ export function createVerify({ dataset, parse }) {
       if (report.patched.length && !argv.includes("--dry")) console.log("Now run: npm run translations -- --missing=spa (and the other languages), npm run build, npm run changes");
       return 0;
     }
-    console.log("Usage: npm run verify -- plan --out=<dir> [--only=us,ca] [--skip=us] [--limit=25] [--texts=<folder with the downloaded texts>]");
+    console.log("Usage: npm run verify -- plan --out=<dir> [--only=us,ca] [--skip=us] [--limit=25] [--curated] [--texts=<folder with the downloaded texts>]");
     console.log("       npm run verify -- apply --from=<dir> [--min=medium|high] [--dry]");
     return command ? 2 : 0;
   }

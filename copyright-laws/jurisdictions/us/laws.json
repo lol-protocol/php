@@ -5,9 +5,9 @@
     "region": "americas",
     "law_name": "Copyright Act (17 USC)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 70 years or 95 years (works for hire)",
+    "term_of_protection": "Life of author + 70 years (s. 302(a)); 95 years from publication or 120 from creation for works made for hire, anonymous and pseudonymous works, whichever expires first (s. 302(c))",
     "author_rights": "Full economic rights",
-    "moral_rights": "Not explicitly protected",
+    "moral_rights": "Limited: s. 106A rights for works of visual art only (referenced in s. 301(f))",
     "orphan_works": "Compulsory licensing allowed",
     "digital_protection": "DMCA anti-circumvention",
     "fair_use_exceptions": "Fair use doctrine",
@@ -21,15 +21,32 @@
     "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": "",
+    "last_checked": "2026-11-26",
     "sources": {
       "term_of_protection": {
         "url": "https://www.copyright.gov/title17/92chap3.html",
         "confidence": "high",
-        "checked": "2026-11-12"
+        "checked": "2026-11-26"
+      },
+      "moral_rights": {
+        "url": "https://www.copyright.gov/title17/92chap3.html",
+        "confidence": "medium",
+        "checked": "2026-11-26"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "moral_rights",
+        "from": "Not explicitly protected",
+        "to": "Limited: s. 106A rights for works of visual art only (referenced in s. 301(f))"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "term_of_protection",
+        "from": "Author's life + 70 years or 95 years (works for hire)",
+        "to": "Life of author + 70 years (s. 302(a)); 95 years from publication or 120 from creation for works made for hire, anonymous and pseudonymous works, whichever expires first (s. 302(c))"
+      },
       {
         "date": "2026-11-11",
         "field": "linked_resources",

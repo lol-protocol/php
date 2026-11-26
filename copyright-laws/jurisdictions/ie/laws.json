@@ -8,10 +8,10 @@
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
-    "orphan_works": "Exception for relevant bodies after a diligent search (s. 70A; S.I. 2014/490 Orphan Works Regulations)",
-    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
-    "fair_use_exceptions": "Fair use exceptions",
-    "registration_required": "No",
+    "orphan_works": "Exception for relevant bodies using orphan works in their collections (s. 70A; orphan works defined in Reg. 4 of S.I. 490/2014)",
+    "digital_protection": "Offence to make or sell protection-defeating devices or assist circumvention of rights protection measures (s. 140(4))",
+    "fair_use_exceptions": "Fair dealing exceptions: research or private study, criticism or review, parody, caricature or pastiche (ss. 50-51)",
+    "registration_required": "No (the Act has no works register; its registers cover licensing bodies)",
     "enforcement_body": "Intellectual Property Office of Ireland (IPOI)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": "",
+    "last_checked": "2026-11-26",
     "sources": {
       "term_of_protection": {
         "url": "https://revisedacts.lawreform.ie/eli/2000/act/28/revised/en/html",
@@ -36,15 +36,49 @@
       "digital_protection": {
         "url": "https://revisedacts.lawreform.ie/eli/2000/act/28/revised/en/html",
         "confidence": "high",
-        "checked": "2026-11-12"
+        "checked": "2026-11-26"
       },
       "orphan_works": {
         "url": "https://revisedacts.lawreform.ie/eli/2000/act/28/revised/en/html",
         "confidence": "high",
-        "checked": "2026-11-12"
+        "checked": "2026-11-26"
+      },
+      "fair_use_exceptions": {
+        "url": "https://revisedacts.lawreform.ie/eli/2000/act/28/revised/en/html",
+        "confidence": "high",
+        "checked": "2026-11-26"
+      },
+      "registration_required": {
+        "url": "https://revisedacts.lawreform.ie/eli/2000/act/28/revised/en/html",
+        "confidence": "medium",
+        "checked": "2026-11-26"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "registration_required",
+        "from": "No",
+        "to": "No (the Act has no works register; its registers cover licensing bodies)"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "fair_use_exceptions",
+        "from": "Fair use exceptions",
+        "to": "Fair dealing exceptions: research or private study, criticism or review, parody, caricature or pastiche (ss. 50-51)"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "digital_protection",
+        "from": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
+        "to": "Offence to make or sell protection-defeating devices or assist circumvention of rights protection measures (s. 140(4))"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "orphan_works",
+        "from": "Exception for relevant bodies after a diligent search (s. 70A; S.I. 2014/490 Orphan Works Regulations)",
+        "to": "Exception for relevant bodies using orphan works in their collections (s. 70A; orphan works defined in Reg. 4 of S.I. 490/2014)"
+      },
       {
         "date": "2026-11-12",
         "field": "linked_resources",
