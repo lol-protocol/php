@@ -6,8 +6,8 @@
     "law_name": "InfoSoc Directive (2001/29/EC)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
-    "author_rights": "Reproduction & distribution",
-    "moral_rights": "Paternity & integrity",
+    "author_rights": "Reproduction, communication to the public and making available, distribution (arts 2-4)",
+    "moral_rights": "Outside the Directive's scope; left to Member States and Berne Convention (recital 19)",
     "orphan_works": "Permitted use by cultural institutions after a diligent search (Directive 2012/28/EU)",
     "digital_protection": "Legal protection of technological measures (art. 6 Directive 2001/29/EC)",
     "fair_use_exceptions": "Private use exceptions",
@@ -21,15 +21,37 @@
     "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": "",
+    "last_checked": "2026-11-26",
     "sources": {
       "digital_protection": {
         "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32001L0029",
         "confidence": "high",
         "checked": "2026-11-25"
+      },
+      "author_rights": {
+        "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32001L0029",
+        "confidence": "high",
+        "checked": "2026-11-26"
+      },
+      "moral_rights": {
+        "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32001L0029",
+        "confidence": "high",
+        "checked": "2026-11-26"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "moral_rights",
+        "from": "Paternity & integrity",
+        "to": "Outside the Directive's scope; left to Member States and Berne Convention (recital 19)"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "author_rights",
+        "from": "Reproduction & distribution",
+        "to": "Reproduction, communication to the public and making available, distribution (arts 2-4)"
+      },
       {
         "date": "2026-11-25",
         "field": "digital_protection",

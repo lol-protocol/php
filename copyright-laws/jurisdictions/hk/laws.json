@@ -6,11 +6,11 @@
     "law_name": "Copyright Ordinance",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",
-    "author_rights": "Economic rights only",
-    "moral_rights": "Limited moral rights",
+    "author_rights": "Economic rights and author's moral rights (identification, derogatory treatment)",
+    "moral_rights": "Right to be identified as author; right to object to derogatory treatment; false attribution; moral rights pass on death",
     "orphan_works": "Collective management allowed",
     "digital_protection": "Anti-circumvention of effective technological measures, devices & services (ss. 273-273H)",
-    "fair_use_exceptions": "Fair use exceptions",
+    "fair_use_exceptions": "Fair dealing for research, private study, instruction (s. 41A) and public administration (s. 54A); print disability exceptions (ss. 40A-40F)",
     "registration_required": "No",
     "enforcement_body": "Hong Kong IP Department",
     "treaties_signatory": "Berne/TRIPS/WCT",
@@ -21,15 +21,48 @@
     "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": "",
+    "last_checked": "2026-11-26",
     "sources": {
       "digital_protection": {
         "url": "https://www.wipo.int/wipolex/ru/text/202338",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/ru/text/202338",
+        "confidence": "medium",
+        "checked": "2026-11-26"
+      },
+      "moral_rights": {
+        "url": "https://www.wipo.int/wipolex/ru/text/202338",
+        "confidence": "medium",
+        "checked": "2026-11-26"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.wipo.int/wipolex/ru/text/202338",
+        "confidence": "high",
+        "checked": "2026-11-26"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "fair_use_exceptions",
+        "from": "Fair use exceptions",
+        "to": "Fair dealing for research, private study, instruction (s. 41A) and public administration (s. 54A); print disability exceptions (ss. 40A-40F)"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "moral_rights",
+        "from": "Limited moral rights",
+        "to": "Right to be identified as author; right to object to derogatory treatment; false attribution; moral rights pass on death"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "author_rights",
+        "from": "Economic rights only",
+        "to": "Economic rights and author's moral rights (identification, derogatory treatment)"
+      },
       {
         "date": "2026-11-25",
         "field": "linked_resources",

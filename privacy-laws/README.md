@@ -83,7 +83,7 @@ npm run changes       # records what changed since the last commit in changes.cs
 npm run replace-url -- <old> <new>   # swaps a dead reference URL in the master CSV and source_urls.csv (--dry to count)
 npm run sources -- add <CODE> <field> <url>   # sets the source of one value in field_sources.csv / source_urls.csv
 npm run apply-research -- findings.csv --batch=batch.txt   # writes researched facts (code,field,value,conf,source) as new rows / patched cells, each with its source
-npm run verify -- plan --out=<dir>        # tasks to check the "(unconfirmed)" values against their sources; `verify apply --from=<dir>` applies the findings (see CONTRIBUTING.md)
+npm run verify -- plan --out=<dir>        # tasks to check the "(unconfirmed)" values against their sources (`--curated` adds the rows never checked); `verify apply --from=<dir>` applies the findings (see CONTRIBUTING.md)
 npm run validate      # strict checks: columns, dates, URLs, regions, duplicates…
 npm run build         # regenerates {tld}/ folders and index.json (idempotent)
 npm test              # also fails if generated files are out of date

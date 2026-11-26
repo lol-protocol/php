@@ -6,12 +6,12 @@
     "law_name": "Hungarian Copyright Act",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
-    "author_rights": "Full economic rights",
+    "author_rights": "Economic rights alongside personal rights (s. 9(1)); granted by usage contract, exclusive only if expressly agreed (ss 42-43)",
     "moral_rights": "Moral rights recognized",
-    "orphan_works": "Permitted use after a diligent search; use is recorded in a public register (ss 41/A-41/H)",
-    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
+    "orphan_works": "Use only under licence from the Hungarian IP Office after a diligent search (ss 41/A-41/B); licences kept in a public register (s. 41/E)",
+    "digital_protection": "Anti-circumvention of effective technological measures (s. 95(1)-(3))",
     "fair_use_exceptions": "Educational exceptions",
-    "registration_required": "No",
+    "registration_required": "No (voluntary registration possible, ss 94/C-94/D; rights arise on creation, s. 9(1))",
     "enforcement_body": "Hungarian Intellectual Property Office (HIPO / SZTNH)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": "",
+    "last_checked": "2026-11-26",
     "sources": {
       "enforcement_body": {
         "url": "https://sztnh.gov.hu/en/home/about-us",
@@ -36,15 +36,49 @@
       "digital_protection": {
         "url": "https://net.jogtar.hu/jogszabaly?docid=99900076.tv",
         "confidence": "high",
-        "checked": "2026-11-25"
+        "checked": "2026-11-26"
       },
       "orphan_works": {
         "url": "https://net.jogtar.hu/jogszabaly?docid=99900076.tv",
         "confidence": "high",
-        "checked": "2026-11-25"
+        "checked": "2026-11-26"
+      },
+      "author_rights": {
+        "url": "https://net.jogtar.hu/jogszabaly?docid=99900076.tv",
+        "confidence": "high",
+        "checked": "2026-11-26"
+      },
+      "registration_required": {
+        "url": "https://net.jogtar.hu/jogszabaly?docid=99900076.tv",
+        "confidence": "high",
+        "checked": "2026-11-26"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "registration_required",
+        "from": "No",
+        "to": "No (voluntary registration possible, ss 94/C-94/D; rights arise on creation, s. 9(1))"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "digital_protection",
+        "from": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
+        "to": "Anti-circumvention of effective technological measures (s. 95(1)-(3))"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "orphan_works",
+        "from": "Permitted use after a diligent search; use is recorded in a public register (ss 41/A-41/H)",
+        "to": "Use only under licence from the Hungarian IP Office after a diligent search (ss 41/A-41/B); licences kept in a public register (s. 41/E)"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "author_rights",
+        "from": "Full economic rights",
+        "to": "Economic rights alongside personal rights (s. 9(1)); granted by usage contract, exclusive only if expressly agreed (ss 42-43)"
+      },
       {
         "date": "2026-11-25",
         "field": "orphan_works",

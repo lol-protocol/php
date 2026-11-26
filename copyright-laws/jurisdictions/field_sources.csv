@@ -153,7 +153,7 @@ CZ,,enforcement_body,ba6862f2fb,high,2026-10-14
 CZ,,term_of_protection,fd695410e6,medium,2026-11-12
 CZ,,moral_rights,fd695410e6,medium,2026-11-12
 CZ,,digital_protection,fd695410e6,medium,2026-11-12
-CZ,,orphan_works,fd695410e6,medium,2026-11-12
+CZ,,orphan_works,fd695410e6,high,2026-11-26
 DE,,enforcement_body,10903b8072,medium,2026-10-14
 DJ,"Law No. 154/AN/06 of July 23, 2006 on the Protection of Copyright and Related Rights",law_name,9fb4c43da5,high,2026-10-25
 DJ,"Law No. 154/AN/06 of July 23, 2006 on the Protection of Copyright and Related Rights",protection_type,9fb4c43da5,high,2026-10-25
@@ -197,7 +197,7 @@ GA,"Law No. 1/87 of 29 July 1987 on Copyright and Neighbouring Rights; the Bangu
 GB,,term_of_protection,527bd43f2e,high,2026-11-12
 GB,,moral_rights,527bd43f2e,high,2026-11-12
 GB,,fair_use_exceptions,527bd43f2e,high,2026-11-12
-GB,,orphan_works,527bd43f2e,high,2026-11-12
+GB,,orphan_works,527bd43f2e,high,2026-11-26
 GD,"Copyright Act, 2011 (Act No. 21 of 2011)",law_name,8ac073c650,high,2026-10-25
 GD,"Copyright Act, 2011 (Act No. 21 of 2011)",protection_type,8ac073c650,medium,2026-10-25
 GD,"Copyright Act, 2011 (Act No. 21 of 2011)",term_of_protection,66f985a266,medium,2026-10-25
@@ -250,8 +250,8 @@ HU,,enforcement_body,cba8d3f9c9,high,2026-10-14
 ID,,digital_protection,57653a69eb,high,2026-10-14
 IE,,term_of_protection,c7a4ca21b3,high,2026-11-12
 IE,,moral_rights,c7a4ca21b3,high,2026-11-12
-IE,,digital_protection,c7a4ca21b3,high,2026-11-12
-IE,,orphan_works,c7a4ca21b3,high,2026-11-12
+IE,,digital_protection,c7a4ca21b3,high,2026-11-26
+IE,,orphan_works,c7a4ca21b3,high,2026-11-26
 IL,,law_name,fb87b6738a,high,2026-10-14
 IL,,term_of_protection,ccdb0c534c,high,2026-10-14
 IL,,digital_protection,df58d9c5d9,medium,2026-10-14
@@ -393,7 +393,7 @@ MW,,orphan_works,6344e0cf9d,high,2026-10-14
 MW,,digital_protection,6344e0cf9d,high,2026-10-14
 MW,,fair_use_exceptions,e409ddb844,medium,2026-10-14
 MX,,notes,721816a8c4,medium,2026-10-14
-MY,,digital_protection,b834fbfb7d,high,2026-10-14
+MY,,digital_protection,b834fbfb7d,high,2026-11-26
 MY,,enforcement_body,c0508ee1d5,high,2026-10-14
 MZ,Law No. 9/2022 of 29 June 2022 on Copyright and Related Rights (repeals Law No. 4/2001),law_name,6606225a7c,high,2026-10-16
 MZ,Law No. 9/2022 of 29 June 2022 on Copyright and Related Rights (repeals Law No. 4/2001),protection_type,6606225a7c,high,2026-10-16
@@ -432,10 +432,10 @@ NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta 
 NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",enforcement_body,a60fe93d39,medium,2026-10-17
 NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",treaties_signatory,ed59a99f5c,high,2026-10-17
 NL,,enforcement_body,829a5c58f0,medium,2026-10-14
-NL,,term_of_protection,a40079851d,high,2026-11-12
-NL,,moral_rights,a40079851d,high,2026-11-12
-NL,,digital_protection,a40079851d,high,2026-11-12
-NL,,orphan_works,a40079851d,high,2026-11-12
+NL,,term_of_protection,a40079851d,high,2026-11-26
+NL,,moral_rights,a40079851d,high,2026-11-26
+NL,,digital_protection,a40079851d,high,2026-11-26
+NL,,orphan_works,a40079851d,high,2026-11-26
 NO,,orphan_works,59cee3bd23,medium,2026-10-14
 NP,,digital_protection,5c42d875fb,medium,2026-10-15
 NR,"Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",law_name,a24063c8c1,high,2026-10-25
@@ -463,8 +463,8 @@ PG,Copyright and Neighbouring Rights Act 2000 (Act No. 21 of 2000),registration_
 PG,Copyright and Neighbouring Rights Act 2000 (Act No. 21 of 2000),treaties_signatory,2f35ce92dc,medium,2026-10-16
 PH,,digital_protection,f60257aeee,high,2026-10-14
 PH,,enforcement_body,d468d36e18,high,2026-10-14
-PH,,term_of_protection,50e4450eae,medium,2026-11-12
-PH,,moral_rights,50e4450eae,medium,2026-11-12
+PH,,term_of_protection,50e4450eae,high,2026-11-26
+PH,,moral_rights,50e4450eae,high,2026-11-26
 PK,,digital_protection,262581f711,medium,2026-10-15
 PL,,enforcement_body,48fe7a250c,medium,2026-10-14
 PS,"Copyright Act 1911 (UK) as extended to Palestine by Order in Council of 21 March 1924, with the Copyright Ordinance 1924 (Mandate-era law, never replaced; a 2013 draft Palestinian copyright law was not adopted because the Legislative Council was suspended)",law_name,b40ce3aaf3,medium,2026-10-18
@@ -518,8 +518,8 @@ SD,"Copyright and Neighbouring Rights Protection and Literary and Artistic Works
 SE,,enforcement_body,099b5f1ce9,medium,2026-10-14
 SE,,term_of_protection,af7ea675ed,high,2026-11-12
 SE,,moral_rights,af7ea675ed,high,2026-11-12
-SE,,digital_protection,af7ea675ed,high,2026-11-12
-SE,,orphan_works,af7ea675ed,high,2026-11-12
+SE,,digital_protection,af7ea675ed,high,2026-11-26
+SE,,orphan_works,af7ea675ed,high,2026-11-26
 SE,,fair_use_exceptions,af7ea675ed,high,2026-11-12
 SG,,law_name,49691d5f1f,high,2026-10-14
 SG,,term_of_protection,5a3ddb3a19,high,2026-10-14
@@ -639,7 +639,7 @@ UG,,orphan_works,d704c36c6b,low,2026-10-21
 UG,,digital_protection,d704c36c6b,low,2026-10-21
 UG,,fair_use_exceptions,5829c52a62,medium,2026-10-14
 UG,,notes,9ddd359215,medium,2026-10-21
-US,,term_of_protection,5d603c002f,high,2026-11-12
+US,,term_of_protection,5d603c002f,high,2026-11-26
 UY,,orphan_works,2f946ee09b,medium,2026-10-15
 UY,,digital_protection,5c1ddde337,medium,2026-10-14
 UZ,,digital_protection,d0350cefc1,medium,2026-11-26
@@ -735,5 +735,36 @@ JP,,moral_rights,84a3e4bb76,high,2026-11-25
 JP,,digital_protection,84a3e4bb76,high,2026-11-25
 JP,,orphan_works,84a3e4bb76,medium,2026-11-25
 HU,,term_of_protection,67fe59f6b2,high,2026-11-25
-HU,,digital_protection,67fe59f6b2,high,2026-11-25
-HU,,orphan_works,67fe59f6b2,high,2026-11-25
+HU,,digital_protection,67fe59f6b2,high,2026-11-26
+HU,,orphan_works,67fe59f6b2,high,2026-11-26
+BR,,moral_rights,2dbbcf6e94,high,2026-11-26
+BR,,fair_use_exceptions,2dbbcf6e94,high,2026-11-26
+BR,,registration_required,2dbbcf6e94,high,2026-11-26
+CZ,,registration_required,fd695410e6,medium,2026-11-26
+EU,,author_rights,2102d7b961,high,2026-11-26
+EU,,moral_rights,2102d7b961,high,2026-11-26
+GB,,author_rights,527bd43f2e,high,2026-11-26
+GB,,registration_required,527bd43f2e,medium,2026-11-26
+HK,,author_rights,535fae1a4a,medium,2026-11-26
+HK,,moral_rights,535fae1a4a,medium,2026-11-26
+HK,,fair_use_exceptions,535fae1a4a,high,2026-11-26
+HU,,author_rights,67fe59f6b2,high,2026-11-26
+HU,,registration_required,67fe59f6b2,high,2026-11-26
+ID,,author_rights,d9269f298e,medium,2026-11-26
+ID,,registration_required,d9269f298e,medium,2026-11-26
+IE,,fair_use_exceptions,c7a4ca21b3,high,2026-11-26
+IE,,registration_required,c7a4ca21b3,medium,2026-11-26
+MY,,term_of_protection,b834fbfb7d,high,2026-11-26
+MY,,author_rights,b834fbfb7d,high,2026-11-26
+MY,,moral_rights,b834fbfb7d,high,2026-11-26
+MY,,orphan_works,b834fbfb7d,medium,2026-11-26
+MY,,fair_use_exceptions,b834fbfb7d,high,2026-11-26
+MY,,registration_required,c0508ee1d5,high,2026-11-26
+NL,,author_rights,a40079851d,high,2026-11-26
+NL,,fair_use_exceptions,a40079851d,high,2026-11-26
+PH,,author_rights,50e4450eae,high,2026-11-26
+PH,,orphan_works,50e4450eae,medium,2026-11-26
+PH,,fair_use_exceptions,50e4450eae,high,2026-11-26
+PH,,registration_required,50e4450eae,high,2026-11-26
+SE,,registration_required,af7ea675ed,medium,2026-11-26
+US,,moral_rights,5d603c002f,medium,2026-11-26
