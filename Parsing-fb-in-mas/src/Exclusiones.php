@@ -98,6 +98,9 @@ final class Exclusiones
     }
 
     /**
+     * @deprecated desde 2026-11-15: los programas de `bin/` filtran de a uno con {@see contiene()}, en streaming; este
+     *             método carga toda la lista en memoria. Se conserva como referencia y por sus pruebas.
+     *
      * @param list<array<string, mixed>> $perfiles
      * @return array{perfiles: list<array<string, mixed>>, excluidos: int}
      */

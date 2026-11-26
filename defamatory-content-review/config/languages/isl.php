@@ -32,6 +32,8 @@ return [
             ['word' => 'asni', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'kvikindi', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'belja', 'riskType' => 'animal', 'severity' => 'medium'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'api', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'vitsmunir' => [
             ['word' => 'fífl', 'riskType' => 'intelectual', 'severity' => 'high'],
@@ -47,6 +49,13 @@ return [
             ['word' => 'kúkalabbi', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'þursi', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'fáráður', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'bjálfi', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'glópur', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'flón', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'tossi', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'heimskur', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'treggáfaður', 'riskType' => 'intelectual', 'severity' => 'low'],
         ],
         'likamlegt' => [
             ['word' => 'ljótur', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -99,6 +108,13 @@ return [
             ['word' => 'skræfa', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'drykkjusvín', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'fyllibytta', 'riskType' => 'moral', 'severity' => 'medium'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'skúrkur', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'þorpari', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'bófi', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'hræsnari', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'svindlari', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'bastarður', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
         'kyn' => [
             ['word' => 'hóra', 'riskType' => 'genero', 'severity' => 'high'],
@@ -116,6 +132,9 @@ return [
             ['word' => 'djöfull', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'helvítis', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'andskotans', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'fjárinn', 'riskType' => 'ordinario', 'severity' => 'low'],
+            ['word' => 'bölvaður', 'riskType' => 'ordinario', 'severity' => 'low'],
         ],
         'hlaeg' => [
             ['word' => 'aula', 'riskType' => 'burlesco', 'severity' => 'low'],

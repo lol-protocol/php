@@ -51,13 +51,16 @@ EDADES_DEL_MODELO = (15, 30, 45, 60)
 # sí las revisiones de la ONU (0,59 años) y las dos fuentes de mortalidad infantil, Gapminder y CME (6,6 %), en
 # 1950-2009. Antes de 1950 no hay una segunda fuente independiente (Gapminder y Clio Infra salen de la misma
 # compilación de Riley y casi no discrepan: mediana de 0,03 años, lo que daría una precisión falsa), así que son
-# **supuestos del proyecto**, no mediciones: están ahí para que ninguna cifra parezca más firme de lo que es.
+# **supuestos del proyecto**, no mediciones, y deliberadamente **prudentes** (anchos de ±5, ±8 y ±10 años, que
+# cubren con holgura lo que la literatura suele dar para estimaciones de esas épocas): están ahí para que ninguna
+# cifra parezca más firme de lo que es. Son un piso, no un techo.
 BANDAS = (
     (1950, 0.6, 0.07, "medida"),
-    (1900, 3.0, 0.15, "supuesto"),
-    (1800, 5.0, 0.20, "supuesto"),
-    (0, 6.0, 0.25, "supuesto"),
+    (1900, 5.0, 0.20, "supuesto"),
+    (1800, 8.0, 0.25, "supuesto"),
+    (0, 10.0, 0.30, "supuesto"),
 )
+REGIONES_DE_RILEY = {"Africa": "África", "Americas": "América", "Asia": "Asia", "Europe": "Europa", "Oceania": "Oceanía"}
 DECADA_MINIMA_ANTES_DE_1800 = 1500
 
 # Edad media a la que mueren los niños que no llegan a los 5 años. Es un supuesto (en la práctica va de
@@ -163,6 +166,20 @@ def leer_riley(ruta, codigos):
     if desconocidos:
         raise SystemExit("Entidades de Our World in Data (Riley) sin país ni omisión (añádelas a ALIAS_OWID u "
                          f"OMITIDOS_OWID): {sorted(desconocidos)}")
+    return series
+
+
+def leer_riley_regiones(ruta):
+    """{«R:Región»: {año: esperanza}} de las cinco regiones del archivo de Riley y Clio Infra, solo antes de 1800.
+
+    Riley fija para cada región un valor de la «era previa a la transición sanitaria» y lo asigna al año 1770, «por
+    coherencia»: no es una medición de esa década, sino el promedio de las estimaciones de los países de la región
+    antes de que empezara su transición."""
+    series = {}
+    for f in _filas(ruta):
+        region = REGIONES_DE_RILEY.get(f["Entity"])
+        if region and f["Life expectancy"] != "" and int(f["Year"]) < 1800:
+            series.setdefault(f"R:{region}", {})[int(f["Year"])] = float(f["Life expectancy"])
     return series
 
 
@@ -280,12 +297,13 @@ def modelo_con_bandas(q5_mil, e0, edades, sexo, ancho_e0, rel_q5):
     return centro, bandas
 
 
-def construir(e0_total, q5, e0_mujeres, e0_hombres, edades_modelo=(), riley=None):
+def construir(e0_total, q5, e0_mujeres, e0_hombres, edades_modelo=(), riley=None, riley_regiones=None):
     """Las filas de esperanza_vida.csv (listas de texto, en el orden de COLUMNAS) a partir de las series.
 
     `edades_modelo` son las edades (grupos del modelo) para las que se agregan filas modeladas: de ambos sexos desde
     1800 y de mujeres y hombres desde 1950 (con la mortalidad de 0 a 5 años de ambos sexos, que no hay por sexo).
-    `riley` ({país: {año: e0}}) agrega las décadas anteriores a 1800 de los pocos países que las tienen (edad 0)."""
+    `riley` ({país: {año: e0}}) agrega las décadas anteriores a 1800 de los pocos países que las tienen (edad 0);
+    `riley_regiones` ({«R:Región»: {año: e0}}), el valor previo a la transición sanitaria de cada región."""
     filas = []
     sin_modelo = []  # (sexo, país, década) en que el modelo no pudo cuadrar e0 con 5q0
     modeladas = (FUENTE_MODELO, FUENTE_MODELO_SEXO, FUENTE_RILEY)
@@ -336,8 +354,9 @@ def construir(e0_total, q5, e0_mujeres, e0_hombres, edades_modelo=(), riley=None
                         # A los 5 años no se guarda la supervivencia: sería la de ambos sexos, no la de este.
                         fila(codigo, decada, sexo, edad, por_edad[edad][0], None if edad == 5 else por_edad[edad][1],
                              FUENTE_MODELO_SEXO, bandas.get(edad))
-    for codigo in sorted(riley or {}):
-        for decada, e0 in promedios_con_datos(riley[codigo], DECADA_MINIMA_ANTES_DE_1800, 1799).items():
+    for codigo in sorted({**(riley or {}), **(riley_regiones or {})}):
+        series = (riley or {}).get(codigo) or (riley_regiones or {})[codigo]
+        for decada, e0 in promedios_con_datos(series, DECADA_MINIMA_ANTES_DE_1800, 1799).items():
             ancho, _, _ = banda_de(decada)
             fila(codigo, decada, "T", 0, e0, None, FUENTE_RILEY, (e0 - ancho, e0 + ancho))
     # El orden final es estable: país, sexo (T, F, M), edad, década.
@@ -347,6 +366,7 @@ def construir(e0_total, q5, e0_mujeres, e0_hombres, edades_modelo=(), riley=None
     return filas
 
 
+FUENTE_INGLATERRA = "wrigley-schofield-owid"
 FUENTE_LONDRES = "londres-owid"
 FUENTE_COLERA = "thomas-2015-owid"
 
@@ -361,6 +381,21 @@ def construir_londres(ruta):
         if f[viruela] == "" or f[totales] == "":
             continue
         filas.append([int(f["Year"]), int(float(f[totales])), int(float(f[viruela])), "verificado", FUENTE_LONDRES])
+    return sorted(filas)
+
+
+def construir_inglaterra(ruta):
+    """Las filas de inglaterra_tasas.csv: [año, natalidad, mortalidad (por mil), estado, fuente], Inglaterra y Gales.
+
+    Hasta 1861 la fuente (Wrigley y Schofield) da quinquenios, y el año de cada fila es el primero del quinquenio;
+    desde 1862 son anuales (Mitchell) y, desde 2004, de la ONS del Reino Unido."""
+    filas = []
+    for f in _filas(ruta):
+        natalidad = next(f[c] for c in f if c.startswith("Crude Birth Rate"))
+        mortalidad = next(f[c] for c in f if c.startswith("Crude Death Rate"))
+        if natalidad == "" or mortalidad == "":
+            continue
+        filas.append([int(f["Year"]), f"{float(natalidad):g}", f"{float(mortalidad):g}", "verificado", FUENTE_INGLATERRA])
     return sorted(filas)
 
 
@@ -451,6 +486,7 @@ def main(argv=None):
         leer_gapminder(f / "esperanza-hombres-gapminder.csv", "geo", "life_expectancy_male", codigos),
         edades_modelo=EDADES_DEL_MODELO,
         riley=leer_riley(f / "esperanza-riley-clio-owid.csv", codigos),
+        riley_regiones=leer_riley_regiones(f / "esperanza-riley-clio-owid.csv"),
     )
     comprobar_colera(f / "colera-gran-bretana-owid.csv", _filas(DATOS / "epidemias.csv"))
     comprobar_omim(f / "mondo-edit.obo", _filas(DATOS / "hereditarias.csv"))
@@ -460,6 +496,9 @@ def main(argv=None):
     londres = construir_londres(f / "muertes-londres-owid.csv")
     _escribir("londres_muertes", londres)
     print(f"londres_muertes.csv: {len(londres)} años.")
+    inglaterra = construir_inglaterra(f / "tasas-inglaterra-owid.csv")
+    _escribir("inglaterra_tasas", inglaterra)
+    print(f"inglaterra_tasas.csv: {len(inglaterra)} años.")
     paises = construir_paises(args.paises)
     _escribir("paises", paises)
     print(f"paises.csv: {len(paises)} países.")

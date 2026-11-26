@@ -1,7 +1,7 @@
 <!-- Generado por generar.js desde datos/astros.json: no lo edites a mano. -->
 # Características de los astros
 
-Versión de los datos: 1.0.0. Valores de referencia redondeados (NASA Planetary Fact Sheet y fichas de satélites; estrellas, valores aproximados de la literatura). Las estrellas de radio incierto llevan incertidumbre «alta». Las texturas son procedurales: colores aproximados, no fotografías ni mapas científicos.
+Versión de los datos: 1.1.0. Valores de referencia redondeados (NASA Planetary Fact Sheet y fichas de satélites; estrellas, valores aproximados de la literatura). El radio de cada estrella trae su incertidumbre (baja, media o alta). Las texturas son procedurales: colores aproximados, no fotografías ni mapas científicos.
 
 ## Planetas
 
@@ -12,15 +12,15 @@ Versión de los datos: 1.0.0. Valores de referencia redondeados (NASA Planetary 
 | Tierra | Planeta rocoso | 6.371,0 | 5,97 × 10²⁴ | 5.513 | 9,82 | 23,9 h | 23,44 | 365,26 | 288 | 1 | No | Nitrógeno y oxígeno, con nubes de agua |
 | Marte | Planeta rocoso | 3.389,5 | 6,42 × 10²³ | 3.934 | 3,73 | 24,6 h | 25,19 | 686,98 | 210 | 2 | No | Fina, de CO₂ |
 | Júpiter | Gigante gaseoso | 69.911,0 | 1,90 × 10²⁷ | 1.326 | 25,92 | 9,93 h | 3,13 | 4.332,60 | 165 | 95 | Sí | Hidrógeno y helio, con bandas de nubes |
-| Saturno | Gigante gaseoso | 58.232,0 | 5,68 × 10²⁶ | 687 | 11,19 | 10,7 h | 26,73 | 10.759,20 | 134 | 146 | Sí | Hidrógeno y helio, con bandas suaves |
+| Saturno | Gigante gaseoso | 58.232,0 | 5,68 × 10²⁶ | 687 | 11,19 | 10,7 h | 26,73 | 10.759,20 | 134 | 274 | Sí | Hidrógeno y helio, con bandas suaves |
 | Urano | Gigante de hielo | 25.362,0 | 8,68 × 10²⁵ | 1.270 | 9,01 | −17,2 h | 97,77 | 30.685,00 | 76 | 28 | Sí | Hidrógeno, helio y metano (le da el tono cian) |
 | Neptuno | Gigante de hielo | 24.622,0 | 1,02 × 10²⁶ | 1.638 | 11,27 | 16,1 h | 28,32 | 60.190,00 | 72 | 16 | Sí | Hidrógeno, helio y metano; vientos de los más rápidos |
 | Plutón | Planeta enano (hielo y roca) | 1.188,3 | 1,30 × 10²² | 1.854 | 0,62 | −6,39 d | 122,53 | 90.560,00 | 44 | 5 | No | Tenue, de nitrógeno que se congela en parte de la órbita |
 | Ceres | Planeta enano (el mayor del cinturón de asteroides) | 469,7 | 9,38 × 10²⁰ | 2.161 | 0,28 | 9,07 h | 4,00 | 1.681,00 | 168 | 0 | No | Casi inexistente (exosfera de vapor de agua) |
 | Eris | Planeta enano (el más masivo del Sistema Solar exterior) | 1.163,0 | 1,66 × 10²² | 2.519 | 0,82 | 25,9 h | — | 203.830,00 | 42 | 1 | No | Posiblemente tenue y estacional |
-| Makemake | Planeta enano (cinturón de Kuiper) | 715,0 | 3,10 × 10²¹ | 2.025 | 0,40 | 22,8 h | — | 40.590,00 | 32 | 1 | No | Sin atmósfera apreciable |
+| Makemake | Planeta enano (cinturón de Kuiper) | 715,0 | 3,10 × 10²¹ | 2.025 | 0,40 | 22,8 h | — | 111.850,00 | 32 | 1 | No | Sin atmósfera apreciable |
 
-Rotación negativa = sentido retrógrado. Las densidades y gravedades salen de la masa y el radio con G = 6,674 × 10⁻¹¹. Plutón, Ceres, Eris y Makemake son planetas enanos. La inclinación del eje de Eris y Makemake no se conoce bien («—»), y la rotación de Eris es poco precisa.
+Rotación negativa = sentido retrógrado. Las densidades y gravedades salen de la masa y el radio con G = 6,674 × 10⁻¹¹. Plutón, Ceres, Eris y Makemake son planetas enanos. La inclinación del eje de Eris y Makemake no se conoce bien («—»), y la rotación de Eris es poco precisa. Venus, Urano y Plutón traen la inclinación del eje mayor de 90° y, además, la rotación negativa: son dos maneras de decir lo mismo (giro retrógrado). «Lunas conocidas» son las cifras de NASA de abril de 2025 (Júpiter 95, Saturno 274, Urano 28 y Neptuno 16); el recuento sigue creciendo y la prensa de 2026 habla de más de 100 lunas en Júpiter y cerca de 290 en Saturno (sin confirmar).
 
 ## Lunas
 
@@ -48,7 +48,7 @@ Rotación negativa = sentido retrógrado. Las densidades y gravedades salen de l
 | Tritón | Neptuno | 1.353,4 | 2,14 × 10²² | 0,779 | −5,88 d | 5,88 | 354.759 | 38 | Tenue, de nitrógeno |
 | Caronte | Plutón | 606,0 | 1,59 × 10²¹ | 0,288 | −6,39 d | 6,39 | 19.591 | 53 | Nula |
 
-Las lunas de Marte son pequeñas e irregulares; las temperaturas de las lunas pequeñas son aproximadas. Mimas, Tetis, Dione, Rea, Jápeto, las cinco lunas de Urano y Caronte giran sincronizadas con su órbita (salvo Caronte, que gira a la par de Plutón: ambos de forma retrógrada). La Luna gira sincronizada con su órbita: su rotación es igual a su periodo orbital (el valor de la tabla es el de rotación, no el de la órbita).
+Las lunas de Marte son pequeñas e irregulares. Todas las lunas de la tabla giran sincronizadas con su órbita: su rotación es igual a su periodo orbital (la tabla muestra las dos columnas, y una prueba comprueba que coincidan). Tritón orbita en sentido retrógrado, y Caronte gira a la par de Plutón, que gira de forma retrógrada: por eso su rotación sale negativa. Las temperaturas de las lunas pequeñas son aproximadas.
 
 ## Soles
 

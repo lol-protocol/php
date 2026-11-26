@@ -21,7 +21,7 @@
 
   const $ = function (id) { return document.getElementById(id); };
 
-  const AJUSTES_POR_OMISION = { fidelidad: 0.6, variacion: 0.4, colorModal: 0.3, contra: 0.6, cambiosCompas: 0.15, estilo: 'auto', tempo: 1, volumen: 0.8, reverb: 0.55, modoVisual: 'milkdrop', autoVisual: true, bits: '16', semilla: '' };
+  const AJUSTES_POR_OMISION = { movimientoReducido: null, fidelidad: 0.6, variacion: 0.4, colorModal: 0.3, contra: 0.6, cambiosCompas: 0.15, estilo: 'auto', tempo: 1, volumen: 0.8, reverb: 0.55, modoVisual: 'milkdrop', autoVisual: true, bits: '16', semilla: '' };
 
   const estado = {
     canciones: [], // {id, nombre, origen: 'ejemplo'|'propio', bytes, midi, analisis, activo}
@@ -41,17 +41,43 @@
     grabacion: null,
     ajustes: Object.assign({}, AJUSTES_POR_OMISION),
     ultimoCambioVisual: 0,
+    pistas: {}, // la pista de melodía elegida a mano por canción: {id: clave}
+    semillaPersistida: null,
+    semillaSesion: null,
+    // ganchos que ponen las sesiones (panel-sesiones.js)
+    alInfo: null,
+    alTick: null,
+    alTerminarMidi: null,
+    alBiblioteca: null,
+    panelVisual: null,
   };
 
-  function guardarAjustes() { window.Almacen.guardarAjustes(estado.ajustes); }
-  function cargarAjustes() { window.Almacen.cargarAjustes(estado.ajustes); }
+  // La semilla que se guarda con los ajustes es la que la persona escribió, no la de un favorito
+  // que está sonando: si no, al abrir la aplicación otra vez sonaría siempre esa misma música.
+  function guardarAjustes() {
+    const a = Object.assign({}, estado.ajustes);
+    if (estado.semillaPersistida != null) a.semilla = estado.semillaPersistida;
+    window.Almacen.guardarAjustes(a);
+  }
+  function cargarAjustes() {
+    window.Almacen.cargarAjustes(estado.ajustes);
+    estado.semillaPersistida = estado.ajustes.semilla;
+  }
 
   // ------------------------------------------------------------ biblioteca
 
   function agregarCancion(c) {
     try {
       c.midi = M.leer(c.bytes);
-      c.analisis = A.analizar(c.midi, c.nombre);
+      c.candidatas = A.candidatas(c.midi);
+      c.pistaElegida = estado.pistas[c.id] || null;
+      c.analisis = A.analizar(c.midi, c.nombre, { melodia: c.pistaElegida });
+      if (c.analisis && c.analisis.melodiaPedidaInvalida) {
+        // la pista guardada ya no existe en este archivo: se olvida
+        c.pistaElegida = null;
+        delete estado.pistas[c.id];
+        window.Almacen.guardarPistas(estado.pistas);
+      }
     } catch (e) {
       c.error = e.message;
     }
@@ -131,6 +157,7 @@
       chk.checked = c.activo;
       chk.disabled = !c.analisis;
       chk.title = 'Usar en la música infinita';
+      chk.setAttribute('aria-label', 'Usar «' + c.nombre + '» en la música infinita');
       chk.addEventListener('change', function () {
         c.activo = chk.checked;
         guardarApagados();
@@ -147,11 +174,34 @@
         const a = c.analisis;
         meta.textContent = T.nombreTonalidad(a.tonica, a.modo) + ' · ' + a.bpm + ' bpm · ' + a.compas.join('/') + ' · ' + a.frases.length + ' frases';
       } else meta.textContent = c.error ? 'no se pudo leer' : 'sin melodía';
+      // elegir qué pista es la melodía, si el MIDI tiene más de una candidata
+      const pista = document.createElement('span');
+      if (c.candidatas && c.candidatas.length >= 2) {
+        const sel = document.createElement('select');
+        sel.className = 'pista';
+        sel.title = 'Qué pista es la melodía (la que se cita)';
+        sel.setAttribute('aria-label', 'Pista de la melodía de ' + c.nombre);
+        const auto = c.candidatas.find(function (x) { return x.automatica; });
+        const o0 = document.createElement('option');
+        o0.value = '';
+        o0.textContent = 'Melodía: automática' + (auto ? ' (' + A.describir(auto) + ')' : '');
+        sel.append(o0);
+        for (const x of c.candidatas) {
+          if (x.puntaje === null && !x.todas) continue; // grupos de menos de 6 notas
+          const o = document.createElement('option');
+          o.value = x.clave;
+          o.textContent = A.describir(x);
+          sel.append(o);
+        }
+        sel.value = c.pistaElegida || '';
+        sel.addEventListener('change', function () { elegirPista(c, sel.value); });
+        pista.append(sel);
+      }
       const tal = document.createElement('button');
       tal.textContent = '▶ tal cual';
       tal.disabled = !c.midi;
       tal.addEventListener('click', function () { tocarMidi(c); });
-      li.append(chk, nom, meta, tal);
+      li.append(chk, nom, meta, pista, tal);
       if (c.origen === 'propio') {
         const borrar = document.createElement('button');
         borrar.textContent = '✕';
@@ -170,6 +220,38 @@
       ul.append(li);
     }
     contar();
+    if (estado.alBiblioteca) estado.alBiblioteca();
+  }
+
+  /** Cambia la pista de melodía de una canción, la guarda y vuelve a analizarla. */
+  /**
+   * Fija la pista de melodía de una canción, la guarda y la vuelve a analizar, sin avisar ni repintar.
+   * Devuelve false si esa pista no da una melodía que se pueda usar (queda la automática).
+   */
+  function fijarPista(c, clave) {
+    c.pistaElegida = clave || null;
+    if (clave) estado.pistas[c.id] = clave;
+    else delete estado.pistas[c.id];
+    c.analisis = A.analizar(c.midi, c.nombre, { melodia: c.pistaElegida });
+    let valida = true;
+    if (c.analisis && c.analisis.melodiaPedidaInvalida) {
+      valida = false;
+      c.pistaElegida = null;
+      delete estado.pistas[c.id];
+    }
+    window.Almacen.guardarPistas(estado.pistas);
+    return valida;
+  }
+
+  function elegirPista(c, clave) {
+    const valida = fijarPista(c, clave);
+    if (!valida) {
+      avisar('Esa pista no tiene una melodía que se pueda usar: queda la automática.');
+    } else if (c.analisis) {
+      avisar('«' + c.nombre + '»: ' + (clave ? 'melodía elegida a mano (' + (clave === A.TODAS ? 'todas las pistas juntas' : 'pista ' + (Number(clave.split(':')[0]) + 1)) + ')' : 'melodía automática') + ', ' + c.analisis.frases.length + ' frases.');
+    }
+    pintarLista();
+    actualizarGenerador();
   }
 
   function contar() {
@@ -247,8 +329,9 @@
     estado.vis.ponerModo(estado.ajustes.modoVisual);
     if (estado.vis.modo !== estado.ajustes.modoVisual) estado.vis.ponerModo('milkdrop');
     estado.motor.alTocar = function (ev, t) { estado.vis.nota(ev, t); };
+    estado.vis.ponerMovimientoReducido(menosMovimiento());
     estado.vis.iniciar();
-    window.PanelVisual.crear({ $: $, avisar: avisar, descargar: descargar }, estado.vis);
+    estado.panelVisual = window.PanelVisual.crear({ $: $, avisar: avisar, descargar: descargar }, estado.vis);
     estado.semillaSesion = semillaActual();
     estado.gen = crearGenerador(estado.semillaSesion);
     estado.base = estado.ctx.currentTime + 0.15;
@@ -266,7 +349,10 @@
         const ev = cola.eventos[cola.i++];
         if (ev.t >= ahora - 0.05) estado.motor.tocar(ev, Math.max(ahora, ev.t));
       }
-      if (cola.i >= cola.eventos.length && ahora > cola.fin) volverAInfinito();
+      if (cola.i >= cola.eventos.length && ahora > cola.fin && !cola.cerrada) {
+        cola.cerrada = true; // una sola vez, aunque quien sigue (una lista) tarde en arrancar
+        volverAInfinito();
+      }
       return;
     }
     // con la pestaña oculta el navegador espacia los temporizadores: se programa más por delante
@@ -292,11 +378,13 @@
         const i = estado.infos.shift().info;
         pintarInfo(i);
         estado.vis.alInfo(i);
+        if (estado.alInfo) estado.alInfo(i);
       }
+      if (estado.alTick) estado.alTick(ahora);
       // con «auto», otra visualización cada minuto
       const ya = performance.now();
       if (!estado.ultimoCambioVisual) estado.ultimoCambioVisual = ya;
-      if (estado.ajustes.autoVisual && estado.tocando && ya - estado.ultimoCambioVisual > 60000) {
+      if (estado.ajustes.autoVisual && !menosMovimiento() && estado.tocando && ya - estado.ultimoCambioVisual > 60000) {
         estado.ultimoCambioVisual = ya;
         cambiarVisual(estado.vis.siguienteModo());
       }
@@ -360,12 +448,137 @@
   }
 
   function volverAInfinito() {
+    // una lista de reproducción que está tocando este MIDI sigue con su siguiente elemento
+    if (estado.alTerminarMidi && estado.alTerminarMidi()) return;
     estado.motor.silenciar();
     estado.motor.modoMidi(false);
     estado.modo = 'infinito';
     estado.midiActual = null;
     estado.gen.saltar(estado.ctx.currentTime - estado.base + 0.12);
     pintarLista();
+  }
+
+  /** ¿Menos movimiento en las visualizaciones? Lo que la persona eligió; si no eligió, lo que pide el sistema. */
+  function menosMovimiento() {
+    const a = estado.ajustes.movimientoReducido;
+    if (typeof a === 'boolean') return a;
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  /** Empieza de nuevo desde el principio con esa semilla (y sale del modo «tal cual» si estaba). */
+  function reiniciarConSemilla(semilla) {
+    estado.motor.silenciar();
+    if (estado.modo === 'midi') {
+      estado.motor.modoMidi(false);
+      estado.modo = 'infinito';
+      estado.midiActual = null;
+    }
+    estado.infos = [];
+    estado.semillaSesion = semilla;
+    estado.gen = crearGenerador(semilla);
+    estado.base = estado.ctx.currentTime + 0.15;
+    pintarLista();
+  }
+
+  // ------------------------------------------------------------ sesiones (favoritos, listas, historial)
+
+  const CLAVES_GENERACION = ['fidelidad', 'variacion', 'colorModal', 'contra', 'cambiosCompas', 'tempo', 'estilo'];
+
+  /** Semilla, ajustes del compositor y canciones en uso: lo que hace falta para volver a oír esta música. */
+  function configuracionActual() {
+    if (!estado.semillaSesion) return null;
+    const ajustes = {};
+    for (const k of CLAVES_GENERACION) ajustes[k] = k === 'estilo' ? estado.ajustes.estilo : Number(estado.ajustes[k]);
+    const enUso = estado.canciones.filter(function (c) { return c.activo && c.analisis; });
+    // la pista de melodía elegida a mano en las canciones en uso: cambia lo que suena
+    const pistas = {};
+    for (const c of enUso) if (c.pistaElegida) pistas[c.id] = c.pistaElegida;
+    return {
+      semilla: estado.semillaSesion,
+      ajustes: ajustes,
+      canciones: enUso.map(function (c) { return c.id; }),
+      pistas: pistas,
+      generador: G.VERSION,
+    };
+  }
+
+  /** Pone un ajuste en el estado y en su control (sin pasar por el generador). */
+  function ponerAjuste(clave, valor) {
+    estado.ajustes[clave] = valor;
+    const c = controles[clave];
+    if (c) {
+      c.el.value = valor;
+      c.pintar();
+    } else if (clave === 'estilo') $('estilo').value = valor;
+    else if (clave === 'bits') $('bits-grabacion').value = valor;
+  }
+
+  /**
+   * Toca una configuración desde el principio: pone sus ajustes, deja en uso solo sus canciones
+   * y empieza con su semilla. Devuelve {faltan: ids que ya no están en la biblioteca,
+   * otraVersion: se guardó con otra versión del compositor}.
+   */
+  async function aplicarConfiguracion(conf) {
+    for (const k of CLAVES_GENERACION) if (conf.ajustes[k] !== undefined) ponerAjuste(k, conf.ajustes[k]);
+    const usar = new Set(conf.canciones);
+    const faltan = conf.canciones.filter(function (id) { return !estado.canciones.some(function (c) { return c.id === id && c.analisis; }); });
+    for (const c of estado.canciones) if (c.analisis) c.activo = usar.has(c.id);
+    // las pistas de melodía de las canciones en uso vuelven a ser las de esa configuración (un favorito
+    // guardado sin pistas, de antes de poder elegirlas, usa la melodía automática)
+    const pistas = conf.pistas || {};
+    for (const c of estado.canciones) {
+      if (!c.analisis || !usar.has(c.id) || !c.candidatas) continue;
+      const quiere = pistas[c.id] || null;
+      if (c.pistaElegida !== quiere) fijarPista(c, quiere);
+    }
+    guardarApagados();
+    guardarAjustes();
+    // la semilla se muestra pero no se guarda con los ajustes (ver guardarAjustes)
+    estado.ajustes.semilla = conf.semilla;
+    $('semilla').value = conf.semilla;
+    await iniciarAudio();
+    if (!estado.tocando) await alternar();
+    reiniciarConSemilla(conf.semilla);
+    return { faltan: faltan, otraVersion: !!conf.generador && conf.generador !== G.VERSION };
+  }
+
+  /** Los ajustes de toda la aplicación, tal como se exportan (con la semilla que escribió la persona). */
+  function ajustesApp() {
+    return Object.assign({}, estado.ajustes, { semilla: estado.semillaPersistida == null ? estado.ajustes.semilla : estado.semillaPersistida });
+  }
+
+  /** Aplica ajustes importados: los controles, el motor y la visualización. */
+  function aplicarAjustesApp(a) {
+    for (const k of Object.keys(a)) {
+      if (k === 'semilla') {
+        estado.ajustes.semilla = a.semilla;
+        estado.semillaPersistida = a.semilla;
+        $('semilla').value = a.semilla;
+      } else if (k === 'modoVisual') {
+        estado.ajustes.modoVisual = a.modoVisual;
+        $('modo-visual').value = a.modoVisual;
+        if (estado.vis) estado.vis.ponerModo(a.modoVisual);
+      } else if (k === 'autoVisual') {
+        estado.ajustes.autoVisual = a.autoVisual;
+        $('auto-visual').checked = a.autoVisual;
+      } else {
+        ponerAjuste(k, a[k]);
+      }
+    }
+    if (a.volumen !== undefined && estado.motor) estado.motor.ponerVolumen(Number(a.volumen));
+    if (a.reverb !== undefined && estado.motor) estado.motor.ponerReverb(Number(a.reverb));
+    guardarAjustes();
+  }
+
+  /** Agrega a la biblioteca un MIDI que viene de una sesión importada (y lo guarda en el navegador). */
+  async function agregarMidiImportado(c) {
+    if (estado.canciones.some(function (x) { return x.id === c.id; })) return false;
+    const nueva = { id: c.id, nombre: c.nombre, origen: 'propio', bytes: c.bytes, activo: c.activo };
+    agregarCancion(nueva);
+    try {
+      await BD.guardarMidi({ id: c.id, nombre: c.nombre, bytes: c.bytes.buffer.slice(c.bytes.byteOffset, c.bytes.byteOffset + c.bytes.byteLength) });
+    } catch (e) { /* queda solo en esta sesión */ }
+    return true;
   }
 
   function cambiarVisual(modo) {
@@ -385,6 +598,8 @@
     avisoTimer = setTimeout(function () { el.hidden = true; }, 6000);
   }
 
+  const controles = {}; // los deslizadores por clave de ajuste, para ponerlos desde fuera (favoritos, importar)
+
   function enlazarRango(id, clave, alCambiar, formato) {
     const el = $(id);
     const v = $('v-' + id);
@@ -393,6 +608,7 @@
       if (v) v.textContent = formato ? formato(Number(el.value)) : el.value;
     };
     pintar();
+    controles[clave] = { el: el, pintar: pintar };
     el.addEventListener('input', function () {
       estado.ajustes[clave] = el.value;
       pintar();
@@ -408,6 +624,7 @@
   function iniciarInterfaz() {
     exportador = window.Exportador.crear({ estado: estado, $: $, avisar: avisar, alternar: alternar, iniciarAudio: iniciarAudio, crearGenerador: crearGenerador, semillaActual: semillaActual, descargar: descargar });
     cargarAjustes();
+    estado.pistas = window.Almacen.cargarPistas();
     const sel = $('estilo');
     const auto = document.createElement('option');
     auto.value = 'auto';
@@ -441,6 +658,22 @@
       if (estado.vis) estado.vis.ponerModo(mv.value);
       cambiarVisual(mv.value);
     });
+    // «menos movimiento»: sigue la preferencia del sistema mientras la persona no elija otra cosa
+    $('movimiento-reducido').checked = menosMovimiento();
+    $('movimiento-reducido').addEventListener('change', function (e) {
+      estado.ajustes.movimientoReducido = e.target.checked;
+      guardarAjustes();
+      if (estado.vis) estado.vis.ponerMovimientoReducido(e.target.checked);
+    });
+    if (window.matchMedia) {
+      const pref = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const alCambiar = function () {
+        if (typeof estado.ajustes.movimientoReducido === 'boolean') return;
+        $('movimiento-reducido').checked = menosMovimiento();
+        if (estado.vis) estado.vis.ponerMovimientoReducido(menosMovimiento());
+      };
+      if (pref.addEventListener) pref.addEventListener('change', alCambiar);
+    }
     $('auto-visual').checked = !!estado.ajustes.autoVisual;
     $('auto-visual').addEventListener('change', function (e) {
       estado.ajustes.autoVisual = e.target.checked;
@@ -460,15 +693,10 @@
     $('semilla').value = estado.ajustes.semilla;
     $('semilla').addEventListener('change', function (e) {
       estado.ajustes.semilla = e.target.value;
+      estado.semillaPersistida = e.target.value;
       guardarAjustes();
-      if (estado.gen) {
-        // empezar de nuevo con esa semilla
-        estado.motor.silenciar();
-        estado.infos = [];
-        estado.semillaSesion = semillaActual();
-        estado.gen = crearGenerador(estado.semillaSesion);
-        estado.base = estado.ctx.currentTime + 0.15;
-      }
+      // empezar de nuevo con esa semilla
+      if (estado.gen) reiniciarConSemilla(semillaActual());
     });
     $('bits-grabacion').value = estado.ajustes.bits;
     $('bits-grabacion').addEventListener('change', function (e) {
@@ -476,8 +704,10 @@
       guardarAjustes();
     });
 
+    $('empezar').focus();
     $('empezar').addEventListener('click', async function () {
       $('inicio').hidden = true;
+      $('aplicacion').inert = false;
       await alternar();
     });
     $('play').addEventListener('click', alternar);
@@ -539,6 +769,22 @@
       } catch (e) { /* sin controles del sistema */ }
     }
 
+    estado.panelSesiones = window.PanelSesiones.crear({
+      estado: estado,
+      $: $,
+      avisar: avisar,
+      descargar: descargar,
+      configuracionActual: configuracionActual,
+      aplicarConfiguracion: aplicarConfiguracion,
+      tocarMidi: tocarMidi,
+      volverAInfinito: volverAInfinito,
+      ajustesApp: ajustesApp,
+      aplicarAjustesApp: aplicarAjustesApp,
+      agregarMidiImportado: agregarMidiImportado,
+      refrescarBiblioteca: function () { guardarApagados(); pintarLista(); actualizarGenerador(); },
+      estilos: Object.keys(G.ESTILOS),
+      modos: V.MODOS,
+    });
     cargarBiblioteca();
   }
 
@@ -571,7 +817,7 @@
   }
 
   // para las pruebas en el navegador
-  window.MusicaInfinita = { estado: estado, exportarAudio: function () { return exportador.exportarAudio.apply(null, arguments); }, siguienteSeccion: siguienteSeccion, cargarArchivos: cargarArchivos };
+  window.MusicaInfinita = { estado: estado, exportarAudio: function () { return exportador.exportarAudio.apply(null, arguments); }, siguienteSeccion: siguienteSeccion, cargarArchivos: cargarArchivos, configuracionActual: configuracionActual, aplicarConfiguracion: aplicarConfiguracion, tocarMidi: tocarMidi };
 
   document.addEventListener('DOMContentLoaded', iniciarInterfaz);
 })();

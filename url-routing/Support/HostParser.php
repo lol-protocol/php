@@ -132,12 +132,30 @@ class HostParser
     }
 
     /**
+     * The address of this page in the base language: the same host with the language subdomain of this request
+     * (eng.) replaced by the base one (spa.); the bare domain and the base language stay as they are. It is the
+     * canonical of a page that is not translated: its copy under another language's subdomain is Spanish text, so it
+     * is not a page of its own.
+     */
+    public static function origenEnBase(): string
+    {
+        [$esquema, $host] = explode('://', self::origen(), 2);
+        $parts = explode('.', $host);
+        if (count($parts) > 2 && isset(self::idiomas()[$parts[0]])) {
+            $parts[0] = self::IDIOMA_BASE;
+        }
+
+        return $esquema . '://' . implode('.', $parts);
+    }
+
+    /**
      * The same $ruta in every language: hreflang code => absolute URL, plus
-     * x-default on the bare domain (which serves the default language).
+     * x-default on the bare domain (which serves the default language). With $soloTraducidos, only the languages
+     * whose texts exist (Textos::traducido()): the base one and those with a lang/ table.
      *
      * @return array<string, string>
      */
-    public static function alternos(string $ruta): array
+    public static function alternos(string $ruta, bool $soloTraducidos = false): array
     {
         [$esquema, $host] = explode('://', self::origen(), 2);
         $parts = explode('.', $host);
@@ -148,6 +166,9 @@ class HostParser
 
         $urls = [];
         foreach (self::idiomas() as $subdominio => $hreflang) {
+            if ($soloTraducidos && !Textos::traducido($subdominio)) {
+                continue;
+            }
             $urls[$hreflang] = "{$esquema}://{$subdominio}.{$base}{$ruta}";
         }
         $urls['x-default'] = "{$esquema}://{$base}{$ruta}";

@@ -63,6 +63,16 @@ No hay sesión ni cookies, así que no hay nada que un tercero pueda hacer "en n
 
 Lo que **no** hace: HTTPS ni `Strict-Transport-Security` (eso lo ponen el servidor web o el proxy), ni comprobar que la imagen subida sea apropiada: una foto con texto escrito no pasa por el filtro.
 
+## Interruptores (opcional)
+
+Con la variable `MARCALIBROS_INTERRUPTORES` apuntando a la carpeta `interruptores/` del repositorio, el equipo puede apagar la aplicación o categorías del catálogo desde el panel de interruptores. Sin la variable no se lee nada y todo funciona como siempre.
+
+- `pos.mb-h-app` apagada corta toda la aplicación: un 404 (política `ocultar`, la de fábrica) o un 503 que lo dice (`no_disponible`). Los archivos de `/assets/` los entrega el servidor web y no pasan por aquí.
+- Cada una de las 27 categorías (11 movimientos y 16 tipos de texto) se muestra solo si su opción está encendida: `pos.mb-h-movimientos:<slug>` o `pos.mb-h-tipos-texto:<slug>`. El id de la opción es el slug de la categoría en `catalog/manifest.json`. Una categoría apagada desaparece con sus 50 marcalibros: ni se lista ni se puede abrir, y no se puede crear un marcalibro a partir de ella. Los marcalibros que las personas ya crearon no se tocan.
+- `FuncionesApagablesTest` exige que cada categoría del manifiesto tenga su opción, y al revés, para que una categoría nueva no quede sin interruptor.
+- Si la variable está y los interruptores no se pueden leer, la aplicación responde 503 sin atender nada: mejor cortar que mostrar algo que quizá está apagado.
+- Esto **no** conecta la aplicación con Plataforma POS: solo lee un archivo de estado de este mismo repositorio.
+
 ## Despliegue
 
 La aplicación corre en **un solo VPS**, y por eso guarda los marcalibros creados en el disco local (`MARCALIBROS_STORAGE`). El catálogo y los PNG se regeneran con los scripts de `generator/`, pero **los marcalibros creados no**: como no caducan y no hay copias de seguridad automáticas, si el disco se pierde se pierden con él (el tope `MARCALIBROS_MAX_STORED` también es permanente: al llegar a él no se aceptan más). Si eso importa, copia `MARCALIBROS_STORAGE` por tu cuenta.

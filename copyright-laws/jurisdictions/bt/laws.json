@@ -8,11 +8,11 @@
     "term_of_protection": "Author's life + 50 years (joint works from last surviving author; anonymous works 50 years from publication; ss. 18.1-18.4 per Commons summary)",
     "author_rights": "Not specified",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "No orphan-works provision found; anonymous or pseudonymous works: economic and moral rights last 50 years from first publication (s. 18(4)); author presumed from name shown (s. 20)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "No (voluntary registration and deposit system)",
-    "enforcement_body": "Intellectual Property Division / Department of Intellectual Property (Copyright Division) (unconfirmed)",
+    "enforcement_body": "Intellectual Property Division, Ministry of Economic Affairs, Thimphu (per WIPO registration replies)",
     "treaties_signatory": "Berne",
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/5213",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/5213",
@@ -40,8 +40,8 @@
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/5213",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "registration_required": {
         "url": "https://wipo.int/documents/d/copyright/docs-en-registration-replies-bhutan.pdf",
@@ -50,8 +50,8 @@
       },
       "enforcement_body": {
         "url": "https://wipo.int/documents/d/copyright/docs-en-registration-replies-bhutan.pdf",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "treaties_signatory": {
         "url": "https://www.wipo.int/wipolex/en/treaties/notifications/details/treaty_berne_243",
@@ -60,6 +60,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "enforcement_body",
+        "from": "Intellectual Property Division / Department of Intellectual Property (Copyright Division) (unconfirmed)",
+        "to": "Intellectual Property Division, Ministry of Economic Affairs, Thimphu (per WIPO registration replies)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "No orphan-works provision found; anonymous or pseudonymous works: economic and moral rights last 50 years from first publication (s. 18(4)); author presumed from name shown (s. 20)"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

@@ -121,8 +121,10 @@ segundo recorrido del volcado, lee solo las líneas que se pidieron y se detiene
 lugares ganan `lugar_nacimiento_nombre` y `lugar_muerte_nombre`. **El nombre de un pariente solo se resuelve si
 el propio volcado lo da por fallecido**: un hijo o una hija de alguien que murió puede estar vivo, y de una
 persona viva no se saca el nombre; esos parientes quedan con su identificador, `nombre` en null y un aviso. Los
-parientes que están en la lista de exclusión se quitan del perfil. **Límite:** carga en memoria todos los perfiles de
-`wikidata.jsonl` (necesita recorrerlos dos veces), a diferencia del resto de los programas, que leen línea por línea.
+parientes que están en la lista de exclusión se quitan del perfil. Lee `wikidata.jsonl` en streaming: primero recoge solo los identificadores que piden los perfiles, luego recorre el
+volcado, y al final vuelve a leer los perfiles de uno en uno y los escribe. En memoria hay un perfil y los
+identificadores pedidos, así que el archivo de perfiles puede ser tan grande como se quiera (la entrada tiene que ser
+un archivo, no `stdin`, porque se lee dos veces).
 
 ## La API de WikiTree
 
@@ -131,6 +133,19 @@ API. Es más estable que el HTML, pero los campos que usa (`Name`, `FirstName`, 
 `DeathDate`, `IsLiving`, `Father`, `Mother`…) están escritos de memoria y **sin probar contra una respuesta
 real**. Con `IsLiving` en verdadero, o con una `DeathDate` desconocida (`0000-00-00`), no sale ninguna fecha,
 lugar ni pariente. Antes de usarla, revisa los términos de uso de la API de WikiTree: no lo hice.
+
+## Opciones y códigos de salida
+
+Los seis programas de `bin/` se llaman igual y fallan igual. Las opciones llevan el valor pegado con `=`
+(`--excluir=lista.txt`, **no** `--excluir lista.txt`). Una opción desconocida o sin valor, un número o una fecha
+inválidos, o una lista de exclusión mal escrita terminan con código 2 **sin escribir nada** (así una exclusión no se
+pierde en silencio porque el programa tomó la opción por un archivo). `-h` y `--help` escriben el uso y terminan con 0.
+
+| Código | Qué significa |
+|---|---|
+| 0 | Salió bien. |
+| 1 | No se pudo leer un archivo, o `analizar.php` no pudo con alguna página (las demás sí salieron), o `purgar.php` conservó líneas que no pudo revisar. |
+| 2 | Uso incorrecto: opción desconocida, valor inválido, una URL en vez de un archivo o una lista de exclusión mala. |
 
 ## Validar con páginas reales
 
@@ -164,3 +179,8 @@ registrada en `Detector::analizadores()` y en `src/cargar.php`, con su muestra e
 `pruebas/muestras/` y sus comprobaciones en `pruebas/ejecutar.php`. Cualquier otra que
 ponga Open Graph (Pleroma, Misskey…) se hace igual que `Twitter.php`; Mastodon, que no tiene un dominio fijo,
 se reconoce por la forma del título (`Mastodon::reconoce()`).
+
+Tres ganchos opcionales, que por defecto no hacen nada: `reservados()` (primeros tramos de la ruta que no son un
+usuario, como `home` o `p`), `patronesDePublicacion()` (expresiones contra la ruta que dicen que la página es una
+publicación: su texto no se guarda) y `dominiosDePublicacion()` (dominios donde toda página lo es, como `youtu.be`).
+`nombreYUsuario()` y `usuarioConArroba()` de `Analizador` resuelven los títulos «Nombre (@usuario)».

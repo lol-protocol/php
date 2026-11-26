@@ -20,6 +20,16 @@ public final class EvaluationSetCheck {
     private EvaluationSetCheck() {
     }
 
+    /** Returns the ids of a set where every case must pass, with no known failures (the parity corpus). */
+    public static List<String> wrongCases(Path set) throws IOException {
+        Path none = Files.createTempFile("sin-fallas", ".txt");
+        try {
+            return wrongCases(set, none);
+        } finally {
+            Files.deleteIfExists(none);
+        }
+    }
+
     /** Returns the ids that do not behave as the list says (empty when all is well). */
     @SuppressWarnings("unchecked")
     public static List<String> wrongCases(Path set, Path knownFailuresFile) throws IOException {

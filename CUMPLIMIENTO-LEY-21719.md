@@ -6,8 +6,8 @@
 > **no consultar a un abogado** (26 de octubre de 2026), así que este documento
 > existe para que decida con la lista delante y sepa qué comprobar ella misma.
 >
-> Preparado el **31 de octubre de 2026** y puesto al día el **15 de noviembre de 2026**. La
-> ley rige desde el **1 de diciembre de 2026**: faltan **16 días**.
+> Preparado el **31 de octubre de 2026** y puesto al día el **22 de noviembre de 2026**. La
+> ley rige desde el **1 de diciembre de 2026**: faltan **9 días**.
 
 ## Cómo leerlo
 
@@ -77,6 +77,21 @@
 **Lo que no se sabe y se puede resolver en una tarde** (§7): si la ley protege los
 datos de personas fallecidas, si hay una exención para la investigación
 histórica o genealógica, y los plazos exactos de respuesta.
+
+---
+
+## Decisiones de la persona a cargo (22 de noviembre de 2026)
+
+Lo que se decidió y lo que **se dejó sin decidir**, para que quede por escrito y con fecha. Todo lo
+«sin decidir» vuelve a preguntarse **antes del 28 de noviembre**.
+
+| Qué | Decisión | Qué falta |
+|---|---|---|
+| **Responsable** del tratamiento (fila 1, §5 punto 4) | **Una persona natural**: la persona a cargo | Su nombre, su domicilio y el **correo de contacto**. El correo será público: sin decidir si es uno propio para esto o el de su cuenta, y no se usa ninguno hasta que lo autorice por escrito |
+| **País del servidor** (fila 15) | **Sin decidir** | Elegirlo y, si es fuera de Chile, comprobar qué exige la ley para una transferencia al extranjero ⚖️ |
+| **Política de copias** (fila 11): una al día, 30 días, fuera del servidor, cifradas con age | **No aprobada todavía** | Aprobarla, cambiarla o descartarla; hasta entonces `bin/copias.php` no tiene cron y el plazo de 30 días es solo una propuesta |
+| **Base para tratar la ficha de una persona fallecida** (fila 2) | **Pendiente del texto de la ley**: se decide «más adelante» | Comprobar las preguntas 2 y 3 de §7 contra el texto oficial; después, elegir la base |
+| **Texto oficial de la ley** (§7) | **Sin cotejar** | Quien lo lea necesita un navegador: el 22 de noviembre se intentó desde la sesión y `bcn.cl` y `leychile.cl` solo devuelven una página vacía de JavaScript, y el Diario Oficial no enlaza la ley. Sin él, el plazo de respuesta, a quién se avisa de una fuga y la base legal siguen en ⚖️ |
 
 ---
 
@@ -164,7 +179,7 @@ solo el apellido y se oculta de más la que tiene una palabra que también es no
 | 12 | **Avisar de una vulneración** a la Agencia y a las personas | [`SECURITY.md`](SECURITY.md) dice cómo **reportarle** una falla al mantenedor. Para cuando **ya pasó** hay un borrador, [`SI-HAY-UNA-FUGA.md`](SI-HAY-UNA-FUGA.md): detectar, contener (rotar el token cierra todas las sesiones), evaluar, avisar, anotar | ◐ | Ensayarla, completar los contactos y **comprobar contra el texto de la ley a quién se avisa y en qué plazo** (§7, pregunta 8) |
 | 13 | **Registro de lo que se trata** | §3 de este documento | ◐ | Pasarlo a un lugar estable y mantenerlo al día |
 | 14 | **Conservación limitada** | Los pedidos de retiro tienen `--depurar` (12 meses; ya está en el cron de [`DESPLIEGUE.md`](url-routing/docs/DESPLIEGUE.md), falta instalarlo en el servidor; igual las solicitudes de datos con `bin/solicitudes.php --depurar`). Caducan las sesiones, el hash de IP y el log de nginx. **No tienen plazo**: la ficha y sus sucesos, las direcciones de la tienda, el log de la aplicación y las copias | ◐ | Decidir un plazo para esos cuatro y poner `--depurar` en el cron (§5, punto 2) |
-| 15 | **Encargados y transferencias** | El servidor es un VPS de un proveedor; no se ha decidido el país | ❌ | Decidir el país y comprobar qué exige la ley con el proveedor |
+| 15 | **Encargados y transferencias** | El servidor es un VPS de un proveedor; no se ha decidido el país (22 de noviembre: sigue sin decidirse) | ❌ | Decidir el país y comprobar qué exige la ley con el proveedor |
 | 16 | **Datos de categorías especiales** | Genéticos o de salud no se piden. Un acta puede decir la causa de una muerte, una religión o un origen | ❔ | Mirar si alguna ficha o registro lo dice (§7, pregunta 4) |
 | 17 | **Menores** | Los vivos no se muestran, así que no hay fichas de niños visibles. El formulario de retiro pide un correo a quien sea | ✅ | — |
 | 18 | **Cookies** | Solo la técnica, solo si usas un formulario o entras como propietario ([`ACCESO.md`](url-routing/docs/ACCESO.md)) | ✅ | Decir lo mismo en la política |
@@ -189,7 +204,8 @@ solo el apellido y se oculta de más la que tiene una palabra que también es no
    su fila; se conservan los registros y los sucesos compartidos; el registro no lleva el
    nombre. Falta **ensayarla con datos reales** ([`ENSAYO-SOLICITUDES.md`](url-routing/docs/ENSAYO-SOLICITUDES.md)) y
    ponerla en práctica: **cómo se comprueba quién pide** está decidido (11 de noviembre) pero no usado todavía.
-4. **País del servidor y responsable** (nombre, domicilio) decididos y puestos.
+4. **País del servidor y responsable** (nombre, domicilio) decididos y puestos. El 22 de noviembre se decidió que el
+   responsable es una persona natural; faltan su nombre, su domicilio, su correo y el país (ver «Decisiones»).
 5. **Una hoja de «si hay una fuga»** de una página: hay un borrador, falta ensayarla y comprobar el plazo de aviso.
 
 **Puede esperar a después de abrir:**

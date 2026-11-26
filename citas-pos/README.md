@@ -80,6 +80,15 @@ La auditoría encontró y corrigió tres problemas reales, que axe **no** detect
 
 No depende de ningún proyecto en tiempo de ejecución.
 
+## Interruptores (opcional)
+
+`php bin/render.php --interruptores=../interruptores --salida=/ruta/otra` genera solo los canales que el interruptor `pos.citas` (de `interruptores/`) tiene encendidos: `sitio`, `correo` y `juego`. El juego incluye `citas-pos-juego.css`, `citas-pos-juego.js` y `demo-juego.html`; la hoja `citas-pos.css` sale si está el sitio o el juego.
+
+- Exige una carpeta de salida distinta de `salida/`: con el interruptor de fábrica (`pos.citas` apagada) no sale nada, y filtrar sobre `salida/` borraría las piezas guardadas.
+- No se combina con `--comprobar`, que compara `salida/` con lo que se genera sin filtrar.
+- Si el interruptor no se puede leer, sale con código 2 antes de escribir nada. Sin estas opciones, `citas-pos/` no lee nada de fuera.
+- Una pieza de un canal apagado se quita de la carpeta de salida si ya estaba.
+
 ## Cómo probar esta carpeta
 
 Desde la raíz del repositorio, con PHP 8.3 y sin instalar nada:

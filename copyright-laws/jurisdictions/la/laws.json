@@ -9,7 +9,7 @@
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
     "orphan_works": "Not specified",
-    "digital_protection": "Law 50/NA: exceptions exclude copying needing TPM circumvention or RMI removal; bans circumventing TPMs of performers/phonogram producers; articles unverified (unconfirmed)",
+    "digital_protection": "Art. 113: fair-use exceptions exclude copying needing circumvention of technological measures or removal of electronic RMI; Art. 120(2): circumventing performers' or producers' technological measures is a violation",
     "fair_use_exceptions": "Statutory limitations & exceptions",
     "registration_required": "No",
     "enforcement_body": "Department of Intellectual Property (DIP)",
@@ -21,15 +21,21 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-11-26",
     "sources": {
       "digital_protection": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/22624",
-        "confidence": "low",
-        "checked": "2026-10-15"
+        "confidence": "high",
+        "checked": "2026-11-26"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "digital_protection",
+        "from": "Law 50/NA: exceptions exclude copying needing TPM circumvention or RMI removal; bans circumventing TPMs of performers/phonogram producers; articles unverified (unconfirmed)",
+        "to": "Art. 113: fair-use exceptions exclude copying needing circumvention of technological measures or removal of electronic RMI; Art. 120(2): circumventing performers' or producers' technological measures is a violation"
+      },
       {
         "date": "2026-10-15",
         "field": "digital_protection",

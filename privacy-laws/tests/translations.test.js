@@ -15,7 +15,7 @@ import {
   translationFile,
   validateTranslations,
 } from "../scripts/lib/dataset.js";
-import { coverage, missing, importedRows } from "../scripts/translations.js";
+import { coverage, missing, importedRows, pruned } from "../scripts/translations.js";
 
 const loaded = loadAndValidate();
 const { records } = loaded;
@@ -84,4 +84,12 @@ test("the translations command rejects an unknown language", () => {
   const bad = spawnSync(process.execPath, [join(DATA_DIR, "..", "scripts", "translations.js"), "--import=xxx"], { encoding: "utf-8" });
   assert.equal(bad.status, 2);
   assert.match(bad.stderr, /language must be one of/);
+});
+
+test("prune drops the translations of values that were edited since, and keeps the live ones", () => {
+  const rows = [
+    { lang: "spa", source: sample, text: "vigente" },
+    { lang: "spa", source: "a value nobody has any more", text: "huérfana" },
+  ];
+  assert.deepEqual(pruned(records, rows), [rows[0]]);
 });

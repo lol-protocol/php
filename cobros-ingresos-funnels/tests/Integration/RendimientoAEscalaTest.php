@@ -183,9 +183,9 @@ final class RendimientoAEscalaTest extends IntegracionTestCase
     {
         $db = Database::connection();
         $db->exec(
-            "INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, fecha_nacimiento, fecha_visita)
+            "INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, rango_de_edad, fecha_visita)
              SELECT 'Visitante ' || n, 'escala-' || n || '@example.com',
-                    (ARRAY['ads', 'email', 'organico'])[1 + n % 3], 'US', 'Miami', 'Ingles', 'No especifica', DATE '1980-01-01', DATE '1902-02-02'
+                    (ARRAY['ads', 'email', 'organico'])[1 + n % 3], 'US', 'Miami', 'Ingles', 'No especifica', '35-44', DATE '1902-02-02'
              FROM generate_series(1, " . self::USUARIOS . ') n'
         );
         $repo = new FunnelRepository();

@@ -19,6 +19,10 @@ declare(strict_types=1);
  *
  *   php citas-pos/bin/render.php              # escribe salida/
  *   php citas-pos/bin/render.php --comprobar  # falla si salida/ no coincide con lo que se generaría
+ *   php citas-pos/bin/render.php --interruptores=../interruptores --salida=/ruta/otra
+ *       # solo los canales (sitio, correo, juego) que el interruptor pos.citas tiene encendidos. Exige una carpeta de
+ *       # salida que no sea salida/: con el interruptor de fábrica (pos.citas apagada) no sale nada, y filtrar sobre
+ *       # salida/ borraría las piezas guardadas. No se combina con --comprobar.
  *
  * Límite: el fragmento del correo no se ha probado en clientes de correo reales. Lleva su propio
  * fondo claro, así que el contraste que mide comprobar-paleta.php vale aunque el cliente use tema
@@ -27,6 +31,7 @@ declare(strict_types=1);
  */
 
 require_once __DIR__ . '/lib/paleta.php';
+require_once __DIR__ . '/lib/interruptores.php';
 
 const SALIDA = __DIR__ . '/../salida';
 const JUEGO = __DIR__ . '/../juego';
@@ -276,17 +281,17 @@ function generar(array &$pendientes): array
     return $archivos;
 }
 
-/** @return list<string> rutas relativas de todo lo que hay en SALIDA */
-function existentes(): array
+/** @return list<string> rutas relativas de todo lo que hay en la carpeta de salida (por defecto SALIDA) */
+function existentes(string $dir = SALIDA): array
 {
-    if (!is_dir(SALIDA)) {
+    if (!is_dir($dir)) {
         return [];
     }
     $r = [];
-    $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(SALIDA, FilesystemIterator::SKIP_DOTS));
+    $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS));
     foreach ($it as $f) {
         if ($f->isFile()) {
-            $r[] = str_replace('\\', '/', substr($f->getPathname(), strlen(SALIDA) + 1));
+            $r[] = str_replace('\\', '/', substr($f->getPathname(), strlen($dir) + 1));
         }
     }
     sort($r);
@@ -295,9 +300,45 @@ function existentes(): array
 
 function main(array $argv): int
 {
+    $interruptores = null;
+    $salida = SALIDA;
+    foreach ($argv as $argumento) {
+        if (str_starts_with($argumento, '--interruptores=')) {
+            $interruptores = substr($argumento, strlen('--interruptores='));
+        } elseif (str_starts_with($argumento, '--salida=')) {
+            $salida = rtrim(substr($argumento, strlen('--salida=')), '/');
+        }
+    }
+    $comprobando = in_array('--comprobar', $argv, true);
+    if ($interruptores === '' || $salida === '') {
+        fwrite(STDERR, "ERROR  --interruptores y --salida necesitan una carpeta: --interruptores=../interruptores --salida=/ruta\n");
+        return 2;
+    }
+    if ($comprobando && ($interruptores !== null || $salida !== SALIDA)) {
+        fwrite(STDERR, "ERROR  --comprobar compara salida/ con lo que se genera sin filtrar: no admite --interruptores ni --salida.\n");
+        return 2;
+    }
+    if ($interruptores !== null && ($salida === SALIDA || (realpath($salida) !== false && realpath($salida) === realpath(SALIDA)))) {
+        fwrite(STDERR, "ERROR  --interruptores necesita --salida=<otra carpeta>: filtrar sobre salida/ borraría las piezas guardadas.\n");
+        return 2;
+    }
+    // Los canales se leen antes de generar o escribir nada: un interruptor ilegible no deja la salida a medias.
+    $canales = null;
+    if ($interruptores !== null) {
+        try {
+            $canales = canalesActivosDeInterruptores($interruptores);
+        } catch (Throwable $e) {
+            fwrite(STDERR, 'ERROR  --interruptores: ' . $e->getMessage() . "\n");
+            return 2;
+        }
+    }
+
     $pendientes = [];
     try {
         $archivos = generar($pendientes);
+        if ($canales !== null) {
+            $archivos = filtrarPorCanales($archivos, $canales);
+        }
     } catch (RuntimeException $e) {
         fwrite(STDERR, 'ERROR ' . $e->getMessage() . "\n");
         return 1;
@@ -327,17 +368,17 @@ function main(array $argv): int
         return 0;
     }
 
-    foreach (array_diff(existentes(), array_keys($archivos)) as $sobra) {
-        unlink(SALIDA . '/' . $sobra);
+    foreach (array_diff(existentes($salida), array_keys($archivos)) as $sobra) {
+        unlink($salida . '/' . $sobra);
     }
     foreach ($archivos as $ruta => $contenido) {
-        $destino = SALIDA . '/' . $ruta;
+        $destino = $salida . '/' . $ruta;
         if (!is_dir(dirname($destino))) {
             mkdir(dirname($destino), 0775, true);
         }
         file_put_contents($destino, $contenido);
     }
-    echo 'Escritos ' . count($archivos) . " archivos en citas-pos/salida/.\n";
+    echo 'Escritos ' . count($archivos) . ' archivos en ' . ($salida === SALIDA ? 'citas-pos/salida/' : $salida . '/') . ($canales !== null ? ' (canales: ' . ($canales === [] ? 'ninguno' : implode(', ', $canales)) . ')' : '') . ".\n";
     return 0;
 }
 

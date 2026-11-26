@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Database;
-use App\RangoEdad;
 use PDO;
 
 /**
@@ -47,7 +46,7 @@ final class SegmentacionRepository
     public function topPorDimensiones(int $limite = 5): array
     {
         $limite = max(0, $limite);   // se interpola: es un entero, nunca entrada de usuario
-        $edad = RangoEdad::expresionSql('base.fecha_nacimiento');
+        $edad = 'base.rango_de_edad';
         $claveCiudad = self::claveDeCiudadSql('base.ciudad');
         $filas = $this->db->query(
             "WITH f AS MATERIALIZED (
@@ -55,7 +54,7 @@ final class SegmentacionRepository
                  FROM boletas b
                  WHERE NOT b.anulada GROUP BY b.cliente_id
              ), base AS MATERIALIZED (
-                 SELECT c.pais_codigo, c.ciudad, c.idioma, c.genero, c.fecha_nacimiento, f.total
+                 SELECT c.pais_codigo, c.ciudad, c.idioma, c.genero, c.rango_de_edad, f.total
                  FROM f JOIN clientes c ON c.id = f.cliente_id
              )
              (SELECT 'pais' AS dimension, p.nombre AS etiqueta, COUNT(*) AS clientes, SUM(base.total) AS total_facturado

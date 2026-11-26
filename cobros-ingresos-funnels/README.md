@@ -12,11 +12,14 @@ Pequeño sistema en PHP (sin framework) para analizar:
   registrar su pago. Se ve por defecto a los que tienen saldo vencido, o todo el saldo abierto, y se
   ordena por monto vencido, antigüedad, saldo o nombre. Sus totales son los del Dashboard: las dos
   pantallas salen de la misma consulta (`IngresosYCobrosRepository::saldosAbiertosSql()`).
-- **Flujo de caja esperado** (`?page=flujo`): lo que falta cobrar, repartido por el mes en que vence
-  cada boleta abierta, en USD a la tasa de hoy: lo ya vencido aparte, un mes por cada uno de los
+- **Flujo de caja esperado** (`?page=flujo`): lo que falta cobrar, repartido por el mes en que se
+  espera cobrarlo, en USD a la tasa de hoy: lo ya vencido aparte, un mes por cada uno de los
   próximos 3, 6 (por defecto) o 12, y «Más adelante». La suma de las filas es exactamente la cartera
-  pendiente del Dashboard (sale de la misma consulta). Supone que cada boleta se cobra el día de su
-  vencimiento: no predice cuándo va a pagar cada cliente, y por eso lo vencido no se reparte.
+  pendiente del Dashboard (sale de la misma consulta). **Cuándo se espera cada cobro** lo elige el
+  selector «Cobro esperado» (`?supuesto=`): con **el atraso habitual de cada cliente** (por defecto)
+  cada boleta por vencer se corre según cuánto suele atrasarse ese cliente; con **el día del
+  vencimiento** se supone que todos pagan a tiempo. Es una estimación, no una promesa de pago, y lo
+  vencido no se reparte en ninguno de los dos (ver «Atraso habitual» en las notas de diseño).
 - **Tasas de cambio** (`?page=tasas`): una fila por moneda con su tasa de hoy (cuántos dólares vale una
   unidad y cuántas unidades vale un dólar), la fecha de su cotización y cuánto cambió en 30 días; con
   `?moneda=CLP`, el historial de esa moneda, paginado, con el cambio de cada fila frente a la anterior.
@@ -46,7 +49,7 @@ Pequeño sistema en PHP (sin framework) para analizar:
   pagos y su recorrido por el funnel si entró por ahí). Desde la ficha se carga una
   boleta o un pago con el cliente ya elegido. Los desplegables de "Nueva boleta" y
   "Nuevo pago" muestran los primeros 500 clientes por nombre y avisan si hay más.
-  El alta valida país, email, fecha de nacimiento y el largo de cada texto; el
+  El alta valida país, email, fecha de nacimiento (que **no se guarda**: queda solo el rango de edad) y el largo de cada texto; el
   idioma es libre, pero se guarda normalizado ("INGLES" → "Ingles") y el
   formulario sugiere los que ya tienen clientes, para que el dashboard no los
   parta en filas distintas.
@@ -77,8 +80,8 @@ Pequeño sistema en PHP (sin framework) para analizar:
   email de los clientes): valen las mismas precauciones de acceso que el resto de la app
   (ver «Antes de exponerlo»), y se mandan con `Cache-Control: no-store`.
   El **Flujo de caja** también se exporta (`?page=flujo-csv`): las filas de la pantalla con el
-  horizonte elegido (el vencimiento como «Ya vencido», «Más adelante» o el mes `AAAA-MM`, y el
-  saldo como número en dólares). No lleva fila de totales: los clientes de una fila se repiten en
+  horizonte y el supuesto elegidos (el cobro esperado como «Ya vencido», «Más adelante» o el mes
+  `AAAA-MM`, y el saldo como número en dólares). No lleva fila de totales: los clientes de una fila se repiten en
   otra y no se pueden sumar. Las **Tasas de cambio** también (`?page=tasas-csv`): sin moneda, el
   resumen de todas; con `?moneda=CLP`, **todo** el historial de esa moneda, no solo la página que
   se ve. Las tasas van como números con sus decimales (ocho el valor en dólares, seis las unidades
@@ -459,10 +462,30 @@ completas desde la migración `019`: `boletas.monto`, `pagos.monto` y `notas_cre
 `step="0.001"` y `Peticion::monto()` lee tres decimales **solo** si la moneda de la boleta o del
 pago los tiene. `MonedaRepository::decimales()` devuelve el dato ISO (0, 2 o 3).
 
-**Mayoría de edad.** La base rechaza a un cliente que no haya cumplido la edad de
-mayoría de **su país**, tanto al crearlo como al cambiarle la fecha de nacimiento o
-el país (la app ya lo valida antes y dice cuál es la edad; el trigger de las
-migraciones `007` y `010` cubre cualquier otro camino: un script, una carga directa).
+**Rango de edad, no fecha de nacimiento** (migración `021`). La base **no guarda la fecha de
+nacimiento** de nadie: ni de los clientes ni de los usuarios del funnel. La fecha que se escribe en
+el alta se usa una vez, para comprobar la mayoría de edad del país, y se descarta; en
+`clientes.rango_de_edad` (y `usuarios_funnel.rango_de_edad`) queda el tramo de `RangoEdad`:
+«Menor de 18» (solo en el funnel), «18-24», «25-34», «35-44», «45-54», «55-64» y «65+». Lo que eso
+cambia:
+
+- **El tramo es el de la fecha del alta y no envejece**: quien tenía 24 y cumple 25 sigue en «18-24».
+  En lo que ya existía cuando se aplicó la migración, es el del día en que corrió. Es el precio de no
+  guardar la fecha.
+- **La fecha se borra y no se recupera**, pero los respaldos hechos antes de la `021` (`bin/respaldar.php`)
+  todavía la tienen: si la idea es dejar de guardarla, hay que depurarlos según la retención que se
+  quiera.
+- La edad de **cada país** ya no la puede comprobar la base, porque «18-24» no dice si son 18 o 21: la
+  exige `ClienteRepository::crear` con la fecha exacta (`ClienteMenorDeEdad`), y un `INSERT` directo
+  que se salte la app solo está frenado por el trigger `exigir_cliente_adulto`, que rechaza el tramo
+  «Menor de 18». Un cambio de país de un cliente tampoco se puede revisar; la app no tiene ese flujo, y
+  si se agrega tiene que pedir la fecha de nuevo.
+- Una base con clientes que ya eran menores no frena la migración, y siguen siendo editables en lo demás.
+
+**Mayoría de edad.** La app rechaza a un cliente que no haya cumplido la edad de
+mayoría de **su país** al crearlo (el controlador lo valida antes y dice cuál es la edad;
+`ClienteRepository::crear` lo vuelve a exigir para cualquier otro camino de la app; el trigger de la
+base cubre solo el tramo, ver arriba).
 La edad es `paises.mayoria_de_edad` (migración `010`): 18 en casi todos, 19 en
 Canadá, Corea del Sur y Argelia, 20 en Tailandia, 21 en Singapur, Egipto, Emiratos
 Árabes Unidos, Kuwait, Bahréin, Honduras y Puerto Rico (migración `017`). **Esa lista no es asesoría legal**: hay
@@ -475,11 +498,10 @@ sin tocar código: `UPDATE paises SET mayoria_de_edad = 21 WHERE codigo = 'US';`
 20 años cumplidos») y el formulario lista los países que no son de 18; el selector
 de fecha topa en la edad más baja, porque no sabe todavía el país elegido.
 
-Ni esta migración ni cambiar la edad de un país revisan, cambian o borran a los
-clientes que ya existían, y mientras nadie les toque la fecha de nacimiento ni el
-país siguen pudiendo editarse. Para encontrar a los que hoy no llegan a la edad de
-su país:
-`SELECT c.id, c.nombre, c.fecha_nacimiento, p.mayoria_de_edad FROM clientes c JOIN paises p ON p.codigo = c.pais_codigo WHERE c.fecha_nacimiento > CURRENT_DATE - make_interval(years => p.mayoria_de_edad);`
+Ni cambiar la edad de un país ni la migración `021` revisan, cambian o borran a los
+clientes que ya existían. Sin la fecha ya no se puede encontrar a quien no llegue a la edad de su
+país; solo a los que están en «Menor de 18»:
+`SELECT id, nombre FROM clientes WHERE rango_de_edad IN ('Menor de 18', 'Fecha inválida');`
 (el Dashboard también muestra a los menores de 18 en el tramo «Menor de 18» de la
 segmentación por edad). Los visitantes del funnel pueden ser menores: un lead no es
 un cliente, pero no puede convertirse.
@@ -649,8 +671,9 @@ src/
   MayoriaDeEdad.php     la regla de que no se admiten clientes que no hayan cumplido
                         la edad de mayoría de su país (años cumplidos, como age()
                         de Postgres) y el tope del campo de fecha de nacimiento del
-                        alta; la base la repite en un trigger (migraciones 007 y
-                        010), testeado
+                        alta; ClienteRepository la vuelve a exigir con la fecha
+                        exacta, antes de guardar (la base ya no tiene la fecha,
+                        migración 021), testeado
   Etiquetas.php         traduce estado de boleta/metodo de pago/canal a su
                         etiqueta en español, en un solo lugar para no repetir
                         el mismo array en cada vista que los muestra, testeado
@@ -704,9 +727,10 @@ src/
                         ya validada o lanza una excepción con el mensaje para
                         la pantalla (entre la nota y hoy), como Dinero::milesimas()
   RangoEdad.php         el tramo de edad (Menor de 18, 18-24, 25-34, ...)
-                        como expresion SQL, con age(); lo comparten
-                        segmentacion y funnel. Una fecha de nacimiento
-                        posterior a hoy sale como "Fecha inválida"
+                        de una fecha de nacimiento (deFecha(), años cumplidos
+                        como age()); se calcula al dar de alta y se guarda en
+                        rango_de_edad, que agrupan segmentacion y funnel. Una
+                        fecha posterior a hoy sale como "Fecha inválida"
   FiltroDePeriodo.php    el periodo y el rango Desde/Hasta de las pantallas con
                         filtro de fechas: una sola lista de periodos, y lo que
                         se pidio por URL y no se pudo respetar (un periodo que
@@ -733,7 +757,7 @@ database/
                         importar mayúsculas, 016 = monedas reemplazadas, 017 =
                         mayoría de edad de Puerto Rico, 018 = el historial de las
                         tasas de cambio, 019 = montos con tres decimales, 020 = la tasa de
-                        la fecha de cada fila nueva)
+                        la fecha de cada fila nueva, 021 = solo el rango de edad)
 bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
@@ -799,10 +823,10 @@ phpstan.neon            configuracion del analisis estatico
 - `historial_de_tasas`: una fila cada vez que cambia la tasa, la fecha de cotización o la fuente de
   una moneda (migración `018`; la anota un trigger de `monedas`, ver «Historial de las tasas»).
 - `clientes`: clientes ya convertidos (vía funnel o cartera preexistente), con
-  perfil (`pais_codigo`, `ciudad`, `idioma`, `genero`, `fecha_nacimiento`) para la
+  perfil (`pais_codigo`, `ciudad`, `idioma`, `genero`, `rango_de_edad`) para la
   segmentación del dashboard y su moneda de facturación. Solo se admiten mayores de
   edad, con la edad de su país (18 casi siempre): el alta lo valida con un mensaje
-  claro y la base lo exige con un trigger (migraciones `007` y `010`, ver "Esquema
+  claro y la base lo exige con un trigger sobre el tramo (migración `021`, ver "Esquema
   de la base"). Que la persona no esté privada de libertad ni interdicta no es un
   dato que la app tenga, así que no se puede validar: el alta exige marcar una
   casilla que lo confirma (sin ella no hay cliente) y la entrada de auditoría del
@@ -907,6 +931,18 @@ antes de enviarlo, y el servidor lo vuelve a validar.
 
 ## Notas de diseño
 
+- **Atraso habitual** (flujo de caja): para cada cliente, el promedio de días que se atrasó en pagar
+  sus boletas **ya saldadas** (vigentes y pagadas por completo, con el saldo en cero o a un centavo),
+  contado desde el vencimiento hasta su **último** pago vigente. Un pago anticipado cuenta cero y no
+  compensa los atrasos de otras boletas: no se espera cobrar antes de tiempo. Hacen falta **3 boletas
+  pagadas** (`FlujoDeCajaRepository::BOLETAS_MINIMAS_DE_HISTORIAL`); con menos, o sin ninguna, se
+  espera el día del vencimiento. Una boleta anulada, una pagada a medias o una cuyo pago se anuló no
+  cuentan: de su atraso no se sabe nada. El promedio es por boleta (no ponderado por monto) y se
+  redondea al día. Cada boleta **por vencer** se espera el día de su vencimiento más ese atraso; la
+  pantalla dice cuánto de lo que falta se movió así. Lo ya vencido va aparte en los dos supuestos.
+  **La suma no cambia con el supuesto**, solo en qué mes cae cada boleta (lo prueba
+  `FlujoDeCajaConAtrasoTest`). Con 120 mil boletas y 90 mil pagos la consulta tarda unos 205 ms
+  (unos 105 ms con el supuesto del vencimiento).
 - **Ingresos por canal** (funnel): la cohorte es la de las visitas del período (los mismos usuarios que
   cuenta «Conversión por canal», con el mismo orden) y el ingreso es lo que sus clientes **llevan cobrado
   hasta hoy**, no lo cobrado dentro del período: pagos vigentes menos notas de crédito, cada uno en USD a

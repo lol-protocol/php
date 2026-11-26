@@ -34,7 +34,7 @@ function leerCsv(nombre) {
 }
 
 const tablas = {};
-for (const n of ['paises', 'causas_modernas', 'causas_historicas', 'epidemias', 'hitos_registro', 'londres_muertes', 'esperanza_vida', 'modelo_logcuadratico', 'revisiones']) {
+for (const n of ['paises', 'causas_modernas', 'causas_historicas', 'epidemias', 'hitos_registro', 'londres_muertes', 'inglaterra_tasas', 'esperanza_vida', 'modelo_logcuadratico', 'revisiones']) {
   tablas[n] = leerCsv(n);
 }
 const m = Mortalidad.crear(tablas);
@@ -95,6 +95,50 @@ test('muertes en Londres y su exceso', () => {
     assert.equal(obtenido === null ? null : obtenido.viruela, viruela, `viruela ${anio}`);
     casi(exceso, m.excesoDeMuertesLondres(anio), `exceso ${anio}`);
   }
+});
+
+test('tasas de Inglaterra y años de mortalidad anormal', () => {
+  for (const [anio, tasas, exceso] of vectores.inglaterra.puntos) {
+    const obtenidas = m.tasasInglaterra(anio);
+    assert.equal(obtenidas === null, tasas === null, `punto ${anio}`);
+    if (tasas !== null) {
+      casi(tasas.natalidad, obtenidas.natalidad, `natalidad ${anio}`);
+      casi(tasas.mortalidad, obtenidas.mortalidad, `mortalidad ${anio}`);
+    }
+    casi(exceso, m.excesoDeMortalidadInglaterra(anio), `exceso ${anio}`);
+  }
+  for (const [clave, umbral] of [['anormales', 1.15], ['anormales_1_3', 1.3]]) {
+    const esperados = vectores.inglaterra[clave];
+    const obtenidos = m.aniosDeMortalidadAnormalInglaterra(umbral);
+    assert.equal(obtenidos.length, esperados.length, clave);
+    esperados.forEach((e, i) => {
+      assert.equal(obtenidos[i].anio, e.anio, clave);
+      casi(e.exceso, obtenidos[i].exceso, `${clave} ${e.anio}`);
+    });
+  }
+});
+
+test('edades de muerte y supervivencia: los mismos resultados que Python', () => {
+  assert.ok(vectores.plausibilidad.length > 100);
+  let conDato = 0;
+  for (const [codigo, anio, sexo, caso] of vectores.plausibilidad) {
+    const donde = `${codigo} ${anio} ${sexo}`;
+    for (const [edad, esperado] of caso.llegar) { casi(esperado, m.probabilidadDeLlegarA(codigo, anio, edad, sexo), `${donde} llegar a ${edad}`); if (esperado !== null) conDato++; }
+    for (const [nacidos, edad, esperado] of caso.esperados) casi(esperado, m.supervivientesEsperados(codigo, anio, nacidos, edad, sexo), `${donde} esperados`);
+    for (const [desde, edad, esperado] of caso.fraccion) casi(esperado, m.fraccionDeMuertesAntesDe(codigo, anio, edad, desde, sexo), `${donde} fracción ${desde}-${edad}`);
+    for (const [desde, p, esperado] of caso.percentiles) casi(esperado, m.edadDeMuertePercentil(codigo, anio, p, desde, sexo), `${donde} percentil ${p} desde ${desde}`);
+    for (const [desde, esperado] of caso.comunes) {
+      const obtenido = m.edadesDeMuerteComunes(codigo, anio, desde, sexo);
+      assert.equal(obtenido === null, esperado === null, `${donde} comunes desde ${desde}`);
+      for (const clave of Object.keys(esperado || {})) casi(esperado[clave], obtenido[clave], `${donde} ${clave}`);
+    }
+  }
+  assert.ok(conDato > 200);
+  assert.throws(() => m.probabilidadDeLlegarA('SE', 1805, 120), RangeError);
+  assert.throws(() => m.edadDeMuertePercentil('SE', 1805, 1), RangeError);
+  assert.throws(() => m.supervivientesEsperados('SE', 1805, -1, 5), RangeError);
+  assert.throws(() => m.fraccionDeMuertesAntesDe('SE', 1805, 10, 20), RangeError);
+  assert.equal(m.probabilidadDeLlegarA('GB', 1545, 5), null);
 });
 
 test('los ejemplos del README', () => {

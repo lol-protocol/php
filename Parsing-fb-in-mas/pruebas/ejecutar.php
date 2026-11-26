@@ -624,10 +624,19 @@ $soloOtras = $conMul;
 unset($soloOtras['labels']['mul']);
 igual('wikidata: sin es, en ni mul, cae a la primera que haya', 'ماريا فيكتيسيا', Wikidata::persona($soloOtras)?->nombre);
 
+// --- Guarda: una comilla angular pegada a una variable en un texto con comillas dobles hace que PHP la lea como parte del nombre (pasó cuatro veces) ---
+$conVariableMal = [];
+foreach ([...(glob(__DIR__ . '/../src/*.php') ?: []), ...(glob(__DIR__ . '/../bin/*.php') ?: []), __FILE__] as $archivoRevisado) {
+    if (preg_match('/\$[A-Za-z_]\w*[\x80-\xFF]/', (string) file_get_contents($archivoRevisado)) === 1) {
+        $conVariableMal[] = basename($archivoRevisado);
+    }
+}
+igual('código: ninguna variable lleva pegado un carácter no ASCII (PHP lo lee como parte del nombre)', [], $conVariableMal);
+
 // CLI: no descarga de la red
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' https://www.facebook.com/alguien 2>&1', $salida, $codigo);
-igual('CLI: rechaza una URL', 1, $codigo);
+igual('CLI: rechaza una URL con código 2, como los demás programas', 2, $codigo);
 igual('CLI: explica que no descarga', true, str_contains(implode("\n", $salida), 'no descarga'));
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --capturado=2026-11-04 ' . escapeshellarg(__DIR__ . '/muestras/twitter.html'), $salida, $codigo);
 igual('CLI: archivo bueno sale con 0', 0, $codigo);
@@ -789,6 +798,21 @@ exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata-nombres.php') . ' ' . e
 igual('wikidata-nombres.php: sale con 0 y un perfil con el lugar nombrado', [0, 1, true], [$codigo, count($salida), str_contains($salida[0] ?? '', '"lugar_nacimiento_nombre":"Santiago de Chile"')]);
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata-nombres.php') . ' https://dumps.wikimedia.org/x.json ' . escapeshellarg("$tmp/wd.jsonl") . ' 2>&1', $salida, $codigo);
 igual('wikidata-nombres.php: rechaza una URL', 2, $codigo);
+// Streaming: la salida del programa es la de resolverNombres(), y un archivo grande no sube la memoria.
+$muchos = [];
+for ($i = 0; $i < 3000; $i++) {
+    $muchos[] = ['red' => 'wikidata', 'url' => "https://www.wikidata.org/wiki/Q{$i}0001", 'usuario' => "Q{$i}0001", 'nombre' => "Ficticio {$i}",
+        'lugar_nacimiento' => 'Q2887', 'avisos' => [], 'parientes' => [['relacion' => 'padre', 'nombre' => null, 'id' => 'Q2']]];
+}
+file_put_contents("$tmp/wd-muchos.jsonl", implode("\n", array_map(static fn (array $p): string => json_encode($p, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR), $muchos)) . "\n");
+$esperado = Wikidata::resolverNombres($volcadoNombres, $muchos)['perfiles'];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata-nombres.php') . ' ' . escapeshellarg($volcadoNombres) . ' ' . escapeshellarg("$tmp/wd-muchos.jsonl") . ' 2>/dev/null', $salidaMuchos, $codigo);
+$obtenido = array_map(static fn (string $l): mixed => json_decode($l, true), $salidaMuchos);
+igual('wikidata-nombres.php (streaming): 3000 perfiles dan lo mismo que resolverNombres()', [0, true], [$codigo, $obtenido === json_decode(json_encode($esperado, JSON_UNESCAPED_UNICODE) ?: '', true)]);
+igual('wikidata-nombres.php (streaming): un archivo de perfiles que no existe sale con 1', 1, (static function () use ($volcadoNombres, $tmp): int {
+    exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata-nombres.php') . ' ' . escapeshellarg($volcadoNombres) . ' ' . escapeshellarg("$tmp/no-existe.jsonl") . ' 2>/dev/null', $o, $c);
+    return $c;
+})());
 
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --jsonl ' . escapeshellarg(__DIR__ . '/muestras/wikitree-api.json') . ' 2>/dev/null', $salida, $codigo);
@@ -885,6 +909,61 @@ file_put_contents("$tmp/con-vacios.jsonl", "{}\n" . (string) file_get_contents("
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/con-vacios.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' 2>&1 >/dev/null', $salida, $codigo);
 igual('cruzar.php: un «{}» no se cuenta como línea que no es un objeto JSON', false, str_contains(implode("\n", $salida), 'no son un objeto JSON') || str_contains(implode("\n", $salida), 'no es un objeto JSON'));
+
+// --- Los seis programas rechazan lo que no entienden, en vez de tratarlo como un archivo ---
+$programas = [
+    'analizar' => [__DIR__ . '/muestras/twitter.html'],
+    'cruzar' => ["$tmp/a.jsonl", "$tmp/b.jsonl"],
+    'purgar' => ["$tmp/generado.jsonl"],
+    'wikidata' => [__DIR__ . '/muestras/wikidata-muestra.json'],
+    'wikidata-nombres' => [__DIR__ . '/muestras/wikidata-nombres-muestra.json', "$tmp/wd.jsonl"],
+    'diagnostico' => [__DIR__ . '/muestras/twitter.html'],
+];
+$ejecutar = static function (string $programa, array $argumentos) use ($tmp): array {
+    $partes = [];
+    foreach ($argumentos as $argumento) {
+        if (is_string($argumento)) {
+            $partes[] = escapeshellarg($argumento);
+        }
+    }
+    $salida = [];
+    exec('php ' . escapeshellarg(__DIR__ . "/../bin/$programa.php") . ' ' . implode(' ', $partes) . ' 2>' . escapeshellarg("$tmp/stderr.txt"), $salida, $codigo);
+    // [código de salida, salida estándar (con su salto de línea final), salida de errores]
+    return [$codigo, implode("\n", $salida) . ($salida === [] ? '' : "\n"), (string) @file_get_contents("$tmp/stderr.txt")];
+};
+foreach ($programas as $programa => $entradas) {
+    [$codigo, $stdout, $stderr] = $ejecutar($programa, [...$entradas, '--opcion-que-no-existe']);
+    igual("$programa.php: una opción desconocida sale con 2, lo dice y no escribe nada", [2, true, ''], [$codigo, str_contains($stderr, 'Opción desconocida «--opcion-que-no-existe»'), $stdout]);
+    [$codigo, $stdout] = $ejecutar($programa, ['--help']);
+    igual("$programa.php --help escribe el uso y sale con 0", [0, true], [$codigo, str_starts_with($stdout, 'Uso: php bin/' . $programa . '.php')]);
+}
+foreach (['analizar', 'cruzar', 'purgar', 'wikidata', 'wikidata-nombres'] as $programa) {
+    [$codigo, $stdout, $stderr] = $ejecutar($programa, ['--excluir', "$tmp/purga.txt", ...$programas[$programa]]);
+    igual("$programa.php: --excluir con espacio (en vez de =) sale con 2 y no escribe nada: la exclusión no se pierde en silencio", [2, true, ''], [$codigo, str_contains($stderr, '--excluir pide un valor y se escribe junto'), $stdout]);
+}
+foreach ([
+    ['wikidata', ['--max=abc'], '--max pide un número entero'],
+    ['wikidata', ['--max=0'], '--max pide un número entero'],
+    ['wikidata', ['--capturado=ayer'], '--capturado pide una fecha real'],
+    ['wikidata', ['--capturado=2026-02-30'], '--capturado pide una fecha real'],
+    ['analizar', ['--capturado=2026-13-01'], '--capturado pide una fecha real'],
+    ['cruzar', ['--anios=abc'], '--anios pide un número entero'],
+    ['cruzar', ['--palabras=0'], '--palabras pide un número entero'],
+    ['cruzar', ['--umbral=x'], '--umbral pide un número'],
+] as [$programa, $extra, $mensaje]) {
+    [$codigo, $stdout, $stderr] = $ejecutar($programa, [...$programas[$programa], ...$extra]);
+    igual("$programa.php {$extra[0]}: sale con 2 con «{$mensaje}» y no escribe nada", [2, true, ''], [$codigo, str_contains($stderr, $mensaje), $stdout]);
+}
+[$codigo, $stdout] = $ejecutar('wikidata', [...$programas['wikidata'], '--max=1', '--capturado=2026-11-20']);
+igual('wikidata.php: --max=1 y una fecha real sí funcionan (1 persona, con su fecha de captura)', [0, 1, true], [$codigo, substr_count($stdout, "\n"), str_contains($stdout, '"capturado":"2026-11-20"')]);
+[$codigo, $stdout, $stderr] = $ejecutar('cruzar', ['https://example.org/a.jsonl', "$tmp/b.jsonl"]);
+igual('cruzar.php: una URL en vez de un archivo sale con 2 y lo explica, como los demás', [2, true, ''], [$codigo, str_contains($stderr, 'esto no descarga archivos'), $stdout]);
+foreach (['analizar' => 'https://x.com/ana', 'diagnostico' => 'https://x.com/ana', 'purgar' => 'https://x.com/a.jsonl', 'wikidata' => 'https://dumps.example.org/x.json'] as $programa => $url) {
+    [$codigo, $stdout] = $ejecutar($programa, [$url, ...($programa === 'purgar' ? ["--excluir=$tmp/purga.txt"] : [])]);
+    igual("$programa.php: una URL en vez de un archivo no escribe nada", [true, ''], [$codigo !== 0, $stdout]);
+}
+[$codigo, $stdout] = $ejecutar('cruzar', [...$programas['cruzar'], '--anios=0', '--palabras=1', '--umbral=0.5']);
+igual('cruzar.php: valores válidos de --anios, --palabras y --umbral se aceptan', 0, $codigo);
 array_map('unlink', glob("$tmp/*") ?: []);
 rmdir($tmp);
 

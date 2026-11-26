@@ -6,13 +6,13 @@
     "law_name": "Copyright Act, 2004 (Act No. 10 of 2004)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years (Commons cites s. 21(1); section number conflicts with WIPO table of contents, unverified); applied art 25 years; audiovisual, sound recordings, photographs 50 years",
-    "author_rights": "Economic rights (unconfirmed)",
-    "moral_rights": "Moral rights recognized (right of authorship; waivable only in writing; articles unconfirmed) (unconfirmed)",
+    "author_rights": "Economic and moral rights of the author, protected for the author's life plus 50 years (s. 21(1), per Commons summary)",
+    "moral_rights": "Moral rights protected for the author's life plus 50 years (s. 21(1), per Commons summary)",
     "orphan_works": "Not specified",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
-    "enforcement_body": "UNKNOWN (Act s. 79 provides a Collecting Society of The Gambia; no copyright office identified) (unconfirmed)",
+    "enforcement_body": "Copyright Office under the National Centre for Arts and Culture (NCAC), with copyright inspectors holding police powers (per musicinafrica article; no section given)",
     "treaties_signatory": "Berne/TRIPS",
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/9346",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/9346",
@@ -39,22 +39,40 @@
         "checked": "2026-10-16"
       },
       "author_rights": {
-        "url": "https://www.wipo.int/wipolex/en/legislation/details/9346",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Gambia.html",
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "moral_rights": {
-        "url": "https://www.wipo.int/wipolex/en/legislation/details/9346",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Gambia.html",
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "enforcement_body": {
         "url": "https://www.musicinafrica.net/node/13993",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "enforcement_body",
+        "from": "UNKNOWN (Act s. 79 provides a Collecting Society of The Gambia; no copyright office identified) (unconfirmed)",
+        "to": "Copyright Office under the National Centre for Arts and Culture (NCAC), with copyright inspectors holding police powers (per musicinafrica article; no section given)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "moral_rights",
+        "from": "Moral rights recognized (right of authorship; waivable only in writing; articles unconfirmed) (unconfirmed)",
+        "to": "Moral rights protected for the author's life plus 50 years (s. 21(1), per Commons summary)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Economic and moral rights of the author, protected for the author's life plus 50 years (s. 21(1), per Commons summary)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

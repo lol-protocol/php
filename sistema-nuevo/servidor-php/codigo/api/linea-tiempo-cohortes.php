@@ -10,8 +10,23 @@ declare(strict_types=1);
  *         duration_delta_pct, amount_delta_pct e ip_mismatch; stats_service_available: false si el servicio no respondió para algún tipo
  */
 
-function api_timeline_con_cohortes(array $acciones, string $userCountry, Universo $universo): array
+function api_timeline_con_cohortes(array $acciones, string $userCountry, Universo $universo, bool $comparar = true): array
 {
+    if (!$comparar) {
+        // Comparación apagada (interruptor gen.backoffice:comparacion): sin llamar al servicio de estadísticas, sin cohorte
+        // y con los deltas en null, que la interfaz ya muestra como «sin comparación».
+        $timeline = [];
+        foreach ($acciones as $action) {
+            $timeline[] = $action + [
+                'cohort' => null,
+                'duration_delta_pct' => null,
+                'amount_delta_pct' => null,
+                'ip_mismatch' => AlmacenAlertas::esIpFueraDelPais($action['ip_country'], $userCountry),
+            ];
+        }
+        return ['timeline' => $timeline, 'stats_service_available' => true];
+    }
+
     $client = new ClienteEstadisticas();
 
     // Un solo lote en paralelo por los tipos distintos de la página, en vez de

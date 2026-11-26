@@ -20,6 +20,9 @@ $maximo = null;
 $capturado = null;
 $progreso = false;
 $exclusiones = Exclusiones::vacia();
+$uso = "Uso: php bin/wikidata.php volcado.json[.gz|.bz2] [--pais=Q298] [--max=N] [--capturado=AAAA-MM-DD] [--excluir=lista.txt] [--progreso]\nEsto no descarga el volcado: bájalo tú.\n";
+Cli::validar(array_slice($argv, 1), ['--pais=', '--max=', '--capturado=', '--progreso', '--excluir='], $uso);
+
 foreach (array_slice($argv, 1) as $arg) {
     if (str_starts_with($arg, '--pais=')) {
         $pais = substr($arg, 7);
@@ -28,9 +31,9 @@ foreach (array_slice($argv, 1) as $arg) {
             exit(2);
         }
     } elseif (str_starts_with($arg, '--max=')) {
-        $maximo = (int) substr($arg, 6);
+        $maximo = Cli::entero('--max', substr($arg, 6), 1);
     } elseif (str_starts_with($arg, '--capturado=')) {
-        $capturado = substr($arg, 12);
+        $capturado = Cli::fecha('--capturado', substr($arg, 12));
     } elseif ($arg === '--progreso') {
         $progreso = true;
     } elseif (str_starts_with($arg, '--excluir=')) {
@@ -40,7 +43,7 @@ foreach (array_slice($argv, 1) as $arg) {
     }
 }
 if ($ruta === null || Lote::esUrl($ruta)) {
-    fwrite(STDERR, "Uso: php bin/wikidata.php volcado.json[.gz|.bz2] [--pais=Q298] [--max=N] [--capturado=AAAA-MM-DD] [--excluir=lista.txt] [--progreso]\nEsto no descarga el volcado: bájalo tú.\n");
+    fwrite(STDERR, $uso);
     exit(2);
 }
 

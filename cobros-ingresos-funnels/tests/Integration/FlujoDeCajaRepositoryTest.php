@@ -60,7 +60,9 @@ final class FlujoDeCajaRepositoryTest extends IntegracionTestCase
     private function porClave(int $meses): array
     {
         $porClave = [];
-        foreach ((new FlujoDeCajaRepository())->cubetas($meses) as $cubeta) {
+        // El supuesto del vencimiento: estas pruebas son de en que mes cae cada boleta segun su vencimiento (el del
+        // atraso habitual de cada cliente tiene las suyas, en FlujoDeCajaConAtrasoTest).
+        foreach ((new FlujoDeCajaRepository())->cubetas($meses, FlujoDeCajaRepository::SUPUESTO_VENCIMIENTO) as $cubeta) {
             $porClave[$cubeta['clave']] = ['boletas' => $cubeta['boletas'], 'clientes' => $cubeta['clientes'], 'saldo_usd' => $cubeta['saldo_usd']];
         }
 
@@ -205,14 +207,17 @@ final class FlujoDeCajaRepositoryTest extends IntegracionTestCase
     public function testLosTotalesSeSacanDeLasCubetas(): void
     {
         $cubetas = [
-            ['clave' => 'vencido', 'boletas' => 2, 'clientes' => 2, 'saldo_usd' => 100.5],
-            ['clave' => '2026-11', 'boletas' => 1, 'clientes' => 1, 'saldo_usd' => 30.0],
-            ['clave' => '2026-12', 'boletas' => 4, 'clientes' => 3, 'saldo_usd' => 400.25],
-            ['clave' => 'despues', 'boletas' => 1, 'clientes' => 1, 'saldo_usd' => 9.0],
+            ['clave' => 'vencido', 'boletas' => 2, 'clientes' => 2, 'saldo_usd' => 100.5, 'con_historial_usd' => 0.0],
+            ['clave' => '2026-11', 'boletas' => 1, 'clientes' => 1, 'saldo_usd' => 30.0, 'con_historial_usd' => 30.0],
+            ['clave' => '2026-12', 'boletas' => 4, 'clientes' => 3, 'saldo_usd' => 400.25, 'con_historial_usd' => 100.0],
+            ['clave' => 'despues', 'boletas' => 1, 'clientes' => 1, 'saldo_usd' => 9.0, 'con_historial_usd' => 9.0],
         ];
 
         self::assertSame(
-            ['total_usd' => 539.75, 'vencido_usd' => 100.5, 'este_mes_usd' => 30.0, 'boletas' => 8],
+            [
+                'total_usd' => 539.75, 'vencido_usd' => 100.5, 'este_mes_usd' => 30.0, 'boletas' => 8,
+                'por_vencer_usd' => 439.25, 'con_historial_usd' => 139.0,
+            ],
             FlujoDeCajaRepository::totales($cubetas)
         );
     }

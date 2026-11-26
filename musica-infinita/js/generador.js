@@ -1061,7 +1061,12 @@
     });
   }
 
+  // Versión de la composición: sube cuando un cambio hace que una misma semilla suene distinta.
+  // Los favoritos la guardan para avisar si se tocan con otro compositor.
+  const VERSION = 1;
+
   const API = {
+    VERSION: VERSION,
     Generador: Generador,
     ESTILOS: ESTILOS,
     crearAzar: crearAzar,

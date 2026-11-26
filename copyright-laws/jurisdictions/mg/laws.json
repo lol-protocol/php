@@ -8,7 +8,7 @@
     "term_of_protection": "Author's life + 70 years (art. 52: current calendar year and following 70 years; joint works from death of last survivor; anonymous/pseudonymous/posthumous works 70 years from 1 January after publication)",
     "author_rights": "Economic rights",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Not specified: no express provisions on orphan works (OMDA reply to WIPO questionnaire, Q21, c. 2010; in practice no determination or localisation mechanism, Q22)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "No (no registration requirement found; unconfirmed)",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8318",
@@ -44,9 +44,9 @@
         "checked": "2026-10-22"
       },
       "orphan_works": {
-        "url": "https://www.assemblee-nationale.mg/wp-content/uploads/2020/11/Loi-n°-94-036-Portant-sur-la-Propriété-Littéraire-et-Artistique..pdf",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://wipo.int/documents/d/copyright/docs-fr-registration-replies-madagascar.pdf",
+        "confidence": "medium",
+        "checked": "2026-11-26"
       },
       "registration_required": {
         "url": "https://wipo.int/documents/d/copyright/docs-fr-registration-replies-madagascar.pdf",
@@ -65,6 +65,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Not specified: no express provisions on orphan works (OMDA reply to WIPO questionnaire, Q21, c. 2010; in practice no determination or localisation mechanism, Q22)"
+      },
       {
         "date": "2026-10-22",
         "field": "row",

@@ -6,6 +6,7 @@ diagnósticos (ver «Qué no hace» en el README).
 """
 import functools
 
+import modelo
 from comun import IDIOMAS, REGIONES, SEXOS, filas_csv, normalizar
 
 _ORDEN_CONFIANZA = {"alta": 0, "media": 1, "baja": 2}
@@ -158,6 +159,60 @@ def exceso_de_muertes_londres(anio, ventana=5):
     return serie[anio][0] / mediana
 
 
+@functools.cache
+def _tasas_de_inglaterra():
+    return tuple((int(f["anio"]), float(f["natalidad"]), float(f["mortalidad"])) for f in filas_csv("inglaterra_tasas"))
+
+
+def tasas_inglaterra(anio):
+    """Tasas brutas de natalidad y de mortalidad (por mil habitantes) de Inglaterra (y Gales), de 1541 a 2015.
+
+    Es la serie de Wrigley y Schofield (reconstrucción desde los registros parroquiales) y, desde 1838, el registro civil.
+    Hasta 1861 hay **un punto cada cinco años** (1541, 1546, 1551…): cada uno resume un quinquenio, así que suaviza
+    los picos de un solo año. Devuelve {"natalidad": float, "mortalidad": float}, o None si ese año no tiene punto.
+    Es estadística de población: dice cuánto se moría en el país, no de qué ni quién.
+    """
+    for a, natalidad, mortalidad in _tasas_de_inglaterra():
+        if a == anio:
+            return {"natalidad": natalidad, "mortalidad": mortalidad}
+    return None
+
+
+def exceso_de_mortalidad_inglaterra(anio, vecinos=2):
+    """Cuántas veces la tasa de mortalidad de ese punto supera a la de los `vecinos` puntos de cada lado (mediana).
+
+    Los vecinos se cuentan en **puntos de la serie**, no en años (hasta 1861 cada punto es un quinquenio). Un 1,0 es un
+    punto como los de al lado; 1,3 es una mortalidad muy por encima. Devuelve None si el año no tiene punto o hay menos
+    de 4 vecinos con dato (los extremos de la serie).
+    """
+    serie = _tasas_de_inglaterra()
+    for i, (a, _natalidad, mortalidad) in enumerate(serie):
+        if a == anio:
+            break
+    else:
+        return None
+    valores = sorted(serie[j][2] for j in range(i - vecinos, i + vecinos + 1) if j != i and 0 <= j < len(serie))
+    if len(valores) < 4:
+        return None
+    mitad = len(valores) // 2
+    mediana = valores[mitad] if len(valores) % 2 else (valores[mitad - 1] + valores[mitad]) / 2
+    return mortalidad / mediana
+
+
+def anios_de_mortalidad_anormal_inglaterra(umbral=1.15):
+    """Los años de la serie de Inglaterra cuyo exceso de mortalidad llega a `umbral` (por defecto, un 15 % sobre los vecinos).
+
+    Devuelve una lista de {"anio": int, "exceso": float}, en orden. Como hasta 1861 la serie es quinquenal, un año
+    de peste o de gripe aparece diluido: sirve para ver épocas, no para fechar un brote.
+    """
+    resultado = []
+    for a, _natalidad, _mortalidad in _tasas_de_inglaterra():
+        exceso = exceso_de_mortalidad_inglaterra(a)
+        if exceso is not None and exceso >= umbral:
+            resultado.append({"anio": a, "exceso": exceso})
+    return resultado
+
+
 def banda_esperanza(codigo, anio, edad=0, sexo="T"):
     """(bajo, alto) de la esperanza restante de `esperanza_restante`, o None si no hay dato o no tiene banda.
 
@@ -167,3 +222,84 @@ def banda_esperanza(codigo, anio, edad=0, sexo="T"):
     """
     encontrado = _periodo_que_cubre(codigo, anio, edad, sexo)
     return None if encontrado is None else encontrado[2]
+
+
+# --- Edades de muerte y supervivencia: estadística de población, por país y década -------------------------------
+#
+# Todas parten de la tabla de vida que el modelo log-cuadrático arma para un país, una década y un sexo, desde la
+# esperanza al nacer (del sexo pedido) y la mortalidad de 0 a 5 años (de ambos sexos). Son cifras de **período** y de
+# **toda la población**: dicen cómo se repartían las muertes y cuántos niños llegaban a cada edad en esa década, no
+# lo que le pasó o le pasará a una persona ni a una familia. Por eso solo reciben país, año, sexo y edades: ninguna
+# recibe una ficha ni un apellido (una prueba lo comprueba). Son modeladas (calidad C) y, antes de 1950, apenas
+# estimaciones; no hay datos si falta la mortalidad de 0 a 5 años (antes de 1800, o países sin esa serie).
+
+PARAMETROS_PERMITIDOS = frozenset({"codigo", "anio", "sexo", "edad", "desde_edad", "p", "nacidos"})
+
+
+@functools.cache
+def _perfil_de_periodo(codigo, desde, sexo):
+    e0 = _periodos_de_esperanza().get((codigo, sexo, 0), ())
+    e0 = next((fila[2] for fila in e0 if fila[0] == desde), None)
+    l5 = next((fila[3] for fila in _periodos_de_esperanza().get((codigo, "T", 5), ()) if fila[0] == desde), None)
+    if e0 is None or l5 is None:
+        return None
+    return modelo.perfil((1 - l5) * 1000, e0, sexo)
+
+
+def _perfil(codigo, anio, sexo):
+    if sexo not in SEXOS:
+        raise ValueError(f"sexo «{sexo}»: debe ser uno de {SEXOS}")
+    for desde, hasta, *_ in _periodos_de_esperanza().get((codigo, sexo, 0), ()):
+        if desde <= anio <= hasta:
+            return _perfil_de_periodo(codigo, desde, sexo)
+    return None
+
+
+def probabilidad_de_llegar_a(codigo, anio, edad, sexo="T"):
+    """Probabilidad (0 a 1) de que un recién nacido de esa década y ese país llegue con vida a `edad` (0 a 110).
+
+    Devuelve None si no hay datos (hacen falta la esperanza al nacer y la mortalidad de 0 a 5 años de la década)."""
+    perfil = _perfil(codigo, anio, sexo)
+    return None if perfil is None else modelo.supervivencia_en(perfil[0], edad)
+
+
+def supervivientes_esperados(codigo, anio, nacidos, edad, sexo="T"):
+    """Cuántos de `nacidos` niños llegaban en promedio a `edad`: `nacidos` por `probabilidad_de_llegar_a`. Es un
+    valor esperado de la población (de 6 nacimientos, «4,1»), no lo que pasó en una familia."""
+    if nacidos < 0:
+        raise ValueError(f"nacidos no puede ser negativo: {nacidos}")
+    probabilidad = probabilidad_de_llegar_a(codigo, anio, edad, sexo)
+    return None if probabilidad is None else nacidos * probabilidad
+
+
+def fraccion_de_muertes_antes_de(codigo, anio, edad, desde_edad=0, sexo="T"):
+    """De quienes llegaban a `desde_edad`, la fracción (0 a 1) que moría antes de cumplir `edad` en esa década.
+    Con `desde_edad=0`, la fracción de todos los nacidos. Pide `edad >= desde_edad`."""
+    if edad < desde_edad:
+        raise ValueError(f"edad ({edad}) menor que desde_edad ({desde_edad})")
+    perfil = _perfil(codigo, anio, sexo)
+    if perfil is None:
+        return None
+    base = modelo.supervivencia_en(perfil[0], desde_edad)
+    return None if base <= 0 else 1 - modelo.supervivencia_en(perfil[0], edad) / base
+
+
+def edad_de_muerte_percentil(codigo, anio, p, desde_edad=0, sexo="T"):
+    """La edad por debajo de la cual había muerto la fracción `p` (0 < p < 1) de quienes llegaban a `desde_edad`: con
+    p = 0,5, la mediana de la edad de muerte. Devuelve como mucho 110. None si no hay datos."""
+    if not 0 < p < 1:
+        raise ValueError(f"p fuera de (0, 1): {p}")
+    perfil = _perfil(codigo, anio, sexo)
+    if perfil is None:
+        return None
+    base = modelo.supervivencia_en(perfil[0], desde_edad)
+    return None if base <= 0 else modelo.edad_de_supervivencia(perfil[0], base * (1 - p))
+
+
+def edades_de_muerte_comunes(codigo, anio, desde_edad=0, sexo="T"):
+    """{"p10", "p25", "p50", "p75", "p90"}: las edades por debajo de las cuales moría el 10, 25, 50, 75 y 90 % de quienes
+    llegaban a `desde_edad`. De p10 a p90 está el 80 % central de las muertes: lo «común» en esa década. None si no hay
+    datos."""
+    edades = {f"p{n}": edad_de_muerte_percentil(codigo, anio, n / 100, desde_edad, sexo) for n in (10, 25, 50, 75, 90)}
+    return None if edades["p50"] is None else edades
+

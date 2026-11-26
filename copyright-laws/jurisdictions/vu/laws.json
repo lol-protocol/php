@@ -8,11 +8,11 @@
     "term_of_protection": "Author's life + 50 years (s. 19); joint works life of last surviving author + 50 years; collective, audiovisual and anonymous works 50 years; applied art 25 years",
     "author_rights": "Economic rights (s. 8)",
     "moral_rights": "Moral rights recognized (s. 9), independent of economic rights",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Not specified (no orphan-works provision found; s. 21(3)-(4): publisher of an anonymous or pseudonymous work presumed to represent the author until identity is revealed)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
-    "enforcement_body": "Vanuatu Intellectual Property Office (VANIPO) (unconfirmed)",
+    "enforcement_body": "Supreme Court (civil matters s. 34, criminal offences s. 35); Director of Customs may seize infringing copies (s. 34)",
     "treaties_signatory": "Berne/TRIPS/WCT",
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/text/475492",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/10729",
@@ -49,14 +49,14 @@
         "checked": "2026-10-25"
       },
       "orphan_works": {
-        "url": "https://www.wipo.int/wipolex/en/legislation/details/10729",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.wipo.int/wipolex/en/text/475492",
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "enforcement_body": {
-        "url": "https://vanipo.gov.vu/PDF/Copyright%20Act.pdf",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.wipo.int/wipolex/en/text/475492",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "treaties_signatory": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Vanuatu.html",
@@ -65,6 +65,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "enforcement_body",
+        "from": "Vanuatu Intellectual Property Office (VANIPO) (unconfirmed)",
+        "to": "Supreme Court (civil matters s. 34, criminal offences s. 35); Director of Customs may seize infringing copies (s. 34)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Not specified (no orphan-works provision found; s. 21(3)-(4): publisher of an anonymous or pseudonymous work presumed to represent the author until identity is revealed)"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

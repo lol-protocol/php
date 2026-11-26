@@ -10,7 +10,7 @@
     "moral_rights": "Not specified",
     "orphan_works": "No specific orphan-works scheme found; BUTDRA administers rights in heirless works (oeuvres en déshérence), folklore and waived works, proceeds used for cultural/social purposes (Decree 313/2005)",
     "digital_protection": "Not specified",
-    "fair_use_exceptions": "Folklore uses for profit outside traditional context need BUTDRA authorization against royalty (Arts. 82, 85, 86); other exceptions not seen (unconfirmed)",
+    "fair_use_exceptions": "Art. 34: private copies, short quotations with credit, parody, teaching examples; Arts. 35-38 add programs, libraries, public artworks, broadcasts; Art. 88 extends them to folklore",
     "registration_required": "Not specified",
     "enforcement_body": "Chadian Copyright Office (BUTDRA)",
     "treaties_signatory": "Berne/TRIPS",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-18",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/fr/legislation/details/9124",
@@ -45,8 +45,8 @@
       },
       "fair_use_exceptions": {
         "url": "https://www.wipo.int/wipolex/en/text/491812",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "high",
+        "checked": "2026-11-26"
       },
       "enforcement_body": {
         "url": "https://www.wipo.int/wipolex/ru/legislation/details/9124",
@@ -60,6 +60,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "fair_use_exceptions",
+        "from": "Folklore uses for profit outside traditional context need BUTDRA authorization against royalty (Arts. 82, 85, 86); other exceptions not seen (unconfirmed)",
+        "to": "Art. 34: private copies, short quotations with credit, parody, teaching examples; Arts. 35-38 add programs, libraries, public artworks, broadcasts; Art. 88 extends them to folklore"
+      },
       {
         "date": "2026-10-18",
         "field": "orphan_works",

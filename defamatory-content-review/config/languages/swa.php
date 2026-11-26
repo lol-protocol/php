@@ -34,6 +34,10 @@ return [
             ['word' => 'mbogo', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
             ['word' => 'kenge', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'mbwa koko', 'riskType' => 'animal', 'severity' => 'high'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'ng\'ombe', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'nyani', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'mbuzi', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'akili' => [
             ['word' => 'mjinga', 'riskType' => 'intelectual', 'severity' => 'high'],
@@ -49,6 +53,9 @@ return [
             ['word' => 'mpuuzi', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'fala', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'pimbi', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'mbumbumbu', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'kilaza', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'mwili' => [
             ['word' => 'mnene', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -106,6 +113,10 @@ return [
             ['word' => 'mlaghai', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'mhuni', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'kibaka', 'riskType' => 'moral', 'severity' => 'medium'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'mhalifu', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'mfitini', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'mchonganishi', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
         'jinsia' => [
             ['word' => 'kahaba', 'riskType' => 'genero', 'severity' => 'high'],
@@ -120,9 +131,14 @@ return [
             ['word' => 'makende', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'mboo', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'matako', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'kinyesi', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'shenzi', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
         'dhihaka' => [
             ['word' => 'kichekesho', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            // Borrador: términos añadidos sin revisión de hablante nativo.
+            ['word' => 'kituko', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
     ],
 ];

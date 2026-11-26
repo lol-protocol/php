@@ -10,7 +10,7 @@
 #   --dry-run  muestra que se archivaria sin tocar nada
 # Todo va a $REMOVED_DIR/<dominio>-<fecha>/ (por defecto /var/backups/vps-setup/removed).
 # NO toca el certificado de Let's Encrypt ni la zona DNS: al final se indican los comandos.
-# Rutas reemplazables para pruebas: NGINX_DIR, PHP_POOL_DIR, WWW_DIR, NGINX_LOG_DIR, SYSTEMD_DIR, REMOVED_DIR, CRON_DIR.
+# Rutas reemplazables para pruebas: NGINX_DIR, PHP_POOL_DIR, DEPLOY_KEYS_DIR, WWW_DIR, NGINX_LOG_DIR, SYSTEMD_DIR, REMOVED_DIR, CRON_DIR.
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -67,6 +67,7 @@ add_item "$NGINX_LOG_DIR/$DOMAIN" "logs/$DOMAIN"
 if [ -n "$APP" ]; then
     add_item "$NGINX_DIR/sites-available/$APP" "sites-available/$APP"
     add_item "$WWW_DIR/$APP" "www/$APP"
+    add_item "$DEPLOY_KEYS_DIR/$APP" "deploy-key/$APP"   # la copia de la llave de 10_C (el archivo original no se toca)
     add_item "$SYSTEMD_DIR/$APP.service" "systemd/$APP.service"
     add_item "${PHP_POOL_DIR:-/etc/php/$PHP_VERSION/fpm/pool.d}/$(app_user_name "$APP").conf" "php-pool/$(app_user_name "$APP").conf"
     # Marcalibros (06_E) deja ademas su limpieza diaria en cron.d.

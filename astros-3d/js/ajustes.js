@@ -1,5 +1,6 @@
 /*
- * Ajustes de comodidad del visor: si el astro gira, a qué velocidad, y cómo se guardan.
+ * Ajustes de comodidad del visor: si el astro gira, a qué velocidad, y qué se recuerda entre visitas
+ * (el guardado en el navegador lo hace visor.js; aquí solo se decide qué valores son válidos).
  * Funciones puras (sin DOM): corren en el navegador y en Node, y se prueban en pruebas/ajustes.test.js.
  *
  * Por defecto el astro está quieto: el movimiento continuo cansa a quien lo mira. Quien quiera,

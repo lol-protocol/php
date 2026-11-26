@@ -93,6 +93,31 @@ class HostParserTest extends TestCase
         $this->assertSame('http://tudominio.com/mx/', HostParser::alternos('/mx/')['x-default']);
     }
 
+    public function testSoloTraducidosDejaLosIdiomasQueTienenSusTextos(): void
+    {
+        putenv('IDIOMAS_ACTIVOS=spa,eng,fra');
+
+        $this->assertSame(
+            ['es', 'en', 'x-default'],
+            array_keys(HostParser::alternos('/r/1/', soloTraducidos: true)),
+            'fra is listed but has no lang/fra.php'
+        );
+    }
+
+    public function testElOrigenEnBaseCambiaElSubdominioDeIdiomaPorElBase(): void
+    {
+        putenv('IDIOMAS_ACTIVOS=spa,eng');
+
+        $_SERVER['HTTP_HOST'] = 'eng.tudominio.com';
+        $this->assertSame('http://spa.tudominio.com', HostParser::origenEnBase());
+        $_SERVER['HTTP_HOST'] = 'spa.tudominio.com';
+        $this->assertSame('http://spa.tudominio.com', HostParser::origenEnBase());
+        $_SERVER['HTTP_HOST'] = 'tudominio.com';
+        $this->assertSame('http://tudominio.com', HostParser::origenEnBase(), 'the bare domain already serves the base language');
+        $_SERVER['HTTP_HOST'] = 'api.tudominio.com';
+        $this->assertSame('http://api.tudominio.com', HostParser::origenEnBase(), 'not a language subdomain: left alone');
+    }
+
     public function testElIdiomaBaseEsElDelDominioSinSubdominioYElPrimeroDeLosActivos(): void
     {
         putenv('IDIOMAS_ACTIVOS=fra');

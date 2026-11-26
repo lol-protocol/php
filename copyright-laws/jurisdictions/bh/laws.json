@@ -9,7 +9,7 @@
     "author_rights": "Economic rights",
     "moral_rights": "Art. 5: perpetual, imprescriptible and inalienable rights of attribution, anonymity/pseudonym and integrity (bar distortion harming honour/reputation)",
     "orphan_works": "Not specified",
-    "digital_protection": "TPM provisions adopted under US FTA (IIPA flags compliance gaps) (unconfirmed)",
+    "digital_protection": "Yes (Art. 45, as amended by Law No. 5 of 2014: prohibits breaking effective technical measures, related services, and deleting or altering rights management information)",
     "fair_use_exceptions": "Art. 19(1) single private copy subject to three-step test; Art. 20(1) quotation for legitimate purpose; Art. 20(2) teaching illustration by non-profit bodies",
     "registration_required": "No (voluntary registration with the Copyright Protection Office)",
     "enforcement_body": "Copyright Protection Office, Ministry of Information",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-11-25",
     "sources": {
       "moral_rights": {
         "url": "https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/bh/bh030en.html",
@@ -29,12 +29,18 @@
         "checked": "2026-10-15"
       },
       "digital_protection": {
-        "url": "https://www.iipa.org/files/uploads/2017/12/2007SPEC301BAHRAIN.pdf",
-        "confidence": "low",
-        "checked": "2026-10-14"
+        "url": "https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/bh/bh030en.html",
+        "confidence": "high",
+        "checked": "2026-11-25"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "digital_protection",
+        "from": "TPM provisions adopted under US FTA (IIPA flags compliance gaps) (unconfirmed)",
+        "to": "Yes (Art. 45, as amended by Law No. 5 of 2014: prohibits breaking effective technical measures, related services, and deleting or altering rights management information)"
+      },
       {
         "date": "2026-10-15",
         "field": "fair_use_exceptions",

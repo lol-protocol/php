@@ -44,6 +44,14 @@ export const CORPULENCIA_MIN = 0.6, CORPULENCIA_MAX = 1.6; // si se da como núm
 export const CORPULENCIAS = { delgada: 0.86, media: 1, robusta: 1.2, corpulenta: 1.34 };
 export const POSTURAS = { firme: 7, relajada: 11, abierta: 22 };
 
+/** Estilos de saludo: cuánto baja el codo bajo la horizontal (menos grados = el codo más arriba), cuánto se inclina el antebrazo hacia afuera y cuánto gira la mano (grados). */
+export const SALUDOS_ESTILO = Object.freeze({
+  alto: { codo: 22, antebrazo: 5, mano: 0 }, // el codo casi a la altura del hombro y la mano muy arriba
+  medio: { codo: 55, antebrazo: 15, mano: 0 }, // el de siempre
+  bajo: { codo: 76, antebrazo: 32, mano: 12 }, // un saludo discreto: el codo pegado al cuerpo y la mano a la altura del pecho
+  inclinado: { codo: 45, antebrazo: 34, mano: 22 }, // el antebrazo y la mano inclinados hacia afuera
+});
+
 /** Pose simétrica y rígida (la de las primeras versiones). */
 export const POSE_FIRME = Object.freeze({
   modo: 'firme', cabeza: 0, inclinacion: 0, carga: 0, abre: 1, giro: 10, brazoLibre: 'abajo', angulos: null,
@@ -195,12 +203,12 @@ export function medidas(opc = {}) {
     return { tipo: 'caido', linea, anchos: anchosBrazo, u: uBrazo, mano: { ang: grados + bend + flex } };
   };
   // Mano en la cintura: codo hacia afuera y muñeca sobre la cadera.
-  const brazoCintura = () => {
+  const brazoCintura = (lado = ladoLibre) => {
     const codo = [S0[0] + H * 0.064 * pose.cinturaCodo, lerp(y.axila, y.cintura, 0.5)];
     const mun = [w.cadera * 0.98 + H * 0.004, y.cintura + (y.cadera - y.cintura) * 0.72];
     const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
     const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
-    return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
+    return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[lado] ?? 0 };
   };
   // Mano sobre el pecho (como al jurar o saludar con respeto): el codo sale un poco y la muñeca llega al centro del pecho.
   const brazoPecho = () => {
@@ -210,10 +218,11 @@ export function medidas(opc = {}) {
     const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
     return { tipo: 'pecho', linea: [S0, [m1[0] + H * 0.004, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
   };
-  // Manos juntas al frente (a la altura de la cintura) y brazos cruzados sobre el pecho: afectan a los dos brazos.
-  const brazoJuntas = () => {
-    const codo = [S0[0] + H * 0.024, lerp(y.axila, y.cintura, 0.8)];
-    const mun = [w.cintura * 0.12, y.cintura + (y.cadera - y.cintura) * 0.45];
+  // Manos juntas al frente (a la cintura o, en plegaria, al pecho), brazos cruzados sobre el pecho y manos en jarras: afectan a los dos brazos.
+  const brazoJuntas = (alto = false) => {
+    // `alto`: las manos juntas a la altura del pecho (plegaria); si no, a la de la cintura.
+    const codo = [S0[0] + H * (alto ? 0.04 : 0.024), lerp(y.axila, y.cintura, alto ? 0.55 : 0.8)];
+    const mun = alto ? [w.pecho * 0.1, y.pecho + H * 0.03] : [w.cintura * 0.12, y.cintura + (y.cadera - y.cintura) * 0.45];
     const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
     const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
     return { tipo: 'juntas', linea: [S0, m1, codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: 0 };
@@ -250,6 +259,8 @@ export function medidas(opc = {}) {
   for (const s of [1, -1]) {
     if (s === saludoLado) brazos[s] = brazoSaludo();
     else if (manos === 'juntas') brazos[s] = brazoJuntas();
+    else if (manos === 'plegaria') brazos[s] = brazoJuntas(true);
+    else if (manos === 'jarras') brazos[s] = brazoCintura(s);
     else if (manos === 'cruzados') brazos[s] = brazoCruzado(s > 0 ? 0 : 1);
     else if (s === ladoLibre && pose.brazoLibre === 'pecho') brazos[s] = brazoPecho();
     else if (s === ladoLibre && pose.brazoLibre === 'cintura') brazos[s] = brazoCintura();

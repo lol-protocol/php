@@ -6,13 +6,13 @@
     "law_name": "Copyright Act 1999 (Act No. 11 of 1999)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years (end of calendar year of death) for literary, dramatic, musical, artistic works; photographs, anonymous works, sound recordings, audiovisual works, broadcasts 50 years from taking/publication/making/broadcast",
-    "author_rights": "Economic rights (unconfirmed)",
+    "author_rights": "Owner has the exclusive right to copy, issue copies to the public, publicly perform, broadcast, communicate to the public, and adapt the work (s.16(1))",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "No general orphan-works licence. Acts are not infringing for literary, dramatic, musical or artistic works if the author cannot be identified by reasonable inquiry and copyright is reasonably assumed expired (s.62)",
     "digital_protection": "Not specified",
-    "fair_use_exceptions": "Fair dealing provisions (specific purposes and articles not confirmed) (unconfirmed)",
+    "fair_use_exceptions": "Criticism or review with acknowledgement, and reporting current events (s.41); research or private study by an individual, unless a collective licence is available (s.42); also education and judicial exemptions",
     "registration_required": "No (copyright is automatic on creation in a material form)",
-    "enforcement_body": "Office of the Attorney General (publishes copyright guidance) (unconfirmed)",
+    "enforcement_body": "Copyright Tribunal (ss.202-209) decides licensing-scheme disputes; Minister responsible for the Act, which may be the Attorney General; police (warrants) and Customs (pirated copies at the border)",
     "treaties_signatory": "Berne/TRIPS",
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/1542",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/1542",
@@ -40,18 +40,18 @@
       },
       "author_rights": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/1542",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/1542",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "fair_use_exceptions": {
-        "url": "https://ag.gov.fj/copyrights/",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/1542",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "registration_required": {
         "url": "https://ag.gov.fj/copyrights/",
@@ -59,9 +59,9 @@
         "checked": "2026-10-25"
       },
       "enforcement_body": {
-        "url": "https://ag.gov.fj/copyrights/",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/1542",
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "treaties_signatory": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Fiji.html",
@@ -70,6 +70,30 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "enforcement_body",
+        "from": "Office of the Attorney General (publishes copyright guidance) (unconfirmed)",
+        "to": "Copyright Tribunal (ss.202-209) decides licensing-scheme disputes; Minister responsible for the Act, which may be the Attorney General; police (warrants) and Customs (pirated copies at the border)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "fair_use_exceptions",
+        "from": "Fair dealing provisions (specific purposes and articles not confirmed) (unconfirmed)",
+        "to": "Criticism or review with acknowledgement, and reporting current events (s.41); research or private study by an individual, unless a collective licence is available (s.42); also education and judicial exemptions"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "No general orphan-works licence. Acts are not infringing for literary, dramatic, musical or artistic works if the author cannot be identified by reasonable inquiry and copyright is reasonably assumed expired (s.62)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Owner has the exclusive right to copy, issue copies to the public, publicly perform, broadcast, communicate to the public, and adapt the work (s.16(1))"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

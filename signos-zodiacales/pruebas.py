@@ -882,6 +882,16 @@ class PruebasDeEspiritus(unittest.TestCase):
                 for codigo in generar.IDIOMAS:
                     self.assertTrue(zodiaco.cualidades_de(tipo, n, codigo).strip(), (tipo, n, codigo))
 
+    def test_ninguna_ficha_repite_una_cualidad_al_traducirla(self):
+        # Dos conceptos distintos en español (fidelidad y lealtad, disciplina y orden)
+        # pueden caer en la misma palabra en un idioma: la ficha diría «lealtad, lealtad».
+        datos = zodiaco.cargar_espiritus()
+        for lista in ("angeles", "demonios"):
+            for entrada in datos[lista]:
+                for codigo in generar.IDIOMAS:
+                    palabras = [datos["cualidades"][c][codigo].strip().lower() for c in entrada["cualidades"]]
+                    self.assertEqual(len(palabras), len(set(palabras)), (lista, entrada["numero"], codigo, palabras))
+
     def test_cualidades_rechaza_entradas_no_validas(self):
         for args, error in ((("arcangel", 1, "es"), ValueError), (("angel", 0, "es"), ValueError),
                             (("angel", 73, "es"), ValueError), (("angel", 1, "xx"), ValueError),
@@ -904,7 +914,7 @@ class PruebasDeEspiritus(unittest.TestCase):
         ficha = generar.ficha_de(self.datos, "es")
         self.assertIn("| 1 | Vehuiah | Serafines | 21/03 – 25/03 | Voluntad, comienzos, energía |", ficha)
         self.assertIn("| 17 | Botis | Presidente / Conde | 60 | 11/06 – 15/06 |", ficha)
-        self.assertIn("| 3 | Vassago | Príncipe | — | 31/03 – 04/04 |", ficha)  # sin legiones en la fuente
+        self.assertIn("| 3 | Vassago | Príncipe | 26 | 31/03 – 04/04 |", ficha)
 
     def test_las_tablas_van_dentro_del_bloque_de_derecha_a_izquierda(self):
         ficha = generar.ficha_de(self.datos, "ar")
@@ -1092,6 +1102,17 @@ class PruebasDeArboles(unittest.TestCase):
         for sistema, clave in generar._claves_de_arboles():
             for codigo in generar.IDIOMAS:
                 self.assertTrue(zodiaco.rasgos_de(sistema, clave, codigo).strip(), (sistema, clave, codigo))
+
+    def test_ninguna_ficha_de_arbol_repite_un_rasgo_al_traducirlo(self):
+        # Igual que con las cualidades: dos rasgos distintos no pueden decirse igual en una ficha.
+        datos = zodiaco.cargar_arboles()
+        glosario = {**zodiaco.cargar_espiritus()["cualidades"], **datos["rasgos"]}
+        fichas = ([m["rasgos"] for m in datos["calendario_celta"]["meses"]]
+                  + [h["rasgos"] for h in datos["horoscopo"]] + [n["rasgos"] for n in datos["nakshatras"]])
+        for rasgos in fichas:
+            for codigo in generar.IDIOMAS:
+                palabras = [glosario[r][codigo].strip().lower() for r in rasgos]
+                self.assertEqual(len(palabras), len(set(palabras)), (rasgos, codigo, palabras))
 
     def test_rasgos_rechaza_entradas_no_validas(self):
         for args in (("bosque", "beth", "es"), ("celta", "no-existe", "es"), ("celta", "beth", "xx"), ("horoscopo", "beth", "es")):

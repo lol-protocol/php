@@ -8,7 +8,7 @@
     "term_of_protection": "Author's life + 70 years (Art. 44); collaborative works 70 years after last surviving author's death (Art. 45); anonymous/pseudonymous works Art. 46",
     "author_rights": "Economic rights",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Not specified: no orphan-works licence found; art. 79 only requires a publisher of an unknown author's work to pay royalties if the author later makes himself known",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/details.jsp?id=7736",
@@ -45,11 +45,17 @@
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/details.jsp?id=7736",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-26"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Not specified: no orphan-works licence found; art. 79 only requires a publisher of an unknown author's work to pay royalties if the author later makes himself known"
+      },
       {
         "date": "2026-10-16",
         "field": "row",
