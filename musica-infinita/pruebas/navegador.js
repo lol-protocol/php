@@ -332,6 +332,9 @@ async function principal() {
   // recargar: el MIDI sigue en la biblioteca (IndexedDB) y la elección también
   await pagina.reload();
   await pagina.waitForFunction(function () { return window.MusicaInfinita.estado.canciones.some(function (c) { return c.nombre === 'dos-pistas'; }); }, null, { timeout: 15000 });
+  // tras recargar vuelve la bienvenida y la aplicación queda inerte: se empieza como lo haría una persona
+  await pagina.click('#empezar');
+  await pagina.waitForTimeout(500);
   await pagina.evaluate(function () { document.getElementById('ajustes').hidden = false; window.MusicaInfinita.estado.panelFijo = true; });
   const trasRecargar = await pagina.evaluate(function () {
     const c = window.MusicaInfinita.estado.canciones.find(function (x) { return x.nombre === 'dos-pistas'; });
