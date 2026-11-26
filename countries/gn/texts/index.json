@@ -1,0 +1,49 @@
+[
+    {
+        "slug": "law-no-l-2016-037-an-on-cybersecurity-and-the-protection-of-personal-data",
+        "law": "Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data",
+        "source": "https://www.dlapiperdataprotection.com/?c=GN&t=law",
+        "file": "law-no-l-2016-037-an-on-cybersecurity-and-the-protection-of-personal-data.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:13:07Z",
+        "checkedAt": "2026-11-26T13:13:07Z",
+        "etag": null,
+        "lastModified": "Thu, 26 Nov 2026 13:13:06 GMT",
+        "sha256": "4280be6b69006f6d92eb5f13a0b7e2a260ad8bc3aeae277d4c859b64209077d2",
+        "chars": 770
+    },
+    {
+        "slug": "law-no-l-2016-037-an-on-cybersecurity-and-the-protection-of-personal-data--199ac999",
+        "law": "Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data (enforcement_authority)",
+        "source": "https://dataprotection.africa/guinea/",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-26T13:13:28Z"
+    },
+    {
+        "slug": "law-no-l-2016-037-an-on-cybersecurity-and-the-protection-of-personal-data--5ac1035d",
+        "law": "Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data (effective_date)",
+        "source": "https://www.dataguidance.com/jurisdiction/guinea",
+        "file": "law-no-l-2016-037-an-on-cybersecurity-and-the-protection-of-personal-data--5ac1035d.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:13:19Z",
+        "checkedAt": "2026-11-26T13:13:19Z",
+        "etag": null,
+        "lastModified": "Thu, 05 Nov 2026 15:09:29 GMT",
+        "sha256": "0a2069601ea38b89cbe77c1c23304c1bff049823f92a44523c46aa7cf81c45c6",
+        "chars": 3758
+    },
+    {
+        "slug": "law-no-l-2016-037-an-on-cybersecurity-and-the-protection-of-personal-data--de7c6116",
+        "law": "Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data (enactment_date, applies_to)",
+        "source": "https://guineenews.org/2023/02/10/loi-sur-la-cybercriminalite-le-cours-magistral-du-juge-mohamed-diawara-aux-journalistes-a-lambassade-des-usa/",
+        "file": "law-no-l-2016-037-an-on-cybersecurity-and-the-protection-of-personal-data--de7c6116.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:13:09Z",
+        "checkedAt": "2026-11-26T13:13:09Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "7c411eb40b9e0ad28440b956f1cfd225d9c0697b0bd0e03a29da579ba68983ae",
+        "chars": 6097
+    }
+]

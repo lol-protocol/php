@@ -1,0 +1,65 @@
+[
+    {
+        "slug": "data-protection-act-2011-act-no-5-of-2012",
+        "law": "Data Protection Act, 2011 (Act No. 5 of 2012)",
+        "source": "https://lesotholii.org/akn/ls/act/2012/5/eng@2012-02-22",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-26T13:13:33Z"
+    },
+    {
+        "slug": "data-protection-act-2011-act-no-5-of-2012--006bb59a",
+        "law": "Data Protection Act, 2011 (Act No. 5 of 2012) (key_requirements, data_categories, genetic_data)",
+        "source": "https://www.dlapiperdataprotection.com/?c=LS&t=law",
+        "file": "data-protection-act-2011-act-no-5-of-2012--006bb59a.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:13:53Z",
+        "checkedAt": "2026-11-26T13:13:53Z",
+        "etag": null,
+        "lastModified": "Thu, 26 Nov 2026 13:13:53 GMT",
+        "sha256": "cbf6d3770ce5a18603c4b391976be71ad0c40323402cc9e2ad74a05b3a7d8f51",
+        "chars": 908
+    },
+    {
+        "slug": "data-protection-act-2011-act-no-5-of-2012--535cfde7",
+        "law": "Data Protection Act, 2011 (Act No. 5 of 2012) (scope, applies_to, enforcement_authority, penalties_range)",
+        "source": "https://dataprotection.africa/lesotho/",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-26T13:13:52Z"
+    },
+    {
+        "slug": "data-protection-act-2011-act-no-5-of-2012--a1967f98",
+        "law": "Data Protection Act, 2011 (Act No. 5 of 2012) (jurisdiction)",
+        "source": "https://www.dataguidance.com/jurisdiction/lesotho",
+        "file": "data-protection-act-2011-act-no-5-of-2012--a1967f98.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:13:43Z",
+        "checkedAt": "2026-11-26T13:13:43Z",
+        "etag": null,
+        "lastModified": "Thu, 05 Nov 2026 15:09:29 GMT",
+        "sha256": "de11d2820ed22adbc2201c200632b53c66bba07e0eb0c1ce18b3f6caea08d42e",
+        "chars": 2135
+    },
+    {
+        "slug": "data-protection-act-2011-act-no-5-of-2012--abea30b8",
+        "law": "Data Protection Act, 2011 (Act No. 5 of 2012) (exemptions, research_exemption)",
+        "source": "https://lesotholii.org/akn/ls/act/2012/5",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-26T13:14:00Z"
+    },
+    {
+        "slug": "data-protection-act-2011-act-no-5-of-2012--ae81ea03",
+        "law": "Data Protection Act, 2011 (Act No. 5 of 2012) (retention_period)",
+        "source": "https://www.offlist.me/what-is-lesotho-data-protection-act-2011",
+        "file": "data-protection-act-2011-act-no-5-of-2012--ae81ea03.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:13:55Z",
+        "checkedAt": "2026-11-26T13:13:55Z",
+        "etag": "W/\"144070db6c32c16444f0ce2983c1cbb0\"",
+        "lastModified": null,
+        "sha256": "e03f1adaf8d0726930455558916a185309d1e64ccdfccc3aaca2934f67046a36",
+        "chars": 4885
+    }
+]

@@ -1,0 +1,86 @@
+---
+source: "https://laws-lois.justice.gc.ca/eng/acts/P-8.6/section-7-20250304.html"
+law: "Personal Information Protection and Electronic Documents Act (PIPEDA) (deceased_data, research_exemption)"
+title: "ARCHIVED - Personal Information Protection and Electronic Documents Act"
+fetched: "2026-11-26T13:11:40Z"
+---
+
+This Web page has been archived on the Web.
+
+# Personal Information Protection and Electronic Documents Act
+
+Version of section 7 from 2025-03-04 to 2026-10-29:
+
+Previous Versionof section
+
+Marginal note:Collection without knowledge or consent
+
+- 7 (1) For the purpose of clause 4.3 of Schedule 1, and despite the note that accompanies that clause, an organization may collect personal information without the knowledge or consent of the individual only if
+  - (a) the collection is clearly in the interests of the individual and consent cannot be obtained in a timely way;
+  - (b) it is reasonable to expect that the collection with the knowledge or consent of the individual would compromise the availability or the accuracy of the information and the collection is reasonable for purposes related to investigating a breach of an agreement or a contravention of the laws of Canada or a province;
+  - (b.01) it was disclosed under paragraph (3)(d.21);
+  - (b.1) it is contained in a witness statement and the collection is necessary to assess, process or settle an insurance claim;
+  - (b.2) it was produced by the individual in the course of their employment, business or profession and the collection is consistent with the purposes for which the information was produced;
+  - (c) the collection is solely for journalistic, artistic or literary purposes;
+  - (d) the information is publicly available and is specified by the regulations; or
+  - (e) the collection is made for the purpose of making a disclosure
+    - (i) under subparagraph (3)(c.1)(i) or (d)(ii), or
+    - (ii) that is required by law.
+- Marginal note:Use without knowledge or consent
+  (2) For the purpose of clause 4.3 of Schedule 1, and despite the note that accompanies that clause, an organization may, without the knowledge or consent of the individual, use personal information only if
+  - (a) in the course of its activities, the organization becomes aware of information that it has reasonable grounds to believe could be useful in the investigation of a contravention of the laws of Canada, a province or a foreign jurisdiction that has been, is being or is about to be committed, and the information is used for the purpose of investigating that contravention;
+  - (b) it is used for the purpose of acting in respect of an emergency that threatens the life, health or security of an individual;
+  - (b.1) the information is contained in a witness statement and the use is necessary to assess, process or settle an insurance claim;
+  - (b.2) the information was produced by the individual in the course of their employment, business or profession and the use is consistent with the purposes for which the information was produced;
+  - (c) it is used for statistical, or scholarly study or research, purposes that cannot be achieved without using the information, the information is used in a manner that will ensure its confidentiality, it is impracticable to obtain consent and the organization informs the Commissioner of the use before the information is used;
+  - (c.1) it is publicly available and is specified by the regulations; or
+  - (d) it was collected under paragraph (1)(a), (b), (b.01) or (e).
+- Marginal note:Disclosure without knowledge or consent
+  (3) For the purpose of clause 4.3 of Schedule 1, and despite the note that accompanies that clause, an organization may disclose personal information without the knowledge or consent of the individual only if the disclosure is
+  - (a) made to, in the Province of Quebec, an advocate or notary or, in any other province, a barrister or solicitor who is representing the organization;
+  - (b) for the purpose of collecting a debt owed by the individual to the organization;
+  - (c) required to comply with a subpoena or warrant issued or an order made by a court, person or body with jurisdiction to compel the production of information, or to comply with rules of court relating to the production of records;
+  - (c.1) made to a government institution or part of a government institution that has made a request for the information, identified its lawful authority to obtain the information and indicated that
+    - (i) it suspects that the information relates to national security, the defence of Canada or the conduct of international affairs,
+    - (ii) the disclosure is requested for the purpose of enforcing any law of Canada, a province or a foreign jurisdiction, carrying out an investigation relating to the enforcement of any such law or gathering intelligence for the purpose of enforcing any such law,
+    - (iii) the disclosure is requested for the purpose of administering any law of Canada or a province, or
+    - (iv) the disclosure is requested for the purpose of communicating with the next of kin or authorized representative of an injured, ill or deceased individual;
+  - (c.2) made to the government institution mentioned in section 7 of the Proceeds of Crime (Money Laundering) and Terrorist Financing Act as required by that section;
+  - (d) made on the initiative of the organization to a government institution or a part of a government institution and the organization
+    - (i) has reasonable grounds to believe that the information relates to a contravention of the laws of Canada, a province or a foreign jurisdiction that has been, is being or is about to be committed, or
+    - (ii) suspects that the information relates to national security, the defence of Canada or the conduct of international affairs;
+  - (d.1) made to another organization and is reasonable for the purposes of investigating a breach of an agreement or a contravention of the laws of Canada or a province that has been, is being or is about to be committed and it is reasonable to expect that disclosure with the knowledge or consent of the individual would compromise the investigation;
+  - (d.2) made to another organization and is reasonable for the purposes of detecting or suppressing fraud or of preventing fraud that is likely to be committed and it is reasonable to expect that the disclosure with the knowledge or consent of the individual would compromise the ability to prevent, detect or suppress the fraud;
+  - (d.21) made to another organization under subsection 11.01(1) of the Proceeds of Crime (Money Laundering) and Terrorist Financing Act;
+  - (d.3) made on the initiative of the organization to a government institution, a part of a government institution or the individual’s next of kin or authorized representative and
+    - (i) the organization has reasonable grounds to believe that the individual has been, is or may be the victim of financial abuse,
+    - (ii) the disclosure is made solely for purposes related to preventing or investigating the abuse, and
+    - (iii) it is reasonable to expect that disclosure with the knowledge or consent of the individual would compromise the ability to prevent or investigate the abuse;
+  - (d.4) necessary to identify the individual who is injured, ill or deceased, made to a government institution, a part of a government institution or the individual’s next of kin or authorized representative and, if the individual is alive, the organization informs that individual in writing without delay of the disclosure;
+  - (e) made to a person who needs the information because of an emergency that threatens the life, health or security of an individual and, if the individual whom the information is about is alive, the organization informs that individual in writing without delay of the disclosure;
+  - (e.1) of information that is contained in a witness statement and the disclosure is necessary to assess, process or settle an insurance claim;
+  - (e.2) of information that was produced by the individual in the course of their employment, business or profession and the disclosure is consistent with the purposes for which the information was produced;
+  - (f) for statistical, or scholarly study or research, purposes that cannot be achieved without disclosing the information, it is impracticable to obtain consent and the organization informs the Commissioner of the disclosure before the information is disclosed;
+  - (g) made to an institution whose functions include the conservation of records of historic or archival importance, and the disclosure is made for the purpose of such conservation;
+  - (h) made after the earlier of
+    - (i) one hundred years after the record containing the information was created, and
+    - (ii) twenty years after the death of the individual whom the information is about;
+  - (h.1) of information that is publicly available and is specified by the regulations; or
+  - (h.2) [Repealed, 2015, c. 32, s. 6]
+  - (i) required by law.
+- Marginal note:Use without consent
+  (4) Despite clause 4.5 of Schedule 1, an organization may use personal information for purposes other than those for which it was collected in any of the circumstances set out in subsection (2).
+- Marginal note:Disclosure without consent
+  (5) Despite clause 4.5 of Schedule 1, an organization may disclose personal information for purposes other than those for which it was collected in any of the circumstances set out in paragraphs (3)(a) to (h.1).
+
+- 2000, c. 5, s. 7, c. 17, s. 97
+- 2001, c. 41, s. 81
+- 2004, c. 15, s. 98
+- 2015, c. 32, s. 6
+- 2024, c. 17, s. 347
+
+## Page Details
+
+Date modified:
+
+﻿2026-11-16

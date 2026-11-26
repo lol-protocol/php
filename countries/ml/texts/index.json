@@ -1,0 +1,49 @@
+[
+    {
+        "slug": "law-no-2013-015-of-21-may-2013-on-the-protection-of-personal-data-in-the-republi",
+        "law": "Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017)",
+        "source": "https://www.DataGuidance.com/jurisdiction/mali",
+        "file": "law-no-2013-015-of-21-may-2013-on-the-protection-of-personal-data-in-the-republi.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:14:10Z",
+        "checkedAt": "2026-11-26T13:14:10Z",
+        "etag": null,
+        "lastModified": "Thu, 05 Nov 2026 15:09:29 GMT",
+        "sha256": "efb2b4831e4f238d108b4d2ff1bedbaa274294534b3c03be24d9d756ff01ce83",
+        "chars": 2341
+    },
+    {
+        "slug": "law-no-2013-015-of-21-may-2013-on-the-protection-of-personal-data-in-the-republi--0a436f23",
+        "law": "Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017) (applies_to, key_requirements, exemptions)",
+        "source": "https://dataprotection.africa/?p=1335",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-26T13:14:18Z"
+    },
+    {
+        "slug": "law-no-2013-015-of-21-may-2013-on-the-protection-of-personal-data-in-the-republi--ea71478e",
+        "law": "Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017) (genetic_data, deceased_data, research_exemption)",
+        "source": "https://clinregs.niaid.nih.gov/sites/default/files/documents/mali/Mali-DPL_GoogleTranslation.pdf",
+        "file": "law-no-2013-015-of-21-may-2013-on-the-protection-of-personal-data-in-the-republi--ea71478e.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:14:24Z",
+        "checkedAt": "2026-11-26T13:14:24Z",
+        "etag": "\"59b38-6611ab6fb99b1\"",
+        "lastModified": "Wed, 25 Nov 2026 14:33:47 GMT",
+        "sha256": "03ff8c6529bc7061a994704a6c1fa5ff9f07efe0c5c2c3585ca84bee392ae97a",
+        "chars": 37054
+    },
+    {
+        "slug": "law-no-2013-015-of-21-may-2013-on-the-protection-of-personal-data-in-the-republi--fda31bb3",
+        "law": "Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017) (penalties_range)",
+        "source": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/1026-mali-lautorite-de-protection-des-donnees-a-caractere-personnel-inflige-une-sanction-pecuniaire-a-la-societe-aminata-konate-sarl-sak",
+        "file": "law-no-2013-015-of-21-may-2013-on-the-protection-of-personal-data-in-the-republi--fda31bb3.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:14:23Z",
+        "checkedAt": "2026-11-26T13:14:23Z",
+        "etag": null,
+        "lastModified": "Thu, 26 Nov 2026 13:14:23 GMT",
+        "sha256": "ded1f5486e1ae48eb1b7b75a17b8e453807f742b32e06c6e877607b102b06e57",
+        "chars": 3860
+    }
+]

@@ -1,0 +1,36 @@
+[
+    {
+        "slug": "data-protection-privacy-of-personal-information-act-2003",
+        "law": "Data Protection (Privacy of Personal Information) Act 2003",
+        "source": "https://www.dataguidance.com/jurisdiction/bahamas",
+        "file": "data-protection-privacy-of-personal-information-act-2003.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:10:33Z",
+        "checkedAt": "2026-11-26T13:10:33Z",
+        "etag": null,
+        "lastModified": "Thu, 05 Nov 2026 15:09:29 GMT",
+        "sha256": "eb82d9324c2d178aaa1e7b09bb5ef4d1a4afde21243f0c4013db90df977933a6",
+        "chars": 2425
+    },
+    {
+        "slug": "data-protection-privacy-of-personal-information-act-2003--a26074e3",
+        "law": "Data Protection (Privacy of Personal Information) Act 2003 (law_name, scope, penalties_range, deceased_data)",
+        "source": "https://www.dlapiperdataprotection.com/?c=BS&t=law",
+        "file": "data-protection-privacy-of-personal-information-act-2003--a26074e3.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:10:48Z",
+        "checkedAt": "2026-11-26T13:10:48Z",
+        "etag": null,
+        "lastModified": "Thu, 26 Nov 2026 13:10:48 GMT",
+        "sha256": "6447f41acfe7ecee557e2e50441d9befb1175b712ea27c4be967fe63d103dae5",
+        "chars": 1059
+    },
+    {
+        "slug": "data-protection-privacy-of-personal-information-act-2003--e61e983f",
+        "law": "Data Protection (Privacy of Personal Information) Act 2003 (exemptions)",
+        "source": "https://www.coe.int/web/octopus/-/bahamas",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-26T13:10:49Z"
+    }
+]

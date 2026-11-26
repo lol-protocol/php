@@ -1,0 +1,67 @@
+[
+    {
+        "slug": "data-protection-act-2011-act-no-13-of-2011-chap-22-04",
+        "law": "Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",
+        "source": "https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf",
+        "file": "data-protection-act-2011-act-no-13-of-2011-chap-22-04.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:14:38Z",
+        "checkedAt": "2026-11-26T13:14:38Z",
+        "etag": "\"23298-67128465-228040c0;;;\"",
+        "lastModified": "Fri, 18 Oct 2024 15:53:09 GMT",
+        "sha256": "507fe0f203c3daf120b26e45dc012f3d0cf88689e3fd5f76c90502002f5a4559",
+        "chars": 89453
+    },
+    {
+        "slug": "data-protection-act-2011-act-no-13-of-2011-chap-22-04--1ba1b372",
+        "law": "Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04) (jurisdiction, enforcement_authority)",
+        "source": "https://www.dataguidance.com/jurisdiction/trinidad-and-tobago",
+        "file": "data-protection-act-2011-act-no-13-of-2011-chap-22-04--1ba1b372.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:14:48Z",
+        "checkedAt": "2026-11-26T13:14:48Z",
+        "etag": null,
+        "lastModified": "Thu, 05 Nov 2026 15:09:29 GMT",
+        "sha256": "fac60d74ce63223ed220c28935cdea71a717e6bb97b40b29e92add4727a444cf",
+        "chars": 2421
+    },
+    {
+        "slug": "data-protection-act-2011-act-no-13-of-2011-chap-22-04--2c1969f1",
+        "law": "Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04) (applies_to, key_requirements, data_categories, genetic_data)",
+        "source": "https://www.dlapiperdataprotection.com/?c=TT&t=law",
+        "file": "data-protection-act-2011-act-no-13-of-2011-chap-22-04--2c1969f1.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:15:07Z",
+        "checkedAt": "2026-11-26T13:15:07Z",
+        "etag": null,
+        "lastModified": "Thu, 26 Nov 2026 13:15:07 GMT",
+        "sha256": "ed44f63e9627c0f66839ef2ac5675b6dfc27e24c03a48e724fb99e1e171548e5",
+        "chars": 1280
+    },
+    {
+        "slug": "data-protection-act-2011-act-no-13-of-2011-chap-22-04--c7be5102",
+        "law": "Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04) (enactment_date, effective_date)",
+        "source": "https://www.ttparliament.org/publication/the-data-protection-act-2011/",
+        "file": "data-protection-act-2011-act-no-13-of-2011-chap-22-04--c7be5102.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:15:05Z",
+        "checkedAt": "2026-11-26T13:15:05Z",
+        "etag": null,
+        "lastModified": "Wed, 25 Nov 2026 13:11:41 GMT",
+        "sha256": "99ad5d6dab3c5606d5ad984a6e4c1f145fb261246d9d1747fb347df5a9b8da30",
+        "chars": 206
+    },
+    {
+        "slug": "data-protection-act-2011-act-no-13-of-2011-chap-22-04--f3a93a4a",
+        "law": "Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04) (penalties_range, research_exemption)",
+        "source": "https://www.consentstack.io/regulations/tt-dpa",
+        "file": "data-protection-act-2011-act-no-13-of-2011-chap-22-04--f3a93a4a.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:15:09Z",
+        "checkedAt": "2026-11-26T13:15:09Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "e4a39a813eb720cfd2fc8142f42663fb074219f5180c7f747019efd9fc2035f2",
+        "chars": 4426
+    }
+]

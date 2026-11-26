@@ -1,0 +1,57 @@
+[
+    {
+        "slug": "data-protection-act-2019-act-2019-29",
+        "law": "Data Protection Act 2019 (Act 2019-29)",
+        "source": "https://www.dlapiperdataprotection.com/?c=BB&t=law",
+        "file": "data-protection-act-2019-act-2019-29.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:10:51Z",
+        "checkedAt": "2026-11-26T13:10:51Z",
+        "etag": null,
+        "lastModified": "Thu, 26 Nov 2026 13:10:50 GMT",
+        "sha256": "2931ce54aace63fc6117335e15a07b3b91351c04aaf4e5b728c1d9bfbaa455e9",
+        "chars": 945
+    },
+    {
+        "slug": "data-protection-act-2019-act-2019-29--54534b1c",
+        "law": "Data Protection Act 2019 (Act 2019-29) (jurisdiction, enactment_date, enforcement_authority)",
+        "source": "https://www.dataguidance.com/jurisdiction/barbados",
+        "file": "data-protection-act-2019-act-2019-29--54534b1c.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:11:01Z",
+        "checkedAt": "2026-11-26T13:11:01Z",
+        "etag": null,
+        "lastModified": "Thu, 05 Nov 2026 15:09:29 GMT",
+        "sha256": "806264e75f0eb66fa5e5d568cee68a0c0f65ff4b9f760944a56a3874ed6a083c",
+        "chars": 1988
+    },
+    {
+        "slug": "data-protection-act-2019-act-2019-29--7550efc6",
+        "law": "Data Protection Act 2019 (Act 2019-29) (data_categories)",
+        "source": "https://www.barbadoschamberofcommerce.com/wp-content/uploads/2021/06/BCCI-AGM-Keynote-Bartlett-Morgan-BDPA-Business-Implications.pdf",
+        "file": "data-protection-act-2019-act-2019-29--7550efc6.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:11:36Z",
+        "checkedAt": "2026-11-26T13:11:36Z",
+        "etag": "\"60c281e0-4ab652\"",
+        "lastModified": "Thu, 10 Jun 2021 21:19:28 GMT",
+        "sha256": "7dc3ad696d5a2bdb8f407b7d8b3e501f89c9e5511ed64aad4ede8924f2cce853",
+        "chars": 4764
+    },
+    {
+        "slug": "data-protection-act-2019-act-2019-29--ae84de49",
+        "law": "Data Protection Act 2019 (Act 2019-29) (penalties_range)",
+        "source": "https://www.lexmundi.com/guides/data-privacy-guide/jurisdictions/caribbean/barbados/",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-26T13:11:37Z"
+    },
+    {
+        "slug": "data-protection-act-2019-act-2019-29--be0b24a3",
+        "law": "Data Protection Act 2019 (Act 2019-29) (effective_date)",
+        "source": "https://www.dataguidance.com/notes/barbados-data-protection-overview",
+        "status": "skipped",
+        "error": "no readable text (the page probably needs JavaScript, and the browser found none either)",
+        "checkedAt": "2026-11-26T13:11:18Z"
+    }
+]

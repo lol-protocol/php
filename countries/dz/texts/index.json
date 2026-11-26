@@ -1,0 +1,54 @@
+[
+    {
+        "slug": "law-no-18-07-of-10-june-2018-on-the-protection-of-natural-persons-in-the-process",
+        "law": "Law No. 18-07 of 10 June 2018 on the Protection of Natural Persons in the Processing of Personal Data, as amended by Law No. 25-11 of 24 July 2025",
+        "source": "https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/",
+        "file": "law-no-18-07-of-10-june-2018-on-the-protection-of-natural-persons-in-the-process.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:10:16Z",
+        "checkedAt": "2026-11-26T13:10:16Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "15f9b55199184f6ba34907b58f243e80c4db797de3f8b54301342ca2cadd4145",
+        "chars": 7554
+    },
+    {
+        "slug": "law-no-18-07-of-10-june-2018-on-the-protection-of-natural-persons-in-the-process--0b1ecdb9",
+        "law": "Law No. 18-07 of 10 June 2018 on the Protection of Natural Persons in the Processing of Personal Data, as amended by Law No. 25-11 of 24 July 2025 (effective_date)",
+        "source": "https://consentstack.io/regulations/dz-law1807",
+        "file": "law-no-18-07-of-10-june-2018-on-the-protection-of-natural-persons-in-the-process--0b1ecdb9.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:10:21Z",
+        "checkedAt": "2026-11-26T13:10:21Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "faa994bee91cceffbf4e7a6b3ec19141fc9bdb87239c94ec58f9af16ed15412e",
+        "chars": 4647
+    },
+    {
+        "slug": "law-no-18-07-of-10-june-2018-on-the-protection-of-natural-persons-in-the-process--2771dd81",
+        "law": "Law No. 18-07 of 10 June 2018 on the Protection of Natural Persons in the Processing of Personal Data, as amended by Law No. 25-11 of 24 July 2025 (key_requirements, data_categories, exemptions, genetic_data)",
+        "source": "https://www.dlapiperdataprotection.com/?c=DZ&t=law",
+        "file": "law-no-18-07-of-10-june-2018-on-the-protection-of-natural-persons-in-the-process--2771dd81.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:10:22Z",
+        "checkedAt": "2026-11-26T13:10:22Z",
+        "etag": null,
+        "lastModified": "Thu, 26 Nov 2026 13:10:22 GMT",
+        "sha256": "3e050860c82e958067ea23a8dd129f1d1d734a33c47b241fedbec29c1cf7cbb6",
+        "chars": 981
+    },
+    {
+        "slug": "law-no-18-07-of-10-june-2018-on-the-protection-of-natural-persons-in-the-process--d9c9b2ec",
+        "law": "Law No. 18-07 of 10 June 2018 on the Protection of Natural Persons in the Processing of Personal Data, as amended by Law No. 25-11 of 24 July 2025 (law_name, enactment_date)",
+        "source": "https://www.dlapiperdataprotection.com/index.html?c=DZ&t=law",
+        "file": "law-no-18-07-of-10-june-2018-on-the-protection-of-natural-persons-in-the-process--d9c9b2ec.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-26T13:10:19Z",
+        "checkedAt": "2026-11-26T13:10:19Z",
+        "etag": null,
+        "lastModified": "Thu, 26 Nov 2026 13:10:18 GMT",
+        "sha256": "3e050860c82e958067ea23a8dd129f1d1d734a33c47b241fedbec29c1cf7cbb6",
+        "chars": 981
+    }
+]
