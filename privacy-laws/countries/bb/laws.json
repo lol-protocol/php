@@ -13,7 +13,7 @@
     "data_categories": "Personal data; sensitive personal data (unconfirmed)",
     "retention_period": "Not specified",
     "enforcement_authority": "Data Protection Commissioner / Data Protection Commission",
-    "penalties_range": "Fines up to BBD 500,000 (one source also cites BBD 10,000 minimum and 2 months-3 years imprisonment, unverified) (unconfirmed)",
+    "penalties_range": "Fines up to BBD 500,000",
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-11-13",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://www.dlapiperdataprotection.com/?c=BB&t=law",
@@ -75,12 +75,18 @@
         "checked": "2026-10-22"
       },
       "penalties_range": {
-        "url": "https://www.lexmundi.com/guides/data-privacy-guide/jurisdictions/caribbean/barbados/",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.barbadoschamberofcommerce.com/wp-content/uploads/2021/06/BCCI-AGM-Keynote-Bartlett-Morgan-BDPA-Business-Implications.pdf",
+        "confidence": "medium",
+        "checked": "2026-11-26"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "penalties_range",
+        "from": "Fines up to BBD 500,000 (one source also cites BBD 10,000 minimum and 2 months-3 years imprisonment, unverified) (unconfirmed)",
+        "to": "Fines up to BBD 500,000"
+      },
       {
         "date": "2026-11-13",
         "field": "scope",

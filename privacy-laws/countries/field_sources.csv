@@ -71,7 +71,7 @@ BB,Data Protection Act 2019 (Act 2019-29),applies_to,8e1b1bae8a,low,2026-10-22
 BB,Data Protection Act 2019 (Act 2019-29),key_requirements,8e1b1bae8a,medium,2026-10-22
 BB,Data Protection Act 2019 (Act 2019-29),data_categories,7550efc62c,low,2026-10-22
 BB,Data Protection Act 2019 (Act 2019-29),enforcement_authority,54534b1c91,low,2026-10-22
-BB,Data Protection Act 2019 (Act 2019-29),penalties_range,ae84de49fc,low,2026-10-22
+BB,Data Protection Act 2019 (Act 2019-29),penalties_range,7550efc62c,medium,2026-11-26
 BD,,research_exemption,df66296af5,medium,2026-10-21
 BD,,genetic_data,df66296af5,medium,2026-10-21
 BD,"Personal Data Protection Ordinance, 2025 (Ordinance No. 61 of 2025)",law_name,66ef0c21e8,medium,2026-10-16
@@ -592,7 +592,7 @@ LS,"Data Protection Act, 2011 (Act No. 5 of 2012)",key_requirements,006bb59a19,m
 LS,"Data Protection Act, 2011 (Act No. 5 of 2012)",data_categories,006bb59a19,medium,2026-10-16
 LS,"Data Protection Act, 2011 (Act No. 5 of 2012)",retention_period,ae81ea03d8,low,2026-10-16
 LS,"Data Protection Act, 2011 (Act No. 5 of 2012)",enforcement_authority,535cfde753,medium,2026-10-16
-LS,"Data Protection Act, 2011 (Act No. 5 of 2012)",penalties_range,535cfde753,low,2026-10-16
+LS,"Data Protection Act, 2011 (Act No. 5 of 2012)",penalties_range,a1967f98d2,medium,2026-11-26
 LS,"Data Protection Act, 2011 (Act No. 5 of 2012)",exemptions,abea30b81e,medium,2026-10-16
 LS,"Data Protection Act, 2011 (Act No. 5 of 2012)",research_exemption,abea30b81e,low,2026-10-16
 LS,"Data Protection Act, 2011 (Act No. 5 of 2012)",genetic_data,006bb59a19,low,2026-10-16
@@ -656,10 +656,10 @@ ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Rep
 ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),scope,dc197415be,low,2026-10-16
 ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),applies_to,0a436f2369,medium,2026-10-16
 ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),key_requirements,0a436f2369,medium,2026-10-16
-ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),data_categories,dc197415be,low,2026-10-16
+ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),data_categories,ea71478e68,high,2026-11-26
 ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),enforcement_authority,dc197415be,high,2026-10-16
 ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),penalties_range,fda31bb3de,medium,2026-10-16
-ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),exemptions,0a436f2369,low,2026-10-16
+ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),exemptions,ea71478e68,high,2026-11-26
 MN,,deceased_data,4fad76d158,medium,2026-10-21
 MN,,research_exemption,4fad76d158,low,2026-10-21
 MN,,genetic_data,1f6a5c9d8c,high,2026-10-21
@@ -957,10 +957,10 @@ TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",applies_to,2c19
 TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",key_requirements,2c1969f144,medium,2026-10-16
 TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",data_categories,2c1969f144,medium,2026-10-16
 TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",enforcement_authority,1ba1b37259,medium,2026-10-16
-TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",penalties_range,f3a93a4a52,low,2026-10-16
-TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",exemptions,2b7d18cd64,low,2026-10-16
-TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",research_exemption,f3a93a4a52,low,2026-10-16
-TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",genetic_data,2c1969f144,low,2026-10-16
+TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",penalties_range,2b7d18cd64,high,2026-11-26
+TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",exemptions,2b7d18cd64,high,2026-11-26
+TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",research_exemption,2b7d18cd64,high,2026-11-26
+TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",genetic_data,2b7d18cd64,high,2026-11-26
 TW,,retention_period,958e808ab1,high,2026-10-15
 TW,,deceased_data,d41421a0d3,high,2026-10-21
 TW,,research_exemption,90dcf892d9,medium,2026-10-21
