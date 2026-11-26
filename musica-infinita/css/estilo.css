@@ -153,6 +153,19 @@ hr { border: 0; border-top: 1px solid var(--borde); }
 .lista li .nombre { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lista li button { padding: .1rem .45rem; font-size: .85rem; }
 
+details { margin: .3rem 0; }
+details > summary { cursor: pointer; color: var(--acento); }
+.sesiones { margin-top: .6rem; }
+.items { list-style: none; margin: .4rem 0; padding: 0; max-height: 26vh; overflow: auto; }
+.items li { display: flex; gap: .5rem; align-items: center; padding: .25rem .2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+.items .nombre { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.items .meta { color: var(--tenue); font-size: .8rem; white-space: nowrap; }
+.items li.sonando .nombre { color: var(--acento); }
+.items li.roto .nombre { color: #ff8a95; text-decoration: line-through; }
+.items button { padding: .1rem .45rem; font-size: .85rem; }
+ol.items { list-style: decimal inside; }
+ol.items li { list-style: decimal inside; }
+
 body.arrastrando::after {
   content: "Suelta aquí tus .mid o tu SoundFont";
   position: fixed;
