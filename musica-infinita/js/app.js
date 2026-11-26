@@ -21,7 +21,7 @@
 
   const $ = function (id) { return document.getElementById(id); };
 
-  const AJUSTES_POR_OMISION = { fidelidad: 0.6, variacion: 0.4, colorModal: 0.3, contra: 0.6, cambiosCompas: 0.15, estilo: 'auto', tempo: 1, volumen: 0.8, reverb: 0.55, modoVisual: 'milkdrop', autoVisual: true, bits: '16', semilla: '' };
+  const AJUSTES_POR_OMISION = { movimientoReducido: null, fidelidad: 0.6, variacion: 0.4, colorModal: 0.3, contra: 0.6, cambiosCompas: 0.15, estilo: 'auto', tempo: 1, volumen: 0.8, reverb: 0.55, modoVisual: 'milkdrop', autoVisual: true, bits: '16', semilla: '' };
 
   const estado = {
     canciones: [], // {id, nombre, origen: 'ejemplo'|'propio', bytes, midi, analisis, activo}
@@ -140,6 +140,7 @@
       chk.checked = c.activo;
       chk.disabled = !c.analisis;
       chk.title = 'Usar en la música infinita';
+      chk.setAttribute('aria-label', 'Usar «' + c.nombre + '» en la música infinita');
       chk.addEventListener('change', function () {
         c.activo = chk.checked;
         guardarApagados();
@@ -298,6 +299,7 @@
     estado.vis.ponerModo(estado.ajustes.modoVisual);
     if (estado.vis.modo !== estado.ajustes.modoVisual) estado.vis.ponerModo('milkdrop');
     estado.motor.alTocar = function (ev, t) { estado.vis.nota(ev, t); };
+    estado.vis.ponerMovimientoReducido(menosMovimiento());
     estado.vis.iniciar();
     window.PanelVisual.crear({ $: $, avisar: avisar, descargar: descargar }, estado.vis);
     estado.semillaSesion = semillaActual();
@@ -347,7 +349,7 @@
       // con «auto», otra visualización cada minuto
       const ya = performance.now();
       if (!estado.ultimoCambioVisual) estado.ultimoCambioVisual = ya;
-      if (estado.ajustes.autoVisual && estado.tocando && ya - estado.ultimoCambioVisual > 60000) {
+      if (estado.ajustes.autoVisual && !menosMovimiento() && estado.tocando && ya - estado.ultimoCambioVisual > 60000) {
         estado.ultimoCambioVisual = ya;
         cambiarVisual(estado.vis.siguienteModo());
       }
@@ -417,6 +419,13 @@
     estado.midiActual = null;
     estado.gen.saltar(estado.ctx.currentTime - estado.base + 0.12);
     pintarLista();
+  }
+
+  /** ¿Menos movimiento en las visualizaciones? Lo que la persona eligió; si no eligió, lo que pide el sistema. */
+  function menosMovimiento() {
+    const a = estado.ajustes.movimientoReducido;
+    if (typeof a === 'boolean') return a;
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   }
 
   function cambiarVisual(modo) {
@@ -493,6 +502,22 @@
       if (estado.vis) estado.vis.ponerModo(mv.value);
       cambiarVisual(mv.value);
     });
+    // «menos movimiento»: sigue la preferencia del sistema mientras la persona no elija otra cosa
+    $('movimiento-reducido').checked = menosMovimiento();
+    $('movimiento-reducido').addEventListener('change', function (e) {
+      estado.ajustes.movimientoReducido = e.target.checked;
+      guardarAjustes();
+      if (estado.vis) estado.vis.ponerMovimientoReducido(e.target.checked);
+    });
+    if (window.matchMedia) {
+      const pref = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const alCambiar = function () {
+        if (typeof estado.ajustes.movimientoReducido === 'boolean') return;
+        $('movimiento-reducido').checked = menosMovimiento();
+        if (estado.vis) estado.vis.ponerMovimientoReducido(menosMovimiento());
+      };
+      if (pref.addEventListener) pref.addEventListener('change', alCambiar);
+    }
     $('auto-visual').checked = !!estado.ajustes.autoVisual;
     $('auto-visual').addEventListener('change', function (e) {
       estado.ajustes.autoVisual = e.target.checked;
@@ -528,8 +553,10 @@
       guardarAjustes();
     });
 
+    $('empezar').focus();
     $('empezar').addEventListener('click', async function () {
       $('inicio').hidden = true;
+      $('aplicacion').inert = false;
       await alternar();
     });
     $('play').addEventListener('click', alternar);

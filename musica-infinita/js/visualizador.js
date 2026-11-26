@@ -44,6 +44,7 @@
     this.presetObjetivo = PRESETS[0];
     this.cambioPreset = performance.now();
     this.indicePreset = 0;
+    this.movimientoReducido = false; // menos movimiento: ajustes suavizados, sin latidos ni anillos (ver ponerMovimientoReducido)
     this.presetsUsuario = []; // ajustes propios (ver panel-visual.js)
     this.fijo = false; // con true, los ajustes no cambian solos
     this.matiz = 190; // color de la paleta, que sigue al estilo de la música
@@ -119,6 +120,11 @@
   Visualizador.prototype.siguienteModo = function () {
     this.ponerModo(MODOS[(MODOS.indexOf(this.modo) + 1) % MODOS.length]);
     return this.modo;
+  };
+
+  /** Con true, las visualizaciones se mueven menos: sin latidos de brillo ni zoom, más lentas y sin anillos de partículas. */
+  Visualizador.prototype.ponerMovimientoReducido = function (reducido) {
+    this.movimientoReducido = !!reducido;
   };
 
   /** Los ajustes de fábrica y los del usuario. */
@@ -205,6 +211,8 @@
     this.pulso *= 0.9;
     let total = 0;
     for (let i = 0; i < this.frec.length; i += 4) total += this.frec[i];
+    // con menos movimiento, el latido del bombo se queda en un cuarto: sin zoom ni brillo que pulsen
+    if (this.movimientoReducido) this.pulso *= 0.25;
     this.volumen = total / (this.frec.length / 4) / 255;
   };
 
@@ -380,6 +388,7 @@
     this.ultimoCuadro = ya;
     const s = this.particulas;
     const az = Math.random;
+    const calma = this.movimientoReducido ? 0.4 : 1; // menos partículas y más lentas
     // cada nota que llega a su hora suelta partículas: la melodía chispea arriba, el bajo
     // sube lento y grande, la batería revienta desde el suelo
     for (const n of this.notas) {
@@ -391,20 +400,20 @@
       const base = MATIZ_VOZ[n.voz] == null ? MATIZ_VOZ.midi : MATIZ_VOZ[n.voz];
       const matiz = (base * 0.5 + this.matiz * 0.5 + 360) % 360;
       if (n.canal === 9) {
-        for (let k = 0; k < 6 + fuerza * 8; k++) {
+        for (let k = 0; k < (6 + fuerza * 8) * calma; k++) {
           const a = Math.PI + az() * Math.PI;
           const v = 120 + az() * 380 * fuerza;
-          VP.emitir(s, { x: x, y: H, vx: Math.cos(a) * v, vy: Math.sin(a) * v, vida: 0.5 + az() * 0.6, tam: 2 + az() * 3, matiz: matiz });
+          VP.emitir(s, { x: x, y: H, vx: Math.cos(a) * v * calma, vy: Math.sin(a) * v * calma, vida: 0.5 + az() * 0.6, tam: 2 + az() * 3, matiz: matiz });
         }
       } else {
-        const cuantas = n.voz === 'bajo' ? 4 : 3 + Math.round(fuerza * 5);
+        const cuantas = Math.max(1, Math.round((n.voz === 'bajo' ? 4 : 3 + Math.round(fuerza * 5)) * calma));
         const y = H - H * 0.15 - VP.xDeNota(n.nota) * H * 0.55;
         for (let k = 0; k < cuantas; k++) {
           VP.emitir(s, {
             x: x + (az() - 0.5) * 16,
             y: y,
             vx: (az() - 0.5) * 60,
-            vy: -(n.voz === 'bajo' ? 50 : 110 + az() * 160) * (0.5 + fuerza),
+            vy: -(n.voz === 'bajo' ? 50 : 110 + az() * 160) * (0.5 + fuerza) * calma,
             vida: (n.voz === 'bajo' ? 2.4 : 1 + Math.min(1.8, n.dur)) * (0.6 + az() * 0.6),
             tam: (n.voz === 'bajo' ? 9 : 2.5 + fuerza * 4) * (0.7 + az() * 0.6),
             matiz: matiz,
@@ -454,10 +463,18 @@
     c.fillStyle = 'rgba(0,0,0,0.22)';
     c.fillRect(0, 0, W, H);
     // gira despacio, y más con la energía de los graves
-    this.angulo.y += 0.006 + (this.energia || 0) * 0.03 + this.pulso * 0.02;
+    this.angulo.y += (0.006 + (this.energia || 0) * 0.03 + this.pulso * 0.02) * (this.movimientoReducido ? 0.3 : 1);
     this.angulo.x = 0.5 + Math.sin(this.angulo.y * 0.37) * 0.35;
     const gan = VP.gananciaAuto(this.ondaI, this.ondaD);
     VP.curvaLissajous3d(this.ondaI, this.ondaD, 256, this.angulo.x, this.angulo.y, gan, this.puntos3d, 3.2);
+    // la curva cambia entera con cada cuadro de la señal: se promedia con el cuadro anterior para que
+    // la imagen no parpadee (medido: sin esto llegaba a 3 destellos por segundo, el tope de la norma)
+    if (!this.puntos3dPrevios) this.puntos3dPrevios = new Float32Array(this.puntos3d);
+    const peso = this.movimientoReducido ? 0.2 : 0.4; // cuánto entra del cuadro nuevo
+    for (let i = 0; i < this.puntos3d.length; i++) {
+      this.puntos3d[i] = this.puntos3dPrevios[i] + (this.puntos3d[i] - this.puntos3dPrevios[i]) * peso;
+      this.puntos3dPrevios[i] = this.puntos3d[i];
+    }
     const n = this.ondaI.length;
     const R = Math.min(W, H) * 0.42;
     c.globalCompositeOperation = 'lighter';
@@ -531,7 +548,7 @@
     const p = this.presetActual;
     const o = this.presetObjetivo;
     for (const k of CLAVES_PRESET) p[k] += (o[k] - p[k]) * 0.02;
-    return p;
+    return this.movimientoReducido ? VP.suavizarPreset(p, 0.35) : p;
   };
 
   // ------------------------------------------------------------ MilkDrop en WebGL2
@@ -668,7 +685,7 @@
     const p = this.interpolarPreset();
     const ahora = (performance.now() - this.t0) / 1000;
     // cambio de ajuste cada 30 s aunque no cambie la sección
-    if (!this.fijo && performance.now() - this.cambioPreset > 30000) this.siguientePreset();
+    if (!this.fijo && performance.now() - this.cambioPreset > (this.movimientoReducido ? 60000 : 30000)) this.siguientePreset();
     const origen = this.texs[this.actual];
     const destino = this.texs[1 - this.actual];
     const aspecto = this.canvas.width / this.canvas.height;
