@@ -9,6 +9,7 @@ declare(strict_types=1);
 require __DIR__ . '/../src/cargar.php';
 
 use ChatLibros\Api;
+use ChatLibros\Ajustes;
 use ChatLibros\Conversador;
 use ChatLibros\Dialogo;
 use ChatLibros\Generador;
@@ -18,6 +19,7 @@ use ChatLibros\Indice;
 use ChatLibros\Libro;
 use ChatLibros\Normaliza;
 use ChatLibros\Sinonimos;
+use ChatLibros\Ventanas;
 
 $raiz = dirname(__DIR__);
 $fallos = 0;
@@ -326,6 +328,93 @@ $acierta = static function (?Sinonimos $sinonimos) use ($indiceLibro): array {
 echo "  con sinónimos: $conSin de $n; sin sinónimos: $sinSin de $n\n";
 comprobar('con sinónimos acierta todas las preguntas de la evaluación', $n > 0 && $conSin === $n, "$conSin de $n");
 comprobar('los sinónimos mejoran la búsqueda', $conSin > $sinSin, "con $conSin, sin $sinSin");
+
+echo "Ventanas (libros largos)\n";
+$o = Ventanas::oraciones('Llegó. «¿Quién es?», dijo él. — Yo —respondió. Y se fue... luego volvió.');
+comprobar('oraciones corta en punto, signos y raya', $o === ['Llegó.', '«¿Quién es?», dijo él.', '— Yo —respondió.', 'Y se fue... luego volvió.'], json_encode($o, JSON_UNESCAPED_UNICODE) ?: '');
+comprobar('oraciones no corta antes de una minúscula ni dentro de «don Quijote»', Ventanas::oraciones('Fue a la venta, y don Quijote lo siguió. era tarde. Nadie dijo nada.') === ['Fue a la venta, y don Quijote lo siguió. era tarde.', 'Nadie dijo nada.']);
+$parrafos = [
+    ['capitulo' => 'A', 'texto' => 'Y dijo:'],
+    ['capitulo' => 'A', 'texto' => 'Esto es lo que dijo, y es largo.'],
+    ['capitulo' => 'B', 'texto' => 'Corto.'],
+    ['capitulo' => 'C', 'texto' => 'Uno dos tres. Cuatro cinco seis. Siete ocho nueve. Diez once doce. Trece catorce quince.'],
+];
+$unidos = Ventanas::unirCortos($parrafos, 20);
+comprobar('unirCortos junta un párrafo corto con el siguiente del mismo capítulo', $unidos[0] === ['capitulo' => 'A', 'texto' => 'Y dijo: Esto es lo que dijo, y es largo.']);
+comprobar('unirCortos no cruza capítulos', $unidos[1] === ['capitulo' => 'B', 'texto' => 'Corto.'] && count($unidos) === 3);
+$v = Ventanas::partir([$parrafos[3]], 3, 1);
+comprobar('partir hace ventanas de 3 oraciones que se solapan en 1', count($v) === 2
+    && $v[0]['texto'] === 'Uno dos tres. Cuatro cinco seis. Siete ocho nueve.'
+    && $v[1]['texto'] === 'Siete ocho nueve. Diez once doce. Trece catorce quince.', json_encode($v, JSON_UNESCAPED_UNICODE) ?: '');
+comprobar('partir deja igual un párrafo corto', Ventanas::partir([$parrafos[1]], 3, 1) === [$parrafos[1]]);
+comprobar('un libro corto se busca por párrafos y uno largo, no', Ajustes::paraLibro($libro) == Ajustes::parrafos()
+    && Ajustes::largo()->dosPasos && Ajustes::largo()->titulo);
+
+echo "El Quijote (ejemplos/quijote.txt, búsqueda para libros largos)\n";
+$quijote = Libro::desdeArchivo("$raiz/ejemplos/quijote.txt");
+$capitulos = array_values(array_unique(array_column($quijote->pasajes, 'capitulo')));
+comprobar('tiene los 126 capítulos: 52 de la primera parte y 74 de la segunda', count($capitulos) === 126
+    && count(array_filter($capitulos, static fn (string $c): bool => str_starts_with($c, 'Parte I,'))) === 52
+    && count(array_filter($capitulos, static fn (string $c): bool => str_starts_with($c, 'Parte II,'))) === 74, (string) count($capitulos));
+comprobar('empieza en el capítulo I y termina en el LXXIV de la segunda parte', str_starts_with($capitulos[0], 'Parte I, cap. I:')
+    && str_starts_with($capitulos[125], 'Parte II, cap. LXXIV:'));
+comprobar('lee el título y el autor', $quijote->titulo === 'El ingenioso hidalgo don Quijote de la Mancha' && $quijote->autor === 'Miguel de Cervantes Saavedra');
+$todo = implode("\n", array_column($quijote->pasajes, 'texto'));
+comprobar('no queda el encabezado ni la licencia de Project Gutenberg', !str_contains($todo, 'Gutenberg') && !str_contains($todo, 'START OF'));
+comprobar('el primer párrafo es el de «En un lugar de la Mancha»', str_starts_with($quijote->pasajes[0]['texto'], 'En un lugar de la Mancha, de cuyo nombre'));
+comprobar('un libro con tantos pasajes se busca como libro largo', Ajustes::paraLibro($quijote) == Ajustes::largo());
+
+$sinonimosQuijote = Sinonimos::desdeArchivos(["$raiz/datos/sinonimos.tsv", "$raiz/ejemplos/quijote.sinonimos.tsv"]);
+$preguntas = [];
+foreach (file("$raiz/pruebas/quijote.tsv", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [] as $linea) {
+    if (!str_starts_with($linea, '#')) {
+        [$pregunta, $capitulosOk, $claves] = explode("\t", $linea);
+        $preguntas[] = [$pregunta, explode(';', $capitulosOk), explode('|', $claves)];
+    }
+}
+$etiqueta = static function (string $capitulo): string {
+    preg_match('/^Parte (I+), cap\. ([IVXLC]+)/', $capitulo, $m);
+    return $m[1] . '-' . $m[2];
+};
+$tieneClave = static function (string $texto, array $claves): bool {
+    $plano = static fn (string $s): string => ' ' . trim((string) preg_replace('/[^a-z0-9]+/', ' ', Normaliza::texto($s))) . ' ';
+    foreach ($claves as $clave) {
+        if (str_contains($plano($texto), $plano($clave))) {
+            return true;
+        }
+    }
+    return false;
+};
+$medir = static function (Conversador $c) use ($preguntas, $etiqueta, $tieneClave): array {
+    $capitulo = $pasaje = 0;
+    foreach ($preguntas as [$pregunta, $esperados, $claves]) {
+        $primero = $c->pasajesPara($pregunta, 1)[0] ?? null;
+        if ($primero === null) {
+            continue;
+        }
+        $capitulo += (int) in_array($etiqueta($primero['capitulo']), $esperados, true);
+        $pasaje += (int) $tieneClave($primero['texto'], $claves);
+    }
+    return [$capitulo, $pasaje];
+};
+$t0 = microtime(true);
+$largo = new Conversador($quijote, $sinonimosQuijote);
+$segundosIndice = microtime(true) - $t0;
+$porParrafos = new Conversador($quijote, $sinonimosQuijote, Ajustes::parrafos());
+[$capLargo, $pasLargo] = $medir($largo);
+[$capParrafos, $pasParrafos] = $medir($porParrafos);
+$n = count($preguntas);
+printf("  %d preguntas. Libro largo: capítulo %d, pasaje con la palabra clave %d (índice en %.1f s). Por párrafos: capítulo %d, pasaje %d\n",
+    $n, $capLargo, $pasLargo, $segundosIndice, $capParrafos, $pasParrafos);
+comprobar('hay 53 preguntas', $n === 53, (string) $n);
+comprobar('el primer resultado cae en el capítulo correcto en al menos 40 de 53', $capLargo >= 40, "$capLargo de $n");
+comprobar('el primer resultado trae la palabra clave en al menos 36 de 53', $pasLargo >= 36, "$pasLargo de $n");
+comprobar('la búsqueda para libros largos supera con claridad a la de párrafos', $capLargo >= $capParrafos + 8 && $pasLargo > $pasParrafos, "capítulo $capLargo vs $capParrafos, pasaje $pasLargo vs $pasParrafos");
+comprobar('armar el índice del Quijote tarda menos de 10 s', $segundosIndice < 10.0, sprintf('%.1f s', $segundosIndice));
+$respuesta = $largo->responder('¿Qué pasó con los molinos de viento?');
+comprobar('«los molinos de viento» cita el capítulo VIII de la primera parte', str_contains($respuesta, '[Parte I, cap. VIII:') && str_contains($respuesta, 'molinos de viento'), $respuesta);
+comprobar('algo que el Quijote no dice responde «no encuentro»', str_starts_with($largo->responder('¿Cómo se configura un router wifi?'), 'No encuentro eso'));
+comprobar('el modo de párrafos y el largo coinciden con la muestra: el cuento no cambia', (new Conversador($libro, $sinonimos))->responder('¿qué pasa con el reloj?') === (new Conversador($libro, $sinonimos, Ajustes::parrafos()))->responder('¿qué pasa con el reloj?'));
 
 echo "\n$total pruebas, $fallos fallos\n";
 exit($fallos === 0 ? 0 : 1);
