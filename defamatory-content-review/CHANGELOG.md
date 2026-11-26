@@ -2,6 +2,14 @@
 
 ## [Sin publicar]
 
+### Corregido
+
+- **Islandés y tagalo: tres términos recién añadidos se retiran** tras medir con las listas de frecuencia
+  (`bin/false-positives.php`, FrequencyWords): «heimskur» («tonto», adjetivo corriente, rango 2.049) y
+  «salbahe» («travieso», rango 4.646) marcaban habla corriente, y «hudas» es un nombre bíblico (religioso: no se
+  toca sin revisión nativa). Los demás términos nuevos que aparecen en las listas son insultos reales.
+  `isl` queda en 108 términos y `tgl` en 121.
+
 ## [6.0.0] - 2026-11-25
 
 ### Añadido

@@ -342,7 +342,7 @@ la primera vez que sólo una de ellas se actualizó.
 |---|---|---|
 | `comprehensive` | spa, eng, por, fra, ita, deu (6) | 292 – 679 |
 | `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, yue, tha, vie, ind (24) | 149 – 329 |
-| `basic` | isl, swa, tgl (3) | 105 – 123 |
+| `basic` | isl, swa, tgl (3) | 105 – 121 |
 
 ```php
 $reviewer->languages()->byCoverage('moderate');  // los candidatos a comprehensive
