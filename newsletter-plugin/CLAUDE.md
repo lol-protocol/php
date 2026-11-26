@@ -35,12 +35,13 @@ No implementar hasta resolverse:
 - Validación de la lista de campos sensibles, con el contrato (la valida Conce; docs/05, pendiente 3).
 - Ley 21.719 aplicada al newsletter: cotejar docs/06 con el texto oficial (docs/05, pendiente 4).
 - Encargado del correo: faltan el nombre del proveedor y el país de sus servidores (docs/06, sección 3, punto 5).
-- Framework y base de datos: sin decidir (docs/05, pendiente 7).
+- Servidor del PostgreSQL del plugin: dónde corre y en qué país (docs/05, pendiente 7).
 
 Decididos (ver docs/05):
 - 18-nov-2026: destinatarios, cron en el VPS del host, lenguaje PHP, doble confirmación y umbrales con valores iniciales.
 - 20-nov-2026: el host entrega la clasificación con el evento, y la lista sensible incluye opiniones políticas.
 - 25-nov-2026: base del aviso sensible (interés legítimo), arranque sin fecha, correo por proveedor externo, plazos de conservación, aviso que no nombra campos de categoría especial, correo con solo los apellidos que el titular ya ve, y baja de los avisos sensibles para el titular y la persona afectada con cuenta.
+- 26-nov-2026: formato de la clasificación (el host manda las categorías detectadas), sin framework (PHP plano con PDO), PostgreSQL propio del plugin y un estado por destinatario en `sensitive_event`.
 
 ## Stack
-Lenguaje: PHP, igual que el resto del repo (decidido el 18-nov-2026). La versión mínima se fija al implementar. Framework y base de datos: sin decidir (docs/05, pendiente 7).
+Lenguaje: PHP, igual que el resto del repo (decidido el 18-nov-2026), plano y con PDO, sin framework. Base de datos: un PostgreSQL propio del plugin, una base por integración (decidido el 26-nov-2026). La versión mínima de PHP se fija al implementar.

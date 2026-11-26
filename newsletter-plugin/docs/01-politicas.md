@@ -76,6 +76,7 @@ El perfil no cambia la fecha de envío: solo segmenta el contenido (decidido el 
 - **Fail-closed:** si la clasificación no llega o viene incompleta, el evento se trata como sensible.
 - **Tiempo real:** no pasa por cola, ventana, umbral ni agrupación.
 - **Contenido neutral:** el aviso indica que hubo un cambio y enlaza a la ficha. No reproduce el valor del dato, y no nombra el campo si es categoría especial (decidido el 25-nov-2026).
+- **Categoría especial:** el host manda en `clasificacion` las categorías sensibles que detectó. El plugin las compara con su lista; si coincide alguna, el aviso no nombra el campo (decidido el 26-nov-2026).
 - **Trazabilidad:** cada evento se registra antes de llamar al carril. Si un destinatario apagó los avisos, el evento se registra y no se le envía a él.
 
 ---
@@ -108,7 +109,7 @@ El perfil no cambia la fecha de envío: solo segmenta el contenido (decidido el 
 
 - **Correo falla:** reintento en el siguiente ciclo, máximo 3 intentos. **[SUPUESTO]**
 - **Proveedor de contenido falla:** no encola ni envía, y registra el error.
-- **Notificación falla:** `sensitive_event` queda pendiente y se reintenta en el cron.
+- **Notificación falla:** el estado del destinatario que falló queda `pendiente` en `sensitive_event` y se reintenta en el cron.
 - **Clasificación ausente o incompleta:** fail-closed según la sección 5.
 
 ---

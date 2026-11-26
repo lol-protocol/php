@@ -17,7 +17,7 @@ Registro de contradicciones encontradas durante el diseño, con la resolución p
 | 11 | Umbrales de perfil sin datos reales | Se implementan con los valores de docs/01 como supuesto, y se calibran con datos de uso. | Decidido (18-nov-2026) |
 | 12 | Doble confirmación en el alta | Sí: doble confirmación por correo. | Decidido (18-nov-2026) |
 | 13 | Ubicación del cron | En el VPS del host. | Decidido (18-nov-2026) |
-| 14 | Stack | Lenguaje: PHP, igual que el resto del repo. El framework y la base de datos siguen sin decidir. | Parcial: lenguaje decidido (18-nov-2026) |
+| 14 | Stack | Lenguaje: PHP, igual que el resto del repo (18-nov-2026). Framework: ninguno, PHP plano con PDO. Base de datos: un PostgreSQL propio del plugin, una base por integración (26-nov-2026). | Decidido (26-nov-2026) |
 | 15 | Lista de campos sensibles | Ampliada con salud, origen étnico o racial, creencias o religión, vida sexual u orientación, y opiniones políticas (20-nov-2026), a partir de PRIVACIDAD-Y-HONRA.md (Ley 19.628). Sigue [SUPUESTO] hasta validarla. | Ampliada; la valida Conce con el contrato (21-nov-2026) |
 | 16 | Ley 21.719 aplicada al newsletter | Cruce con `CUMPLIMIENTO-LEY-21719.md`: el boletín no estaba en el registro de tratamientos. Ver docs/06. | Revisada; falta cotejar con el texto oficial |
 | 17 | Versión mínima de PHP | Se fija al implementar. No bloquea los documentos. | Diferido |
@@ -32,7 +32,10 @@ Registro de contradicciones encontradas durante el diseño, con la resolución p
 | 26 | Baja de los avisos sensibles | El titular y la persona afectada con cuenta pueden apagarlos desde sus Preferencias; el plugin registra el evento y no se lo envía a quien lo apagó. | Decidido (25-nov-2026) |
 | 27 | Persona afectada con cuenta y los avisos | Puede apagarlos desde sus Preferencias, igual que el titular. | Decidido (25-nov-2026) |
 | 28 | Auditoría de coherencia | Se alinearon docs/01, docs/02, docs/03, docs/04, docs/06, CLAUDE.md, el README y los Gantt con las decisiones sobre la clasificación del host, el stack, los plazos y la baja de los avisos. Los escenarios de perfil siguen ahora la regla de docs/01, §2.1 (ocasional: de 15 a 90 días). | Resuelto (26-nov-2026) |
+| 29 | Formato de la clasificación | El host manda en `clasificacion` las categorías sensibles que detectó; el plugin las compara con su lista y decide si el aviso nombra el campo. Los identificadores son una propuesta (docs/02). | Decidido (26-nov-2026) |
+| 30 | Estado de cada destinatario | `sensitive_event` guarda `estado_titular` y `estado_afectada` en la misma fila. | Decidido (26-nov-2026) |
+| 31 | Servidor del PostgreSQL del plugin | Sin decidir dónde corre (en el VPS del host o en un servidor aparte) ni en qué país. | Pendiente de decisión |
 
 ## Notas
-- Quedan abiertas: la 5 (se decide al implementar), la 8 y la 15 (las valida Conce con el contrato), la 14 (framework y base de datos), la 16 (cotejar con el texto oficial), la 17 (se fija al implementar) y la 21 (falta el nombre del proveedor de correo y el país de sus servidores).
+- Quedan abiertas: la 5 (se decide al implementar), la 8 y la 15 (las valida Conce con el contrato), la 16 (cotejar con el texto oficial), la 17 (se fija al implementar) la 21 (falta el nombre del proveedor de correo y el país de sus servidores) y la 31 (dónde corre el PostgreSQL del plugin).
 - Un supuesto no validado no es una decisión. Ver docs/05-riesgos-y-pendientes.md.
