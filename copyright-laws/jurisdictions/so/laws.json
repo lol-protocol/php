@@ -5,7 +5,7 @@
     "region": "middle_east_africa",
     "law_name": "Copyright Law No. 66 of 7 September 1977",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 30 years (registered works only, per secondary sources) (unconfirmed)",
+    "term_of_protection": "Life of author + 30 years for registered works only (Art. 24); joint works 30 years after the last surviving author (Art. 24(2))",
     "author_rights": "Not specified",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Somalia.html",
@@ -35,8 +35,8 @@
       },
       "term_of_protection": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Somalia.html",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-26"
       },
       "registration_required": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Somalia.html",
@@ -45,6 +45,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "term_of_protection",
+        "from": "Author's life + 30 years (registered works only, per secondary sources) (unconfirmed)",
+        "to": "Life of author + 30 years for registered works only (Art. 24); joint works 30 years after the last surviving author (Art. 24(2))"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

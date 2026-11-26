@@ -5,7 +5,7 @@
     "region": "middle_east_africa",
     "law_name": "Copyright and Neighbouring Rights Protection Act 1996 (listed by Wikimedia Commons as main law; may be inherited Sudanese law - unverified)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years (inherited Sudanese Copyright and Neighbouring Rights Protection Act 1996, s. 13(2); photographs/audiovisual: 25 years from publication); no post-independence South Sudanese law confirmed (unconfirmed)",
+    "term_of_protection": "Life of author + 50 years (1996 Act s. 13(2)); 25 years from publication for photographs, audiovisual, posthumous and anonymous works (s. 13(3))",
     "author_rights": "Not specified",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-18",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/South_Sudan.html",
@@ -30,11 +30,17 @@
       },
       "term_of_protection": {
         "url": "https://c.enwp.org/wiki/Commons:FOP_South_Sudan",
-        "confidence": "low",
-        "checked": "2026-10-18"
+        "confidence": "medium",
+        "checked": "2026-11-26"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "term_of_protection",
+        "from": "Author's life + 50 years (inherited Sudanese Copyright and Neighbouring Rights Protection Act 1996, s. 13(2); photographs/audiovisual: 25 years from publication); no post-independence South Sudanese law confirmed (unconfirmed)",
+        "to": "Life of author + 50 years (1996 Act s. 13(2)); 25 years from publication for photographs, audiovisual, posthumous and anonymous works (s. 13(3))"
+      },
       {
         "date": "2026-10-18",
         "field": "row",
