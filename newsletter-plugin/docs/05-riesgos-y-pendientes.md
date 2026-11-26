@@ -4,7 +4,7 @@
 
 Registradas también en docs/00-inconsistencias.md.
 
-1. **Destinatarios del carril de notificaciones** (18-nov-2026): titular del árbol y persona afectada si tiene cuenta. El titular y la persona afectada con cuenta pueden apagarlos (decisión 19).
+1. **Destinatarios del carril de notificaciones** (18-nov-2026): titular del árbol y persona afectada si tiene cuenta. Ambos pueden apagar los avisos (decisión 19).
 2. **Cron** (18-nov-2026): en el VPS del host.
 3. **Stack** (18-nov-2026): PHP, igual que el resto del repo.
 4. **Doble confirmación en el alta** (18-nov-2026): sí.
@@ -34,13 +34,14 @@ Necesarias antes de implementar.
 4. **Ley 21.719 aplicada al newsletter:** revisada en docs/06 (21-nov-2026, actualizada el 25-nov-2026). Falta cotejarla con el texto oficial.
 5. **Versión mínima de PHP:** se fija al implementar. No bloquea los documentos.
 6. **Encargado del correo** (25-nov-2026): falta el nombre del proveedor y el país de sus servidores (docs/06, sección 3, punto 5).
+7. **Framework y base de datos:** sin decidir. La decisión 3 fijó solo el lenguaje (PHP).
 
 ## Riesgos
 
 - **Dominio público de Project Gutenberg:** el sitio indica el estado según la ley de EE. UU. Antes de publicar fragmentos desde Chile hay que verificar el estado de cada obra según la ley chilena.
 - **Submódulo de difamación:** identificado como `defamatory-content-review/`. El host le pasa los textos y guarda el resultado (decisión 9); falta documentar el contrato del host. Si el resultado no llega o viene incompleto, se trata como sensible (fail-closed).
-- **Umbrales de perfil sin datos reales:** los 7, 14 y 30 días son supuestos. Calibrar con datos de uso.
-- **Carril de notificaciones sin documentar:** el adaptador concentra el riesgo. Si cambia la firma, solo cambia el adaptador.
+- **Umbrales de perfil sin datos reales:** los intervalos de 7, 14 y 30 días y los cortes de 14 y 90 días de inactividad son supuestos. Calibrar con datos de uso.
+- **Carril de notificaciones solo propuesto:** Conce todavía no validó las firmas de docs/02. El adaptador concentra el riesgo: si cambia la firma, solo cambia el adaptador.
 - **Ley 21.719 y el newsletter:** el boletín no estaba en el registro de tratamientos del repo. docs/06 lo cubre. Rige desde el 1-dic-2026 según las fuentes del repo; falta el texto oficial (pendiente 4).
 - **Plazo de `sensitive_event`:** «mientras exista la ficha» es el más largo de los cuatro (decisión 15). Hay que poder justificarlo ante la ley (docs/06, sección 4, pregunta 9).
 - **Carga de pruebas:** las pruebas suman entre 35 % y 45 % adicional a la estimación de LOC.

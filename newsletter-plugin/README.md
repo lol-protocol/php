@@ -2,7 +2,7 @@
 
 Plugin reutilizable que envía el boletín de cada plataforma. Se integra a una plataforma a la vez, de forma independiente, y tiene un core común con dos estrategias de programación: ventana por usuario en Conce y fecha fija (día 15 de cada mes) en Plataforma POS.
 
-> **Estado: borrador de diseño v0.1.** No hay código, pruebas ni CI, y el stack todavía no está definido. No se implementa hasta resolver las decisiones pendientes de [`docs/05-riesgos-y-pendientes.md`](docs/05-riesgos-y-pendientes.md).
+> **Estado: borrador de diseño v0.1.** No hay código, pruebas ni CI. El lenguaje es PHP; el framework y la base de datos siguen sin decidir. No se implementa hasta resolver las decisiones pendientes de [`docs/05-riesgos-y-pendientes.md`](docs/05-riesgos-y-pendientes.md).
 
 ## Qué hay aquí
 

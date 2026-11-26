@@ -10,7 +10,7 @@ gantt
   dateFormat YYYY-MM-DD
   axisFormat %b %y
   section Alta y colección
-  Alta y perfil coleccionista      :done, p1a, 2026-12-01, 1d
+  Alta en POS      :done, p1a, 2026-12-01, 1d
   Etiquetado de primeros textos    :active, p1b, 2026-12-02, 45d
   Colección crece con etiquetado constante :p1c, 2027-01-05, 330d
   Colección supera 40 títulos      :milestone, p1d, 2027-02-10, 0d

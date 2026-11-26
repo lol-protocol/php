@@ -1,6 +1,6 @@
 # 02 · Diseño funcional interno
 
-Describe qué hace el plugin, sin fijar todavía la tecnología. Las reglas están en docs/01-politicas.md.
+Describe qué hace el plugin con firmas que no dependen del lenguaje (el lenguaje es PHP; ver docs/05). Las reglas están en docs/01-politicas.md.
 
 ---
 
@@ -14,6 +14,7 @@ Describe qué hace el plugin, sin fijar todavía la tecnología. Las reglas est�
 - **Renderizador** de plantilla por segmento.
 - **Adaptador de correo** (sistema existente).
 - **Regla sensible** y **adaptador de notificaciones** (solo Conce).
+- **Preferencias de aviso** (solo Conce): guardan si cada destinatario apagó los avisos sensibles.
 - **Recepción de la clasificación de cambios sensibles**, que el host entrega con el evento. El submódulo `defamatory-content-review/` no se consulta desde el plugin.
 - **Scheduler:** cron horario en Conce y fecha fija en POS.
 - **Registro** de envíos y eventos.
@@ -47,7 +48,7 @@ EventoSensible = { id, arbol_id, ref_registro, tipo_cambio, clasificacion, titul
 
 Almacenamiento propio por integración. Ninguna tabla es compartida entre plataformas.
 
-- `subscriptions(user_id, status, zona_horaria, opt_in_at, baja_at)`
+- `subscriptions(user_id, status, zona_horaria, opt_in_at, baja_at)`: `status` toma `pendiente_de_confirmar`, `activa` o `baja`, y `opt_in_at` es el momento de la confirmación (doble confirmación, docs/01, §4) **[PROPUESTA]**
 - `profile_snapshot(user_id, calculado_at, perfil, señales)`
 - `queue_item(id, user_id, ref_contenido, creado_at, estado)`
 - `send_log(user_id, ventana_id, enviado_at, estado)`, con clave única (user_id, ventana_id)
@@ -58,12 +59,12 @@ Almacenamiento propio por integración. Ninguna tabla es compartida entre plataf
 
 ## 4. Casos de uso
 
-- **Suscribirse:** opt-in, zona horaria y alta en `subscriptions`.
+- **Suscribirse:** opt-in con doble confirmación por correo, zona horaria y alta en `subscriptions`.
 - **Darse de baja:** estado a baja y borrado de ítems pendientes.
 - **Calcular perfil:** snapshot y cálculo del intervalo efectivo.
 - **Acumular contenido:** el proveedor encola novedades.
 - **Enviar ventana:** si hay ítems y la ventana venció, se arma y envía el correo.
-- **Detectar cambio sensible:** registro, evaluación y, si corresponde, notificación.
+- **Detectar cambio sensible:** registro, evaluación y, si corresponde, notificación a cada destinatario que no haya apagado los avisos.
 
 ---
 
@@ -81,4 +82,4 @@ Almacenamiento propio por integración. Ninguna tabla es compartida entre plataf
 
 - Las pruebas suman entre 35 % y 45 % adicional, no incluido.
 - El core es el mismo código para ambas plataformas. Solo cambian las estrategias y los proveedores.
-- Cifras orientativas. Dependen del stack, que aún no está definido.
+- Cifras orientativas. Dependen del stack: el lenguaje es PHP; el framework y la base de datos siguen sin decidir (docs/05).
