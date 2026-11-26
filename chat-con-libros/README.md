@@ -143,6 +143,7 @@ sigue al día).
 
 ```bash
 php bin/chat.php ejemplos/quijote.txt
+php bin/chat.php --estilo=original ejemplos/quijote.txt
 ```
 
 Con un libro de más de 1.000 pasajes (`Ajustes::PASAJES_LIBRO_LARGO`) la búsqueda cambia,
@@ -167,6 +168,43 @@ clave en 38, contra 28 y 31 de la búsqueda por párrafos. Lo que falla es de b�
 parecida en otro capítulo («¿Quién venció a don Quijote en Barcelona?» cae en la fanfarronada del
 Caballero del Bosque) o el capítulo bueno con otro pasaje. Armar el índice tarda menos de un
 segundo y cada pregunta, unos 20 ms.
+
+### Moderno y original
+
+En un libro largo la respuesta no es solo la cita: `src/Parafrasea.php` elige la oración que
+responde y la presenta con una frase según la pregunta («Lo cuenta la primera parte, capítulo
+VIII:»). Hay dos estilos, y se cambia de uno a otro en medio de la conversación con `/original` y
+`/moderno`, o al empezar con `--estilo=original` (por defecto, moderno):
+
+```text
+> ¿Qué pasó con los molinos de viento?
+Lo cuenta la primera parte, capítulo VIII: Sancho respondió: «Mire usted, que aquellos que allí se parecen no son gigantes, sino molinos de viento…»
+   Texto original: «— Mire vuestra merced —respondió Sancho— que aquellos que allí se parecen no son gigantes, sino molinos de viento…»
+
+> /original
+> ¿Qué pasó con los molinos de viento?
+Lo cuenta la primera parte, capítulo VIII: «— Mire vuestra merced —respondió Sancho— que aquellos que allí se parecen no son gigantes, sino molinos de viento…»
+```
+
+- **Original**: solo elige la oración (la que más palabras raras de la pregunta tiene; una pregunta
+  vale la mitad, y si se elige una se le suma la respuesta que sigue) y la presenta. El texto es el de Cervantes.
+- **Moderno**: además actualiza el español con las tablas de `datos/modernizar.json` («vuestra
+  merced» → «usted», «mesmo» → «mismo», «agora» → «ahora», «decille» → «decirle», «yelmo» → «casco»),
+  pasa los pronombres pegados al verbo a su lugar («díjole» → «le dijo», «llegóse» → «se llegó») y
+  convierte el diálogo con raya en «Sancho respondió: «…»». Deja el texto original debajo.
+
+**No inventa nada.** Cada palabra de la respuesta tiene que salir del pasaje, de las tablas o de
+la frase de presentación; si una regla produce otra, se descarta la paráfrasis y se muestra la
+cita tal cual (`Parafrasea::comprobar`). Las pruebas lo verifican sobre las 5.018 ventanas del
+Quijote. Lo que **no** hace: pasar el diálogo a estilo indirecto, juntar ideas de varios
+capítulos ni responder preguntas globales («¿cómo cambia Sancho?»): ante esas, responde con los
+pasajes más cercanos.
+
+Para ampliar las tablas, edita `datos/modernizar.json` (una palabra por entrada, con la misma
+concordancia). Los pronombres pegados («díjole») son una regla y no una tabla: cuidado con los
+falsos amigos («sólo», «Euríalo», los imperativos de «guiar», «enviar»): están excluidos a mano
+en `Parafrasea` y comprobados en las pruebas. En la web hay una casilla para ver el texto como lo escribió el autor (el pedido lleva
+`estilo: "moderno"|"original"`).
 
 > **Solo PHP.** El port a Java busca por párrafos, así que no da lo mismo que PHP con un libro
 > largo. Con la muestra y con cualquier libro de menos de 1.000 pasajes, las dos dan lo mismo.
@@ -208,7 +246,7 @@ editores los dibujan, y `mmdc` (mermaid-cli) los convierte a SVG o PNG.
 ## Pruebas
 
 ```bash
-php pruebas/ejecutar.php              # 112 pruebas: el núcleo, el Quijote, la API web y el modo con IA (con un cliente falso)
+php pruebas/ejecutar.php              # 143 pruebas: el núcleo, el Quijote y su paráfrasis, la API web y el modo con IA (con un cliente falso)
 php bin/vectores.php --comprobar      # que pruebas/vectores.tsv esté al día
 ```
 
@@ -230,19 +268,21 @@ búsqueda, no como medida general de calidad. Para tus libros, escribe tus propi
 
 Con el Quijote se comprueba, además, que el archivo tenga sus 126 capítulos y nada de Gutenberg,
 y que la búsqueda para libros largos acierte al menos 40 de 53 capítulos y supere por 8 a la de
-párrafos (`pruebas/quijote.tsv`).
+párrafos (`pruebas/quijote.tsv`). Con la paráfrasis se comprueba que ninguna ventana del libro
+produzca una palabra inventada, cada regla de modernización, los dos estilos y que la respuesta
+principal traiga la palabra clave en al menos 36 de 53 (hoy 38).
 
 El workflow `pruebas-chat-con-libros.yml` corre las dos y comprueba que `vectores.tsv` coincida.
 
 ## Estructura
 
 ```text
-src/          núcleo en PHP: Normaliza, Sinonimos, Libro, Ventanas, Ajustes, Indice, Conversador, Dialogo, Api,
+src/          núcleo en PHP: Normaliza, Sinonimos, Libro, Ventanas, Ajustes, Parafrasea, Indice, Conversador, Dialogo, Api,
               Generador (interfaz), GeneradorClaude (modo con IA) y GeneradorError
 bin/          chat.php (la conversación en la terminal), vectores.php (genera vectores.tsv) y
               preparar-quijote.php (arma ejemplos/quijote.txt desde Project Gutenberg)
 web/          la página (index.html, estilo.css, app.js) y api.php, la entrada de src/Api.php
-datos/        sinonimos.tsv
+datos/        sinonimos.tsv y modernizar.json (las tablas del estilo moderno)
 java/src/     port a Java de la búsqueda, con Chat.java para la terminal
 java/pruebas/ pruebas del port a Java
 pruebas/      pruebas en PHP, consultas.txt, vectores.tsv, evaluacion.tsv y quijote.tsv

@@ -32,6 +32,12 @@ final class Conversador
 
     private Ajustes $ajustes;
 
+    /** Solo en un libro largo: dice con otras palabras el mejor pasaje en vez de citarlo tal cual. */
+    private ?Parafrasea $parafrasea;
+
+    /** Parafrasea::MODERNO u ORIGINAL; cambia con «/original» y «/moderno» o con estilo(). */
+    private string $estilo = Parafrasea::MODERNO;
+
     /** @var list<string> las palabras más repetidas del libro */
     private array $temas;
 
@@ -39,6 +45,7 @@ final class Conversador
         private readonly Libro $libro,
         private readonly ?Sinonimos $sinonimos = null,
         ?Ajustes $ajustes = null,
+        ?Parafrasea $parafrasea = null,
     ) {
         $this->ajustes = $ajustes ?? Ajustes::paraLibro($libro);
         $this->unidades = $this->ajustes->ventana > 0
@@ -65,6 +72,9 @@ final class Conversador
         if ($this->ajustes->dosPasos) {
             $this->indiceTexto = new Indice($terminosTexto);
         }
+        $this->parafrasea = $parafrasea ?? ($this->ajustes->dosPasos
+            ? new Parafrasea(dirname(__DIR__) . '/datos/modernizar.json', self::pesosIdf($terminosTexto))
+            : null);
 
         $pares = [];
         foreach ($cuenta as $t => $c) {
@@ -81,6 +91,48 @@ final class Conversador
     public function libro(): Libro
     {
         return $this->libro;
+    }
+
+    /** Si este libro se responde con paráfrasis (los libros largos), y no solo citándolo. */
+    public function parafrasea(): bool
+    {
+        return $this->parafrasea !== null;
+    }
+
+    public function estilo(): string
+    {
+        return $this->estilo;
+    }
+
+    public function conEstilo(string $estilo): void
+    {
+        if ($estilo !== Parafrasea::MODERNO && $estilo !== Parafrasea::ORIGINAL) {
+            throw new \InvalidArgumentException("Estilo desconocido: $estilo");
+        }
+        $this->estilo = $estilo;
+    }
+
+    /**
+     * El idf de cada término sobre los pasajes, para que al elegir la oración las palabras raras
+     * («Viedma») pesen más que las comunes («capitán»). Mismo cálculo que Indice.
+     *
+     * @param list<list<string>> $terminosPorPasaje
+     * @return array<string,float>
+     */
+    private static function pesosIdf(array $terminosPorPasaje): array
+    {
+        $df = [];
+        foreach ($terminosPorPasaje as $terminos) {
+            foreach (array_unique($terminos) as $t) {
+                $df[$t] = ($df[$t] ?? 0) + 1;
+            }
+        }
+        $n = count($terminosPorPasaje);
+        $pesos = [];
+        foreach ($df as $t => $d) {
+            $pesos[(string) $t] = log(($n + 1) / ($d + 1)) + 1.0;
+        }
+        return $pesos;
     }
 
     public function responder(string $pregunta): string
@@ -117,6 +169,15 @@ final class Conversador
         if (preg_match('/\b(como se llama|titulo del libro|nombre del libro)\b/', $p)) {
             return "El libro se llama «{$titulo}».";
         }
+        if (preg_match('/^\/(original|moderno)$/', $p, $m)) {
+            if ($this->parafrasea === null) {
+                return 'Este libro se cita tal cual: el estilo «moderno» y el «original» son para los libros largos.';
+            }
+            $this->estilo = $m[1];
+            return $m[1] === Parafrasea::ORIGINAL
+                ? 'Estilo original: te muestro el texto como lo escribió el autor. Escribe /moderno para volver al español de hoy.'
+                : 'Estilo moderno: te lo cuento en español de hoy, con el texto original debajo. Escribe /original para verlo solo como lo escribió el autor.';
+        }
         if (preg_match('/^(de que (trata|va|se trata)|resumen|resumeme)\b/', $p)
             || preg_match('/\bde que (trata|va) el libro\b/', $p)) {
             return $this->resumen();
@@ -132,10 +193,7 @@ final class Conversador
      */
     public function pasajesPara(string $pregunta, int $max = self::MAX_CITAS): array
     {
-        $terminos = Normaliza::terminos($pregunta);
-        if ($this->sinonimos !== null) {
-            $terminos = $this->sinonimos->expandir($terminos);
-        }
+        $terminos = $this->terminosDe($pregunta);
         if ($this->indiceTexto !== null) {
             return $this->enDosPasos($terminos, $max);
         }
@@ -206,6 +264,17 @@ final class Conversador
         return $pasajes;
     }
 
+    /**
+     * Los términos de búsqueda de una pregunta, con sus sinónimos.
+     *
+     * @return list<string>
+     */
+    private function terminosDe(string $pregunta): array
+    {
+        $terminos = Normaliza::terminos($pregunta);
+        return $this->sinonimos !== null ? $this->sinonimos->expandir($terminos) : $terminos;
+    }
+
     /** El mensaje de «no encuentro eso», que también usan el modo con IA y la web. */
     public function noEncuentro(): string
     {
@@ -226,6 +295,14 @@ final class Conversador
         $pasajes = $this->pasajesPara($pregunta);
         if ($pasajes === []) {
             return $this->noEncuentro();
+        }
+        if ($this->parafrasea !== null) {
+            $r = $this->parafrasea->responder($this->terminosDe($pregunta), $pregunta, $pasajes[0]['capitulo'], $pasajes[0]['texto'], $this->estilo);
+            $lineas = [$r['texto']];
+            if (isset($pasajes[1])) {
+                $lineas[] = 'También: [' . $pasajes[1]['capitulo'] . '] «' . self::extracto($pasajes[1]['texto']) . '»';
+            }
+            return implode("\n\n", $lineas);
         }
 
         $lineas = ['Esto dice el libro:'];

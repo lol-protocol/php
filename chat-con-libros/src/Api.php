@@ -8,7 +8,7 @@ namespace ChatLibros;
  * probarla sin servidor).
  *
  *   GET  api.php?accion=libros      → los libros que se pueden elegir y si hay IA disponible
- *   POST api.php?accion=preguntar   → {libro, pregunta, modo: "sin-ia"|"ia", historial: [...]}
+ *   POST api.php?accion=preguntar   → {libro, pregunta, modo: "sin-ia"|"ia", estilo: "moderno"|"original" (opcional), historial: [...]}
  *
  * Está pensada para correr en tu propio computador (php -S 127.0.0.1:8080), no en internet:
  *  - Solo acepta pedidos cuyo Host sea localhost, 127.0.0.1 o [::1] (contra «DNS rebinding»), y si
@@ -112,6 +112,10 @@ final class Api
         if ($modo !== 'sin-ia' && $modo !== 'ia') {
             return self::error(400, 'El modo debe ser «sin-ia» o «ia».');
         }
+        $estilo = $datos['estilo'] ?? Parafrasea::MODERNO;
+        if ($estilo !== Parafrasea::MODERNO && $estilo !== Parafrasea::ORIGINAL) {
+            return self::error(400, 'El estilo debe ser «moderno» o «original».');
+        }
         $historial = self::historial($datos['historial'] ?? []);
         if ($historial === null) {
             return self::error(400, 'El historial no tiene el formato esperado.');
@@ -134,7 +138,9 @@ final class Api
             $this->raiz . '/datos/sinonimos.tsv',
             (string) preg_replace('/\.txt$/i', '', $ruta) . '.sinonimos.tsv',
         ]);
-        $dialogo = new Dialogo(new Conversador(Libro::desdeArchivo($ruta), $sinonimos), $generador);
+        $conversador = new Conversador(Libro::desdeArchivo($ruta), $sinonimos);
+        $conversador->conEstilo($estilo);
+        $dialogo = new Dialogo($conversador, $generador);
         return ['codigo' => 200, 'cuerpo' => $dialogo->responder(trim($pregunta), $historial)];
     }
 
