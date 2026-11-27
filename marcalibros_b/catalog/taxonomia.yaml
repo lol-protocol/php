@@ -13969,8 +13969,8 @@ movimientos:
     - id: discursos-sobre-la-primera-decada-de-tit
       titulo: Discursos sobre la primera década de Tito Livio
       tipo: ensayo
-      motivo: columna
-      animo: humanista
+      motivo: compas
+      animo: armonico
       gutenberg:
         id: null
         estado: sin_verificar
@@ -14260,8 +14260,8 @@ movimientos:
       titulo: De la experiencia
       tipo: tema
       de: Ensayos
-      motivo: espejo
-      animo: sereno
+      motivo: hombre_vitruvio
+      animo: armonico
       gutenberg:
         id: null
         estado: sin_verificar
@@ -15028,7 +15028,7 @@ movimientos:
       titulo: Laputa, la isla voladora
       tipo: tema
       de: Los viajes de Gulliver
-      motivo: nube
+      motivo: globo
       animo: onirico
       gutenberg:
         id: null
@@ -15551,8 +15551,8 @@ movimientos:
     - id: de-profundis
       titulo: De profundis
       tipo: poema
-      motivo: lluvia
-      animo: lugubre
+      motivo: grito
+      animo: angustia
       gutenberg:
         id: null
         estado: sin_verificar
@@ -15873,7 +15873,7 @@ movimientos:
     - id: berlin-alexanderplatz
       titulo: Berlin Alexanderplatz
       tipo: novela
-      motivo: tren
+      motivo: casas_torcidas
       animo: urbano
       gutenberg:
         id: null
