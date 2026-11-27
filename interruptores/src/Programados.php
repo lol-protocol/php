@@ -186,7 +186,7 @@ final class Programados
         }
         try {
             $nueva = $cambio($this->leer());
-            $json = json_encode(array_values($nueva), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR) . "\n";
+            $json = json_encode($nueva, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR) . "\n";
             $temp = $this->ruta . '.' . bin2hex(random_bytes(4)) . '.tmp';
             if (file_put_contents($temp, $json) === false || !rename($temp, $this->ruta)) {
                 @unlink($temp);
