@@ -10,7 +10,7 @@ Es una mesa de mezclas: cada **canal** es una función, y cada canal puede tener
 | B) Librería y etiquetado POS | 21 | 64 | 85 |
 | **Total** | **62** | **315** | **377** |
 
-Cifras de `FUNCIONES.md`, que es el listado completo: cada función, sus opciones, su origen y sus dependencias. **2 de las 62 funciones son supuestas** (marcadas *(supuesto)* en el listado y en el panel): las dos de búsquedas por tipo de fuente y por país. Las otras 8 que se habían propuesto se dieron por buenas.
+Cifras de `FUNCIONES.md`, que es el listado completo: cada función, sus opciones, su origen y sus dependencias. Ya no queda ninguna función supuesta: la persona confirmó las de búsqueda por tipo de fuente y por país.
 
 ## Vocabulario
 
@@ -35,8 +35,8 @@ Estado que usa el sitio:
 ## Probar
 
 ```bash
-php pruebas/ejecutar.php            # 121 pruebas: catálogo, dependencias, mínimos, estado, registros, usuarios y bloqueo
-php pruebas/panel.php               # 37 pruebas: el panel en vivo, con php -S
+php pruebas/ejecutar.php            # 156 pruebas: catálogo, dependencias, mínimos, estado, registros, usuarios, bloqueo, escenas y programados
+php pruebas/panel.php               # 49 pruebas: el panel en vivo, con php -S
 php bin/generar.php --comprobar     # FUNCIONES.md al día
 ```
 
@@ -49,12 +49,15 @@ No necesita Composer ni base de datos. El estado se guarda en `var/estado.json`,
 - `src/Interruptores.php`: la clase. Lee el estado, enciende y apaga, y aplica las reglas.
 - `src/Excepciones.php`: `UnknownInterruptor` (la ref no existe) y `DependenciaRota` (el cambio dejaría algo roto).
 - `src/Usuarios.php`: usuarios del panel, con contraseña hasheada, rol y bloqueo tras fallos.
+- `src/Escenas.php` y `escenas.json`: conjuntos de cambios con nombre y su «deshacer».
+- `src/Programados.php`: cambios a una hora dada.
 - `panel/index.php`: el panel interno.
 - `bin/generar.php`: genera `FUNCIONES.md`.
 - `bin/estado.php`: vuelca el estado efectivo en JSON para aplicaciones que no son PHP. El contrato para quien lo consume está en [`CONTRATO.md`](CONTRATO.md).
 - `bin/usuarios.php`: alta, baja, cambio de rol y de clave.
+- `bin/programados.php`: agendar, listar, cancelar y `ejecutar` (el del cron).
 - `pruebas/ejecutar.php` y `pruebas/panel.php`: las pruebas.
-- `var/`: estado (`estado.json`), registro de cambios (`cambios.jsonl`) y usuarios (`usuarios.json`). Fuera de git.
+- `var/`: estado (`estado.json`), registros (`cambios.jsonl` y `accesos.jsonl`), usuarios, la última escena y los cambios programados. Fuera de git.
 
 ## Reglas
 
@@ -93,6 +96,14 @@ if ($int->activo('gen.vistas:abanico')) {
 | Genealogía | `sistema-nuevo/` | `BACKOFFICE_INTERRUPTORES=../interruptores` | rutas de la API: `gen.backoffice` (todo), `flujo`, `kpis`, `alertas`, `filtros` y `gen.bak-notas` |
 
 La aplicación de genealogía y POS vive en otro repositorio que no se comparte: para ella está [`CONTRATO.md`](CONTRATO.md) (archivo de estado efectivo, `bin/estado.php`, y reglas de consumo). Las vistas del árbol, los medios de pago y los asistentes (vistas del árbol, medios de pago, asistentes…) todavía no lo usan: tienen que llamar a `activo()` como en el ejemplo de arriba.
+
+## Escenas, apagado de emergencia y cambios programados
+
+- **Escenas** (`escenas.json`, clase `Escenas`): conjuntos de cambios con nombre. Una escena puede `apagar` o `encender` refs, `apagar_tipos` (todas las funciones de un tipo) y `mantener` lo que no debe apagarse. El panel las muestra con un botón «Aplicar»; las que llevan `confirmar` piden marcar una casilla. Hay cuatro de ejemplo: `mantenimiento`, `emergencia`, `silencio` y `campana`. **Son una propuesta, no una decisión.**
+- **Apagado de emergencia** es la escena `emergencia`: apaga todo lo de producto, interno, datos, visual y contenido, salvo la protección de personas vivas, el filtro de contenido y los pedidos de retiro.
+- **Deshacer:** se recuerda lo que cambió la **última** escena (`var/ultima-escena.json`) y «Deshacer la última escena» lo restaura. Solo la última.
+- **Aplicar es atómico:** `Interruptores::aplicar()` valida el **estado final** completo y, si rompería algo (una función encendida sin lo que necesita, o sin su mínimo de opciones), no cambia nada. Por eso una escena puede apagar una cadena de dependencias de golpe, cosa que uno por uno no se podría. Cada cambio queda en el registro con su motivo (`escena:silencio`).
+- **Cambios programados** (clase `Programados`, `var/programados.json`): encender o apagar una ref, o aplicar una escena, a una hora **UTC**. Se programan desde el panel (escenas) o con `php bin/programados.php agendar …`. Nada se ejecuta solo: `php bin/programados.php ejecutar` aplica lo vencido y va en un cron, cada minuto. Cada cambio pasa a `hecho`, `error` (con el motivo; un error no se reintenta) o `cancelado`.
 
 ## Registros
 
@@ -143,7 +154,8 @@ Las pruebas rechazan un catálogo con ids repetidos, con `:` en un id, con una d
 
 ## Lo que falta
 
-- **Confirmar las 2 funciones supuestas** (`gen.busqueda-fuentes` y `gen.busqueda-paises`). Los países son los 100 de mayor prioridad en `Listado-paises/` más los hispanohablantes y Chile (101 opciones; Venezuela figura excluida en esos datos y no entra): falta decidir si va alguno más.
+- **Confirmar las escenas.** Las cuatro de `escenas.json` (mantenimiento, emergencia, silencio comercial y campaña) son una propuesta: qué apaga cada una lo decide la persona.
+- **Un cron para los cambios programados.** Nada se ejecuta solo: hay que poner `php bin/programados.php ejecutar` en un cron (cada minuto).
 - **Límites conocidos.** El bloqueo de archivo sirve con un solo servidor; con varios hace falta una base de datos. Un proxy comparte la IP entre sus usuarios. `sistema-nuevo/` lee el estado en cada petición. Los registros apartados al rotar quedan en `var/` sin borrarse.
 - **A confirmar de plataforma:** `document-formats` está fuera del interruptor; no se sabe si va en A o en B.
 - **Candidatos desde PR abiertos:** `newsletter-plugin` (#613, documentación de diseño) y `personas-especiales` (#614, registro de exclusiones) podrían ser funciones nuevas cuando se fusionen. `chat-con-libros` (#603) no está en `master`, y `pos.colores-revision` depende de la decisión del PR #595.

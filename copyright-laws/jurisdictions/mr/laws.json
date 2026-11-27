@@ -5,8 +5,8 @@
     "region": "middle_east_africa",
     "law_name": "Law No. 2012-038 of 17 July 2012 on literary and artistic property (copyright and related rights)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 70 years (Art. 53 per Wikimedia Commons summary; text not seen; joint works from death of last surviving author) (unconfirmed)",
-    "author_rights": "Economic rights (unconfirmed)",
+    "term_of_protection": "Author's life + 70 years, from start of calendar year after death (Art. 53); joint works: counted from end of year of death of last surviving co-author (Art. 54)",
+    "author_rights": "Moral and economic (patrimonial) rights (Art. 19); economic rights transferable and licensable (Art. 60)",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified",
     "digital_protection": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/19361",
@@ -34,17 +34,29 @@
         "checked": "2026-10-16"
       },
       "term_of_protection": {
-        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Mauritania.html",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.wipo.int/wipolex/en/text/539946",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "author_rights": {
-        "url": "https://www.wipo.int/wipolex/en/legislation/details/19361",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.wipo.int/wipolex/en/text/539946",
+        "confidence": "high",
+        "checked": "2026-11-25"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Moral and economic (patrimonial) rights (Art. 19); economic rights transferable and licensable (Art. 60)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "term_of_protection",
+        "from": "Author's life + 70 years (Art. 53 per Wikimedia Commons summary; text not seen; joint works from death of last surviving author) (unconfirmed)",
+        "to": "Author's life + 70 years, from start of calendar year after death (Art. 53); joint works: counted from end of year of death of last surviving co-author (Art. 54)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

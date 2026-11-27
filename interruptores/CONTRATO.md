@@ -39,3 +39,7 @@ Si la aplicación es PHP, puede cargar `src/Interruptores.php` y llamar `activo(
 ## Qué no garantiza
 
 El estado efectivo viene de un archivo: no hay notificación ni empuje. Un cambio llega a la aplicación cuando se regenera el archivo y ella lo vuelve a leer. Con varios servidores, el archivo tiene que estar en un lugar compartido o copiarse a cada uno.
+
+## Escenas y cambios programados
+
+Una escena o un cambio programado no son un canal aparte: terminan cambiando interruptores, y el estado efectivo que ve la aplicación es el de siempre. Lo que sí cambia es **cuándo** se regenera `estado-efectivo.json`: si usas `bin/estado.php --salida=…`, hay que volver a correrlo después de aplicar una escena y de cada `bin/programados.php ejecutar` (o dejarlo en el mismo cron). Una escena de emergencia apaga cientos de interruptores de golpe; una aplicación que lee un archivo viejo seguirá mostrándolos encendidos.

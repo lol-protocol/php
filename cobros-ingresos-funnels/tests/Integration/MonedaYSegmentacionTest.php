@@ -84,13 +84,10 @@ final class MonedaYSegmentacionTest extends IntegracionTestCase
     }
 
     /**
-     * El dashboard agrupa con la misma expresion de RangoEdad: un cliente de
-     * 16 anios con una boleta tiene que salir en su propio tramo y no como
-     * adulto de "18-24". Ya no se pueden dar de alta menores (migracion 007),
-     * pero una base anterior a esa regla puede tenerlos, y es donde mas importa
-     * verlos: se simula uno apagando el trigger de altas solo dentro de la
-     * transaccion de este test, que se deshace al terminar. El seed no genera
-     * menores.
+     * El dashboard agrupa por clientes.rango_de_edad: un cliente en «Menor de 18» con una boleta tiene que salir en su propio tramo y
+     * no como adulto de "18-24". Ya no se pueden dar de alta menores, pero una base anterior a la regla puede tenerlos, y es donde mas
+     * importa verlos: se simula uno apagando el trigger de altas solo dentro de la transaccion de este test, que se deshace al terminar.
+     * El seed no genera menores.
      */
     public function testLaSegmentacionPorEdadMuestraAlMenorEnSuPropioTramo(): void
     {
@@ -98,19 +95,14 @@ final class MonedaYSegmentacionTest extends IntegracionTestCase
         $base = $clientes->porId(1);
         self::assertNotNull($base, 'este test asume que el cliente #1 existe (lo trae el seed)');
 
-        Database::connection()->exec('ALTER TABLE clientes DISABLE TRIGGER clientes_mayor_de_edad_alta');
+        $db = Database::connection();
+        $db->exec('ALTER TABLE clientes DISABLE TRIGGER clientes_adulto_alta');
         $hoy = new DateTimeImmutable('today');
-        $menorId = $clientes->crear([
-            'nombre' => 'Menor de prueba',
-            'email' => 'menor-' . uniqid() . '@example.com',
-            'segmento' => 'general',
-            'fecha_alta' => $hoy->format('Y-m-d'),
-            'pais_codigo' => $base['pais_codigo'],
-            'ciudad' => 'Rosario',
-            'idioma' => 'Espanol',
-            'genero' => 'No especifica',
-            'fecha_nacimiento' => $hoy->modify('-16 years')->format('Y-m-d'),
-        ]);
+        $db->prepare(
+            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, rango_de_edad)
+             VALUES ('Menor de prueba', :email, 'general', :alta, :pais, 'Rosario', 'Espanol', 'No especifica', 'Menor de 18')"
+        )->execute([':email' => 'menor-' . uniqid() . '@example.com', ':alta' => $hoy->format('Y-m-d'), ':pais' => $base['pais_codigo']]);
+        $menorId = (int) $db->lastInsertId('clientes_id_seq');
         (new BoletaRepository())->crear([
             'cliente_id' => $menorId,
             'concepto' => 'Boleta del menor de prueba',

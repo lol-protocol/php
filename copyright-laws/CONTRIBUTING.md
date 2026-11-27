@@ -71,6 +71,6 @@ Values marked "(unconfirmed)" can be checked against the text of the pages that 
 2. Run the workflow "Leyes - textos de las fuentes" (`laws-textos-oficiales.yml`) by hand with that list and `campos` ticked: it publishes the source pages as text on a data branch (`datos/leyes-textos-<module>`), which a session without access to those sites reads with `git fetch` and `git worktree add`. The branch is rewritten on every run: copy what you need before the next one.
 3. Read each country's pages against its task file (`PROMPT.md` says how) and write `out/<code>.csv` (`code,field,value,conf,source`, only what a text supports).
 4. `npm run verify -- apply --from=/tmp/verify` applies the findings, one law at a time, with confidence medium or high (`--min=high` is stricter, `--dry` only reports). A value a text confirms loses its mark and gets its source.
-5. `npm run translations -- --missing=spa` (and fra, deu, por) lists what is new to translate; then `npm run build`, `npm run changes` and a PR.
+5. `npm run translations -- --missing=spa` (and fra, deu, por) lists what is new to translate (`--prune` removes the translations of values you edited); then `npm run build`, `npm run changes` and a PR.
 
 The pages are third-party guides and aggregators, not the official text: a value they support is at most medium confidence.

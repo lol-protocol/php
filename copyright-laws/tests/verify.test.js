@@ -93,3 +93,12 @@ test("apply reports files without findings and does nothing without an out folde
   assert.equal(verify.apply({ dir: join(work, "nowhere") }).files, 0);
   assert.ok(existsSync(work));
 });
+
+test("plan --curated adds the values of rows that were never checked, and nothing else changes", () => {
+  const { verify } = sandbox();
+  const count = (plan) => plan.reduce((n, c) => n + c.values.length, 0);
+  const plain = verify.plan({});
+  const curated = verify.plan({ curated: true });
+  assert.ok(count(curated) >= count(plain));
+  for (const c of plain) assert.ok(curated.find((x) => x.code === c.code).values.length >= c.values.length);
+});

@@ -342,7 +342,7 @@ la primera vez que sólo una de ellas se actualizó.
 |---|---|---|
 | `comprehensive` | spa, eng, por, fra, ita, deu (6) | 292 – 679 |
 | `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, yue, tha, vie, ind (24) | 149 – 329 |
-| `basic` | isl, swa, tgl (3) | 94 – 109 |
+| `basic` | isl, swa, tgl (3) | 105 – 121 |
 
 ```php
 $reviewer->languages()->byCoverage('moderate');  // los candidatos a comprehensive
@@ -967,7 +967,7 @@ sistemático se ve enseguida: con ella se vio que los adjetivos búlgaros en «-
 | ucraniano | 74 % / 84 % | 93 % / 99 % (16 lemas) |
 | polaco | 63 % / 80 % | 94 % / 90 % |
 | checo | 55 % / 79 % | 94 % / 96 % |
-| griego | 79 % / 84 % | 81 % / 56 % |
+| griego | 79 % / 84 % | 52 % / 75 % |
 | alemán | 81 % / 67 % | 99 % / 81 % |
 | neerlandés | — | 78 % / 96 % |
 | búlgaro | 50 % / 64 % | 57 % / 26 % |
@@ -1019,7 +1019,7 @@ $result->getExplanations('eng')[0];
 // “Elba Gina” read together sounds like “vagina” (dictionary spa, type fonetico, severity medium).
 ```
 
-Hay mensajes en 31 de los 33 idiomas, además de `spa` (todos menos el suajili; `Messages::locales()` los lista).
+Hay mensajes en 32 de los 33 idiomas (todos menos el suajili; `Messages::locales()` los lista, `spa` incluido).
 Los mensajes de `yue` están en cantonés escrito (no en chino estándar), y solo los sirve la etiqueta `yue` de `Accept-Language`: `zh` es el chino en general y cae al español. Con otro idioma, o con una clave que falte, sale el español. Los textos viven en
 `config/messages/<código>.php` con claves planas, y `spa` es el origen: añadir un idioma es copiar
 ese archivo y traducir; `MessagesTest` exige las mismas claves y los mismos marcadores

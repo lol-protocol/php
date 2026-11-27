@@ -5,7 +5,7 @@
     "region": "asia_pacific",
     "law_name": "Code of Copyright and Related Rights (approved by National Parliament 29 Nov 2022; in force about 28 May 2023)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years (per Commons summary; not verified against the Code text; photographs 25 years from publication) (unconfirmed)",
+    "term_of_protection": "Author's life + 50 years for works before 28 May 2023 (Indonesian Law 6/1982 Arts. 26-27 per Commons; photographs 25 years from first publication); Code text not checked",
     "author_rights": "Not specified",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified (unconfirmed)",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://mondaq.com/copyright/1266316/approved-the-first-code-of-copyright-and-related-rights",
@@ -35,8 +35,8 @@
       },
       "term_of_protection": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/East_Timor.html",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://en.tatoli.tl/2023/04/13/tls-copyright-law-to-come-into-force-in-june/16/",
@@ -45,6 +45,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "term_of_protection",
+        "from": "Author's life + 50 years (per Commons summary; not verified against the Code text; photographs 25 years from publication) (unconfirmed)",
+        "to": "Author's life + 50 years for works before 28 May 2023 (Indonesian Law 6/1982 Arts. 26-27 per Commons; photographs 25 years from first publication); Code text not checked"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

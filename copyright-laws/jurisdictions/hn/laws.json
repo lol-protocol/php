@@ -8,9 +8,9 @@
     "term_of_protection": "Author's life + 75 years (joint works: life of last surviving author + 75 years; anonymous/pseudonymous works counted from first lawful publication)",
     "author_rights": "Economic rights",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Not specified (WIPO 2019 survey lists orphan-work exceptions only for Colombia and Ecuador)",
     "digital_protection": "Not specified",
-    "fair_use_exceptions": "UNKNOWN (WIPO survey lists a specialized library exception covering preservation; no article numbers seen) (unconfirmed)",
+    "fair_use_exceptions": "Specialized library exception for preservation (WIPO 2019 survey, Latin America group; no article numbers)",
     "registration_required": "Not specified",
     "enforcement_body": "Property Institute (Instituto de la Propiedad, IP) - General Directorate of Intellectual Property",
     "treaties_signatory": "Berne/WCT/WPPT/TRIPS",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/10172",
@@ -44,14 +44,14 @@
         "checked": "2026-10-16"
       },
       "orphan_works": {
-        "url": "https://www.wipo.int/wipolex/en/legislation/details/10172",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://Wipo.Int/edocs/mdocs/copyright/en/ompi_da_sdo_19/ompi_da_sdo_19_libraries.pdf",
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "fair_use_exceptions": {
         "url": "https://Wipo.Int/edocs/mdocs/copyright/en/ompi_da_sdo_19/ompi_da_sdo_19_libraries.pdf",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "enforcement_body": {
         "url": "https://www.gtai.de/de/trade/honduras/recht/zentralamerika-gewerblicher-rechtsschutz-1977140",
@@ -60,6 +60,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "fair_use_exceptions",
+        "from": "UNKNOWN (WIPO survey lists a specialized library exception covering preservation; no article numbers seen) (unconfirmed)",
+        "to": "Specialized library exception for preservation (WIPO 2019 survey, Latin America group; no article numbers)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Not specified (WIPO 2019 survey lists orphan-work exceptions only for Colombia and Ecuador)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

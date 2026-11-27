@@ -7,7 +7,7 @@ Representación en texto de cada plantilla. Los corchetes son variables. Los dis
 ## 1. POS · Coleccionista
 
 ```
-Plataforma POS · Boletín del 15 de diciembre
+Plataforma POS · Boletín del 15 de [mes]
 
 Hola, [nombre]
 
@@ -30,7 +30,7 @@ Desuscribirme · Preferencias
 ## 2. POS · Explorador
 
 ```
-Plataforma POS · Boletín del 15 de diciembre
+Plataforma POS · Boletín del 15 de [mes]
 
 Hola, [nombre]
 
@@ -54,7 +54,7 @@ Desuscribirme · Preferencias
 ## 3. Conce
 
 ```
-Asunto: Novedades de tu árbol · [semana]
+Asunto: Novedades de tu árbol · [período]
 
 Hola, [nombre]
 

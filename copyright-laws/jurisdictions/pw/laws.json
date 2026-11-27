@@ -6,7 +6,7 @@
     "law_name": "Republic of Palau Copyright Act of 2003 (RPPL No. 6-38)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years (s. 16(a)); joint works life of last surviving author + 50 years (s. 16(b)); anonymous, pseudonymous, work-for-hire, audiovisual and collective works 75 years from publication or 100 years from creation, whichever expires first (s. 16(c)-(d))",
-    "author_rights": "Economic rights (unconfirmed)",
+    "author_rights": "Economic rights (s. 6(a): reproduce, prepare derivative works, distribute, perform, display, translate, adapt, broadcast); moral rights (s. 6(b): attribution, pseudonym, object to distortion)",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified (unconfirmed)",
     "digital_protection": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8122",
@@ -40,8 +40,8 @@
       },
       "author_rights": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8122",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8122",
@@ -50,6 +50,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Economic rights (s. 6(a): reproduce, prepare derivative works, distribute, perform, display, translate, adapt, broadcast); moral rights (s. 6(b): attribution, pseudonym, object to distortion)"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

@@ -164,6 +164,37 @@ if ($listo) {
     $estado = json_decode((string) @file_get_contents($var . '/estado.json'), true) ?: [];
     comprobar('y el estado no cambia', ($estado['gen.mascotas:gatitos'] ?? null) === false);
 
+    // 6b. Escenas y cambios programados.
+    $p = pedir($base, 'GET', $ana);
+    comprobar('el panel muestra las escenas y los cambios programados', str_contains($p['cuerpo'], '<h2>Escenas</h2>') && str_contains($p['cuerpo'], 'Cambios programados'));
+    pedir($base, 'POST', $ana, ['accion' => 'escena', 'csrf' => $tokenAna, 'escena' => 'emergencia']);
+    $p = pedir($base, 'GET', $ana);
+    comprobar('una escena que pide confirmación no se aplica sin la casilla', str_contains(aviso($p['cuerpo']), 'pide confirmación'));
+    $estado = json_decode((string) @file_get_contents($var . '/estado.json'), true) ?: [];
+    comprobar('y no cambió nada', ($estado['gen.vistas'] ?? true) === true);
+    pedir($base, 'POST', $ana, ['accion' => 'escena', 'csrf' => $tokenAna, 'escena' => 'silencio']);
+    $p = pedir($base, 'GET', $ana);
+    comprobar('una escena sin confirmación se aplica y dice cuántos cambió', str_contains(aviso($p['cuerpo']), 'Escena «Silencio comercial» aplicada'));
+    comprobar('y se ofrece deshacerla', str_contains($p['cuerpo'], 'Deshacer la última escena'));
+    pedir($base, 'POST', $ana, ['accion' => 'deshacer', 'csrf' => $tokenAna]);
+    $p = pedir($base, 'GET', $ana);
+    comprobar('deshacer restaura', str_contains(aviso($p['cuerpo']), 'Escena deshecha'));
+    pedir($base, 'POST', $ana, ['accion' => 'escena', 'csrf' => $tokenAna, 'escena' => 'emergencia', 'confirmo' => '1']);
+    $estado = json_decode((string) @file_get_contents($var . '/estado.json'), true) ?: [];
+    comprobar('con la casilla, la emergencia se aplica', ($estado['gen.vistas'] ?? true) === false && ($estado['gen.privacidad'] ?? true) === true);
+    pedir($base, 'POST', $ana, ['accion' => 'deshacer', 'csrf' => $tokenAna]);
+    $cuando = gmdate('Y-m-d\TH:i', time() + 3600);
+    pedir($base, 'POST', $ana, ['accion' => 'agendar', 'csrf' => $tokenAna, 'escena' => 'mantenimiento', 'cuando' => $cuando]);
+    $p = pedir($base, 'GET', $ana);
+    comprobar('se programa una escena y queda en la lista', str_contains(aviso($p['cuerpo']), 'Programada la escena «Mantenimiento»') && str_contains($p['cuerpo'], 'pendiente'));
+    pedir($base, 'POST', $ana, ['accion' => 'agendar', 'csrf' => $tokenAna, 'escena' => 'mantenimiento', 'cuando' => 'mañana']);
+    $p = pedir($base, 'GET', $ana);
+    comprobar('una fecha mal escrita se rechaza', str_contains(aviso($p['cuerpo']), 'no es válida'));
+    preg_match('/name="id" value="([0-9a-f]{8})"/', $p['cuerpo'], $m);
+    pedir($base, 'POST', $ana, ['accion' => 'cancelar_programado', 'csrf' => $tokenAna, 'id' => $m[1] ?? 'x']);
+    $p = pedir($base, 'GET', $ana);
+    comprobar('se cancela un cambio programado', str_contains(aviso($p['cuerpo']), 'cancelado') && str_contains($p['cuerpo'], 'cancelado'));
+
     // 7. Lector: ve el panel, pero el servidor rechaza cualquier cambio aunque el formulario esté a mano.
     $r = pedir($base, 'POST', [], ['accion' => 'entrar', 'usuario' => 'luis', 'clave' => 'clave-de-luis-456']);
     $luis = $r['cookies'];
@@ -177,6 +208,12 @@ if ($listo) {
         aviso($p['cuerpo']) === 'Tu rol (lector) no permite cambiar nada.');
     $estado = json_decode((string) @file_get_contents($var . '/estado.json'), true) ?: [];
     comprobar('el estado sigue igual tras el intento del lector', ($estado['gen.mascotas:gatitos'] ?? null) === false);
+
+    pedir($base, 'POST', $luis, ['accion' => 'escena', 'csrf' => $tokenLuis, 'escena' => 'silencio']);
+    $p = pedir($base, 'GET', $luis);
+    comprobar('un lector no aplica escenas (lo dice el servidor)', str_contains(aviso($p['cuerpo']), 'no permite cambiar nada'));
+    $estado = json_decode((string) @file_get_contents($var . '/estado.json'), true) ?: [];
+    comprobar('y el estado sigue igual', ($estado['gen.mascotas'] ?? true) === true);
 
     // 8. Bloqueo: cinco claves malas seguidas bloquean; ni la buena entra hasta que pase el tiempo.
     for ($k = 0; $k < Usuarios::MAX_FALLOS; $k++) {

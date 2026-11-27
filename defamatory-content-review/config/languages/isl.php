@@ -54,7 +54,6 @@ return [
             ['word' => 'glópur', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'flón', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'tossi', 'riskType' => 'intelectual', 'severity' => 'medium'],
-            ['word' => 'heimskur', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'treggáfaður', 'riskType' => 'intelectual', 'severity' => 'low'],
         ],
         'likamlegt' => [

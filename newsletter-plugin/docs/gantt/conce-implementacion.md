@@ -29,3 +29,4 @@ gantt
 - El hito del contrato del carril de notificaciones es bloqueante para el adaptador. Sin él no se puede avanzar en esa parte.
 - Las pruebas con datos reales usan los umbrales de perfil con valores iniciales; su calibración va en «Ajustes de umbral y perfiles».
 - Los escenarios de docs/gantt/ son ilustrativos y no comprometen estas fechas.
+- El arranque del boletín no tiene fecha firme (docs/05, decisión 13): el piloto y la producción de este Gantt son orientativos.

@@ -14,9 +14,9 @@ final class ClienteRepositoryTest extends IntegracionTestCase
     private function crearClientesAlFinal(int $cuantos): void
     {
         Database::connection()->prepare(
-            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
+            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, rango_de_edad)
              SELECT 'ZZZZ Relleno ' || lpad(g::text, 4, '0'), 'zzzz-relleno-' || g || '@example.com', 'general',
-                    CURRENT_DATE, 'AR', 'Rosario', 'Espanol', 'No especifica', DATE '1990-01-01'
+                    CURRENT_DATE, 'AR', 'Rosario', 'Espanol', 'No especifica', '35-44'
              FROM generate_series(1, :cuantos) g"
         )->execute([':cuantos' => $cuantos]);
     }
@@ -98,8 +98,8 @@ final class ClienteRepositoryTest extends IntegracionTestCase
         self::assertSame(array_column($filas, 'idioma'), $idiomas);
 
         Database::connection()->exec(
-            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
-             SELECT 'Klingon ' || g, 'klingon-' || g || '@example.com', 'general', CURRENT_DATE, 'AR', 'Rosario', 'Klingon', 'No especifica', DATE '1990-01-01'
+            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, rango_de_edad)
+             SELECT 'Klingon ' || g, 'klingon-' || g || '@example.com', 'general', CURRENT_DATE, 'AR', 'Rosario', 'Klingon', 'No especifica', '35-44'
              FROM generate_series(1, 3) g"
         );
         self::assertContains('Klingon', $repo->idiomasEnUso(), 'un idioma nuevo aparece apenas tiene un cliente');
@@ -120,8 +120,8 @@ final class ClienteRepositoryTest extends IntegracionTestCase
         $this->expectException(\PDOException::class);
         $this->expectExceptionCode('23505');
         Database::connection()->prepare(
-            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
-             VALUES ('Otro', 'PRUEBA.MAYUSCULAS@example.com', 'general', CURRENT_DATE, 'AR', 'Rosario', 'Espanol', 'No especifica', DATE '1990-01-01')"
+            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, rango_de_edad)
+             VALUES ('Otro', 'PRUEBA.MAYUSCULAS@example.com', 'general', CURRENT_DATE, 'AR', 'Rosario', 'Espanol', 'No especifica', '35-44')"
         )->execute();
     }
 }

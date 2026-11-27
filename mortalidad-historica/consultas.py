@@ -159,6 +159,60 @@ def exceso_de_muertes_londres(anio, ventana=5):
     return serie[anio][0] / mediana
 
 
+@functools.cache
+def _tasas_de_inglaterra():
+    return tuple((int(f["anio"]), float(f["natalidad"]), float(f["mortalidad"])) for f in filas_csv("inglaterra_tasas"))
+
+
+def tasas_inglaterra(anio):
+    """Tasas brutas de natalidad y de mortalidad (por mil habitantes) de Inglaterra (y Gales), de 1541 a 2015.
+
+    Es la serie de Wrigley y Schofield (reconstrucción desde los registros parroquiales) y, desde 1838, el registro civil.
+    Hasta 1861 hay **un punto cada cinco años** (1541, 1546, 1551…): cada uno resume un quinquenio, así que suaviza
+    los picos de un solo año. Devuelve {"natalidad": float, "mortalidad": float}, o None si ese año no tiene punto.
+    Es estadística de población: dice cuánto se moría en el país, no de qué ni quién.
+    """
+    for a, natalidad, mortalidad in _tasas_de_inglaterra():
+        if a == anio:
+            return {"natalidad": natalidad, "mortalidad": mortalidad}
+    return None
+
+
+def exceso_de_mortalidad_inglaterra(anio, vecinos=2):
+    """Cuántas veces la tasa de mortalidad de ese punto supera a la de los `vecinos` puntos de cada lado (mediana).
+
+    Los vecinos se cuentan en **puntos de la serie**, no en años (hasta 1861 cada punto es un quinquenio). Un 1,0 es un
+    punto como los de al lado; 1,3 es una mortalidad muy por encima. Devuelve None si el año no tiene punto o hay menos
+    de 4 vecinos con dato (los extremos de la serie).
+    """
+    serie = _tasas_de_inglaterra()
+    for i, (a, _natalidad, mortalidad) in enumerate(serie):
+        if a == anio:
+            break
+    else:
+        return None
+    valores = sorted(serie[j][2] for j in range(i - vecinos, i + vecinos + 1) if j != i and 0 <= j < len(serie))
+    if len(valores) < 4:
+        return None
+    mitad = len(valores) // 2
+    mediana = valores[mitad] if len(valores) % 2 else (valores[mitad - 1] + valores[mitad]) / 2
+    return mortalidad / mediana
+
+
+def anios_de_mortalidad_anormal_inglaterra(umbral=1.15):
+    """Los años de la serie de Inglaterra cuyo exceso de mortalidad llega a `umbral` (por defecto, un 15 % sobre los vecinos).
+
+    Devuelve una lista de {"anio": int, "exceso": float}, en orden. Como hasta 1861 la serie es quinquenal, un año
+    de peste o de gripe aparece diluido: sirve para ver épocas, no para fechar un brote.
+    """
+    resultado = []
+    for a, _natalidad, _mortalidad in _tasas_de_inglaterra():
+        exceso = exceso_de_mortalidad_inglaterra(a)
+        if exceso is not None and exceso >= umbral:
+            resultado.append({"anio": a, "exceso": exceso})
+    return resultado
+
+
 def banda_esperanza(codigo, anio, edad=0, sexo="T"):
     """(bajo, alto) de la esperanza restante de `esperanza_restante`, o None si no hay dato o no tiene banda.
 

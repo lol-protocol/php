@@ -4,7 +4,7 @@
 
 - **62 funciones** (41 de genealogía y 21 de POS).
 - **315 opciones** (sub-interruptores), y **377 interruptores** en total.
-- **2 funciones supuestas**, marcadas con *(supuesto)*: no vienen de la lista de la persona, las propuse a partir de sus respuestas. Hay que confirmarlas o quitarlas.
+- **0 funciones supuestas**, marcadas con *(supuesto)*: no vienen de la lista de la persona, las propuse a partir de sus respuestas. Hay que confirmarlas o quitarlas.
 
 Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: una opción está encendida solo si su función también lo está. «Mínimo de opciones» dice cuántas tienen que quedar encendidas mientras la función esté encendida.
 
@@ -69,8 +69,8 @@ Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: u
 | `gen.inferencia` | Inferencia de datos faltantes | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
 | `gen.estimacion` | Estimación de fechas y lugares | 2 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
 | `gen.pasarela` | Pasarela de pagos | 1 | producto | `fuera_del_repo` | encendida | — |
-| `gen.busqueda-fuentes` | Tipos de fuente de las búsquedas externas *(supuesto)* | 5 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
-| `gen.busqueda-paises` | Países de las búsquedas externas *(supuesto)* | 101 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.busqueda-fuentes` | Tipos de fuente de las búsquedas externas | 5 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.busqueda-paises` | Países de las búsquedas externas | 101 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
 
 ### `gen.vistas` · Modos de visualización del árbol
 
@@ -440,7 +440,7 @@ Carpetas: `url-routing/`.
 
 Al apagar: `no_disponible` (se muestra como no disponible en vez de ocultarse).
 
-*Nota:* Ocultar un pedido de retiro de datos sería peor que avisar que no está disponible por ahora (derechos de la persona; ver RECLAMOS.md). Política supuesta, confirmar.
+*Nota:* Apagada se muestra como «no disponible» y no se oculta: ocultar un pedido de retiro de datos sería peor que avisar (derechos de la persona; ver RECLAMOS.md). Política confirmada por la persona.
 
 ### `gen.backoffice` · Backoffice de actividad
 

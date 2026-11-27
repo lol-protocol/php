@@ -9,7 +9,7 @@
     "author_rights": "Not specified",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified",
-    "digital_protection": "Technological protection measures provided for (unconfirmed)",
+    "digital_protection": "Technological protection measures and rights management information covered (InforMEA/FAOLEX summary; no article numbers in texts read)",
     "fair_use_exceptions": "Not specified",
     "registration_required": "No (voluntary registration)",
     "enforcement_body": "Intellectual Property Office of St. Kitts and Nevis",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://www.informea.org/en/content/legislation/copyright-act-no-14-2024",
@@ -40,8 +40,8 @@
       },
       "digital_protection": {
         "url": "https://www.informea.org/en/content/legislation/copyright-act-no-14-2024",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-26"
       },
       "registration_required": {
         "url": "https://www.informea.org/en/content/legislation/copyright-act-no-14-2024",
@@ -60,6 +60,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "digital_protection",
+        "from": "Technological protection measures provided for (unconfirmed)",
+        "to": "Technological protection measures and rights management information covered (InforMEA/FAOLEX summary; no article numbers in texts read)"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

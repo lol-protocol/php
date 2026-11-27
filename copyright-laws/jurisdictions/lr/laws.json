@@ -6,7 +6,7 @@
     "law_name": "Liberia Intellectual Property Act, 2016 (Title 24, Liberian Code of Laws Revised; approved 14 June 2016; replaced the 1997 Copyright Law)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years (s. 9.20; literary, musical and artistic works other than photographs; joint works from death of last surviving author; audiovisual, sound recordings, anonymous works and broadcasts 50 years)",
-    "author_rights": "Economic rights (unconfirmed)",
+    "author_rights": "Economic rights: reproduction, translation, adaptation, distribution, rental, public performance, broadcasting and other communication to the public; moral rights protected (law-firm summary, no article numbers)",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified",
     "digital_protection": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/16994",
@@ -39,9 +39,9 @@
         "checked": "2026-10-16"
       },
       "author_rights": {
-        "url": "https://www.wipo.int/wipolex/en/legislation/details/16994",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://spoor.com/new-ip-act-in-liberia/",
+        "confidence": "medium",
+        "checked": "2026-11-26"
       },
       "enforcement_body": {
         "url": "https://spoor.com/new-ip-act-in-liberia/",
@@ -50,6 +50,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Economic rights: reproduction, translation, adaptation, distribution, rental, public performance, broadcasting and other communication to the public; moral rights protected (law-firm summary, no article numbers)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

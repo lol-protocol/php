@@ -6,9 +6,9 @@
     "law_name": "Copyright Act 1987 (Cap. 138), Revised Edition 1996",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years (end of calendar year of death); photographs and engravings 50 years from first publication; anonymous/pseudonymous 50 years from publication (Arts 3-4)",
-    "author_rights": "Economic rights (unconfirmed)",
+    "author_rights": "Economic rights (s. 6(1): reproduce, publish, broadcast, adapt, perform in public); author is first owner (s. 5(1))",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Limited: s. 8(1) lets a library reproduce a published literary, dramatic or musical work if the person in charge cannot identify or locate the rightholder by reasonable inquiry; prescribed conditions apply",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/7754",
@@ -40,13 +40,13 @@
       },
       "author_rights": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/7754",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/7754",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "treaties_signatory": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Solomon_Islands.html",
@@ -55,6 +55,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Limited: s. 8(1) lets a library reproduce a published literary, dramatic or musical work if the person in charge cannot identify or locate the rightholder by reasonable inquiry; prescribed conditions apply"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Economic rights (s. 6(1): reproduce, publish, broadcast, adapt, perform in public); author is first owner (s. 5(1))"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

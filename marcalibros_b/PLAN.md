@@ -317,3 +317,26 @@ Tras la fase 4 se añade el eje «región / lengua» (sugerencia aceptada en la 
 - Frases de Oriente: solo quedan las de Bashō, Li Bai, Du Fu y Tagore (se retiraron las de Genji, Lu Xun, Al-Mutanabbi, Rumi y Kabir, no verificadas). Las fuentes árabe y devanagari y su composición se conservan.
 - El CJK (japonés y chino) se dibuja a 17 px (`tam` en `catalog/escrituras.yaml`); el resto, a 15.
 - Editor: la lista de autores se acota también por región y lengua, y arranca con todos los autores (antes quedaba vacía hasta elegir un movimiento). Prueba de navegador en `tests/test_regiones.py`.- Sprites del editor: `editor/plantillas/` estaba versionado por error desde #510 (20 archivos, 5 MB, ya desfasados: 10 movimientos de 100 piezas), contra lo que dice la sección «Pestaña de plantillas». Se dejan de versionar (`git rm --cached` y entrada en `.gitignore`); la CI los genera.
+
+## Build en paralelo (CI)
+El check del catálogo llegó a tardar 21–30 min (casi todo, el build de las 2000 piezas). En vez de partirlo en varios jobs (habría que unir artefactos, manifest y caché, y el ahorro sería pequeño frente al arranque de cada job), `generator/build_paralelo.py` lanza un `build.py --movimiento <id>` por movimiento, tantos a la vez como núcleos. Cada movimiento es independiente (semillas y duplicados no cruzan movimientos); el manifest y la caché, los únicos archivos compartidos, se escriben bajo un bloqueo (`build._bloqueo`, un archivo con `O_EXCL`; `guardar_cache_mezclando` relee y conserva lo ajeno). Comprobado: con `--forzar` salen los mismos bytes que en serie (SVG, JPG, JPG 2x y manifest). `build.py --all` sigue valiendo y es lo que usan los tests. Pruebas: `tests/test_paralelo.py`.
+
+## Cierre de la etapa de ampliación (estado y pendientes)
+
+**Hecho y fusionado** (todo en `master`, CI en verde): catálogo de **2000 piezas** (15 movimientos, 200 autores, 2000 obras) con géneros y región/lengua como ejes; escrituras no latinas (japonés, chino, árabe, persa, hindi) con fuentes Noto en subconjunto y HarfBuzz; 5 movimientos nuevos (Renacimiento, Ilustración, Expresionismo, Surrealismo, Literaturas de Oriente) con 17 motivos y 16 paletas propios; editor con filtros de movimiento, género, región, lengua y autor (republicado como artefacto); build paralelo por movimiento en la CI. No hay PR abiertos de esta carpeta.
+
+**Pendiente, bloqueado por red** (hay que correrlo desde una IP con acceso a `gutendex.com` y `gutenberg.org`: la sesión en la nube no lo tiene, y la persona lo hará desde la suya o desde el VPS):
+1. `python generator/verificar_gutenberg.py --csv` escribe `catalog/revision/gutenberg-prellenado.csv` (con los ids que Gutendex da sin ambigüedad y una `nota` de dónde sale cada fila).
+2. Revisar ese CSV a mano (las filas con duda) y aplicarlo: `python generator/gutenberg_manual.py aplicar catalog/revision/gutenberg-prellenado.csv`. Edita solo los bloques `gutenberg` de `taxonomia.yaml` y la valida antes de escribir.
+3. Regenerar y probar: `python generator/build_paralelo.py` (o `build.py --all`) y `python -m pytest -q tests`; commitear taxonomía y manifest. El `gutenberg` no entra en el hash de las piezas, así que no deberían cambiar los hashes de referencia.
+4. `REVISION-GUTENBERG.csv` (raíz de la carpeta) es la alternativa a mano: 2200 filas, todas sin rellenar.
+
+**Pendiente, contenido sin verificar** (no depende de red, sí de una persona que lo lea): títulos, tipos y atribuciones de las obras de las fases 2 y 4 y las frases de memoria (`REVISION-DUDAS.md`, secciones 3, 6 y 7; todo marcado `sin_verificar`), los títulos originales de `catalog/titulos-originales.yaml` (67 obras) y la fecha de muerte de Murasaki Shikibu en su frase retirada. Las frases en árabe, persa, hindi, de *Genji* y de Lu Xun se retiraron hasta tener texto verificado; la composición de esas escrituras sigue lista (muestras en `catalog/escrituras.yaml`).
+
+**Deuda técnica conocida** (sin errores, pero a tener presente):
+- El id de autor `eliot` está repetido (George Eliot en Realismo, T. S. Eliot en Vanguardias). Las tablas indexadas por id de autor (`titulos-originales.yaml`, `lengua_por_autor`) compartirían entradas; hoy no tienen ninguna para `eliot` y ambos escriben en inglés. Renombrar uno cambiaría el id y los hashes de sus 10 piezas, así que no se hizo; `test_los_ids_de_autor_repetidos_son_solo_los_conocidos` impide que aparezca otro repetido sin querer.
+- Tiempo de la CI: el check del catálogo tarda 16–23 min con el build paralelo (21–25 en serie). Cada SVG abre su propio Chromium para el QA; reutilizar uno por proceso sería la mejora siguiente (cambia la parte que dibuja, así que se haría en un PR aparte, midiendo antes).
+- El artefacto del editor publicado se subió a mano con un `<!DOCTYPE html>` añadido a la copia publicada (el servidor rechazó el archivo sin él); `editor/index.html` del repo no lo lleva. Republicar se hace igual: `python generator/editor_datos.py --sprites` y publicar `editor/index.html` con `editor/plantillas/`.
+- 19 ramas `marcalibros_b*` ya fusionadas siguen en `origin`; se limpian con el workflow manual `borrar-ramas-fusionadas.yml` (lo decide la persona).
+- Las listas de autores y obras son canon conocido y no exhaustivo; ampliar es repetir el procedimiento de las fases 2 y 4 (DSL por movimiento, `validar_taxonomia`, `build`, `--actualizar` de hashes).
+

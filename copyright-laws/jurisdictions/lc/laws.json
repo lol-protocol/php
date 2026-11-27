@@ -6,9 +6,9 @@
     "law_name": "Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years (end of calendar year of death, s. 9(1)); unknown authorship 50 years from first availability to the public (s. 9(2))",
-    "author_rights": "Economic rights (unconfirmed)",
+    "author_rights": "Economic rights: exclusive right to reproduce, translate, adapt and distribute (s. 8); moral rights (ss. 13-18)",
     "moral_rights": "Moral rights recognized (ss. 14-18): attribution, integrity and related rights last as long as copyright; right against false attribution (s. 16) lasts 20 years after death (s. 18)",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "No general orphan-works licence; s. 59: unidentified-author works not infringed only if copyright is reasonably presumed expired or author died 50+ years ago",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "No (registration only of collecting societies under 2000 amendment; unconfirmed)",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/20382",
@@ -40,8 +40,8 @@
       },
       "author_rights": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/20382",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "moral_rights": {
         "url": "https://attorneygeneralchambers.com/laws-of-saint-lucia/copyright-act/section-18",
@@ -50,8 +50,8 @@
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/20382",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "registration_required": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/20382",
@@ -65,6 +65,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "No general orphan-works licence; s. 59: unidentified-author works not infringed only if copyright is reasonably presumed expired or author died 50+ years ago"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Economic rights: exclusive right to reproduce, translate, adapt and distribute (s. 8); moral rights (ss. 13-18)"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

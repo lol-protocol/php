@@ -71,12 +71,12 @@ final class ValoresCerradosTest extends IntegracionTestCase
                 "INSERT INTO pagos (cliente_id, monto, moneda_codigo, fecha_pago, metodo) VALUES (:c, 1, :m, CURRENT_DATE, 'bitcoin')"
             )->execute([':c' => $cliente['id'], ':m' => $cliente['moneda_codigo']]),
             'genero' => fn () => $db->exec(
-                "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
-                 VALUES ('Alien', 'alien-" . uniqid() . "@example.com', 'general', CURRENT_DATE, '{$cliente['pais_codigo']}', 'X', 'Espanol', 'Alienigena', DATE '1990-01-01')"
+                "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, rango_de_edad)
+                 VALUES ('Alien', 'alien-" . uniqid() . "@example.com', 'general', CURRENT_DATE, '{$cliente['pais_codigo']}', 'X', 'Espanol', 'Alienigena', '35-44')"
             ),
             'segmento' => fn () => $db->exec(
-                "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
-                 VALUES ('Vip', 'vip-" . uniqid() . "@example.com', 'vip', CURRENT_DATE, '{$cliente['pais_codigo']}', 'X', 'Espanol', 'No especifica', DATE '1990-01-01')"
+                "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, rango_de_edad)
+                 VALUES ('Vip', 'vip-" . uniqid() . "@example.com', 'vip', CURRENT_DATE, '{$cliente['pais_codigo']}', 'X', 'Espanol', 'No especifica', '35-44')"
             ),
         ];
 

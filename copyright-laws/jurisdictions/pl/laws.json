@@ -31,6 +31,18 @@
     },
     "changes": [
       {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU19940240083",
+        "to": "https://www.uprp.pl/"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.uprp.pl/",
+        "to": "https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU19940240083"
+      },
+      {
         "date": "2026-10-14",
         "field": "enforcement_body",
         "from": "Polish Patent Office",

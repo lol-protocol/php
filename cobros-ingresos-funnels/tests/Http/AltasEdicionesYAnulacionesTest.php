@@ -1025,9 +1025,9 @@ final class AltasEdicionesYAnulacionesTest extends HttpTestCase
         $db = Database::connection();
         $this->alTerminar(static fn () => $db->exec("DELETE FROM clientes WHERE email LIKE 'zzzz-selector-http-%@example.com'"));
         $db->prepare(
-            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
+            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, rango_de_edad)
              SELECT 'ZZZZ Selector ' || lpad(g::text, 4, '0'), 'zzzz-selector-http-' || g || '@example.com', 'general',
-                    CURRENT_DATE, 'AR', 'Rosario', 'Espanol', 'No especifica', DATE '1990-01-01'
+                    CURRENT_DATE, 'AR', 'Rosario', 'Espanol', 'No especifica', '35-44'
              FROM generate_series(1, :cuantos) g"
         )->execute([':cuantos' => ClienteRepository::LIMITE_SELECTOR + 1]);
         $ultimo = self::contar("SELECT id FROM clientes WHERE nombre = 'ZZZZ Selector 0501'", []);

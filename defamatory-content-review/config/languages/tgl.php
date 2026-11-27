@@ -114,8 +114,6 @@ return [
             ['word' => 'bruha', 'riskType' => 'moral', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'pakialamero', 'riskType' => 'moral', 'severity' => 'low', 'forms' => 'noun'],
             // Borrador: términos añadidos sin revisión de hablante nativo.
-            ['word' => 'salbahe', 'riskType' => 'moral', 'severity' => 'medium'],
-            ['word' => 'hudas', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'taksil', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'manggagantso', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'sipsip', 'riskType' => 'moral', 'severity' => 'low'],

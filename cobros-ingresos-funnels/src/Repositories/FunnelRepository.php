@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Database;
-use App\RangoEdad;
 use PDO;
 
 final class FunnelRepository
@@ -181,7 +180,7 @@ final class FunnelRepository
 
     public function porRangoEdad(string $desde, string $hasta): array
     {
-        return $this->porDimension(RangoEdad::expresionSql('uf.fecha_nacimiento'), $desde, $hasta);
+        return $this->porDimension('uf.rango_de_edad', $desde, $hasta);
     }
 
     /**
