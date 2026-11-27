@@ -10,11 +10,11 @@
     "scope": "Data subjects in Mali (unconfirmed)",
     "applies_to": "State, local authorities, public bodies, and private natural and legal persons processing data wholly or partly in Mali",
     "key_requirements": "Free right of access; rights to correct, update, block or delete inaccurate or unlawfully kept data; objection right including before first use for third-party prospecting; controller responds within 30 days; APDP approves transfers",
-    "data_categories": "Personal data; sensitive data (unconfirmed)",
+    "data_categories": "Personal data; sensitive data (religious, philosophical, political or trade-union views, sex life, race, health, social measures, prosecutions) – processing prohibited except under authority-set safeguards (art. 9)",
     "retention_period": "Not specified",
     "enforcement_authority": "Personal Data Protection Authority (APDP)",
     "penalties_range": "APDP: warnings, formal notices, injunctions, withdrawal of approval; courts: fines of about CFA 2.5 million to 20 million plus imprisonment; obstructing APDP inspections CFA 5 million to 20 million (art. 65(7) as amended). 2025 fine of CFA 5 million on a clinic for undeclared CCTV",
-    "exemptions": "Purely personal or domestic activity, unless data are systematically shared with third parties for dissemination (unconfirmed)",
+    "exemptions": "Purely personal or domestic activities of a natural person, unless data are systematically communicated to third parties or disseminated (art. 4)",
     "deceased_data": "Not addressed: no provision on deceased persons found in the text (machine translation) (unconfirmed)",
     "research_exemption": "Processing for archive management or for historical, statistical or scientific purposes is allowed under the law's conditions (machine-translated text; article not located)",
     "genetic_data": "Genetic data are defined (art. 3(7)) and health data include genetic or biological data (art. 3(12)); no further rule located (machine-translated text)",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-31",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://www.DataGuidance.com/jurisdiction/mali",
@@ -60,9 +60,9 @@
         "checked": "2026-10-16"
       },
       "data_categories": {
-        "url": "https://www.DataGuidance.com/jurisdiction/mali",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://clinregs.niaid.nih.gov/sites/default/files/documents/mali/Mali-DPL_GoogleTranslation.pdf",
+        "confidence": "high",
+        "checked": "2026-11-26"
       },
       "enforcement_authority": {
         "url": "https://www.DataGuidance.com/jurisdiction/mali",
@@ -75,9 +75,9 @@
         "checked": "2026-10-16"
       },
       "exemptions": {
-        "url": "https://dataprotection.africa/?p=1335",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://clinregs.niaid.nih.gov/sites/default/files/documents/mali/Mali-DPL_GoogleTranslation.pdf",
+        "confidence": "high",
+        "checked": "2026-11-26"
       },
       "genetic_data": {
         "url": "https://clinregs.niaid.nih.gov/sites/default/files/documents/mali/Mali-DPL_GoogleTranslation.pdf",
@@ -96,6 +96,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "exemptions",
+        "from": "Purely personal or domestic activity, unless data are systematically shared with third parties for dissemination (unconfirmed)",
+        "to": "Purely personal or domestic activities of a natural person, unless data are systematically communicated to third parties or disseminated (art. 4)"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "data_categories",
+        "from": "Personal data; sensitive data (unconfirmed)",
+        "to": "Personal data; sensitive data (religious, philosophical, political or trade-union views, sex life, race, health, social measures, prosecutions) – processing prohibited except under authority-set safeguards (art. 9)"
+      },
       {
         "date": "2026-10-31",
         "field": "genetic_data",
