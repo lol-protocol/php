@@ -52,6 +52,7 @@ def recorrer(pagina, datos):
                 dir: document.documentElement.dir,
                 lang: document.documentElement.lang,
                 sinAlt: [...document.images].filter(i => !i.alt).length,
+                opcionesSinLang: [...document.querySelectorAll("#idioma option")].filter(o => o.lang !== o.value).length,
             })""")
             if estado["figuras"] != 24:
                 problemas.append(f"{donde}: {estado['figuras']} signos en vez de 24")
@@ -59,6 +60,8 @@ def recorrer(pagina, datos):
                 problemas.append(f"{donde}: imágenes que no cargan: {estado['rotas'][:3]}")
             if estado["sinAlt"]:
                 problemas.append(f"{donde}: {estado['sinAlt']} imágenes sin texto alternativo")
+            if estado["opcionesSinLang"]:
+                problemas.append(f"{donde}: {estado['opcionesSinLang']} opciones del selector de idioma sin su lang")
             if estado["titulo"] != terminos["titulo"][codigo]:
                 problemas.append(f"{donde}: el título no está en el idioma elegido")
             esperadas = [terminos[clave][codigo] for clave in generar.GRUPOS.values()]
