@@ -135,6 +135,19 @@ def _errores_de_glosario(donde, glosario):
     return errores
 
 
+def _errores_de_palabras_repetidas(donde, claves, glosario):
+    """Idiomas en los que dos claves de una misma ficha se traducen igual (la ficha diría la palabra dos veces)."""
+    errores = []
+    for codigo in IDIOMAS:
+        vistas = {}
+        for clave in claves:
+            texto = glosario.get(clave, {}).get(codigo, "").strip().lower()
+            if texto and texto in vistas:
+                errores.append(f"{donde}: {vistas[texto]!r} y {clave!r} se dicen igual en {codigo} ({texto!r})")
+            vistas.setdefault(texto, clave)
+    return errores
+
+
 TERMINOS_DE_ESPIRITUS = ({f"coro_{c}" for c in zodiaco.CHOROS} | {f"rango_{r}" for r in zodiaco.RANGOS}
                          | {"col_nombre", "col_coro", "col_rango", "col_legiones", "col_tramo", "col_cualidades",
                             "separador", "angeles_titulo", "demonios_titulo", "angeles_nota", "demonios_nota"})
@@ -165,6 +178,7 @@ def validar_espiritus(esp):
             for c in q:
                 if c not in esp["cualidades"]:
                     errores.append(f"{donde}: la cualidad {c!r} no está en el glosario")
+            errores += _errores_de_palabras_repetidas(donde, q, esp["cualidades"])
             if tipo == "demonios":
                 if not e.get("rangos") or not set(e["rangos"]) <= set(zodiaco.RANGOS) or len(set(e["rangos"])) != len(e["rangos"]):
                     errores.append(f"{donde}: rangos tiene que ser una lista sin repetir de {zodiaco.RANGOS}")
@@ -210,6 +224,7 @@ def validar_arboles(arb, esp):
         for c in q:
             if c not in arb["rasgos"] and c not in esp["cualidades"]:
                 errores.append(f"{donde}: el rasgo {c!r} no está en ningún glosario")
+        errores.extend(_errores_de_palabras_repetidas(donde, q, {**esp["cualidades"], **arb["rasgos"]}))
         usadas.update(q)
 
     celta = arb["calendario_celta"]
