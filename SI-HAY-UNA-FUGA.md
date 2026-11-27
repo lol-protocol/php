@@ -43,8 +43,9 @@ reinicies el servidor ni restaures nada antes de copiar lo que sirva de evidenci
   averiguas.
 - **Alguien entró al servidor:** cambia las claves de acceso (SSH, base de datos) y **no confíes en nada
   de lo que haya dentro**; lo que escribió el atacante puede estar en la base.
-- **Una copia de seguridad se perdió:** si estaba cifrada, la fuga es menor, pero **no asumas** que no
-  lo es hasta saber con qué clave. Si no lo estaba, trátala como una fuga de todo lo que trae.
+- **Una copia de seguridad se perdió:** hoy las copias **no se cifran** (decidido el 22 de noviembre de 2026), así que
+  trátala como una fuga de todo lo que trae. Si algún día se cifran y la perdida lo estaba, la fuga es
+  menor, pero **no asumas** que no lo es hasta saber con qué clave.
 
 **3. Evaluar: qué datos, de quién y por cuánto tiempo.** Responde por escrito:
 
@@ -94,4 +95,5 @@ te pregunta mañana qué hiciste, ese registro es la respuesta.
    `--vigilar` y `--verificar` ([`MANTENIMIENTO.md`](url-routing/docs/MANTENIMIENTO.md)). **Una fuga
    sin copia que restaurar es peor.**
 4. Ensayar el paso 2: rotar el token en un servidor de prueba y ver que cierra las sesiones.
-5. Decidir si se cifra la clave privada de las copias, dónde vive y quién más la puede usar.
+5. Las copias no se cifran por ahora (decidido el 22 de noviembre de 2026). Si algún día se cifran, decidir dónde vive la
+   clave privada y quién más la puede usar.

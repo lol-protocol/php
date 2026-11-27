@@ -80,7 +80,7 @@ para quien revisa; decide una persona.
 | Huella de IP del limitador | 1 hora |
 | Registro del servidor web (IP, navegador, dirección pedida) | 14 días [CONFIRMAR: vale si el servidor se armó con `vps-setup/`] |
 | Registro de la aplicación (errores) | [PLAZO POR DECIDIR]: hoy no hay rotación definida. No trae quién pidió un retiro |
-| Copias de seguridad | 30 días **[PROPUESTA SIN APROBAR]**. Una copia trae también lo que el sitio oculta |
+| Copias de seguridad | 30 días (aprobado el 22 de noviembre de 2026). Una copia trae también lo que el sitio oculta |
 | Dirección de envío de un pedido | Mientras exista el pedido, sin borrarse sola |
 
 **⚖️** Si la ley fija un plazo máximo de conservación, esta tabla tiene que respetarlo.
@@ -89,8 +89,9 @@ para quien revisa; decide una persona.
 
 - Los datos se guardan en un servidor de [PROVEEDOR], en [PAÍS DEL SERVIDOR]. **⚖️** Si es fuera
   de Chile, comprobar qué exige la ley para una transferencia al extranjero.
-- Las copias de seguridad se guardan en [DÓNDE]. Se **pueden cifrar** de modo que el servidor no
-  pueda descifrar sus propias copias; [CONFIRMAR si se cifran].
+- Las copias de seguridad se guardan en [DÓNDE]. Se **podrían cifrar** de modo que el servidor no
+  pueda descifrar sus propias copias, pero **por ahora no se cifran** (decidido el 22 de noviembre de 2026): por eso
+  viven fuera del servidor y con acceso solo del propietario.
 - [CONFIRMAR: no vendemos ni cedemos datos a terceros, y el sitio no carga scripts, anuncios ni
   analítica de terceros.] Solo se entregan a una autoridad que los pida con una orden judicial o la
   facultad para hacerlo.
@@ -124,8 +125,7 @@ datos, respecto de los tuyos o, si ya falleció, de un familiar.
 Todo el sitio va por HTTPS. No hay contraseñas de visitantes. El acceso del propietario es un solo
 secreto que se puede rotar, y rotarlo cierra todas las sesiones. Los formularios tienen límite de
 intentos. Lo que se guarda de quien visita es una huella, no la IP. Los enlaces y claves de lectura
-guardan solo huellas. **No** ciframos la base de datos en reposo (depende del servidor); las copias sí
-pueden cifrarse. Si hay una fuga de datos, se sigue [`SI-HAY-UNA-FUGA.md`](SI-HAY-UNA-FUGA.md).
+guardan solo huellas. **No** ciframos la base de datos en reposo (depende del servidor) ni, por ahora, las copias. Si hay una fuga de datos, se sigue [`SI-HAY-UNA-FUGA.md`](SI-HAY-UNA-FUGA.md).
 
 ## 9. Cookies
 
@@ -150,10 +150,9 @@ Si cambia, se publica aquí con su fecha. Última revisión: [FECHA].
 1. Completar los huecos: responsable, domicilio, correo, proveedor, país del servidor y fecha.
 2. Elegir la **base** de cada fila del punto 3 (depende de la ley: personas fallecidas, investigación
    histórica) y el **plazo de respuesta** del punto 7. **⚖️**
-3. Decidir los plazos marcados **POR DECIDIR** y aprobar o cambiar la **propuesta de 30 días** de las
-   copias.
+3. Decidir los plazos marcados **POR DECIDIR** (el de las copias, 30 días, ya está aprobado).
 4. Confirmar lo marcado **CONFIRMAR** contra el servidor real: que los borrados programados corren, que
-   el registro del servidor dura 14 días, si las copias se cifran y que no hay scripts de terceros.
+   el registro del servidor dura 14 días y que no hay scripts de terceros.
 5. Cambiar «**Hoy**, pedir la supresión no tiene pantalla» en [`TERMINOS-DE-USO.md`](TERMINOS-DE-USO.md)
    (§7): ya existe el formulario `/s/{id}/`. Y que los términos enlacen a esta política.
 6. Que alguien la lea como la leería quien aparece en el árbol, y que un abogado la revise si algún día
