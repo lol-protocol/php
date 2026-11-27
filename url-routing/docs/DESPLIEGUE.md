@@ -242,13 +242,13 @@ Cambia `OWNER_TOKEN` en `.env` y recarga PHP-FPM. **Cierra todas las sesiones ab
 
 Los dos comandos se probaron: la copia de SQLite abre y pasa `integrity_check`, y el volcado de PostgreSQL se restauró en otra base (`pg_restore -d otra_base --no-owner`) con los mismos recuentos de filas. Lo que falta es una copia **automática** y ensayar la restauración en el servidor real, antes de abrir la plataforma al público (ver [`PRIVACIDAD-Y-HONRA.md`](../../PRIVACIDAD-Y-HONRA.md)).
 
-### Política de copias (propuesta, sin aprobar)
+### Política de copias (aprobada)
 
-Es una **propuesta técnica para que la revises**, no una decisión ni un plazo legal (⚖️: si la ley pide otro plazo, manda ese). De ella sale el plazo que dice la respuesta de una supresión (`SOLICITUDES.md`): una persona suprimida **sigue en las copias hasta que la última que la trae se borra**.
+La **aprobó la persona a cargo el 22 de noviembre de 2026** (30 días, sin cifrar por ahora); no es un plazo legal (⚖️: si la ley pide otro plazo, manda ese). De ella sale el plazo que dice la respuesta de una supresión (`SOLICITUDES.md`): una persona suprimida **sigue en las copias hasta que la última que la trae se borra**.
 
 - **Cada cuánto:** una copia al día, de la base de genealogía (`pg_dump -Fc`) y de la del POS (SQLite): lo hace `bin/copias.php` (abajo).
 - **Cuánto se guardan:** **30 días**; las más viejas se borran, por la fecha que lleva el nombre del archivo. Con eso, quien se suprime desaparece también de las copias a más tardar 30 días después.
-- **Dónde:** fuera del servidor (si no, no sirven cuando el servidor se pierde) y con acceso solo del propietario: una copia trae también lo que el sitio oculta (personas vivas, pedidos de retiro con el correo de quien pidió). **Cifrarlas es opcional y es decisión tuya**: `bin/copias.php --cifrar-para=age1…` las cifra con [age](https://github.com/FiloSottile/age) (abajo). Cifrar la **base** en reposo es otra cosa y sigue en la lista de pendientes de `CUMPLIMIENTO-LEY-21719.md`.
+- **Dónde:** fuera del servidor (si no, no sirven cuando el servidor se pierde) y con acceso solo del propietario: una copia trae también lo que el sitio oculta (personas vivas, pedidos de retiro con el correo de quien pidió). **Por ahora no se cifran** (decidido el 22 de noviembre de 2026), y por eso el acceso solo del propietario importa más. Cifrarlas sigue siendo posible: `bin/copias.php --cifrar-para=age1…` las cifra con [age](https://github.com/FiloSottile/age) (abajo). Cifrar la **base** en reposo es otra cosa y sigue en la lista de pendientes de `CUMPLIMIENTO-LEY-21719.md`.
 - **Al restaurar:** si está cifrada, primero se descifra con la clave privada (abajo); y después `php bin/persona.php reaplicar --confirmar` (arriba), para quitar otra vez a quien se suprimió después de esa copia.
 - **Qué falta:** nada de esto corre solo todavía. Elegir dónde se guardan, programar el cron y **ensayar una restauración** (`--verificar`, abajo) con una copia real; hasta entonces el «30 días» es una intención, no una garantía.
 
