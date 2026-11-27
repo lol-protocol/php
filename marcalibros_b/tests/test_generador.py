@@ -18,9 +18,8 @@ RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ / "generator"))
 
 import build  # noqa: E402
-from qa import UMBRAL_DUPLICADO, validar_taxonomia, huella_visual, validar_jpg, validar_svg  # noqa: E402
+from qa import UMBRAL_DUPLICADO, validar_taxonomia, validar_jpg, validar_svg  # noqa: E402
 from plantillas import NOMBRES_ARQUETIPOS, PALETAS  # noqa: E402
-from render_raster import a_imagen  # noqa: E402
 from render_svg import a_svg  # noqa: E402
 
 REFERENCIA = Path(__file__).with_name("hashes_referencia.json")
