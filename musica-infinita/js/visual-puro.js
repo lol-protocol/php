@@ -82,6 +82,25 @@
     return out;
   }
 
+  /**
+   * El mismo ajuste con menos movimiento, para quien lo pide (la preferencia «reducir movimiento»
+   * del sistema o el interruptor de la aplicación). k = 1 deja el ajuste igual y k = 0 lo deja casi
+   * quieto: el zoom se acerca a 1, el giro, la ondulación y el cambio de color a 0, el brillo no
+   * pasa de 1 y la estela se alarga (la imagen cambia más despacio). No toca la forma de la onda
+   * ni el espejo. Devuelve una copia.
+   */
+  function suavizarPreset(p, k) {
+    const f = acotar(k, 0, 1);
+    return Object.assign({}, p, {
+      zoom: 1 + (p.zoom - 1) * f,
+      rot: p.rot * f,
+      warp: p.warp * f,
+      tono: p.tono * f,
+      brillo: Math.min(p.brillo, 1 + (p.brillo - 1) * f),
+      decay: p.decay + Math.max(0, 0.985 - p.decay) * (1 - f),
+    });
+  }
+
   /** Un ajuste que va con el estilo: del grupo del estilo, distinto de `actual` si se puede. */
   function paraEstilo(estilo, azar, actual, lista) {
     const todos = lista || PRESETS;
@@ -329,6 +348,7 @@
     MATIZ_ESTILO: MATIZ_ESTILO,
     validar: validar,
     mezclar: mezclar,
+    suavizarPreset: suavizarPreset,
     paraEstilo: paraEstilo,
     serializar: serializar,
     importar: importar,

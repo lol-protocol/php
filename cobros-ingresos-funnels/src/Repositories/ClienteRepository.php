@@ -79,7 +79,7 @@ final class ClienteRepository
     {
         $stmt = $this->db->prepare(
             'SELECT id, nombre, email FROM clientes
-             WHERE id IN (SELECT id FROM clientes ORDER BY nombre, id LIMIT :limite) OR id = :incluir
+             WHERE id IN (SELECT id FROM clientes WHERE anonimizado_en IS NULL ORDER BY nombre, id LIMIT :limite) OR id = :incluir
              ORDER BY nombre, id'
         );
         $stmt->bindValue(':limite', self::LIMITE_SELECTOR, PDO::PARAM_INT);

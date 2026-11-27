@@ -19,10 +19,28 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
 <h1><?= e($cliente['nombre']) ?></h1>
 <p class="subtitulo"><a href="?page=clientes">&larr; Volver a Clientes</a></p>
 <?php include __DIR__ . '/../_avisos.php'; ?>
-<p class="acciones-ficha">
-    <a href="?page=boleta-nueva&amp;cliente_id=<?= (int) $cliente['id'] ?>">+ Nueva boleta</a>
-    <a href="?page=pago-nuevo&amp;cliente_id=<?= (int) $cliente['id'] ?>">+ Registrar pago</a>
-</p>
+<?php $anonimizado = $cliente['anonimizado_en'] !== null; ?>
+<?php if ($anonimizado): ?>
+    <div class="panel">
+        <p>Este cliente está <strong>anonimizado</strong>: se borraron su nombre, email y ciudad. Sus boletas, pagos y notas se conservan y siguen
+           sumando en los reportes, pero no se le pueden cargar boletas ni pagos nuevos.</p>
+        <?php if ($deshacibleHasta !== null): ?>
+            <form method="post" action="?page=cliente-deshacer-anonimizacion&amp;id=<?= (int) $cliente['id'] ?>">
+                <?= App\Csrf::campo() ?>
+                <p>Se puede deshacer hasta el <?= e(substr($deshacibleHasta, 0, 16)) ?>; después los datos originales se borran y ya no hay vuelta atrás.</p>
+                <button type="submit">Deshacer la anonimización</button>
+            </form>
+        <?php else: ?>
+            <p>Ya no se puede deshacer: pasó el plazo y los datos originales se borraron.</p>
+        <?php endif; ?>
+    </div>
+<?php else: ?>
+    <p class="acciones-ficha">
+        <a href="?page=boleta-nueva&amp;cliente_id=<?= (int) $cliente['id'] ?>">+ Nueva boleta</a>
+        <a href="?page=pago-nuevo&amp;cliente_id=<?= (int) $cliente['id'] ?>">+ Registrar pago</a>
+        <a href="?page=cliente-anonimizar&amp;id=<?= (int) $cliente['id'] ?>">Anonimizar cliente</a>
+    </p>
+<?php endif; ?>
 
 <div class="panel">
     <h2>Perfil</h2>

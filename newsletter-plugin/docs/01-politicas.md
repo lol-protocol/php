@@ -2,7 +2,7 @@
 
 Este documento fija las reglas. Si el código contradice este documento, gana el documento.
 
-Convención: lo marcado como **[SUPUESTO]** debe validarse antes de implementar. Lo marcado como **[PROPUESTA]** aún no tiene decisión.
+Convención: lo marcado como **[SUPUESTO]** debe validarse antes de implementar. Lo marcado como **[PROPUESTA]** aún no tiene decisión. Excepción: los umbrales de perfil se implementan con sus valores iniciales (decidido el 18-nov-2026; docs/05, decisión 5).
 
 ---
 
@@ -70,12 +70,14 @@ El perfil no cambia la fecha de envío: solo segmenta el contenido (decidido el 
 
 - **Alcance:** cambios en campos sensibles de una persona del árbol.
   **[SUPUESTO]** Lista de campos: nombre legal, fechas de nacimiento y defunción, filiación, adopción, notas biográficas, cualquier campo marcado como sensible, y las categorías salud, origen étnico o racial, creencias o religión, vida sexual u orientación, y opiniones políticas (ampliada el 18-nov-2026, y con opiniones políticas el 20-nov-2026, a partir de PRIVACIDAD-Y-HONRA.md). Falta validarla: la valida Conce junto con el contrato del carril (21-nov-2026).
-- **Clasificación:** el submódulo de difamación entrega datos (registros marcados, disputas). El plugin decide si notifica.
-- **Destinatarios:** titular del árbol siempre, y persona afectada si tiene cuenta (decidido el 18-nov-2026).
-- **Fail-closed:** si el submódulo no responde o entrega datos incompletos, el evento se trata como sensible.
+- **Clasificación:** el host revisa el texto del cambio con `defamatory-content-review/` y pasa el resultado con el evento (decidido el 20-nov-2026). El plugin no llama al revisor, no ve el valor del dato y decide si notifica.
+- **Destinatarios:** titular del árbol y persona afectada si tiene cuenta (decidido el 18-nov-2026). El titular y la persona afectada con cuenta pueden apagar los avisos que reciben, cada uno desde sus Preferencias (decidido el 25-nov-2026).
+- **Base:** interés legítimo, con una ponderación documentada (decidido el 25-nov-2026). Falta confirmar con el texto oficial que la ley acepte esta base (docs/06).
+- **Fail-closed:** si la clasificación no llega o viene incompleta, el evento se trata como sensible.
 - **Tiempo real:** no pasa por cola, ventana, umbral ni agrupación.
-- **Contenido neutral:** el aviso indica que hubo un cambio y enlaza a la ficha. No reproduce el valor del dato.
-- **Trazabilidad:** cada evento se registra antes de llamar al carril.
+- **Contenido neutral:** el aviso indica que hubo un cambio y enlaza a la ficha. No reproduce el valor del dato, y no nombra el campo si es categoría especial (decidido el 25-nov-2026).
+- **Categoría especial:** el host manda en `clasificacion` las categorías sensibles que detectó. El plugin las compara con su lista; si coincide alguna, el aviso no nombra el campo (decidido el 26-nov-2026).
+- **Trazabilidad:** cada evento se registra antes de llamar al carril. Si un destinatario apagó los avisos, el evento se registra y no se le envía a él.
 
 ---
 
@@ -83,6 +85,7 @@ El perfil no cambia la fecha de envío: solo segmenta el contenido (decidido el 
 
 - El newsletter muestra apellidos y conteos, nunca nombres de terceros ni datos sensibles.
 - El bloque familiar muestra apellidos compartidos y conteos, sin identificar personas.
+- El correo solo muestra apellidos que el titular ya ve en la ficha (decidido el 25-nov-2026).
 
 ---
 
@@ -106,5 +109,19 @@ El perfil no cambia la fecha de envío: solo segmenta el contenido (decidido el 
 
 - **Correo falla:** reintento en el siguiente ciclo, máximo 3 intentos. **[SUPUESTO]**
 - **Proveedor de contenido falla:** no encola ni envía, y registra el error.
-- **Notificación falla:** `sensitive_event` queda pendiente y se reintenta en el cron.
-- **Submódulo falla:** fail-closed según la sección 5.
+- **Notificación falla:** el estado del destinatario que falló queda `pendiente` en `sensitive_event` y se reintenta en el cron.
+- **Clasificación ausente o incompleta:** fail-closed según la sección 5.
+
+---
+
+## 10. Conservación de datos
+
+**[SUPUESTO]** Plazos decididos el 25-nov-2026; falta cotejarlos con el texto oficial de la ley (docs/06).
+
+| Tabla | Plazo |
+|---|---|
+| `queue_item` | 30 días después del envío |
+| `send_log` y `profile_snapshot` | 6 meses |
+| `sensitive_event` | Mientras exista la ficha; se borra con ella |
+| `subscriptions` | 6 meses desde la baja |
+| `preferencias_aviso` | **[PROPUESTA]** Mientras exista la cuenta |

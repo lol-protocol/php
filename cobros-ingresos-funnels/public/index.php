@@ -66,6 +66,8 @@ $paginas = [
     'clientes' => fn () => (new ClientesController())->index(),
     'cliente-nuevo' => fn () => (new ClientesController())->nuevo(),
     'cliente' => fn () => (new ClientesController())->ficha(),
+    'cliente-anonimizar' => fn () => (new ClientesController())->anonimizar(),
+    'cliente-deshacer-anonimizacion' => fn () => (new ClientesController())->deshacerAnonimizacion(),
     'tasas' => fn () => (new HistorialDeTasasController())->index(),
     'tasas-csv' => fn () => (new HistorialDeTasasController())->exportar(),
     'auditoria' => fn () => (new AuditoriaController())->index(),

@@ -81,13 +81,80 @@
     return out;
   }
 
-  /**
-   * Analiza una canción ya leída con MidiArchivo.leer(). Devuelve null si no hay melodía.
-   */
-  function analizar(midi, nombre) {
-    const tonales = midi.notas.filter(function (n) {
+  const TODAS = 'todas'; // «todas las pistas juntas»: la línea superior del conjunto
+
+  function claveGrupo(pista, canal) {
+    return pista + ':' + canal;
+  }
+
+  function notasTonales(midi) {
+    return midi.notas.filter(function (n) {
       return n.canal !== CANAL_BATERIA;
     });
+  }
+
+  /** Las notas tonales agrupadas por pista y canal: Map clave -> {clave, pista, canal, notas}. */
+  function agrupar(tonales) {
+    const grupos = new Map();
+    for (const n of tonales) {
+      const clave = claveGrupo(n.pista, n.canal);
+      if (!grupos.has(clave)) grupos.set(clave, { clave: clave, pista: n.pista, canal: n.canal, notas: [] });
+      grupos.get(clave).notas.push(n);
+    }
+    return grupos;
+  }
+
+  /**
+   * Las pistas que pueden dar la melodía de un MIDI, de la más a la menos probable según el
+   * puntaje automático: {clave, pista, canal, nombre, programa, notas, media, puntaje,
+   * automatica}. La que elige el análisis automático lleva automatica: true. Si hay más de
+   * un grupo se agrega al final «todas las pistas juntas» (clave `todas`), para una melodía
+   * repartida entre varios instrumentos. Un grupo de menos de 6 notas tiene puntaje null.
+   */
+  function candidatas(midi) {
+    const tonales = notasTonales(midi);
+    const lista = [];
+    agrupar(tonales).forEach(function (g) {
+      const nombre = midi.pistas[g.pista] ? midi.pistas[g.pista].nombre : '';
+      const p = puntajeMelodia(g, nombre);
+      let suma = 0;
+      for (const n of g.notas) suma += n.nota;
+      lista.push({ clave: g.clave, pista: g.pista, canal: g.canal, nombre: nombre, programa: g.notas[0].programa, notas: g.notas.length, media: Math.round(suma / g.notas.length), puntaje: p === -Infinity ? null : redondear(p), automatica: false, todas: false });
+    });
+    lista.sort(function (a, b) {
+      return (b.puntaje === null ? -Infinity : b.puntaje) - (a.puntaje === null ? -Infinity : a.puntaje) || a.pista - b.pista || a.canal - b.canal;
+    });
+    if (lista.length && lista[0].puntaje !== null) lista[0].automatica = true;
+    if (lista.length >= 2) lista.push({ clave: TODAS, pista: -1, canal: -1, nombre: '', programa: 0, notas: tonales.length, media: 0, puntaje: null, automatica: false, todas: true });
+    return lista;
+  }
+
+  /** Una línea para mostrar en la lista de canciones: «pista 2 «Melody» · canal 1 · 312 notas · do5». */
+  function describir(c) {
+    if (c.todas) return 'todas las pistas juntas (la línea superior del conjunto)';
+    return 'pista ' + (c.pista + 1) + (c.nombre ? ' «' + c.nombre + '»' : '') + ' · canal ' + (c.canal + 1) + ' · ' + c.notas + ' notas · ' + T.nombreNota(c.media);
+  }
+
+  /**
+   * Analiza una canción ya leída con MidiArchivo.leer(). Devuelve null si no hay melodía.
+   * opciones.melodia es la clave de la pista que la persona eligió (una de `candidatas`, o
+   * `todas`): si no existe o no da una melodía de al menos 4 notas, se usa la automática y el
+   * resultado lleva melodiaPedidaInvalida: true.
+   */
+  function analizar(midi, nombre, opciones) {
+    const pedida = opciones && opciones.melodia ? String(opciones.melodia) : null;
+    if (pedida) {
+      const a = analizarCon(midi, nombre, pedida);
+      if (a) return a;
+      const auto = analizarCon(midi, nombre, null);
+      if (auto) auto.melodiaPedidaInvalida = true;
+      return auto;
+    }
+    return analizarCon(midi, nombre, null);
+  }
+
+  function analizarCon(midi, nombre, pedida) {
+    const tonales = notasTonales(midi);
     if (tonales.length < 6) return null;
 
     const ton = T.detectarTonalidad(tonales.map(function (n) {
@@ -97,24 +164,31 @@
     const pulsosCompas = (compas.num * 4) / compas.den;
     const bpm = Math.round(60e6 / midi.tempos[0].uspq);
 
-    // Grupos por pista y canal; el más melódico da la melodía.
-    const grupos = new Map();
-    for (const n of tonales) {
-      const k = n.pista * 16 + n.canal;
-      if (!grupos.has(k)) grupos.set(k, { pista: n.pista, canal: n.canal, notas: [] });
-      grupos.get(k).notas.push(n);
-    }
+    // Grupos por pista y canal; el más melódico da la melodía, salvo que la persona haya elegido otro.
+    const grupos = agrupar(tonales);
     let elegido = null;
-    let mejor = -Infinity;
-    grupos.forEach(function (g) {
-      const nombrePista = midi.pistas[g.pista] ? midi.pistas[g.pista].nombre : '';
-      const p = puntajeMelodia(g, nombrePista);
-      if (p > mejor) {
-        mejor = p;
-        elegido = g;
-      }
-    });
-    if (!elegido) elegido = { notas: tonales, programa: 0 };
+    let automatica = true;
+    if (pedida === TODAS) {
+      elegido = { clave: TODAS, notas: tonales };
+      automatica = false;
+    } else if (pedida && grupos.has(pedida) && grupos.get(pedida).notas.length >= 4) {
+      elegido = grupos.get(pedida);
+      automatica = false;
+    } else if (pedida) {
+      return null; // la pista pedida no existe o no tiene melodía: analizar() cae a la automática
+    }
+    if (!elegido) {
+      let mejor = -Infinity;
+      grupos.forEach(function (g) {
+        const nombrePista = midi.pistas[g.pista] ? midi.pistas[g.pista].nombre : '';
+        const p = puntajeMelodia(g, nombrePista);
+        if (p > mejor) {
+          mejor = p;
+          elegido = g;
+        }
+      });
+    }
+    if (!elegido) elegido = { clave: TODAS, notas: tonales };
 
     const linea = lineaSuperior(elegido.notas);
     const melodia = [];
@@ -151,6 +225,8 @@
       compas: [compas.num, compas.den],
       pulsosCompas: pulsosCompas,
       programaMelodia: elegido.notas[0] ? elegido.notas[0].programa : 0,
+      melodiaClave: elegido.clave || TODAS,
+      melodiaAutomatica: automatica,
       melodia: melodia,
       frases: frases,
       acordes: acordes,
@@ -256,6 +332,9 @@
 
   const API = {
     analizar: analizar,
+    candidatas: candidatas,
+    describir: describir,
+    TODAS: TODAS,
     acordeEn: acordeEn,
     cuantizarDuracion: cuantizarDuracion,
     cuantizarInicio: cuantizarInicio,

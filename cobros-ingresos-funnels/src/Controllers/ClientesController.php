@@ -6,10 +6,12 @@ namespace App\Controllers;
 
 use App\Avisos;
 use App\ClienteMenorDeEdad;
+use App\Database;
 use App\EnvioUnico;
 use App\MayoriaDeEdad;
 use App\Paginacion;
 use App\Peticion;
+use App\Repositories\AnonimizacionRepository;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
@@ -103,10 +105,90 @@ final class ClientesController
             'pagos' => (new PagoRepository())->porCliente($id),
             'notasCredito' => (new NotaCreditoRepository())->porCliente($id),
             'viajeFunnel' => (new FunnelRepository())->viajeDeCliente($id),
-            'avisos' => Avisos::confirmaciones('cliente'),
+            'deshacibleHasta' => (new AnonimizacionRepository())->deshacibleHasta($id),
+            'avisos' => [
+                ...Avisos::confirmaciones('cliente'),
+                ...(self::idEnLaUrl('sin_restaurar') === null ? [] : [Avisos::atencion(
+                    'No se pudo deshacer la anonimización: el plazo venció, o el email original ya lo usa otro cliente.'
+                )]),
+            ],
             'activePage' => 'clientes',
             'titulo' => $cliente['nombre'],
         ]);
+    }
+
+    /**
+     * Anonimizar a un cliente (migracion 022): confirmar escribiendo su email. Se borran nombre, email y ciudad (y los del funnel) y se
+     * puede deshacer durante AnonimizacionRepository::PLAZO_DIAS dias. La auditoria dice que se hizo, sin datos personales.
+     */
+    public function anonimizar(): void
+    {
+        $id = Peticion::id();
+        $cliente = (new ClienteRepository())->porId($id);
+        if (Peticion::abortarSiNoExiste($cliente, 'Cliente no encontrado.')) {
+            return;
+        }
+        if ($cliente['anonimizado_en'] !== null) {
+            Peticion::redirigir('?page=cliente&id=' . $id);
+        }
+
+        $error = null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $escrito = trim((string) ($_POST['confirmar_email'] ?? ''));
+            if (mb_strtolower($escrito) !== mb_strtolower((string) $cliente['email'])) {
+                $error = 'El email que escribiste no es el del cliente: no se anonimizó.';
+            } else {
+                Database::transaccion(static function () use ($id): void {
+                    if ((new AnonimizacionRepository())->anonimizar($id)) {
+                        AuditoriaRepository::auditar('anonimizar', 'cliente', $id, sprintf(
+                            'Cliente #%d anonimizado (nombre, email y ciudad); se puede deshacer durante %d días.',
+                            $id,
+                            AnonimizacionRepository::PLAZO_DIAS
+                        ));
+                    }
+                });
+                Peticion::redirigir('?page=cliente&id=' . $id . '&anonimizado=' . $id);
+            }
+        }
+
+        View::render('clientes/anonimizar', [
+            'cliente' => $cliente,
+            'plazoDias' => AnonimizacionRepository::PLAZO_DIAS,
+            'error' => $error,
+            'activePage' => 'clientes',
+            'titulo' => 'Anonimizar cliente',
+        ]);
+    }
+
+    /** El id entero positivo del parametro $nombre de la URL, o null: lo que no es un id se ignora, igual que en Avisos. */
+    private static function idEnLaUrl(string $nombre): ?int
+    {
+        $id = filter_var(trim((string) ($_GET[$nombre] ?? '')), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 2147483647]]);
+
+        return $id === false ? null : $id;
+    }
+
+    public function deshacerAnonimizacion(): void
+    {
+        $id = Peticion::id();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            Peticion::redirigir('?page=cliente&id=' . $id);
+        }
+
+        try {
+            $hecho = Database::transaccion(static function () use ($id): bool {
+                if (!(new AnonimizacionRepository())->deshacer($id)) {
+                    return false;
+                }
+                AuditoriaRepository::auditar('deshacer', 'cliente', $id, "Cliente #{$id}: se deshizo la anonimización.");
+
+                return true;
+            });
+        } catch (\PDOException) {
+            // El email original lo tomo otro cliente mientras tanto (unico): no se cambia nada.
+            Peticion::redirigir('?page=cliente&id=' . $id . '&sin_restaurar=' . $id);
+        }
+        Peticion::redirigir('?page=cliente&id=' . $id . ($hecho ? '&restaurado=' : '&sin_restaurar=') . $id);
     }
 
     public function nuevo(): void

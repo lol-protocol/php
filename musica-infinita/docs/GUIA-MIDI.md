@@ -14,6 +14,8 @@ Para cada MIDI agrupa las notas por pista y canal (sin contar la batería, que e
 
 Gana el grupo con más puntaje. De esa pista toma la línea superior: si hay acordes, se queda con la nota más aguda de cada ataque.
 
+Si acierta, no hay nada que hacer. Si no, **elige la pista a mano**: en la fila de la canción hay un selector con cada pista (su canal, sus notas y su registro) y una opción «todas las pistas juntas» (ver más abajo).
+
 ## Lo que funciona bien
 
 - **Una pista de melodía limpia y con nombre.** Es lo que más ayuda: renombra la pista a *Melody* en cualquier editor y listo.
@@ -24,8 +26,8 @@ Gana el grupo con más puntaje. De esa pista toma la línea superior: si hay aco
 
 ## Lo que funciona peor
 
-- **Melodías repartidas entre varias pistas** (por ejemplo, una frase en el violín y la siguiente en la flauta). Solo se toma una pista.
-- **Melodía en una pista grave** (un cello cantando solo, por ejemplo): puede que la tome por bajo y elija otra.
+- **Melodías repartidas entre varias pistas** (por ejemplo, una frase en el violín y la siguiente en la flauta). Con la selección automática solo se toma una pista; elige «todas las pistas juntas» en el selector de la canción.
+- **Melodía en una pista grave** (un cello cantando solo, por ejemplo): la automática puede tomarla por bajo y elegir otra; elígela a mano en el selector.
 - **MIDI de piano a dos manos** sin pistas separadas: la línea superior suele ser la melodía, pero con mucha ornamentación o notas del acompañamiento en el registro agudo se cuela de más.
 - **Música muy cromática o atonal, o con modulaciones constantes.** La tonalidad detectada será la que más pese en todo el archivo, y los grados de la melodía, aproximados.
 - **Archivos de batería sola** o de efectos: no tienen notas tonales, y la biblioteca los marca como «sin melodía». Se pueden tocar «tal cual».
@@ -42,7 +44,9 @@ En el panel de la biblioteca, cada canción muestra la tonalidad, el tempo, el c
 
 ## Cómo corregir un MIDI
 
-Cualquier editor de MIDI (MuseScore, Reaper, Cakewalk, MidiEditor, Anvil Studio…) sirve para:
+Lo más rápido es **elegir la pista en el selector de la fila de la canción**: no toca el archivo, se guarda en tu navegador y se puede deshacer. Las opciones son cada pista que tenga notas y, al final, «todas las pistas juntas» (la línea superior del conjunto), pensada para una melodía que pasa de un instrumento a otro. Con eso se arreglan los tres casos de arriba: la melodía en un registro grave, la repartida entre varias pistas y el arpegio continuo que se toma por melodía.
+
+Si prefieres arreglar el archivo en sí, cualquier editor de MIDI (MuseScore, Reaper, Cakewalk, MidiEditor, Anvil Studio…) sirve para:
 
 1. **Renombrar la pista de melodía** a *Melody*.
 2. **Separar la melodía** en su propia pista si venía mezclada con el acompañamiento.

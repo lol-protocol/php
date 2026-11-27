@@ -9,8 +9,12 @@ require_once __DIR__ . '/../src/Interruptores.php';
 require_once __DIR__ . '/../src/Usuarios.php';
 require_once __DIR__ . '/../src/RegistroJsonl.php';
 require_once __DIR__ . '/../src/Ip.php';
+require_once __DIR__ . '/../src/Escenas.php';
+require_once __DIR__ . '/../src/Programados.php';
 
 use LolProtocol\Interruptores\DependenciaRota;
+use LolProtocol\Interruptores\Escenas;
+use LolProtocol\Interruptores\Programados;
 use LolProtocol\Interruptores\Interruptores;
 use LolProtocol\Interruptores\Ip;
 use LolProtocol\Interruptores\RegistroJsonl;
@@ -27,6 +31,7 @@ header("Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; 
 $var = rtrim((string) (getenv('INTERRUPTORES_VAR') ?: __DIR__ . '/../var'), '/');
 $rutaCat = __DIR__ . '/../catalogo.json';
 $rutaEst = $var . '/estado.json';
+$rutaEscenas = __DIR__ . '/../escenas.json';
 $usuarios = new Usuarios($var . '/usuarios.json');
 $accesos = new RegistroJsonl($var . '/accesos.jsonl');
 $caducidad = max(1, (int) (getenv('INTERRUPTORES_CADUCIDAD') ?: 1800));
@@ -180,6 +185,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    if (in_array($accion, ['escena', 'deshacer', 'agendar', 'cancelar_programado'], true)) {
+        // Como con «cambiar»: el rol se comprueba en el servidor.
+        if (($_SESSION['rol'] ?? '') !== 'editor') {
+            volver('Tu rol (lector) no permite cambiar nada.');
+        }
+        $quien = (string) $_SESSION['usuario'];
+        try {
+            $int = new Interruptores($rutaCat, $rutaEst);
+            $escenas = new Escenas($rutaEscenas, $int, $var . '/ultima-escena.json');
+            $programados = new Programados($var . '/programados.json');
+            if ($accion === 'escena') {
+                $id = (string) ($_POST['escena'] ?? '');
+                if (($escenas->escenas()[$id]['confirmar'] ?? false) && ($_POST['confirmo'] ?? '') !== '1') {
+                    volver('Esta escena pide confirmación: marca la casilla «Confirmo».');
+                }
+                $cambiados = $escenas->aplicar($id, $quien);
+                volver("Escena «{$escenas->escenas()[$id]['nombre']}» aplicada: " . count($cambiados) . ' interruptor(es) cambiado(s).');
+            }
+            if ($accion === 'deshacer') {
+                $vueltos = $escenas->deshacer($quien);
+                volver('Escena deshecha: ' . count($vueltos) . ' interruptor(es) restaurado(s).');
+            }
+            if ($accion === 'agendar') {
+                $cuando = (string) ($_POST['cuando'] ?? '');
+                if (preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/', $cuando) !== 1 || ($marca = strtotime($cuando . ':00 UTC')) === false) {
+                    volver('La fecha no es válida (UTC).');
+                }
+                $escena = (string) ($_POST['escena'] ?? '');
+                $escenas->cambios($escena); // falla si la escena no existe
+                $programados->agendar($marca, ['escena' => $escena], $quien);
+                volver('Programada la escena «' . $escenas->escenas()[$escena]['nombre'] . '» para ' . gmdate('Y-m-d H:i', $marca) . ' UTC.');
+            }
+            $programados->cancelar((string) ($_POST['id'] ?? ''));
+            volver('Cambio programado cancelado.');
+        } catch (DependenciaRota | UnknownInterruptor | \InvalidArgumentException | \RuntimeException $e) {
+            volver($e->getMessage());
+        }
+    }
+
     volver('Acción desconocida.');
 }
 
@@ -264,6 +308,9 @@ function boton(Interruptores $cat, array $propios, string $ref, string $csrf, bo
 }
 
 $historial = $cat->historial(20);
+$escenasLista = new Escenas($rutaEscenas, $cat, $var . '/ultima-escena.json');
+$ultimaEscena = $escenasLista->ultima();
+$programadosLista = (new Programados($var . '/programados.json'))->listar();
 ?>
 <!doctype html>
 <html lang="es">
@@ -343,6 +390,57 @@ header form button{background:none;border:1px solid var(--borde);color:var(--sut
     </div>
   <?php endforeach; ?>
 <?php endforeach; ?>
+
+<h2>Escenas</h2>
+<?php foreach ($escenasLista->escenas() as $e): ?>
+  <div class="canal">
+    <div class="fila" style="grid-template-columns:1fr auto">
+      <div>
+        <div class="nombre"><?= escapar($e['nombre']) ?></div>
+        <div class="meta"><?= escapar($e['descripcion']) ?> · <?= count($escenasLista->cambios($e['id'])) ?> interruptores</div>
+      </div>
+      <form class="boton" method="post" action="index.php">
+        <input type="hidden" name="accion" value="escena"><input type="hidden" name="csrf" value="<?= escapar($csrf) ?>"><input type="hidden" name="escena" value="<?= escapar($e['id']) ?>">
+        <?php if ($e['confirmar']): ?><label class="meta"><input type="checkbox" name="confirmo" value="1"> Confirmo</label><?php endif; ?>
+        <button type="submit" class="sw"<?= $puedeCambiar ? '' : ' disabled title="Solo lectura"' ?>>Aplicar</button>
+      </form>
+    </div>
+  </div>
+<?php endforeach; ?>
+<?php if ($ultimaEscena !== null): ?>
+  <p class="meta">Última escena: «<?= escapar((string) $ultimaEscena['escena']) ?>» por <?= escapar((string) $ultimaEscena['quien']) ?> (<?= escapar((string) $ultimaEscena['ts']) ?>).</p>
+  <form class="boton" method="post" action="index.php"><input type="hidden" name="accion" value="deshacer"><input type="hidden" name="csrf" value="<?= escapar($csrf) ?>"><button type="submit" class="sw"<?= $puedeCambiar ? '' : ' disabled' ?>>Deshacer la última escena</button></form>
+<?php endif; ?>
+
+<h2>Cambios programados (UTC)</h2>
+<?php if ($puedeCambiar): ?>
+  <form class="boton" method="post" action="index.php" style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+    <input type="hidden" name="accion" value="agendar"><input type="hidden" name="csrf" value="<?= escapar($csrf) ?>">
+    <select name="escena" required><?php foreach ($escenasLista->escenas() as $e): ?><option value="<?= escapar($e['id']) ?>"><?= escapar($e['nombre']) ?></option><?php endforeach; ?></select>
+    <input type="datetime-local" name="cuando" required>
+    <button type="submit" class="sw">Programar escena</button>
+  </form>
+<?php endif; ?>
+<?php if ($programadosLista === []): ?>
+  <p class="meta">No hay cambios programados. Se ejecutan con <code>php bin/programados.php ejecutar</code> en un cron.</p>
+<?php else: ?>
+  <table>
+    <thead><tr><th>Cuándo (UTC)</th><th>Qué</th><th>Estado</th><th>Quién</th><th></th></tr></thead>
+    <tbody>
+    <?php foreach ($programadosLista as $p): ?>
+      <tr>
+        <td><?= escapar(gmdate('Y-m-d H:i', (int) $p['cuando'])) ?></td>
+        <td><?= isset($p['accion']['escena']) ? 'escena ' . escapar((string) $p['accion']['escena']) : '<code>' . escapar((string) $p['accion']['ref']) . '</code> → ' . ($p['accion']['valor'] ? 'on' : 'off') ?></td>
+        <td><?= escapar((string) $p['estado']) ?><?= $p['resultado'] !== '' ? ' · ' . escapar((string) $p['resultado']) : '' ?></td>
+        <td><?= escapar((string) $p['creado_por']) ?></td>
+        <td><?php if ($p['estado'] === 'pendiente' && $puedeCambiar): ?>
+          <form class="boton" method="post" action="index.php"><input type="hidden" name="accion" value="cancelar_programado"><input type="hidden" name="csrf" value="<?= escapar($csrf) ?>"><input type="hidden" name="id" value="<?= escapar((string) $p['id']) ?>"><button type="submit" class="sw">Cancelar</button></form>
+        <?php endif; ?></td>
+      </tr>
+    <?php endforeach; ?>
+    </tbody>
+  </table>
+<?php endif; ?>
 
 <h2>Últimos cambios</h2>
 <?php if ($historial === []): ?>

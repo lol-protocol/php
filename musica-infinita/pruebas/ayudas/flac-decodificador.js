@@ -1,7 +1,7 @@
 'use strict';
 
 // Decodificador FLAC mínimo, solo para las pruebas: entiende lo que escribe js/flac.js
-// (subtramas constante, literal y de predictor fijo, Rice y Rice2, y las cuatro
+// (subtramas constante, literal, de predictor fijo y de predictor lineal (LPC), Rice y Rice2, y las cuatro
 // asignaciones estéreo) y comprueba los CRC de cada trama y el MD5 del flujo.
 
 const F = require('../../js/flac.js');
@@ -164,9 +164,18 @@ function subtrama(r, n, bps) {
     for (let i = 0; i < n; i++) out[i] = r.conSigno(bps);
     return out;
   }
-  if ((tipo & 0x38) !== 8) throw new Error('subtrama no esperada ' + tipo);
-  const orden = tipo & 7;
+  const lineal = tipo >= 32;
+  if (!lineal && (tipo & 0x38) !== 8) throw new Error('subtrama no esperada ' + tipo);
+  const orden = lineal ? (tipo & 31) + 1 : tipo & 7;
   for (let i = 0; i < orden; i++) out[i] = r.conSigno(bps);
+  let coefs = null;
+  let shift = 0;
+  if (lineal) {
+    const precision = r.leer(4) + 1;
+    shift = r.conSigno(5);
+    coefs = [];
+    for (let i = 0; i < orden; i++) coefs.push(r.conSigno(precision));
+  }
   const metodo = r.leer(2);
   const ancho = metodo === 1 ? 5 : 4;
   const po = r.leer(4);
@@ -184,7 +193,11 @@ function subtrama(r, n, bps) {
   for (let i = orden; i < n; i++) {
     const e = res[i - orden];
     let pred = 0;
-    if (orden === 1) pred = out[i - 1];
+    if (lineal) {
+      let suma = 0;
+      for (let j = 0; j < orden; j++) suma += coefs[j] * out[i - 1 - j];
+      pred = Math.floor(suma / Math.pow(2, shift));
+    } else if (orden === 1) pred = out[i - 1];
     else if (orden === 2) pred = 2 * out[i - 1] - out[i - 2];
     else if (orden === 3) pred = 3 * out[i - 1] - 3 * out[i - 2] + out[i - 3];
     else if (orden === 4) pred = 4 * out[i - 1] - 6 * out[i - 2] + 4 * out[i - 3] - out[i - 4];

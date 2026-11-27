@@ -66,7 +66,7 @@ corriendo contra el script de su propio proyecto.
 
 No se pueden compartir, pero sí vigilar: `comprobar-copias.js` falla en CI si una de esas copias (`app/lib/chart.js`,
 `filters.js`, `util.js`, `view.js`, las hojas `app/styles/base.css`, `comparison.css` y `search.css`,
-`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`, `tests/app-names.test.js`, `tests/importer.test.js`, `tests/verify.test.js`, `scripts/verify.js`).deja de ser igual en los dos módulos.
+`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`, `tests/app-names.test.js`, `tests/importer.test.js`, `tests/verify.test.js`, `scripts/verify.js`) deja de ser igual en los dos módulos.
 
 ## Sitios que rechazan a los runners
 

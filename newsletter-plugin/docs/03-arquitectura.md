@@ -4,7 +4,7 @@ Ambos carriles comparten la misma lógica de núcleo. Lo que cambia es la estrat
 
 ## Principios
 - Core agnóstico de plataforma.
-- Adaptadores para todo lo externo (correo, notificaciones, submódulo de difamación, datos del host).
+- Adaptadores para todo lo externo (correo, notificaciones, datos del host). La clasificación de cambios sensibles la entrega el host con el evento (docs/05, decisión 9).
 - Políticas declarativas, en docs/01-politicas.md.
 - Carriles separados: newsletter con agrupación; notificaciones en tiempo real.
 - Fail-closed para lo sensible.
@@ -18,7 +18,8 @@ Ambos carriles comparten la misma lógica de núcleo. Lo que cambia es la estrat
 flowchart LR
   subgraph Host["Plataforma host (Conce o POS)"]
     DU["Datos de usuario y árbol"]
-    EV["Eventos de cambio"]
+    REV["Revisor de textos (defamatory-content-review)"]
+    EV["Eventos de cambio, con su clasificación"]
   end
   subgraph Plugin["Plugin de newsletter"]
     SUB["Suscripciones"]
@@ -29,19 +30,20 @@ flowchart LR
     AGR["Agrupación"]
     REN["Renderizador"]
     SENS["Regla sensible"]
+    PREF[("Preferencias de aviso")]
     NA["Adaptador de notificaciones"]
   end
   CRON["Scheduler cron"]
   MAIL["Correo existente"]
   NOTIF["Carril de notificaciones"]
-  DEF["Submódulo difamación solo lectura"]
 
   DU --> PERF --> POL --> AGR
   CRON --> PROV --> Q
   SUB --> AGR
   Q --> AGR --> REN --> MAIL
+  REV -.clasificación.-> EV
   EV --> SENS
-  SENS -.consulta.-> DEF
+  PREF -.-> SENS
   SENS --> NA --> NOTIF
 ```
 
@@ -51,7 +53,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-  A["Cron día 15 a las 09:00 hora Santiago"] --> B["Leer suscriptores activos de POS"]
+  A["Cron horario: ¿es el día 15 a las 09:00 hora Santiago?"] --> B["Leer suscriptores activos de POS"]
   B --> C["Segmentar: coleccionista o explorador"]
   C --> D["ContentProvider POS arma fragmentos del mes"]
   D --> E{"¿Hay contenido?"}
@@ -88,20 +90,23 @@ sequenceDiagram
   participant H as Host Conce
   participant P as Plugin
   participant S as Regla sensible
-  participant D as Submódulo difamación
   participant A as Adaptador
   participant N as Carril notificaciones
-  H->>P: evento de cambio en registro
+  H->>P: evento de cambio en registro, con su clasificación
   P->>P: guardar en sensitive_event
   P->>S: evaluar
-  S->>D: consulta de solo lectura
-  D-->>S: datos o error
-  alt campo sensible o error del submódulo
-    S->>A: emitir evento
-    A->>N: llamada directa
-    N-->>A: ack o error
-    A-->>P: resultado
-    P->>P: marcar notificado o pendiente de reintento
+  alt campo sensible, o clasificación ausente o incompleta
+    S-->>P: notificar
+    P->>P: consultar las preferencias de cada destinatario
+    alt algún destinatario no apagó los avisos
+      P->>A: emitir evento, con null en quien apagó los avisos
+      A->>N: llamada directa
+      N-->>A: ack o error
+      A-->>P: resultado
+      P->>P: marcar notificado o pendiente de reintento
+    else todos apagaron los avisos
+      P->>P: registrar el evento y no enviar
+    end
   else no sensible
     S-->>P: no notificar
   end
@@ -111,7 +116,7 @@ sequenceDiagram
 
 ## 5. Atributos no funcionales
 
-- **Observabilidad:** métricas de envíos, omitidos por falta de contenido, errores y notificaciones pendientes.
+- **Observabilidad:** métricas de envíos, omitidos por falta de contenido, errores, notificaciones pendientes y avisos omitidos por preferencia.
 - **Privacidad:** los logs no contienen valores de datos personales.
 - **Resiliencia:** reintentos acotados, idempotencia y fail-closed.
-- **Dependencias externas:** correo existente, carril de notificaciones (funciones por confirmar), submódulo de difamación (solo lectura) y datos del host.
+- **Dependencias externas:** correo existente, carril de notificaciones (firmas propuestas en docs/02, por validar con Conce) y datos del host, que entrega también la clasificación de los cambios sensibles.

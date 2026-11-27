@@ -62,10 +62,12 @@ tomadas:
    por defecto o solo a quien las pida. El glosario las incluye porque aparecen en los registros, no para destacarlas.
    **Lo que hace hoy `vista.html`** (decisión de la persona a cargo, 25 de noviembre de 2026): en la consulta del
    glosario, un término que puede significar una de esas causas (`suicidio`, `locura`, `sifilis`, `lepra`,
-   `muerte_de_parto` y `fiebre_puerperal`) sale **detrás de un aviso** con un botón «Mostrar de todos modos»; el aviso se
-   repone al cambiar de término. Es solo la vista: los datos, `causa_moderna` y los ports no cambian, y la pestaña
-   opcional «Revisar el glosario» no lo aplica (la usa quien revisa vocabulario). Lo que decida la plataforma para sus
-   fichas es otra cosa y sigue abierto.
+   `muerte_de_parto` y `fiebre_puerperal`; la lista es `CAUSAS_DELICADAS` en `comun.py`) sale **detrás de un aviso** con
+   un botón «Mostrar de todos modos»; el aviso se repone al cambiar de término. En la pestaña «Revisar el glosario» esos
+   términos quedan ocultos hasta marcar «Mostrar también las causas delicadas», y en las páginas de `por-idioma/` van en
+   un desplegable cerrado (`<details>`) aparte de la tabla (decisión del 26 de noviembre de 2026). Es solo
+   presentación: los datos (`causas_historicas.csv`), `causa_moderna` y los ports no cambian, y el CSV sigue en GitHub
+   tal cual. Lo que decida la plataforma para sus fichas es otra cosa y sigue abierto.
 
 ## 4. Preguntas abiertas
 

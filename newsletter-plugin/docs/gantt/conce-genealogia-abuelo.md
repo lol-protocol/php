@@ -10,12 +10,12 @@ gantt
   dateFormat YYYY-MM-DD
   axisFormat %b %y
   section Alta y árbol
-  Alta por opt-in                  :done, g1a, 2026-12-01, 2d
+  Alta con doble confirmación                  :done, g1a, 2026-12-01, 2d
   Carga del árbol familiar         :done, g1b, 2026-12-03, 21d
   section Perfil y envíos
   Perfil activo envío cada 7 días  :active, g1c, 2026-12-24, 190d
-  Perfil ocasional envío cada 14 días :g1d, 2027-07-01, 92d
-  Vuelve a activo                  :g1e, 2027-10-01, 61d
+  Perfil ocasional envío cada 14 días :g1d, 2027-07-02, 75d
+  Vuelve a activo                  :g1e, 2027-09-15, 77d
   section Familia
   Hijos y nietos abren cuenta      :g1f, 2027-02-01, 120d
   Nuevo apellido en rama paterna   :milestone, g1g, 2027-03-10, 0d
@@ -26,6 +26,6 @@ gantt
 ```
 
 ## Notas
-- El aviso de cambio sensible va por el carril de notificaciones, en tiempo real, al titular del árbol.
+- El aviso de cambio sensible va por el carril de notificaciones, en tiempo real, al titular del árbol y, si tiene cuenta, a la persona afectada (aquí, el nieto), salvo que hayan apagado los avisos.
 - Que el abuelo avise a hijos y nietos está diferido: se decide al implementar. Ver docs/00-inconsistencias.md, fila 5.
 - Ilustrativo: no es el calendario de implementación; ver docs/gantt/conce-implementacion.md.

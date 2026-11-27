@@ -87,14 +87,14 @@ section[hidden] { display: none; }
   </div>
   <div id="esp-grafico" role="img" aria-label="Gráfico de la esperanza de vida por década"></div>
   <div id="esp-tabla"></div>
-  <p class="nota"><strong>Al nacer</strong> está arrastrada por la mortalidad infantil: quien sobrevivía a la infancia podía esperar vivir bastante más (las líneas de arriba son la edad media a la que llegaba quien cumplía cada edad). Antes de 1950 son estimaciones que interpolan pocos datos reales; los valores iguales en varias décadas seguidas son supuestos. Las **bandas** (casilla de arriba) desde 1950 son la discrepancia entre fuentes; **antes de 1950 son un supuesto del proyecto, no una medición**: no hay una segunda fuente independiente. Antes de 1800 solo hay la esperanza al nacer de Reino Unido, Suecia, Finlandia y Dinamarca. Mujeres y hombres usan la mortalidad infantil de ambos sexos, que no hay por sexo. <strong>De los 15 años en adelante las cifras son modeladas</strong> (modelo log-cuadrático de Wilmoth et al.), no medidas, con calidad C en todas las épocas. Cifras de período de toda la población, no de una generación ni de una persona.</p>
+  <p class="nota"><strong>Al nacer</strong> está arrastrada por la mortalidad infantil: quien sobrevivía a la infancia podía esperar vivir bastante más (las líneas de arriba son la edad media a la que llegaba quien cumplía cada edad). Antes de 1950 son estimaciones que interpolan pocos datos reales; los valores iguales en varias décadas seguidas son supuestos. Las <strong>bandas</strong> (casilla de arriba) desde 1950 son la discrepancia entre fuentes; <strong>antes de 1950 son un supuesto del proyecto, no una medición</strong>: no hay una segunda fuente independiente. Antes de 1800 solo hay la esperanza al nacer de Reino Unido, Suecia, Finlandia y Dinamarca. Mujeres y hombres usan la mortalidad infantil de ambos sexos, que no hay por sexo. <strong>De los 15 años en adelante las cifras son modeladas</strong> (modelo log-cuadrático de Wilmoth et al.), no medidas, con calidad C en todas las épocas. Cifras de período de toda la población, no de una generación ni de una persona.</p>
 </section>
 
 <section id="muertes" hidden>
   <h2>¿A qué edades se moría en un país y una década?</h2>
   <div class="controles">
     <label>País <select id="mue-pais"></select></label>
-    <label>Año <input id="mue-anio" type="number" value="1895" min="1950" max="2009"></label>
+    <label>Año <input id="mue-anio" type="number" value="1895" min="1800" max="2009"></label>
     <label>Sexo <select id="mue-sexo"><option value="T">Ambos</option><option value="F">Mujeres (desde 1950)</option><option value="M">Hombres (desde 1950)</option></select></label>
     <label>De quienes llegaban a los <select id="mue-desde"><option value="0">0 años (todos los nacidos)</option><option value="5">5 años</option><option value="15">15 años</option><option value="30">30 años</option><option value="45">45 años</option><option value="60">60 años</option></select></label>
   </div>
@@ -120,7 +120,7 @@ section[hidden] { display: none; }
   <div id="ing-resultado" aria-live="polite"></div>
   <div id="ing-grafico" role="img" aria-label="Muertes por mil habitantes en Inglaterra, de 1541 a 2015"></div>
   <div id="ing-anormales"></div>
-  <p class="nota">Tasa bruta de mortalidad (muertes por mil habitantes) de Inglaterra, reconstruida por Wrigley y Schofield desde los registros parroquiales y, desde 1838, del registro civil (vía Our World in Data). Hasta 1861 hay <strong>un punto cada cinco años</strong>, que resume el quinquenio: un año de peste o de gripe aparece diluido, y la serie sirve para ver épocas, no para fechar un brote. El exceso compara cada punto con la mediana de los dos puntos anteriores y los dos posteriores. Es estadística del país: no dice de qué murió nadie.</p>
+  <p class="nota">Tasa bruta de mortalidad (muertes por mil habitantes) de Inglaterra, reconstruida por Wrigley y Schofield desde los registros parroquiales y, desde 1838, del registro civil (vía Our World in Data). Hasta 1861 hay <strong>un punto cada cinco años</strong>, que resume el quinquenio que empieza en ese año (se supone así; no pude comprobar cómo los rotula la fuente): un año de peste o de gripe aparece diluido, y la de un lugar (la Gran Peste de Londres de 1665) puede no notarse en el país, y la serie sirve para ver épocas, no para fechar un brote. El exceso compara cada punto con la mediana de los dos puntos anteriores y los dos posteriores. Es estadística del país: no dice de qué murió nadie.</p>
 </section>
 <section id="revision" hidden>
   <h2>Revisar el glosario (opcional)</h2>
@@ -131,6 +131,7 @@ section[hidden] { display: none; }
     <label>Tu nombre <input id="rev-revisor" type="text" autocomplete="name"></label>
     <label>Fecha <input id="rev-fecha" type="date"></label>
     <label class="casilla"><span><input id="rev-ocultar" type="checkbox" checked> Ocultar los ya revisados</span></label>
+    <label class="casilla"><span><input id="rev-delicadas" type="checkbox"> Mostrar también las causas delicadas (suicidio, enfermedad mental, sífilis, lepra, parto)</span></label>
   </div>
   <div id="rev-tabla"></div>
   <h3>Filas para <code>revisiones.csv</code></h3>
@@ -184,6 +185,19 @@ section[hidden] { display: none; }
   // Causas que se muestran detrás de un aviso (los datos y las consultas no cambian; es solo la vista). Ver PRIVACIDAD.md, §3.7.
   var DELICADAS = { suicidio: 1, locura: 1, sifilis: 1, lepra: 1, muerte_de_parto: 1, fiebre_puerperal: 1 };
   var reveladoPara = '';
+  // Las series de 4 o más códigos consecutivos («X60, …, X84») se acortan a «X60–X84»; igual que cie10_compacto de comun.py.
+  function cie10Compacto(codigos) {
+    var salida = [], i = 0;
+    while (i < codigos.length) {
+      var j = i;
+      while (j + 1 < codigos.length && codigos[j].indexOf('.') < 0 && codigos[j + 1].indexOf('.') < 0 &&
+             codigos[j + 1].charAt(0) === codigos[j].charAt(0) && parseInt(codigos[j + 1].slice(1), 10) === parseInt(codigos[j].slice(1), 10) + 1) j++;
+      if (j - i + 1 >= 4) salida.push(codigos[i] + '–' + codigos[j]);
+      else for (var k = i; k <= j; k++) salida.push(codigos[k]);
+      i = j + 1;
+    }
+    return salida.join(', ');
+  }
   function causas() {
     var termino = $('causa-termino').value.trim();
     var idioma = $('causa-idioma').value;
@@ -206,7 +220,7 @@ section[hidden] { display: none; }
     }
     var cuerpo = h('tbody');
     r.forEach(function (x) {
-      cuerpo.appendChild(h('tr', {}, h('td', {}, x.nombre), h('td', {}, x.cie10.join(', ')), h('td', {}, h('span', { 'class': 'etiqueta' }, x.confianza)), h('td', {}, x.nota)));
+      cuerpo.appendChild(h('tr', {}, h('td', {}, x.nombre), h('td', {}, cie10Compacto(x.cie10)), h('td', {}, h('span', { 'class': 'etiqueta' }, x.confianza)), h('td', {}, x.nota)));
     });
     salida.appendChild(h('table', { dir: 'ltr' }, h('thead', {}, h('tr', {}, h('th', {}, 'Causa moderna posible'), h('th', {}, 'CIE-10'), h('th', {}, 'Confianza'), h('th', {}, 'Nota'))), cuerpo));
   }
@@ -448,7 +462,10 @@ section[hidden] { display: none; }
   function revision() {
     var idioma = $('rev-idioma').value, ocultar = $('rev-ocultar').checked;
     var tabla = limpiar($('rev-tabla'));
-    var lista = terminos.filter(function (t) { return t.idioma === idioma && !(ocultar && yaRevisado(t)); });
+    var delicadas = $('rev-delicadas').checked;
+    var lista = terminos.filter(function (t) { return t.idioma === idioma && !(ocultar && yaRevisado(t)) && (delicadas || DELICADAS[t.causa_id] !== 1); });
+    var ocultas = terminos.filter(function (t) { return t.idioma === idioma && !delicadas && DELICADAS[t.causa_id] === 1 && !(ocultar && yaRevisado(t)); }).length;
+    if (ocultas) tabla.appendChild(h('p', { 'class': 'nota' }, ocultas + ' términos de causas delicadas están ocultos: marca «Mostrar también las causas delicadas» para revisarlos.'));
     var info = IDIOMAS.filter(function (i) { return i[0] === idioma; })[0];
     if (!lista.length) { tabla.appendChild(h('p', { 'class': 'vacio' }, 'No hay términos por revisar en este idioma.')); salidaRevision(); return; }
     var cuerpo = h('tbody');
@@ -467,7 +484,7 @@ section[hidden] { display: none; }
     tabla.appendChild(h('table', {}, h('thead', {}, h('tr', {}, h('th', {}, 'Término'), h('th', {}, 'Causa moderna que se le asigna'), h('th', {}, 'Confianza'), h('th', {}, '¿Es correcto?'), h('th', {}, 'Nota'))), cuerpo));
     salidaRevision();
   }
-  ['rev-idioma', 'rev-ocultar'].forEach(function (id) { $(id).addEventListener('change', revision); });
+  ['rev-idioma', 'rev-ocultar', 'rev-delicadas'].forEach(function (id) { $(id).addEventListener('change', revision); });
   ['rev-revisor', 'rev-fecha'].forEach(function (id) { $(id).addEventListener('input', salidaRevision); });
   $('rev-copiar').addEventListener('click', function () {
     var texto = $('rev-salida').value;

@@ -4,7 +4,7 @@ Lo usa preparar_datos.py para leer los coeficientes del modelo log-cuadrático. 
 ejecuta nada de lo que contiene. Soporta lo que hay en esos archivos (listas con nombre, vectores, cadenas,
 atributos y data.frame); un tipo que no conoce lo hace fallar en vez de adivinar. Solo biblioteca estándar.
 """
-import bz2, gzip, lzma, struct, sys
+import bz2, gzip, lzma, struct
 
 def abrir(ruta):
     with open(ruta, "rb") as f:

@@ -36,6 +36,9 @@
     4: { vol: 0.42, pan: 0.18, rev: 0.34, eco: 0.1 }, // contramelodía
     9: { vol: 0.62, pan: 0, rev: 0.1, eco: 0 }, // batería
   };
+  // Ajustes del nivelador de sonoridad (ver el constructor del motor).
+  const NIVELADOR = { umbral: -42, rodilla: 24, razon: 8, ataque: 0.25, liberacion: 2, compensacionDb: -3 };
+
   const CANAL_GENERICO = { vol: 0.55, pan: 0, rev: 0.22, eco: 0 };
 
   // ------------------------------------------------------------ motor
@@ -52,8 +55,19 @@
     this.alTocar = null;
     this.ondas = {};
 
-    // salida: mezcla -> compresor -> limitador -> [analizador, grabación] -> volumen -> destino
+    // salida: mezcla -> nivelador -> compresor -> limitador -> [analizador, grabación] -> volumen -> destino
     this.mezcla = ctx.createGain();
+    // El nivelador iguala la sonoridad entre secciones y estilos: una compresión lenta y fuerte
+    // que baja lo que está muy alto y, con su ganancia de compensación, deja lo suave más cerca.
+    // Sin él, dos secciones del mismo estilo llegaban a diferir 6 LU (medido con LUFS).
+    this.nivelador = ctx.createDynamicsCompressor();
+    this.nivelador.threshold.value = NIVELADOR.umbral;
+    this.nivelador.knee.value = NIVELADOR.rodilla;
+    this.nivelador.ratio.value = NIVELADOR.razon;
+    this.nivelador.attack.value = NIVELADOR.ataque;
+    this.nivelador.release.value = NIVELADOR.liberacion;
+    this.compensacion = ctx.createGain();
+    this.compensacion.gain.value = Math.pow(10, NIVELADOR.compensacionDb / 20);
     this.compresor = ctx.createDynamicsCompressor();
     this.compresor.threshold.value = -16;
     this.compresor.knee.value = 12;
@@ -70,7 +84,9 @@
     this.postMezcla.gain.value = 0.9;
     this.volumen = ctx.createGain();
     this.volumen.gain.value = opciones.volumen == null ? 0.8 : opciones.volumen;
-    this.mezcla.connect(this.compresor);
+    this.mezcla.connect(this.nivelador);
+    this.nivelador.connect(this.compensacion);
+    this.compensacion.connect(this.compresor);
     this.compresor.connect(this.limitador);
     this.limitador.connect(this.postMezcla);
     this.postMezcla.connect(this.volumen);
@@ -661,5 +677,5 @@
     }
   };
 
-  raiz.Sintetizador = { Motor: Motor, CANALES: CANALES };
+  raiz.Sintetizador = { Motor: Motor, CANALES: CANALES, NIVELADOR: NIVELADOR };
 })(typeof globalThis !== 'undefined' ? globalThis : this);
