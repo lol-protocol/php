@@ -9,21 +9,19 @@ declare(strict_types=1);
 
 require __DIR__ . '/../src/cargar.php';
 
-use ParsingFbInMas\Exclusiones;
+use ParsingFbInMas\Cli;
 use ParsingFbInMas\Lote;
 use ParsingFbInMas\Purga;
 
 $entrada = null;
 $exclusiones = null;
 $enSitio = false;
+$uso = "Uso: php bin/purgar.php entrada.jsonl --excluir=lista.txt [--en-sitio] [> salida.jsonl]\n";
+Cli::validar(array_slice($argv, 1), ['--excluir=', '--en-sitio'], $uso);
+
 foreach (array_slice($argv, 1) as $arg) {
     if (str_starts_with($arg, '--excluir=')) {
-        try {
-            $exclusiones = Exclusiones::desdeArchivo(substr($arg, 10));
-        } catch (RuntimeException $e) {
-            fwrite(STDERR, $e->getMessage() . "\n");
-            exit(2);
-        }
+        $exclusiones = Cli::exclusiones(substr($arg, 10));
     } elseif ($arg === '--en-sitio') {
         $enSitio = true;
     } else {
@@ -31,7 +29,7 @@ foreach (array_slice($argv, 1) as $arg) {
     }
 }
 if ($entrada === null || $exclusiones === null || Lote::esUrl($entrada)) {
-    fwrite(STDERR, "Uso: php bin/purgar.php entrada.jsonl --excluir=lista.txt [--en-sitio] [> salida.jsonl]\n");
+    fwrite(STDERR, $uso);
     exit(2);
 }
 $origen = is_file($entrada) ? @fopen($entrada, 'rb') : false;

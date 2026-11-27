@@ -362,6 +362,10 @@ const __e = {};
 
 const L = (s) => s.split(/\s+/).filter(Boolean);
 
+/** Notas por defecto de lo que se marca con confianza baja y no trae una propia: así ninguna entrada de confianza baja queda sin explicación. */
+const NOTA_BAJA_ATUENDO = 'Traje simplificado: varía por región, época y condición social, y las fuentes de este son escasas o indirectas.';
+const NOTA_BAJA_ETNIA = 'Pueblo representado de forma genérica: las estimaciones de piel, cabello y estatura son promedios aproximados de poblaciones, no reglas sobre una persona.';
+
 const COL = { principal: 'A', secundario: 'B', ribete: 'C', detalle: 'D' };
 /** Prenda: id, nombre, ranura, plantilla, parámetros y papeles de color (A principal, B secundario, C ribete, D detalle). */
 const P = (id, nombre, ranura, plantilla, params = {}, col = {}) => ({ id, nombre, ranura, plantilla, params, col: { ...COL, ...col } });
@@ -379,7 +383,7 @@ const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra = {}) 
   barbas: L(extra.barbas ?? 'ninguna'),
   tocados: L(extra.tocados ?? 'ninguno'),
   pieles: extra.pieles ? L(extra.pieles) : null,
-  nota: extra.nota ?? '',
+  nota: extra.nota ?? (extra.conf === 'baja' ? NOTA_BAJA_ATUENDO : ''),
   fuente: extra.fuente ?? '',
   edades: extra.edades ?? null,
   confianza: extra.conf ?? 'media',
@@ -389,7 +393,7 @@ const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra = {}) 
 const E = (id, nombre, d) => ({
   id, nombre, grupo: d.grupo, regiones: L(d.regiones), prefijos: d.prefijos ? L(d.prefijos) : null,
   pieles: L(d.pieles), cabellos: d.cabellos, peinados: L(d.peinados ?? ''), barba: d.barba ?? 0.3,
-  altura: d.altura, corpulencia: d.corpulencia ?? [['delgada', 1], ['media', 4], ['robusta', 1.5]], nota: d.nota ?? '', fuente: d.fuente ?? '',
+  altura: d.altura, corpulencia: d.corpulencia ?? [['delgada', 1], ['media', 4], ['robusta', 1.5]], nota: d.nota ?? (d.conf === 'baja' ? NOTA_BAJA_ETNIA : ''), fuente: d.fuente ?? '',
   confianza: d.conf ?? 'media',
 });
 
@@ -417,7 +421,7 @@ const TIERRA = { A: 'lana-parda umbra nogal', B: 'crudo', C: 'rojo-ocre', D: 'co
 const F = (id, n, region, ep, clase, prendas, paleta, extra) => A(id, n, region, ep, 'f', clase, prendas, paleta, extra);
 const M = (id, n, region, ep, clase, prendas, paleta, extra) => A(id, n, region, ep, 'm', clase, prendas, paleta, extra);
 
-Object.assign(__e, { L, P, A, E, OSC, MORENO, CLARO, MED, MESTIZO, BL, CLAROS, MEST, OLIVA, OSCURA, EBANO, CIUDAD, TRAB, VEST, GALA, TIERRA, F, M });
+Object.assign(__e, { L, NOTA_BAJA_ATUENDO, NOTA_BAJA_ETNIA, P, A, E, OSC, MORENO, CLARO, MED, MESTIZO, BL, CLAROS, MEST, OLIVA, OSCURA, EBANO, CIUDAD, TRAB, VEST, GALA, TIERRA, F, M });
 return __e;
 })();
 
@@ -777,6 +781,21 @@ Object.assign(__e, { PRENDAS_MODA });
 return __e;
 })();
 
+__m['datos/prendas-pueblos'] = (() => {
+const __e = {};
+// Prendas de los pueblos agregados por cobertura de país (ver etnias-pueblos.js). Misma forma que prendas.js; su color
+// sale del perfil de colores-prendas.js.
+
+const { P } = __m['datos/ayuda'];
+
+const PRENDAS_PUEBLOS = [
+  P('foustanella', 'Foustanella: falda plisada de lino', 'inferior', 'falda', { largo: 'rodilla', vuelo: 0.13, cintura: 'natural', pliegues: 8, bajo: 'recto', ribeteBajo: 0.015 }),
+];
+
+Object.assign(__e, { PRENDAS_PUEBLOS });
+return __e;
+})();
+
 __m['datos/prendas'] = (() => {
 const __e = {};
 // Catálogo de prendas. Cada una es una plantilla (src/prendas.js) con sus parámetros, la ranura donde se
@@ -788,6 +807,7 @@ const { PRENDAS_AMPLIADAS } = __m['datos/prendas-ampliadas'];
 const { PRENDAS_SIGLO20 } = __m['datos/prendas-siglo20'];
 const { PRENDAS_REGIONALES_2 } = __m['datos/prendas-regionales-2'];
 const { PRENDAS_MODA } = __m['datos/prendas-moda'];
+const { PRENDAS_PUEBLOS } = __m['datos/prendas-pueblos'];
 
 const PRENDAS = [
   // ===== Egipto y Mesopotamia =====
@@ -1019,6 +1039,7 @@ const PRENDAS = [
   ...PRENDAS_SIGLO20,
   ...PRENDAS_REGIONALES_2,
   ...PRENDAS_MODA,
+  ...PRENDAS_PUEBLOS,
 ];
 
 const PRENDAS_POR_ID = Object.fromEntries(PRENDAS.map((p) => [p.id, p]));
@@ -1095,10 +1116,10 @@ const ATUENDOS_AMPLIADOS = [
   // ===== Mundo antiguo =====
   A('minoico-hombre', 'Hombre minoico', 'mundo-antiguo', [-2700, -1100], 'm', 'media', 'faldellin-egeo cinturon-cuero sandalias-cuero', { A: BL + ' azafran', B: 'azul-egipcio', C: 'rojo-granza', D: 'oro' }, { peinados: 'rizos largo-ondulado', barbas: 'ninguna', tocados: 'ninguno', pieles: 'clara-calida oliva-clara oliva', conf: 'baja' }),
   A('minoica-mujer', 'Mujer minoica', 'mundo-antiguo', [-2700, -1100], 'f', 'media', 'falda-minoica corpino collar-cuentas descalzo', { A: 'azul-egipcio azafran rojo-granza marfil', B: 'rojo-granza', C: 'azul-egipcio', D: 'oro' }, { peinados: 'rizos largo-ondulado', tocados: 'diadema ninguno', pieles: 'clara-calida oliva-clara', conf: 'baja' }),
-  A('fenicio-hombre', 'Fenicio', 'mundo-antiguo', [-1200, -300], 'm', 'media', 'tunica-fenicia sagum sandalias-cuero', { A: 'purpura-tiro borravino azul-egipcio blanco-lino', B: 'azafran', C: 'purpura-tiro', D: 'oro' }, { peinados: 'corto rizos', barbas: 'barba-completa barba-corta', tocados: 'gorro-frigio ninguno', pieles: 'oliva-clara oliva canela' }),
+  A('fenicio-hombre', 'Fenicio', 'mundo-antiguo', [-1200, -300], 'm', 'media', 'tunica-fenicia sagum sandalias-cuero', { A: 'purpura-tiro azul-egipcio blanco-lino', B: 'azafran', C: 'purpura-tiro', D: 'oro' }, { peinados: 'corto rizos', barbas: 'barba-completa barba-corta', tocados: 'gorro-frigio ninguno', pieles: 'oliva-clara oliva canela' }),
   A('fenicia-mujer', 'Fenicia', 'mundo-antiguo', [-1200, -300], 'f', 'media', 'tunica-fenicia chal-lana collar-colgante sandalias-cuero', { A: 'purpura-tiro azul-egipcio rojo-granza blanco-lino', B: 'azafran', C: 'oro', D: 'oro' }, { peinados: 'recogido trenzas-dos', tocados: 'velo diadema', pieles: 'oliva-clara oliva canela' }),
-  A('persa-antiguo-hombre', 'Persa aqueménida', 'mundo-antiguo', [-550, -330], 'm', 'alta', 'tunica-etrusca kandys pantalon-persa zapatos-cuero collar-colgante', { A: 'azul-egipcio rojo-cochinilla purpura-tiro verde-esmeralda', B: BL, C: 'oro', D: 'oro' }, { peinados: 'rizos corto', barbas: 'barba-larga barba-completa', tocados: 'gorro-frigio corona', pieles: 'oliva-clara oliva canela' }),
-  A('persa-antigua-mujer', 'Persa aqueménida (mujer)', 'mundo-antiguo', [-550, -330], 'f', 'alta', 'tunica-fenicia manto-persa zapatos-cuero collar-colgante', { A: 'azul-egipcio rojo-cochinilla purpura-tiro verde-esmeralda', B: BL, C: 'oro', D: 'oro' }, { peinados: 'recogido trenzas-dos', tocados: 'velo diadema', pieles: 'oliva-clara oliva canela', conf: 'baja' }),
+  A('persa-antiguo-hombre', 'Persa aqueménida', 'mundo-antiguo', [-550, -330], 'm', 'alta', 'tunica-etrusca kandys pantalon-persa zapatos-cuero collar-colgante', { A: 'azul-egipcio purpura-tiro', B: BL, C: 'oro', D: 'oro' }, { peinados: 'rizos corto', barbas: 'barba-larga barba-completa', tocados: 'gorro-frigio corona', pieles: 'oliva-clara oliva canela' }),
+  A('persa-antigua-mujer', 'Persa aqueménida (mujer)', 'mundo-antiguo', [-550, -330], 'f', 'alta', 'tunica-fenicia manto-persa zapatos-cuero collar-colgante', { A: 'azul-egipcio purpura-tiro', B: BL, C: 'oro', D: 'oro' }, { peinados: 'recogido trenzas-dos', tocados: 'velo diadema', pieles: 'oliva-clara oliva canela', conf: 'baja' }),
   A('escita-hombre', 'Escita', 'mundo-antiguo', [-700, -200], 'm', 'media', 'chaqueta-escita pantalon-escita botas-cuero cinturon-cuero', { A: 'rojo-granza lana-parda indigo verde-musgo', B: 'azafran', C: 'oro', D: 'oro' }, { peinados: 'largo-liso corto', barbas: 'barba-completa', tocados: 'gorro-frigio', pieles: 'clara clara-calida oliva-clara', conf: 'baja' }),
   A('escita-mujer', 'Escita (mujer)', 'mundo-antiguo', [-700, -200], 'f', 'media', 'chaqueta-escita pantalon-escita botas-cuero collar-colgante', { A: 'rojo-granza lana-parda indigo verde-musgo', B: 'azafran', C: 'oro', D: 'oro' }, { peinados: 'trenzas-dos largo-liso', tocados: 'gorro-frigio diadema', pieles: 'clara clara-calida oliva-clara', conf: 'baja' }),
   A('etrusco-hombre', 'Etrusco', 'mundo-antiguo', [-800, -100], 'm', 'media', 'tunica-etrusca himation-corto sandalias-cuero', { A: 'blanco-lino rojo-granza azafran', B: 'purpura-tiro', C: 'purpura-tiro', D: 'oro' }, { peinados: 'corto rizos', barbas: 'barba-corta ninguna', tocados: 'ninguno', pieles: 'clara-calida oliva-clara oliva' }),
@@ -1110,7 +1131,7 @@ const ATUENDOS_AMPLIADOS = [
   A('anglosajon-hombre', 'Anglosajón', 'germano', [450, 1066], 'm', 'media', 'tunica-vikinga bragas-holgadas capa-medieval botas-cuero cinturon-cuero', { A: 'lana-parda verde-musgo indigo rojo-granza', B: 'lana-clara', C: 'rojo-granza', D: 'bronce' }, { peinados: 'largo-liso corto', barbas: 'barba-completa barba-corta', tocados: 'ninguno', pieles: CLAROS }),
   A('anglosajona-mujer', 'Anglosajona', 'germano', [450, 1066], 'f', 'media', 'tunica-vikinga vestido-delantal-vikingo broche-ovalado zapatos-cuero', { A: 'indigo-claro rojo-granza verde-musgo', B: 'lana-clara', C: 'rojo-granza', D: 'bronce' }, { peinados: 'trenza-una recogido', tocados: 'velo panuelo', pieles: CLAROS }),
   A('visigodo-hombre', 'Visigodo', 'germano', [400, 711], 'm', 'media', 'tunica-vikinga pantalones-celtas capa-medieval botas-cuero cinturon-cuero', { A: 'lana-parda rojo-granza indigo', B: 'lana-clara', C: 'rojo-granza', D: 'bronce' }, { peinados: 'largo-liso corto', barbas: 'barba-completa', tocados: 'ninguno', pieles: CLAROS }),
-  A('visigoda-mujer', 'Visigoda', 'germano', [400, 711], 'f', 'media', 'tunica-vikinga vestido-delantal-vikingo broche-ovalado zapatos-cuero', { A: 'azul-plomo rojo-granza verde-musgo', B: 'lana-clara', C: 'rojo-granza', D: 'oro' }, { peinados: 'trenzas-dos recogido', tocados: 'velo', pieles: CLAROS }),
+  A('visigoda-mujer', 'Visigoda', 'germano', [400, 711], 'f', 'media', 'tunica-vikinga vestido-delantal-vikingo broche-ovalado zapatos-cuero', { A: 'rojo-granza verde-musgo', B: 'lana-clara', C: 'rojo-granza', D: 'oro' }, { peinados: 'trenzas-dos recogido', tocados: 'velo', pieles: CLAROS }),
   A('kushita-hombre', 'Kushita de Nubia', 'africa-nilo', [-800, 350], 'm', 'alta', 'shenti-plisado collar-usej sandalias-cuero brazaletes-altos', { A: 'blanco-lino marfil', B: 'azul-egipcio', C: 'oro', D: 'oro' }, { peinados: 'rapado corto', tocados: 'diadema ninguno', pieles: 'ebano-claro ebano castana', conf: 'baja' }),
   A('kushita-mujer', 'Kushita de Nubia (mujer)', 'africa-nilo', [-800, 350], 'f', 'alta', 'kalasiris-plisada collar-usej sandalias-cuero brazaletes-altos', { A: 'blanco-lino marfil', B: 'azul-egipcio', C: 'oro', D: 'oro' }, { peinados: 'trenzas-pegadas peluca-egipcia', tocados: 'diadema ninguno', pieles: 'ebano-claro ebano castana', conf: 'baja' }),
   A('sudanes-hombre', 'Sudanés con jalabiya', 'africa-nilo', [1500, 1950], 'm', 'media', 'jalabiya-algodon faja-del sandalias-cuero', { A: 'blanco-lino crudo marfil', B: BL, C: 'indigo', D: 'plata' }, { peinados: 'rapado corto', barbas: 'bigote barba-corta ninguna', tocados: 'turbante kufi', pieles: 'castana ebano-claro ebano' }),
@@ -1157,8 +1178,8 @@ const ATUENDOS_AMPLIADOS = [
   A('navajo-mujer', 'Diné (navajo) con falda de volantes', 'norteamerica', [1850, 1950], 'f', 'media', 'blusa-terciopelo falda-navajo cinturon-concho collar-ancho-cuentas mocasines', { A: 'borravino azul-prusia verde-botella malva', B: 'rojo-cartamo azul-celeste', C: 'plata', D: 'turquesa' }, { peinados: 'recogido largo-liso', tocados: 'ninguno', pieles: OSCURA }),
   A('haudenosaunee-hombre', 'Haudenosaunee (iroqués)', 'norteamerica', [1600, 1900], 'm', 'media', 'camisa-gamuza kilt-haudenosaunee leggings-gamuza mocasines collar-ancho-cuentas', { A: 'cuero-claro piel-guanaco', B: 'rojo-cartamo azul-ultramar', C: 'rojo-cartamo', D: 'azul-ultramar' }, { peinados: 'rapado trenzas-dos', barbas: 'ninguna', tocados: 'diadema tocado-plumas', pieles: OSCURA, conf: 'baja' }),
   A('haudenosaunee-mujer', 'Haudenosaunee (mujer)', 'norteamerica', [1600, 1900], 'f', 'media', 'vestido-cuero-flecos kilt-haudenosaunee leggings-gamuza mocasines collar-ancho-cuentas', { A: 'cuero-claro piel-guanaco', B: 'rojo-cartamo azul-ultramar', C: 'rojo-cartamo', D: 'azul-ultramar' }, { peinados: 'trenzas-dos largo-liso', tocados: 'diadema ninguno', pieles: OSCURA, conf: 'baja' }),
-  A('tlingit-hombre', 'Tlingit (noroeste del Pacífico)', 'norteamerica', [1700, 1950], 'm', 'alta', 'camisa-gamuza leggings-gamuza manto-chilkat mocasines', { A: 'lana-negra cuero-claro', B: 'azul-egipcio verde-jade', C: 'rojo-cartamo', D: 'azafran' }, { peinados: 'largo-liso corto', barbas: 'ninguna', tocados: 'sombrero-conico ninguno', pieles: OSCURA, conf: 'baja' }),
-  A('tlingit-mujer', 'Tlingit (mujer)', 'norteamerica', [1700, 1950], 'f', 'alta', 'vestido-cuero-flecos manto-chilkat mocasines collar-ancho-cuentas', { A: 'lana-negra cuero-claro', B: 'azul-egipcio verde-jade', C: 'rojo-cartamo', D: 'azafran' }, { peinados: 'trenzas-dos largo-liso', tocados: 'sombrero-conico ninguno', pieles: OSCURA, conf: 'baja' }),
+  A('tlingit-hombre', 'Tlingit (noroeste del Pacífico)', 'norteamerica', [1700, 1950], 'm', 'alta', 'camisa-gamuza leggings-gamuza manto-chilkat mocasines', { A: 'lana-negra cuero-claro', B: 'verde-jade', C: 'rojo-cartamo', D: 'azafran' }, { peinados: 'largo-liso corto', barbas: 'ninguna', tocados: 'sombrero-conico ninguno', pieles: OSCURA, conf: 'baja' }),
+  A('tlingit-mujer', 'Tlingit (mujer)', 'norteamerica', [1700, 1950], 'f', 'alta', 'vestido-cuero-flecos manto-chilkat mocasines collar-ancho-cuentas', { A: 'lana-negra cuero-claro', B: 'verde-jade', C: 'rojo-cartamo', D: 'azafran' }, { peinados: 'trenzas-dos largo-liso', tocados: 'sombrero-conico ninguno', pieles: OSCURA, conf: 'baja' }),
   A('seminola-hombre', 'Seminola con chaqueta de retazos', 'norteamerica', [1800, 1950], 'm', 'media', 'camisa-blanca chaqueta-patchwork pantalon-recto mocasines', { A: 'rojo-cartamo azul-ultramar azafran verde-hoja', B: BL, C: 'lana-negra', D: 'plata' }, { peinados: 'corto', barbas: 'ninguna', tocados: 'turbante', pieles: OSCURA, conf: 'baja' }),
   A('seminola-mujer', 'Seminola con collares y falda de volantes', 'norteamerica', [1800, 1950], 'f', 'media', 'blusa-regional falda-volantes collar-ancho-cuentas mocasines', { A: 'rojo-cartamo azul-ultramar azafran verde-hoja', B: BL, C: 'lana-negra', D: 'turquesa' }, { peinados: 'recogido largo-liso', tocados: 'ninguno', pieles: OSCURA, conf: 'baja' }),
   A('cherokee-hombre', 'Cheroqui (siglo XIX)', 'norteamerica', [1790, 1900], 'm', 'media', 'camisa-rotos chaleco-corto pantalon-recto mocasines faja-huasa', { A: 'rojo-cartamo azul-ultramar lana-parda', B: BL, C: 'lana-negra', D: 'plata' }, { peinados: 'largo-liso corto', barbas: 'ninguna', tocados: 'turbante', pieles: OSCURA }),
@@ -1175,14 +1196,14 @@ const ATUENDOS_AMPLIADOS = [
   A('charro-mexicano', 'Charro mexicano', 'mexico-regional', [1850, 1950], 'm', 'alta', 'camisa-blanca lazo-cuello chaqueta-charra pantalon-charro botas-cuero faja-huasa', { A: 'lana-negra borravino gris-pizarra azul-prusia', B: BL, C: 'plata', D: 'plata' }, { peinados: 'corto', barbas: 'bigote', tocados: 'sombrero-ala-ancha', pieles: 'clara-calida oliva-clara oliva canela' }),
   A('mexicana-mestiza-1900', 'Mexicana mestiza de 1900', 'mexico-regional', [1850, 1950], 'f', 'media', 'blusa-regional falda-larga rebozo zapatos-cuero collar-colgante', { A: 'rojo-granza azul-prusia verde-hoja lana-parda', B: BL, C: BL, D: 'plata' }, { peinados: 'trenzas-dos recogido', tocados: 'ninguno', pieles: 'clara-calida oliva-clara oliva canela' }),
   // ===== Andes: culturas prehispánicas del norte =====
-  A('moche-noble', 'Noble moche', 'andes', [100, 800], 'm', 'alta', 'unku chumpi sandalias-cuero brazaletes-altos collar-usej', { A: 'rojo-cochinilla azul-andino crudo', B: 'azafran crudo', C: 'oro', D: 'oro' }, { peinados: 'largo-liso flequillo', tocados: 'tocado-plumas diadema', pieles: OSCURA, conf: 'baja' }),
-  A('moche-mujer', 'Mujer moche', 'andes', [100, 800], 'f', 'media', 'aqsu chumpi lliclla sandalias-cuero collar-cuentas', { A: 'rojo-cochinilla azul-andino crudo lana-parda', B: 'azafran', C: 'azafran', D: 'oro' }, { peinados: 'trenzas-dos largo-liso', tocados: 'diadema ninguno', pieles: OSCURA, conf: 'baja' }),
+  A('moche-noble', 'Noble moche', 'andes', [100, 800], 'm', 'alta', 'unku chumpi sandalias-cuero brazaletes-altos collar-usej', { A: 'azul-andino crudo', B: 'azafran crudo', C: 'oro', D: 'oro' }, { peinados: 'largo-liso flequillo', tocados: 'tocado-plumas diadema', pieles: OSCURA, conf: 'baja' }),
+  A('moche-mujer', 'Mujer moche', 'andes', [100, 800], 'f', 'media', 'aqsu chumpi lliclla sandalias-cuero collar-cuentas', { A: 'azul-andino crudo lana-parda', B: 'azafran', C: 'azafran', D: 'oro' }, { peinados: 'trenzas-dos largo-liso', tocados: 'diadema ninguno', pieles: OSCURA, conf: 'baja' }),
   // ===== Chile y la Patagonia: más pueblos y oficios =====
   A('tehuelche-hombre', 'Tehuelche (aonikenk)', 'patagonia-fueguina', [1500, 1930], 'm', 'media', 'quillango pantalon-piel botas-piel', { A: 'piel-guanaco cuero-claro', B: 'cuero-oscuro', C: 'rojo-ocre', D: 'rojo-ocre' }, { peinados: 'largo-liso', barbas: 'ninguna', tocados: 'diadema ninguno', pieles: OSCURA }),
   A('tehuelche-mujer', 'Tehuelche (mujer)', 'patagonia-fueguina', [1500, 1930], 'f', 'media', 'quillango botas-piel cuentas-largas', { A: 'piel-guanaco cuero-claro', B: 'cuero-oscuro', C: 'rojo-ocre', D: 'rojo-ocre' }, { peinados: 'trenzas-dos largo-liso', tocados: 'diadema ninguno', pieles: OSCURA }),
   A('kawesqar-hombre', 'Kawésqar canoero', 'patagonia-fueguina', [-5000, 1950], 'm', 'baja', 'capa-canguro taparrabo-cuero cuentas-largas descalzo', { A: 'piel-nutria cuero-oscuro', B: 'cuero', C: 'rojo-ocre', D: 'crudo' }, { peinados: 'largo-liso corto', barbas: 'ninguna', tocados: 'ninguno', pieles: OSCURA, conf: 'baja', nota: 'Pueblo canoero que usaba poca ropa: la capa de piel es una simplificación.' }),
   A('kawesqar-mujer', 'Kawésqar (mujer)', 'patagonia-fueguina', [-5000, 1950], 'f', 'baja', 'capa-canguro cuentas-largas descalzo', { A: 'piel-nutria cuero-oscuro', B: 'cuero', C: 'rojo-ocre', D: 'crudo' }, { peinados: 'largo-liso', tocados: 'ninguno', pieles: OSCURA, conf: 'baja', nota: 'Pueblo canoero que usaba poca ropa: la capa de piel es una simplificación.' }),
-  A('minero-salitrero', 'Minero del salitre', 'chile-rural', [1880, 1930], 'm', 'baja', 'camisa-rotos chaleco-corto pantalon-recto lazo-cuello botas-cuero faja-huasa', { A: 'kaki lana-parda gris-pizarra umbra', B: 'crudo', C: 'rojo-granza', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote barba-corta ninguna', tocados: 'sombrero-ala-ancha gorra-plana', pieles: 'clara-calida oliva-clara oliva canela bronce' }),
+  A('minero-salitrero', 'Minero del salitre', 'chile-rural', [1880, 1930], 'm', 'baja', 'camisa-rotos chaleco-corto pantalon-recto lazo-cuello botas-cuero faja-huasa', { A: 'kaki lana-parda gris-pizarra umbra', B: 'crudo', C: 'rojo-vivo', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote barba-corta ninguna', tocados: 'sombrero-ala-ancha gorra-plana', pieles: 'clara-calida oliva-clara oliva canela bronce' }),
   A('campesina-chilena-1900', 'Campesina chilena de 1900', 'chile-rural', [1850, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco chal-lana zapatos-cuero', { A: 'azul-plomo rojo-granza verde-musgo lana-parda', B: BL, C: BL, D: 'cobre' }, { peinados: 'trenzas-dos recogido', tocados: 'panuelo ninguno', pieles: 'clara-calida oliva-clara oliva canela' }),
   A('paisana-rioplatense', 'Paisana rioplatense', 'rio-de-la-plata', [1750, 1950], 'f', 'baja', 'blusa-campesina falda-larga chal-lana delantal-blanco zapatos-cuero', { A: 'azul-plomo rojo-granza lana-parda verde-musgo', B: BL, C: BL, D: 'cobre' }, { peinados: 'trenzas-dos recogido', tocados: 'panuelo ninguno', pieles: 'clara-calida oliva-clara oliva canela' }),
   A('dama-rioplatense-1900', 'Dama rioplatense de 1900', 'rio-de-la-plata', [1860, 1930], 'f', 'alta', 'vestido-victoriano collar-colgante zapatos-cuero chal-corto', { A: 'borravino verde-botella azul-prusia lana-negra', B: BL, C: 'lana-negra', D: 'oro' }, { peinados: 'recogido', tocados: 'velo ninguno', pieles: 'porcelana clara clara-calida' }),
@@ -1244,7 +1265,7 @@ const ATUENDOS_SIGLO20 = [
   A('cubana-1950', 'Cubana de 1950', 'latinoamerica-moderna', [1940, 1965], 'f', 'media', 'vestido-50 perlas zapatos-vestir', VEST, { peinados: 'ondas recogido', pieles: MEST + ' ' + OSCURA }),
   A('jibaro-puertorriqueno', 'Jíbaro puertorriqueño', 'latinoamerica-moderna', [1850, 1960], 'm', 'baja', 'camisa-manta calzon-manta alpargatas', { A: 'crudo algodon-crudo', B: BL, C: 'rojo-granza', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'sombrero-ala-ancha', pieles: MEST + ' ' + OSCURA }),
   A('caipira-brasileno', 'Caipira brasileño', 'latinoamerica-moderna', [1850, 1970], 'm', 'baja', 'camisa-cuadros pantalon-trabajo alpargatas', TRAB, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'sombrero-ala-ancha', pieles: MEST + ' ' + OSCURA }),
-  A('baiana', 'Baiana', 'latinoamerica-moderna', [1850, 1980], 'f', 'media', 'blusa-regional falda-volantes chal-seda collar-ancho-cuentas sandalias-cuero', { A: 'blanco-lino crudo', B: BL, C: 'rojo-cartamo azul-ultramar', D: 'oro' }, { peinados: 'recogido', tocados: 'turbante', pieles: EBANO }),
+  A('baiana', 'Baiana', 'latinoamerica-moderna', [1850, 1980], 'f', 'media', 'blusa-regional falda-volantes chal-seda collar-ancho-cuentas sandalias-cuero', { A: 'blanco-lino crudo', B: BL, C: 'rojo-cartamo', D: 'oro' }, { peinados: 'recogido', tocados: 'turbante', pieles: EBANO }),
   A('tanguero-1930', 'Tanguero de 1930', 'latinoamerica-moderna', [1910, 1960], 'm', 'media', 'camisa-blanca corbata chaleco-terno saco-terno pantalon-vestir zapatos-vestir', CIUDAD, { peinados: 'corto-raya', barbas: 'bigote', tocados: 'fedora', pieles: MEST }),
   A('tanguera-1930', 'Tanguera de 1930', 'latinoamerica-moderna', [1910, 1960], 'f', 'media', 'vestido-30 perlas zapatos-vestir estola', VEST, { peinados: 'ondas bob', tocados: 'cloche ninguno', pieles: MEST }),
   A('inmigrante-1910', 'Inmigrante recién llegado (1910)', 'latinoamerica-moderna', [1880, 1930], 'm', 'baja', 'camisa-blanca chaleco-lana pantalon-vestir zapatos-cuero', CIUDAD, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'boina gorra-plana', pieles: 'porcelana clara clara-calida oliva-clara' }),
@@ -1254,7 +1275,7 @@ const ATUENDOS_SIGLO20 = [
   A('chola-pacena-1950', 'Chola paceña de 1950', 'andes', [1900, 1985], 'f', 'media', 'blusa-regional pollera chal-seda zapatos-vestir collar-colgante', { A: 'azul-prusia borravino verde-botella lana-negra', B: BL, C: 'blanco-lino', D: 'oro' }, { peinados: 'trenzas-dos', tocados: 'sombrero-bombin-andino', pieles: OSCURA }),
   // ===== México, 1850 a 1980 =====
   A('mexicano-peon', 'Peón mexicano', 'mexico-regional', [1850, 1950], 'm', 'baja', 'camisa-manta calzon-manta sarape sandalias-cuero', { A: 'crudo algodon-crudo', B: 'lana-negra', C: 'rojo-granza', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'sombrero-ala-ancha', pieles: OSCURA }),
-  A('mexicana-adelita', 'Adelita de la Revolución', 'mexico-regional', [1910, 1920], 'f', 'baja', 'blusa-regional falda-larga rebozo cinturon-cuero zapatos-cuero', { A: 'lana-parda azul-plomo rojo-granza', B: BL, C: 'lana-negra', D: 'cobre' }, { peinados: 'trenzas-dos', tocados: 'sombrero-ala-ancha', pieles: OSCURA }),
+  A('mexicana-adelita', 'Adelita de la Revolución', 'mexico-regional', [1910, 1920], 'f', 'baja', 'blusa-regional falda-larga rebozo cinturon-cuero zapatos-cuero', { A: 'lana-parda azul-plomo', B: BL, C: 'lana-negra', D: 'cobre' }, { peinados: 'trenzas-dos', tocados: 'sombrero-ala-ancha', pieles: OSCURA }),
   A('mexicano-revolucionario', 'Soldado de la Revolución mexicana', 'mexico-regional', [1910, 1920], 'm', 'baja', 'camisa-trabajo pantalon-trabajo sarape cinturon-vaquero botas-trabajo', TRAB, { peinados: 'corto', barbas: 'bigote', tocados: 'sombrero-ala-ancha', pieles: MEST + ' ' + OSCURA }),
   A('mexicana-china-poblana', 'China poblana', 'mexico-regional', [1830, 1950], 'f', 'media', 'blusa-regional falda-volantes rebozo zapatos-cuero collar-cuentas', { A: 'rojo-cartamo verde-hoja azul-ultramar', B: BL, C: 'oro', D: 'oro' }, { peinados: 'trenzas-dos', tocados: 'ninguno', pieles: MEST }),
   // ===== Estados Unidos y Canadá, 1840 a 1980 =====
@@ -1333,8 +1354,8 @@ const ATUENDOS_SIGLO20 = [
   A('grecia-campesino', 'Campesino griego', 'grecia', [-800, -30], 'm', 'baja', 'quiton-corto cinturon-cuerda sandalias-cuero', { A: 'crudo lana-parda', B: 'lana-parda', C: 'rojo-ocre', D: 'bronce' }, { peinados: 'corto rizos', barbas: 'barba-corta barba-completa', tocados: 'sombrero-ala-ancha ninguno', pieles: 'oliva-clara oliva canela' }),
   A('medieval-juglar', 'Juglar medieval', 'europa-medieval', [1000, 1500], 'm', 'baja', 'camisa-medieval jubon-medieval calzas zapatos-cuero cinturon-bolsa', { A: 'rojo-granza azul-ultramar azafran verde-hoja', B: 'azafran', C: 'azul-ultramar', D: 'cobre' }, { peinados: 'bob flequillo', barbas: 'ninguna bigote', tocados: 'gorro-frigio boina', pieles: CLAROS }),
   A('medieval-mercader', 'Mercader medieval', 'europa-medieval', [1100, 1500], 'm', 'media', 'camisa-medieval jubon-medieval calzas botas-cuero cinturon-bolsa capa-corta-ribete', { A: 'indigo verde-botella borravino azul-ultramar', B: 'crudo', C: 'oro', D: 'oro' }, { peinados: 'bob', barbas: 'barba-corta ninguna', tocados: 'boina birrete', pieles: CLAROS }),
-  A('renacimiento-comerciante', 'Comerciante renacentista', 'europa-moderna', [1450, 1650], 'm', 'media', 'camisa-globo jubon-renacentista gregueescos calzas-largas zapatos-cuero capa-corta-ribete', { A: 'lana-negra borravino verde-botella azul-prusia', B: 'blanco-lino', C: 'oro', D: 'oro' }, { peinados: 'corto flequillo', barbas: 'barba-corta candado', tocados: 'boina sombrero-ala-ancha', pieles: CLAROS }),
-  A('vikingo-comerciante', 'Comerciante vikingo', 'germano', [750, 1100], 'm', 'media', 'tunica-vikinga bragas-holgadas capa-medieval botas-cuero cinturon-cuero cuentas-largas', { A: 'azul-egipcio indigo rojo-granza', B: 'lana-parda', C: 'rojo-granza', D: 'plata' }, { peinados: 'corto trenza-una', barbas: 'barba-completa barba-larga', tocados: 'ninguno', pieles: CLAROS }),
+  A('renacimiento-comerciante', 'Comerciante renacentista', 'europa-moderna', [1450, 1650], 'm', 'media', 'camisa-globo jubon-renacentista gregueescos calzas-largas zapatos-cuero capa-corta-ribete', { A: 'lana-negra borravino verde-botella', B: 'blanco-lino', C: 'oro', D: 'oro' }, { peinados: 'corto flequillo', barbas: 'barba-corta candado', tocados: 'boina sombrero-ala-ancha', pieles: CLAROS }),
+  A('vikingo-comerciante', 'Comerciante vikingo', 'germano', [750, 1100], 'm', 'media', 'tunica-vikinga bragas-holgadas capa-medieval botas-cuero cinturon-cuero cuentas-largas', { A: 'indigo rojo-granza', B: 'lana-parda', C: 'rojo-granza', D: 'plata' }, { peinados: 'corto trenza-una', barbas: 'barba-completa barba-larga', tocados: 'ninguno', pieles: CLAROS }),
   A('inca-chasqui', 'Chasqui (mensajero inca)', 'andes', [1200, 1560], 'm', 'baja', 'unku-liso chumpi sandalias-cuero', { A: 'lana-parda alpaca-cafe rojo-cochinilla', B: 'crudo', C: 'rojo-cochinilla', D: 'cobre' }, { peinados: 'flequillo corto', tocados: 'gorro-lana ninguno', pieles: OSCURA, conf: 'baja' }),
   A('mapuche-lonko', 'Lonko mapuche', 'mapuche', [1550, 1950], 'm', 'alta', 'camisa-rotos chiripa makun trariwe trapelacucha descalzo', { A: 'lana-negra azul-andino alpaca-cafe', B: 'rojo-mapuche', C: 'rojo-mapuche', D: 'plata' }, { peinados: 'largo-liso', barbas: 'ninguna', tocados: 'trarilonko', pieles: OSCURA, conf: 'media' }),
   A('otomano-campesino', 'Campesino otomano', 'medio-oriente', [1400, 1900], 'm', 'baja', 'camisa-medieval chaleco-kurdo sirwal faja-turbante zapatillas', { A: 'lana-parda umbra indigo', B: BL, C: 'rojo-granza', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote barba-corta', tocados: 'turbante fez', pieles: 'oliva-clara oliva canela' }),
@@ -1389,7 +1410,7 @@ const ATUENDOS_MAS = [
   A('xx-verano-1930', 'Mujer de verano (1930)', 'europa-xix', [1920, 1960], 'f', 'baja', 'vestido-sencillo-corto chal-lana zapatos-cuero', VEST, { peinados: 'bob recogido', tocados: 'panuelo ninguno', pieles: CLAROS }),
   A('xx-caballero-cruzado-1935', 'Caballero de saco cruzado (1935)', 'europa-xix', [1925, 1950], 'm', 'media', 'camisa-blanca corbata saco-cruzado pantalon-vestir zapatos-vestir', CIUDAD, { peinados: 'corto-raya', barbas: 'bigote', tocados: 'fedora', pieles: CLAROS }),
   A('xix-abrigo-caballero', 'Caballero con abrigo largo', 'europa-xix', [1830, 1920], 'm', 'alta', 'camisa-blanca lazo-cuello abrigo-largo pantalon-recto zapatos-cuero', CIUDAD, { peinados: 'corto-raya', barbas: 'barba-completa patillas bigote', tocados: 'sombrero-copa', pieles: CLAROS }),
-  A('renacimiento-ceremonia', 'Caballero de ceremonia renacentista', 'europa-moderna', [1480, 1620], 'm', 'alta', 'camisa-globo jubon-renacentista gregueescos calzas-largas zapatos-cuero gorguera capa-ceremonial', { A: 'lana-negra borravino azul-prusia', B: 'carmin', C: 'oro', D: 'oro' }, { peinados: 'corto flequillo', barbas: 'barba-corta candado', tocados: 'boina sombrero-ala-ancha', pieles: CLAROS }),
+  A('renacimiento-ceremonia', 'Caballero de ceremonia renacentista', 'europa-moderna', [1480, 1620], 'm', 'alta', 'camisa-globo jubon-renacentista gregueescos calzas-largas zapatos-cuero gorguera capa-ceremonial', { A: 'lana-negra borravino', B: 'carmin', C: 'oro', D: 'oro' }, { peinados: 'corto flequillo', barbas: 'barba-corta candado', tocados: 'boina sombrero-ala-ancha', pieles: CLAROS }),
   A('medieval-campesino-invierno', 'Campesino medieval en invierno', 'europa-medieval', [500, 1500], 'm', 'baja', 'camisa-medieval tunica-corta-lana calzones-medievales polainas-lana capa-viaje zapatos-cuero', TIERRA, { peinados: 'flequillo corto', barbas: 'ninguna barba-corta', tocados: 'capucha gorro-lana', pieles: CLAROS }),
   A('medieval-campesina-invierno', 'Campesina medieval en invierno', 'europa-medieval', [500, 1500], 'f', 'baja', 'vestido-lino-largo faldon-campesina chal-lana capa-viaje zuecos', TIERRA, { peinados: 'trenza-una recogido', tocados: 'panuelo velo', pieles: CLAROS }),
   A('medieval-verano-f', 'Mujer medieval en verano', 'europa-medieval', [500, 1500], 'f', 'baja', 'vestido-lino-largo cinturon-cuerda zapatos-cuero collar-cuentas', { A: 'crudo lana-clara blanco-lino', B: 'lana-clara', C: 'rojo-ocre', D: 'cobre' }, { peinados: 'trenza-una largo-liso', tocados: 'panuelo ninguno', pieles: CLAROS }),
@@ -1400,7 +1421,7 @@ const ATUENDOS_MAS = [
   A('judio-oracion', 'Hombre en oración con talit', 'judio', [1000, 1950], 'm', 'media', 'caftan-askenazi tallit pantalon-recto botas-cuero', { A: 'lana-negra gris-oscuro', B: BL, C: 'lana-negra', D: 'plata' }, { peinados: 'corto', barbas: 'barba-larga patillas barba-completa', tocados: 'kufi gorra-plana', pieles: CLAROS + ' oliva-clara' }),
   A('beduino-dishdasha', 'Hombre árabe con dishdasha', 'medio-oriente', [1700, 1980], 'm', 'media', 'dishdasha faja-turbante sandalias-cuero', { A: 'blanco-lino crudo marfil', B: BL, C: 'lana-negra', D: 'plata' }, { peinados: 'corto', barbas: 'bigote barba-corta', tocados: 'kufiya', pieles: 'oliva-clara oliva canela' }),
   A('persa-chador-mujer', 'Mujer persa con chador', 'medio-oriente', [1700, 1980], 'f', 'media', 'vestido-regional chador zapatillas', { A: 'lana-negra azul-marino', B: 'crema', C: 'plata', D: 'plata' }, { peinados: 'largo-liso', tocados: 'velo', pieles: 'oliva-clara oliva' }),
-  A('nahua-quechquemitl', 'Mujer nahua con quechquémitl', 'mesoamerica', [1000, 1950], 'f', 'media', 'huipil quechquemitl enagua-maya collar-cuentas descalzo', { A: 'blanco-lino algodon-crudo azul-egipcio', B: 'rojo-cochinilla', C: 'rojo-cochinilla', D: 'verde-jade' }, { peinados: 'trenzas-dos coletas', pieles: OSCURA }),
+  A('nahua-quechquemitl', 'Mujer nahua con quechquémitl', 'mesoamerica', [1000, 1950], 'f', 'media', 'huipil quechquemitl enagua-maya collar-cuentas descalzo', { A: 'blanco-lino algodon-crudo', B: 'rojo-cochinilla', C: 'rojo-cochinilla', D: 'verde-jade' }, { peinados: 'trenzas-dos coletas', pieles: OSCURA }),
   A('hawaiano-kihei', 'Hawaiano con kihei', 'polinesia', [1200, 1850], 'm', 'media', 'malo kihei guirnalda descalzo', { A: 'crudo barro rojo-ocre', B: 'rojo-ocre', C: 'rojo-ocre', D: 'rojo-cartamo' }, { peinados: 'corto rizos', barbas: 'bigote ninguna', pieles: OSCURA }),
   A('hawaiana-pareo', 'Hawaiana con pareo', 'polinesia', [1200, 1980], 'f', 'baja', 'wrap-top pareo-estampado guirnalda descalzo', { A: 'azul-real rojo-vivo turquesa', B: BL, C: 'blanco-optico', D: 'rojo-cartamo' }, { peinados: 'largo-ondulado largo-liso', tocados: 'corona-flores', pieles: OSCURA }),
   A('japon-ceremonia-mujer', 'Mujer japonesa de ceremonia', 'asia-este', [1600, 1960], 'f', 'alta', 'kimono obi obijime geta', { A: 'rojo-cartamo azul-ultramar verde-hoja malva', B: BL, C: 'oro', D: 'oro' }, { peinados: 'recogido mono-alto', pieles: 'porcelana clara clara-calida' }),
@@ -1515,6 +1536,16 @@ const ATUENDOS_PUEBLOS = [
   A('francocanadiense-mujer', 'Habitante rural francocanadiense', 'norteamerica-moderna', [1800, 1940], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco chal-lana botas-cuero', { A: 'azul-plomo lana-parda rojo-granza', B: BL, C: BL, D: 'cobre' }, { peinados: 'trenza-una recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: 'Ropa rural genérica del Quebec.' }),
   A('isleno-hombre', 'Hombre criollo de las islas', 'latinoamerica-moderna', [1850, 1980], 'm', 'baja', 'guayabera pantalon-recto cinturon-fino zapatos-cuero', { A: 'blanco-lino crema beige', B: BL, C: 'lana-negra', D: 'cobre' }, { peinados: 'corto rizos', barbas: 'bigote ninguna', tocados: 'canotier ninguno', pieles: 'oliva canela bronce castana', conf: 'baja', nota: 'Agrupa islas muy distintas; es ropa cotidiana de clima cálido, no un traje de cada isla.' }),
   A('isleno-mujer', 'Mujer criolla de las islas', 'latinoamerica-moderna', [1850, 1980], 'f', 'baja', 'vestido-sencillo chal-seda sandalias-cuero', { A: 'azul-celeste verde-agua rosa-palido', B: BL, C: BL, D: 'oro' }, { peinados: 'corto recogido rizos', tocados: 'panuelo ninguno', pieles: 'oliva canela bronce castana', conf: 'baja', nota: 'Agrupa islas muy distintas; es ropa cotidiana de clima cálido, no un traje de cada isla.' }),
+  A('neerlandes-hombre', 'Campesino neerlandés', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-campesino pantalon-recto zuecos', { A: 'azul-plomo indigo lana-negra', B: BL, C: 'lana-negra', D: 'plata' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorra-plana', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('neerlandesa-mujer', 'Campesina neerlandesa', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco chal-lana zuecos', { A: 'indigo lana-negra rojo-granza', B: BL, C: BL, D: 'cobre' }, { peinados: 'recogido trenza-una', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('escandinavo-hombre', 'Campesino escandinavo', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-lana pantalon-recto polainas-lana botas-cuero', { A: 'lana-negra azul-marino lana-parda', B: BL, C: 'rojo-granza', D: 'plata' }, { peinados: 'corto', barbas: 'bigote barba-corta ninguna', tocados: 'gorro-lana', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('escandinava-mujer', 'Campesina escandinava', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina corpino falda-larga delantal-bordado chal-lana botas-cuero', { A: 'azul-marino rojo-granza verde-botella', B: BL, C: 'rojo-granza', D: 'plata' }, { peinados: 'trenza-una recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('griego-moderno-hombre', 'Campesino griego con foustanella', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-blanca chaleco-corto foustanella calzas-largas botas-cuero', { A: 'azul-marino lana-negra burdeos', B: BL, C: 'rojo-granza', D: 'oro' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'fez ninguno', pieles: 'clara-calida oliva-clara oliva', conf: 'baja', nota: 'La foustanella y el chaleco bordado variaron mucho por región; el calzado típico (tsarouchia) no está en el catálogo.' }),
+  A('griego-moderno-mujer', 'Campesina griega', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-bordado chal-lana zapatos-cuero', { A: 'azul-marino rojo-granza lana-negra', B: BL, C: 'rojo-granza', D: 'oro' }, { peinados: 'recogido trenza-una', tocados: 'panuelo ninguno', pieles: 'clara-calida oliva-clara oliva', conf: 'baja', nota: NOTA }),
+  A('polaco-hombre', 'Campesino polaco', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-campesino pantalon-recto cinturon-cuero botas-cuero', { A: 'lana-parda azul-marino rojo-granza', B: BL, C: 'rojo-granza', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorra-plana', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('polaca-mujer', 'Campesina polaca', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina corpino falda-volantes delantal-bordado botas-cuero', { A: 'rojo-granza azul-ultramar verde-hoja', B: BL, C: 'azafran', D: 'cobre' }, { peinados: 'trenza-una recogido', tocados: 'panuelo corona-flores ninguno', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('ingles-hombre', 'Campesino inglés', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-largo calzones-rodilla calzas-largas botas-cuero', { A: 'lana-parda umbra kaki', B: BL, C: 'lana-negra', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorra-plana', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('ingles-mujer', 'Campesina inglesa', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco chal-lana botas-cuero', { A: 'azul-plomo rojo-granza lana-parda', B: BL, C: BL, D: 'cobre' }, { peinados: 'recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: NOTA }),
 ];
 
 Object.assign(__e, { ATUENDOS_PUEBLOS });
@@ -1536,8 +1567,8 @@ const base = { edades: E, conf: 'baja', nota: NOTA, barbas: 'ninguna', tocados: 
 const ATUENDOS_INFANTILES = [
   A('europa-campesino-nino', 'Niño campesino europeo', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-blanca chaleco-campesino calzones-rodilla botas-cuero', { A: 'lana-parda umbra azul-plomo', B: BL, C: 'lana-negra', D: 'cobre' }, { ...base, peinados: 'corto', pieles: CLAROS }),
   A('europa-campesina-nina', 'Niña campesina europea', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco zapatos-cuero', { A: 'rojo-granza lana-parda azul-plomo', B: BL, C: BL, D: 'cobre' }, { ...base, peinados: 'trenza-una trenzas-dos', pieles: CLAROS }),
-  A('europa-medieval-nino', 'Niño medieval', 'europa-medieval', [1000, 1500], 'm', 'baja', 'camisa-medieval calzas botas-cuero', { A: 'lana-parda azul-plomo verde-musgo', B: BL, C: 'lana-negra', D: 'cobre' }, { ...base, peinados: 'corto', pieles: CLAROS }),
-  A('europa-medieval-nina', 'Niña medieval', 'europa-medieval', [1000, 1500], 'f', 'baja', 'cota-campesina delantal-campesino botas-cuero', { A: 'azul-plomo rojo-granza lana-parda', B: BL, C: BL, D: 'cobre' }, { ...base, peinados: 'trenza-una recogido', pieles: CLAROS }),
+  A('europa-medieval-nino', 'Niño medieval', 'europa-medieval', [1000, 1500], 'm', 'baja', 'camisa-medieval calzas botas-cuero', { A: 'lana-parda verde-musgo', B: BL, C: 'lana-negra', D: 'cobre' }, { ...base, peinados: 'corto', pieles: CLAROS }),
+  A('europa-medieval-nina', 'Niña medieval', 'europa-medieval', [1000, 1500], 'f', 'baja', 'cota-campesina delantal-campesino botas-cuero', { A: 'rojo-granza lana-parda', B: BL, C: BL, D: 'cobre' }, { ...base, peinados: 'trenza-una recogido', pieles: CLAROS }),
   A('roma-nino', 'Niño romano', 'roma', [-200, 400], 'm', 'baja', 'tunica-plebeya cinturon-cuerda sandalia-romana', { A: 'crudo lana-clara', B: BL, C: 'rojo-granza', D: 'bronce' }, { ...base, peinados: 'corto romano', pieles: 'clara-calida oliva-clara oliva' }),
   A('roma-nina', 'Niña romana', 'roma', [-200, 400], 'f', 'baja', 'tunica-romana cinturon-cuerda sandalia-romana', { A: 'crudo lana-clara rosa-palido', B: BL, C: 'rojo-granza', D: 'bronce' }, { ...base, peinados: 'trenza-una recogido', pieles: 'clara-calida oliva-clara oliva' }),
   A('grecia-nino', 'Niño griego', 'grecia', [-600, 300], 'm', 'baja', 'quiton-corto cinturon-cuerda sandalias-cuero', { A: 'blanco-lino crudo', B: BL, C: 'rojo-granza', D: 'bronce' }, { ...base, peinados: 'corto', pieles: 'clara-calida oliva-clara oliva' }),
@@ -1596,7 +1627,7 @@ const ATUENDOS = [
   // ===== Mesopotamia =====
   A('mesopotamia-hombre', 'Hombre sumerio', 'mesopotamia', [-3000, -500], 'm', 'media', 'kaunakes sandalias-cuero cuerda-franciscana', { A: 'lana-clara crudo', B: 'lana-parda', C: 'rojo-ocre', D: 'bronce' }, { peinados: 'rizos corto', barbas: 'barba-larga barba-completa', pieles: 'oliva oliva-clara canela' }),
   A('mesopotamia-mujer', 'Mujer sumeria', 'mesopotamia', [-3000, -500], 'f', 'media', 'tunica-sumeria collar-cuentas sandalias-cuero', { A: 'lana-clara crudo azafran', B: 'indigo-claro', C: 'rojo-ocre indigo', D: 'oro bronce' }, { peinados: 'recogido largo-ondulado', tocados: 'diadema ninguno', pieles: 'oliva oliva-clara canela' }),
-  A('asiria-noble', 'Noble asirio', 'mesopotamia', [-900, -600], 'm', 'alta', 'tunica-sumeria manto-asirio sandalias-cuero brazaletes cinturon-cuero', { A: 'escarlata purpura-tiro lana-clara', B: 'azafran', C: 'azafran oro', D: 'oro' }, { peinados: 'rizos', barbas: 'barba-larga', tocados: 'diadema ninguno', pieles: 'oliva canela' }),
+  A('asiria-noble', 'Noble asirio', 'mesopotamia', [-900, -600], 'm', 'alta', 'tunica-sumeria manto-asirio sandalias-cuero brazaletes cinturon-cuero', { A: 'purpura-tiro lana-clara', B: 'azafran', C: 'azafran oro', D: 'oro' }, { peinados: 'rizos', barbas: 'barba-larga', tocados: 'diadema ninguno', pieles: 'oliva canela' }),
   // ===== Grecia =====
   A('grecia-mujer-peplos', 'Griega con peplo', 'grecia', [-800, -30], 'f', 'media', 'peplos cinta-pecho sandalias-cuero collar-cuentas', { A: 'blanco-lino crudo rojo-granza indigo-claro', B: 'azafran', C: 'azul-celeste rojo-granza', D: 'oro' }, { peinados: 'recogido corona-trenzas bob', tocados: 'diadema ninguno', pieles: 'clara-calida oliva-clara oliva' }),
   A('grecia-mujer-quiton', 'Griega con quitón y manto', 'grecia', [-600, -30], 'f', 'alta', 'quiton-jonico himation-corto cinta-pecho sandalias-cuero collar-colgante brazaletes', { A: 'blanco-lino azafran verde-hoja', B: 'rojo-granza', C: 'indigo rojo-granza', D: 'oro' }, { peinados: 'recogido corona-trenzas', tocados: 'diadema ninguno', pieles: 'clara-calida oliva-clara oliva' }),
@@ -1609,10 +1640,10 @@ const ATUENDOS = [
   A('roma-plebeyo', 'Plebeyo romano', 'roma', [-300, 400], 'm', 'baja', 'tunica-plebeya cinturon-cuerda sandalias-cuero', { A: 'crudo lana-parda rojo-ocre', B: 'lana-parda', C: 'rojo-ocre', D: 'cobre' }, { peinados: 'rapado corto', barbas: 'ninguna barba-corta', pieles: 'oliva canela bronce' }),
   A('roma-matrona', 'Matrona romana', 'roma', [-300, 400], 'f', 'alta', 'stola palla sandalias-cuero collar-colgante', { A: 'azafran rojo-granza verde-hoja blanco-lino', B: 'purpura-tiro', C: 'oro', D: 'oro' }, { peinados: 'recogido corona-trenzas', pieles: 'clara-calida oliva-clara oliva' }),
   A('roma-mujer-comun', 'Romana del pueblo', 'roma', [-300, 400], 'f', 'baja', 'vestido-sencillo cinturon-cuerda sandalias-cuero', { A: 'crudo lana-parda rojo-ocre', B: 'crudo', C: 'rojo-ocre', D: 'cobre' }, { peinados: 'recogido bob', tocados: 'panuelo ninguno', pieles: 'oliva oliva-clara canela' }),
-  A('roma-legionario', 'Legionario', 'roma', [-100, 300], 'm', 'media', 'tunica-romana lorica-segmentata pteruges cinturon-cuero caliga', { A: 'rojo-granza escarlata', B: 'hierro', C: 'hierro', D: 'bronce' }, { peinados: 'rapado corto', tocados: 'casco-romano', pieles: 'oliva oliva-clara canela' }),
+  A('roma-legionario', 'Legionario', 'roma', [-100, 300], 'm', 'media', 'tunica-romana lorica-segmentata pteruges cinturon-cuero caliga', { A: 'rojo-granza', B: 'hierro', C: 'hierro', D: 'bronce' }, { peinados: 'rapado corto', tocados: 'casco-romano', pieles: 'oliva oliva-clara canela' }),
   // ===== Bizancio =====
   A('bizancio-noble', 'Noble bizantino', 'bizancio', [330, 1453], 'm', 'alta', 'tunica-bizantina clamide-bizantina zapatos-hebilla', { A: 'purpura-tiro azul-ultramar borravino', B: 'oro', C: 'oro', D: 'oro' }, { peinados: 'corto', barbas: 'barba-corta candado', tocados: 'diadema corona', pieles: 'oliva-clara oliva' }),
-  A('bizancio-dama', 'Dama bizantina', 'bizancio', [330, 1453], 'f', 'alta', 'tunica-bizantina dalmatica collar-imperial zapatos-hebilla', { A: 'purpura-tiro verde-esmeralda azul-ultramar', B: 'oro', C: 'oro', D: 'oro' }, { peinados: 'recogido', tocados: 'velo diadema', pieles: 'oliva-clara oliva' }),
+  A('bizancio-dama', 'Dama bizantina', 'bizancio', [330, 1453], 'f', 'alta', 'tunica-bizantina dalmatica collar-imperial zapatos-hebilla', { A: 'purpura-tiro azul-ultramar', B: 'oro', C: 'oro', D: 'oro' }, { peinados: 'recogido', tocados: 'velo diadema', pieles: 'oliva-clara oliva' }),
   // ===== Europa medieval =====
   A('medieval-campesino', 'Campesino medieval', 'europa-medieval', [500, 1500], 'm', 'baja', 'camisa-medieval calzones-medievales polainas-lana zapatos-cuero cinturon-cuerda', { A: 'crudo lana-parda lana-clara verde-musgo', B: 'lana-parda', C: 'lana-parda', D: 'cobre' }, { peinados: 'flequillo corto rapado', barbas: 'ninguna barba-corta', tocados: 'capucha gorro-lana ninguno', pieles: 'porcelana clara clara-calida' }),
   A('medieval-campesina', 'Campesina medieval', 'europa-medieval', [500, 1500], 'f', 'baja', 'cota-campesina delantal-campesino zuecos', { A: 'crudo lana-parda verde-musgo rojo-ocre', B: 'lana-clara', C: 'rojo-ocre', D: 'cobre' }, { peinados: 'trenza-una recogido', tocados: 'panuelo velo', pieles: 'porcelana clara clara-calida' }),
@@ -1625,8 +1656,8 @@ const ATUENDOS = [
   A('clerigo', 'Clérigo', 'europa-medieval', [1000, 1950], 'm', 'media', 'sotana sobrepelliz zapatos-cuero', { A: 'negro-agalla lana-negra', B: 'blanco-lino', C: 'blanco-lino', D: 'plata' }, { peinados: 'corto tonsura', pieles: 'porcelana clara clara-calida oliva-clara' }),
   A('caballero-medieval', 'Caballero', 'europa-medieval', [1000, 1450], 'm', 'alta', 'camisa-medieval lorica-escamas sobreveste calzas botas-cuero capa-medieval cinturon-cuero', { A: 'rojo-cochinilla azul-ultramar blanco-lino', B: 'hierro', C: 'plata', D: 'oro' }, { peinados: 'corto bob', barbas: 'ninguna barba-corta', tocados: 'casco-nasal ninguno', pieles: 'porcelana clara' }),
   // ===== Germanos, celtas, vikingos =====
-  A('vikingo-hombre', 'Vikingo', 'germano', [750, 1100], 'm', 'media', 'tunica-vikinga bragas-holgadas cinturon-cuero capa-medieval botas-cuero', { A: 'rojo-granza indigo verde-musgo lana-parda', B: 'lana-parda', C: 'azul-egipcio rojo-granza', D: 'bronce' }, { peinados: 'corto trenza-una', barbas: 'barba-larga barba-completa', tocados: 'casco-nasal ninguno', pieles: 'porcelana clara' }),
-  A('vikinga-mujer', 'Mujer vikinga', 'germano', [750, 1100], 'f', 'media', 'tunica-vikinga vestido-delantal-vikingo broche-ovalado zapatos-cuero', { A: 'indigo-claro crudo rojo-granza', B: 'verde-musgo rojo-granza', C: 'azul-egipcio', D: 'bronce plata' }, { peinados: 'trenza-una recogido largo-liso', tocados: 'panuelo ninguno', pieles: 'porcelana clara' }),
+  A('vikingo-hombre', 'Vikingo', 'germano', [750, 1100], 'm', 'media', 'tunica-vikinga bragas-holgadas cinturon-cuero capa-medieval botas-cuero', { A: 'rojo-granza indigo verde-musgo lana-parda', B: 'lana-parda', C: 'rojo-granza', D: 'bronce' }, { peinados: 'corto trenza-una', barbas: 'barba-larga barba-completa', tocados: 'casco-nasal ninguno', pieles: 'porcelana clara' }),
+  A('vikinga-mujer', 'Mujer vikinga', 'germano', [750, 1100], 'f', 'media', 'tunica-vikinga vestido-delantal-vikingo broche-ovalado zapatos-cuero', { A: 'indigo-claro crudo rojo-granza', B: 'verde-musgo rojo-granza', C: 'azul-celeste', D: 'bronce plata' }, { peinados: 'trenza-una recogido largo-liso', tocados: 'panuelo ninguno', pieles: 'porcelana clara' }),
   A('celta-hombre', 'Celta', 'germano', [-500, 600], 'm', 'media', 'tunica-plebeya pantalones-celtas bratt-celta botas-cuero cinturon-cuero', { A: 'verde-hoja rojo-granza lana-parda indigo', B: 'rojo-granza', C: 'bronce', D: 'bronce oro' }, { peinados: 'largo-liso corto', barbas: 'bigote barba-corta', pieles: 'porcelana clara' }),
   A('escoces-highlander', 'Highlander', 'germano', [1500, 1850], 'm', 'media', 'camisa-medieval kilt-plaid plaid-escoces zapatos-cuero cinturon-cuero', { A: 'rojo-granza verde-botella azul-prusia', B: 'verde-botella lana-negra', C: 'plata', D: 'plata' }, { peinados: 'corto largo-ondulado', barbas: 'ninguna bigote barba-corta', tocados: 'boina', pieles: 'porcelana clara' }),
   // ===== Eslavo =====
@@ -1706,10 +1737,10 @@ const ATUENDOS = [
   A('andina-mujer', 'Mujer andina con pollera', 'andes', [1550, 2000], 'f', 'baja', 'blusa-campesina pollera lliclla sandalias-cuero collar-cuentas', { A: 'rojo-cochinilla azul-andino verde-andino malva', B: 'azafran rosa-cochinilla', C: 'azafran', D: 'oro' }, { peinados: 'trenzas-dos', tocados: 'sombrero-bombin-andino ninguno', pieles: 'canela bronce cobre' }),
   // ===== Mesoamérica =====
   A('maya-mujer', 'Mujer maya', 'mesoamerica', [-500, 2000], 'f', 'media', 'huipil enagua-maya collar-cuentas descalzo', { A: 'blanco-lino algodon-crudo rojo-cochinilla', B: 'azul-egipcio rojo-cochinilla', C: 'azul-egipcio azafran', D: 'verde-jade' }, { peinados: 'trenzas-dos largo-liso', tocados: 'diadema ninguno', pieles: 'canela bronce cobre' }),
-  A('maya-noble', 'Noble maya', 'mesoamerica', [-300, 900], 'm', 'alta', 'maxtlatl tilmatli sandalias-cuero brazaletes-altos collar-usej', { A: 'azul-egipcio rojo-cochinilla blanco-lino', B: 'verde-jade', C: 'verde-jade', D: 'verde-jade' }, { peinados: 'largo-liso', tocados: 'tocado-plumas diadema', pieles: 'canela bronce cobre' }),
-  A('azteca-hombre', 'Hombre azteca', 'mesoamerica', [1300, 1521], 'm', 'media', 'maxtlatl tilmatli sandalias-cuero', { A: 'blanco-lino algodon-crudo', B: 'rojo-cochinilla azul-egipcio', C: 'rojo-cochinilla', D: 'verde-jade' }, { peinados: 'flequillo corto', tocados: 'ninguno', pieles: 'canela bronce cobre' }),
-  A('azteca-guerrero', 'Guerrero azteca', 'mesoamerica', [1300, 1521], 'm', 'alta', 'maxtlatl tilmatli sandalias-cuero brazaletes-altos collar-usej', { A: 'naranja-achiote rojo-cochinilla azul-egipcio', B: 'verde-jade', C: 'verde-jade', D: 'oro' }, { peinados: 'flequillo', tocados: 'tocado-plumas', pieles: 'canela bronce cobre' }),
-  A('azteca-mujer', 'Mujer azteca', 'mesoamerica', [1300, 1521], 'f', 'media', 'huipil-largo cueitl collar-cuentas descalzo', { A: 'blanco-lino algodon-crudo azul-egipcio', B: 'rojo-cochinilla', C: 'rojo-cochinilla', D: 'verde-jade' }, { peinados: 'coletas corona-trenzas', tocados: 'ninguno', pieles: 'canela bronce cobre' }),
+  A('maya-noble', 'Noble maya', 'mesoamerica', [-300, 900], 'm', 'alta', 'maxtlatl tilmatli sandalias-cuero brazaletes-altos collar-usej', { A: 'azul-egipcio blanco-lino', B: 'verde-jade', C: 'verde-jade', D: 'verde-jade' }, { peinados: 'largo-liso', tocados: 'tocado-plumas diadema', pieles: 'canela bronce cobre' }),
+  A('azteca-hombre', 'Hombre azteca', 'mesoamerica', [1300, 1521], 'm', 'media', 'maxtlatl tilmatli sandalias-cuero', { A: 'blanco-lino algodon-crudo', B: 'rojo-cochinilla', C: 'rojo-cochinilla', D: 'verde-jade' }, { peinados: 'flequillo corto', tocados: 'ninguno', pieles: 'canela bronce cobre' }),
+  A('azteca-guerrero', 'Guerrero azteca', 'mesoamerica', [1300, 1521], 'm', 'alta', 'maxtlatl tilmatli sandalias-cuero brazaletes-altos collar-usej', { A: 'naranja-achiote rojo-cochinilla', B: 'verde-jade', C: 'verde-jade', D: 'oro' }, { peinados: 'flequillo', tocados: 'tocado-plumas', pieles: 'canela bronce cobre' }),
+  A('azteca-mujer', 'Mujer azteca', 'mesoamerica', [1300, 1521], 'f', 'media', 'huipil-largo cueitl collar-cuentas descalzo', { A: 'blanco-lino algodon-crudo', B: 'rojo-cochinilla', C: 'rojo-cochinilla', D: 'verde-jade' }, { peinados: 'coletas corona-trenzas', tocados: 'ninguno', pieles: 'canela bronce cobre' }),
   // ===== Norteamérica y Ártico =====
   A('llanuras-hombre', 'Hombre de las llanuras', 'norteamerica', [1500, 1900], 'm', 'media', 'camisa-gamuza leggings-gamuza mocasines cinturon-cuero collar-cuentas', { A: 'cuero-claro piel-guanaco', B: 'rojo-cartamo azul-ultramar', C: 'rojo-cartamo', D: 'azul-ultramar' }, { peinados: 'trenzas-dos largo-liso', tocados: 'tocado-plumas diadema ninguno', pieles: 'canela bronce cobre' }),
   A('llanuras-mujer', 'Mujer de las llanuras', 'norteamerica', [1500, 1900], 'f', 'media', 'vestido-cuero-flecos leggings-gamuza mocasines collar-cuentas', { A: 'cuero-claro piel-guanaco', B: 'rojo-cartamo azul-ultramar', C: 'rojo-cartamo', D: 'azul-ultramar' }, { peinados: 'trenzas-dos largo-liso', tocados: 'diadema ninguno', pieles: 'canela bronce cobre' }),
@@ -2242,6 +2273,14 @@ const CORPULENCIA_MIN = 0.6, CORPULENCIA_MAX = 1.6; // si se da como número
 const CORPULENCIAS = { delgada: 0.86, media: 1, robusta: 1.2, corpulenta: 1.34 };
 const POSTURAS = { firme: 7, relajada: 11, abierta: 22 };
 
+/** Estilos de saludo: cuánto baja el codo bajo la horizontal (menos grados = el codo más arriba), cuánto se inclina el antebrazo hacia afuera y cuánto gira la mano (grados). */
+const SALUDOS_ESTILO = Object.freeze({
+  alto: { codo: 22, antebrazo: 5, mano: 0 }, // el codo casi a la altura del hombro y la mano muy arriba
+  medio: { codo: 55, antebrazo: 15, mano: 0 }, // el de siempre
+  bajo: { codo: 76, antebrazo: 32, mano: 12 }, // un saludo discreto: el codo pegado al cuerpo y la mano a la altura del pecho
+  inclinado: { codo: 45, antebrazo: 34, mano: 22 }, // el antebrazo y la mano inclinados hacia afuera
+});
+
 /** Pose simétrica y rígida (la de las primeras versiones). */
 const POSE_FIRME = Object.freeze({
   modo: 'firme', cabeza: 0, inclinacion: 0, carga: 0, abre: 1, giro: 10, brazoLibre: 'abajo', angulos: null,
@@ -2393,12 +2432,12 @@ function medidas(opc = {}) {
     return { tipo: 'caido', linea, anchos: anchosBrazo, u: uBrazo, mano: { ang: grados + bend + flex } };
   };
   // Mano en la cintura: codo hacia afuera y muñeca sobre la cadera.
-  const brazoCintura = () => {
+  const brazoCintura = (lado = ladoLibre) => {
     const codo = [S0[0] + H * 0.064 * pose.cinturaCodo, lerp(y.axila, y.cintura, 0.5)];
     const mun = [w.cadera * 0.98 + H * 0.004, y.cintura + (y.cadera - y.cintura) * 0.72];
     const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
     const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
-    return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
+    return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[lado] ?? 0 };
   };
   // Mano sobre el pecho (como al jurar o saludar con respeto): el codo sale un poco y la muñeca llega al centro del pecho.
   const brazoPecho = () => {
@@ -2408,10 +2447,11 @@ function medidas(opc = {}) {
     const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
     return { tipo: 'pecho', linea: [S0, [m1[0] + H * 0.004, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
   };
-  // Manos juntas al frente (a la altura de la cintura) y brazos cruzados sobre el pecho: afectan a los dos brazos.
-  const brazoJuntas = () => {
-    const codo = [S0[0] + H * 0.024, lerp(y.axila, y.cintura, 0.8)];
-    const mun = [w.cintura * 0.12, y.cintura + (y.cadera - y.cintura) * 0.45];
+  // Manos juntas al frente (a la cintura o, en plegaria, al pecho), brazos cruzados sobre el pecho y manos en jarras: afectan a los dos brazos.
+  const brazoJuntas = (alto = false) => {
+    // `alto`: las manos juntas a la altura del pecho (plegaria); si no, a la de la cintura.
+    const codo = [S0[0] + H * (alto ? 0.04 : 0.024), lerp(y.axila, y.cintura, alto ? 0.55 : 0.8)];
+    const mun = alto ? [w.pecho * 0.1, y.pecho + H * 0.03] : [w.cintura * 0.12, y.cintura + (y.cadera - y.cintura) * 0.45];
     const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
     const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
     return { tipo: 'juntas', linea: [S0, m1, codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: 0 };
@@ -2448,6 +2488,8 @@ function medidas(opc = {}) {
   for (const s of [1, -1]) {
     if (s === saludoLado) brazos[s] = brazoSaludo();
     else if (manos === 'juntas') brazos[s] = brazoJuntas();
+    else if (manos === 'plegaria') brazos[s] = brazoJuntas(true);
+    else if (manos === 'jarras') brazos[s] = brazoCintura(s);
     else if (manos === 'cruzados') brazos[s] = brazoCruzado(s > 0 ? 0 : 1);
     else if (s === ladoLibre && pose.brazoLibre === 'pecho') brazos[s] = brazoPecho();
     else if (s === ladoLibre && pose.brazoLibre === 'cintura') brazos[s] = brazoCintura();
@@ -2693,7 +2735,7 @@ function deformar(M) {
   };
 }
 
-Object.assign(__e, { LIENZO, EDAD_MIN, ALTURA_MIN, CORPULENCIA_MIN, CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria, normalizarPose, medidas, perfilTorso, trazoTorso, brazoLado, brazoEnU, lineaEnY, piernaLado, trazoBrazo, trazoPierna, trazoMano, trazoAntebrazo, trazoPie, trazoCuello, deformar });
+Object.assign(__e, { LIENZO, EDAD_MIN, ALTURA_MIN, CORPULENCIA_MIN, CORPULENCIAS, POSTURAS, SALUDOS_ESTILO, POSE_FIRME, poseAleatoria, normalizarPose, medidas, perfilTorso, trazoTorso, brazoLado, brazoEnU, lineaEnY, piernaLado, trazoBrazo, trazoPierna, trazoMano, trazoAntebrazo, trazoPie, trazoCuello, deformar });
 return __e;
 })();
 
@@ -4318,6 +4360,11 @@ const ETNIAS_PUEBLOS = [
   E('malayo-cabo', 'Malayo del Cabo', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'malayo-cabo', pieles: 'clara-calida oliva-clara oliva canela', cabellos: MED, peinados: 'corto recogido', barba: 0.4, altura: [157, 170], conf: 'baja', nota: 'Comunidad de origen diverso (Indonesia, India, África oriental y otros); traje genérico de los siglos XIX y XX.' }),
   E('francocanadiense', 'Francocanadiense', { grupo: 'Norteamérica', regiones: 'norteamerica-moderna', prefijos: 'francocanadiense', pieles: 'porcelana clara clara-calida', cabellos: CLARO, peinados: 'corto recogido trenza-una', barba: 0.35, altura: [162, 175], conf: 'baja', nota: 'Traje rural genérico del Quebec de los siglos XIX y XX; no incluye la faja fléchée ni los trajes de los métis.' }),
   E('criollo-isleno', 'Criollo de las islas (Atlántico e Índico)', { grupo: 'Latinoamérica', regiones: 'latinoamerica-moderna', prefijos: 'isleno', pieles: 'oliva canela bronce castana', cabellos: OSC, peinados: 'corto recogido rizos', barba: 0.3, altura: [158, 171], conf: 'baja', nota: 'Agrupa pueblos criollos de islas muy distintas (Cabo Verde, Mauricio, Reunión, Curazao, Jamaica, Barbados, Bahamas…): es una imagen genérica de ropa cotidiana, no de cada isla.' }),
+  E('neerlandes', 'Neerlandés y flamenco', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'neerland', pieles: 'porcelana clara', cabellos: CLARO, peinados: 'corto recogido trenza-una', barba: 0.35, altura: [168, 181], conf: 'baja', nota: 'Traje campesino genérico de los siglos XVIII a XX con zuecos; los trajes de Volendam, Marken, Zelanda o Flandes se distinguen por tocados y colores que no se reproducen.' }),
+  E('escandinavo', 'Escandinavo campesino (danés, sueco, noruego, islandés)', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'escandinav', pieles: 'porcelana clara', cabellos: CLARO, peinados: 'corto trenza-una recogido', barba: 0.35, altura: [166, 179], conf: 'baja', nota: 'Traje campesino genérico del norte de Europa; no reproduce el bunad noruego, el folkdräkt sueco ni los trajes regionales, que cambian de valle en valle. Los sami tienen su propia entrada.' }),
+  E('griego-moderno', 'Griego moderno', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'griego-moderno', pieles: 'clara-calida oliva-clara oliva', cabellos: MED, peinados: 'corto recogido', barba: 0.4, altura: [160, 173], conf: 'baja', nota: 'Traje rural genérico de los siglos XVIII a XX; el griego antiguo tiene su propia entrada. La foustanella varió mucho por región.' }),
+  E('polaco', 'Polaco', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'polac', pieles: 'porcelana clara', cabellos: CLARO, peinados: 'corto trenza-una recogido', barba: 0.35, altura: [163, 176], conf: 'baja', nota: 'Traje campesino genérico; los trajes regionales polacos (Cracovia, Łowicz, Podhale…) se distinguen por bordados y colores que no se reproducen.' }),
+  E('ingles', 'Inglés campesino', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'ingles', pieles: 'porcelana clara', cabellos: CLARO, peinados: 'corto recogido', barba: 0.35, altura: [162, 175], conf: 'baja', nota: 'Ropa rural genérica de los siglos XVIII a XX; escoceses, galeses e irlandeses tienen otras entradas.' }),
 ];
 
 Object.assign(__e, { ETNIAS_PUEBLOS });
@@ -4541,7 +4588,7 @@ const GRUPOS = [
   ['principal', 'CALZADO_CUERO', 'zapatos-cuero zapatos-hebilla zapatos-vestir botas-altas botas-vaqueras botas-militares botas-mongolas botas-tibetanas'],
   ['principal', 'BLANCOS', 'enaguas tallit dishdasha cuello-alto kihei'],
   ['principal', 'TIERRAS', 'bragae escapulario faldon-campesina capa-viaje capa-lluvia-paja sombrero-paja-capa manto-lana-ancho falda-lana-gruesa'],
-  ['principal', 'BLANCOS_RUSTICOS', 'delantal-peto'],
+  ['principal', 'BLANCOS_RUSTICOS', 'delantal-peto foustanella'],
   ['principal', 'LANAS_OSCURAS', 'kepam'],
   ['principal', 'VESTIDOS_GALA', 'capa-ceremonial capa-opera'],
   ['principal', 'LUTO', 'chador'],
@@ -4705,7 +4752,7 @@ const { PIELES, CABELLOS } = __m['datos/colores'];
 const { PRENDAS } = __m['datos/prendas'];
 const { REGIONES } = __m['datos/atuendos'];
 const { PEINADOS_ID, BARBAS_ID, TOCADOS_ID } = __m['cabeza'];
-const { CORPULENCIAS, POSTURAS, EDAD_MIN, EDAD_MAX, ALTURA_MIN, ALTURA_MAX, CORPULENCIA_MIN, CORPULENCIA_MAX } = __m['cuerpo'];
+const { CORPULENCIAS, POSTURAS, SALUDOS_ESTILO, EDAD_MIN, EDAD_MAX, ALTURA_MIN, ALTURA_MAX, CORPULENCIA_MIN, CORPULENCIA_MAX } = __m['cuerpo'];
 const { esHex } = __m['util'];
 
 const lista = (v) => v.join(', ');
@@ -4722,7 +4769,7 @@ const ESTILOS_ROPA_NUEVA = ['sobrio', 'trabajo', 'festivo', 'ceremonial'];
 const ESQUEMAS = ['analogo', 'complementario', 'triada', 'monocromo', 'tierra', 'festivo'];
 const SALUDOS = ['derecha', 'izquierda', 'ninguno', 'ninguna'];
 const BRAZOS_LIBRES = ['abajo', 'cintura', 'bolsillo', 'pecho'];
-const MANOS = ['juntas', 'cruzados'];
+const MANOS = ['juntas', 'plegaria', 'cruzados', 'jarras'];
 
 /** Comprueba las opciones de `generarPersona` (y de `generarRopaNueva`); no cambia nada, solo lanza si algo no vale. */
 function validarOpciones(opc = {}) {
@@ -4740,6 +4787,7 @@ function validarOpciones(opc = {}) {
   if (opc.pose !== undefined && opc.pose !== null && typeof opc.pose !== 'object') enLista('Pose', opc.pose, ['casual', 'firme', 'infantil', 'mayor', 'segun-edad']);
   if (opc.pose && typeof opc.pose === 'object') {
     if (opc.pose.brazoLibre !== undefined) enLista('pose.brazoLibre', opc.pose.brazoLibre, BRAZOS_LIBRES);
+    if (opc.pose.saludoEstilo !== undefined) enLista('pose.saludoEstilo', opc.pose.saludoEstilo, Object.keys(SALUDOS_ESTILO));
     if (opc.pose.manos !== undefined) enLista('pose.manos', opc.pose.manos, MANOS);
     if (opc.pose.carga !== undefined) enLista('pose.carga', opc.pose.carga, [-1, 0, 1]);
   }
@@ -4784,7 +4832,7 @@ const { PRENDAS_POR_ID, PRENDAS } = __m['datos/prendas'];
 const { ATUENDOS, ATUENDOS_POR_ID, REGIONES } = __m['datos/atuendos'];
 const { MANDIBULAS_ID, PEINADOS, BARBAS, TOCADOS } = __m['cabeza'];
 const { PATRONES_ID } = __m['patrones'];
-const { CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria } = __m['cuerpo'];
+const { CORPULENCIAS, POSTURAS, POSE_FIRME, SALUDOS_ESTILO, poseAleatoria } = __m['cuerpo'];
 const { renderizar } = __m['svg'];
 const { ETNIAS, ETNIAS_POR_ID } = __m['datos/etnias'];
 const { distribucionColor, catalogoColores, muestrearColor, muestrearColorLibre, perfilDe, PERFILES } = __m['datos/colores-prendas'];
@@ -5063,10 +5111,13 @@ const ESTATURA_REF = { f: 161, m: 174 }; // los promedios con los que medidas() 
 // ---------- Persona ----------
 
 /**
- * Opciones (todas opcionales): semilla, sexo ('f'|'m'), edad, corpulencia, altura (cm), postura,
- * atuendo (id), region, anio, clase ('baja'|'media'|'alta'), piel, cabello, barba (true|false|id),
- * peinado, tocado, calzado, paleta ({A,B,C,D} en hex), variacion (0..1), detalle ('minimo'|'medio'|'alto'),
- * rasgos (true: ojos, cejas y boca suaves), fondo, prendas (lista propia de prendas ya armadas).
+ * Opciones (todas opcionales; una opción mal escrita lanza un Error, ver validacion.js): semilla, sexo ('f'|'m'), edad (2 a 100),
+ * corpulencia (nombre o número), altura (cm), postura, atuendo (id), region, anio, clase ('baja'|'media'|'alta'), etnia (id, lista,
+ * texto con comas o { id: peso }), piel, cabello, barba (true|false|id), peinado, tocado, calzado, paleta ({A,B,C,D} en hex),
+ * variacion (0..1), colores ('atuendo'|'prenda'), vestir (ids de prenda o { ranura: id }), saludo ('derecha'|'izquierda'|'ninguno'),
+ * pose ('casual'|'firme'|'infantil'|'mayor'|'segun-edad' o un objeto parcial: brazoLibre, manos, carga, cabeza…), vista ('frente'|'espalda'),
+ * detalle ('minimo'|'medio'|'alto'), contorno ('ninguno'|'suave'), rasgos (true: ojos, cejas y boca suaves), fondo,
+ * prendas (lista propia de prendas ya armadas).
  */
 function generarPersona(opc = {}) {
   validarOpciones(opc);
@@ -5183,7 +5234,7 @@ function generarPersona(opc = {}) {
   else {
     const perfilPose = opc.pose === 'segun-edad' ? (edad <= 12 ? 'infantil' : edad >= 65 ? 'mayor' : undefined) : (opc.pose === 'infantil' || opc.pose === 'mayor' ? opc.pose : undefined);
     pose = poseAleatoria(azar.hijo('pose'), 1, perfilPose);
-    if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(opc.pose.saludo ?? {}) } };
+    if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(SALUDOS_ESTILO[opc.pose.saludoEstilo] ?? {}), ...(opc.pose.saludo ?? {}) } };
     if (opc.postura !== undefined && !(opc.pose && opc.pose.angulos)) {
       const base = typeof opc.postura === 'number' ? opc.postura : (POSTURAS[opc.postura] ?? POSTURAS.relajada);
       pose.angulos = { 1: base + pose.angulos[1] * 0.2 - 1, '-1': base + pose.angulos['-1'] * 0.2 - 1 };

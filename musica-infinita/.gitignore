@@ -1,0 +1,12 @@
+# Lo personal no se sube: tus MIDI, tus SoundFonts y lo que grabes o exportes.
+# (La aplicación los guarda en el navegador; esto es por si los dejas en esta carpeta.)
+midis/
+*.mid
+*.midi
+*.kar
+*.rmi
+*.sf2
+*.sf3
+*.flac
+*.wav
+node_modules/

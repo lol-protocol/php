@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Database;
-use App\RangoEdad;
 use PDO;
 
 /**
@@ -47,7 +46,7 @@ final class SegmentacionRepository
     public function topPorDimensiones(int $limite = 5): array
     {
         $limite = max(0, $limite);   // se interpola: es un entero, nunca entrada de usuario
-        $edad = RangoEdad::expresionSql('base.fecha_nacimiento');
+        $edad = 'base.rango_de_edad';
         $claveCiudad = self::claveDeCiudadSql('base.ciudad');
         $filas = $this->db->query(
             "WITH f AS MATERIALIZED (
@@ -55,7 +54,7 @@ final class SegmentacionRepository
                  FROM boletas b
                  WHERE NOT b.anulada GROUP BY b.cliente_id
              ), base AS MATERIALIZED (
-                 SELECT c.pais_codigo, c.ciudad, c.idioma, c.genero, c.fecha_nacimiento, f.total
+                 SELECT c.pais_codigo, c.ciudad, c.idioma, c.genero, c.rango_de_edad, f.total
                  FROM f JOIN clientes c ON c.id = f.cliente_id
              )
              (SELECT 'pais' AS dimension, p.nombre AS etiqueta, COUNT(*) AS clientes, SUM(base.total) AS total_facturado
@@ -104,15 +103,33 @@ final class SegmentacionRepository
     }
 
     /**
-     * LTV (a la fecha) por cohorte de alta: para cada mes en que un grupo de
-     * clientes se dio de alta, el promedio de cuanto pago cada uno hasta hoy,
-     * neto de sus notas de credito -si le devolvimos la plata no es valor
-     * que el cliente haya dejado-.
+     * Lo que cada cliente con movimientos lleva cobrado hasta hoy, neto de sus notas de credito -si le devolvimos
+     * la plata no es valor que el cliente haya dejado-: una fila (cliente_id, cobrado_usd) por cliente que tenga
+     * algun pago vigente o alguna nota; uno sin ninguno no sale, y quien lo use le pone cero (LEFT JOIN y COALESCE).
+     * Cada pago y cada nota va en USD a la tasa que guardo al crearse (migracion 011), no a la de hoy. Es la
+     * definicion de «cobrado» del LTV por cohorte de alta y de los ingresos por canal de adquisicion: una sola, para
+     * que las dos pantallas no puedan dar cifras distintas del mismo cliente.
      *
-     * Los pagos y las notas se suman cada uno una sola vez por cliente y se
-     * unen despues: ni se multiplican filas entre los dos joins ni hay una
-     * subconsulta de notas por cada cliente, como antes (454 ms con 30 mil
-     * clientes contra 178 ms, con el mismo resultado).
+     * Los pagos y las notas se suman cada uno una sola vez por cliente y se unen despues: ni se multiplican filas
+     * entre los dos lados ni hay una subconsulta de notas por cada cliente (454 ms con 30 mil clientes contra 178 ms,
+     * con el mismo resultado).
+     */
+    public static function cobradoNetoPorClienteSql(): string
+    {
+        return 'SELECT COALESCE(pg.cliente_id, nc.cliente_id) AS cliente_id,
+                       COALESCE(pg.total, 0) - COALESCE(nc.total, 0) AS cobrado_usd
+                FROM (SELECT p.cliente_id, SUM(p.monto * p.tasa_a_usd) AS total
+                      FROM pagos p
+                      WHERE NOT p.anulada GROUP BY p.cliente_id) pg
+                FULL JOIN (SELECT n.cliente_id, SUM(n.monto * n.tasa_a_usd) AS total
+                           FROM notas_credito n
+                           GROUP BY n.cliente_id) nc ON nc.cliente_id = pg.cliente_id';
+    }
+
+    /**
+     * LTV (a la fecha) por cohorte de alta: para cada mes en que un grupo de
+     * clientes se dio de alta, el promedio de cuanto cobro cada uno hasta hoy
+     * (ver cobradoNetoPorClienteSql()).
      */
     public function ltvPorCohorte(): array
     {
@@ -120,14 +137,9 @@ final class SegmentacionRepository
             "SELECT cohorte, COUNT(*) AS clientes, AVG(total_cliente) AS ltv_promedio
              FROM (
                  SELECT to_char(c.fecha_alta, 'YYYY-MM') AS cohorte, c.id,
-                        COALESCE(pg.total, 0) - COALESCE(nc.total, 0) AS total_cliente
+                        COALESCE(cobrado.cobrado_usd, 0) AS total_cliente
                  FROM clientes c
-                 LEFT JOIN (SELECT p.cliente_id, SUM(p.monto * p.tasa_a_usd) AS total
-                            FROM pagos p
-                            WHERE NOT p.anulada GROUP BY p.cliente_id) pg ON pg.cliente_id = c.id
-                 LEFT JOIN (SELECT n.cliente_id, SUM(n.monto * n.tasa_a_usd) AS total
-                            FROM notas_credito n
-                            GROUP BY n.cliente_id) nc ON nc.cliente_id = c.id
+                 LEFT JOIN (" . self::cobradoNetoPorClienteSql() . ") cobrado ON cobrado.cliente_id = c.id
              ) sub
              GROUP BY cohorte
              ORDER BY cohorte"

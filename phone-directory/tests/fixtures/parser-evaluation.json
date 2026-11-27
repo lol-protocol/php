@@ -540,6 +540,30 @@
             "idioma": "de",
             "entrada": "MÜLLER, Hans\nHauptstr. 5, 10115 Berlin\n030 123456",
             "esperado": [{"tipo": "natural", "nombre": "MÜLLER, Hans", "calle": "Hauptstr. 5, 10115 Berlin", "telefono": "030 123456"}]
+        },
+        {
+            "id": "es-una-linea-con-coma-tras-el-apellido-y-numero-al-final",
+            "idioma": "es",
+            "entrada": "GARCÍA LÓPEZ, Juan Calle Mayor 12 91 234 56 78",
+            "esperado": [{"tipo": "natural", "nombre": "GARCÍA LÓPEZ, Juan", "calle": "Calle Mayor 12", "telefono": "91 234 56 78"}]
+        },
+        {
+            "id": "fr-numero-con-bis-antes-de-la-coma",
+            "idioma": "fr",
+            "entrada": "DUPONT, Marie\n12 bis, rue de la Paix\n01 42 68 53 00",
+            "esperado": [{"tipo": "natural", "nombre": "DUPONT, Marie", "calle": "12 bis, rue de la Paix", "telefono": "01 42 68 53 00"}]
+        },
+        {
+            "id": "en-saltos-de-linea-de-windows",
+            "idioma": "en",
+            "entrada": "SMITH, John\r\n12 Oak Street\r\n555-123-4567\r\n",
+            "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-numero-pegado-a-una-letra-no-es-telefono",
+            "idioma": "en",
+            "entrada": "SMITH, John\n12 Oak Street\né555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": null}]
         }
     ]
 }

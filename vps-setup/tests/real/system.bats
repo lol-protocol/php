@@ -9,6 +9,7 @@ setup() { setup_real; }
 
 teardown() {
     rm -rf "/var/log/nginx/$D" /etc/logrotate.d/nginx-domains
+    rm -f /etc/systemd/journald.conf.d/vps-setup.conf
     rm -f /etc/ssh/sshd_config.d/00-hardening.conf /etc/ssh/sshd_config.d/50-bats-cloud-init.conf /etc/ssh/sshd_config.d/99-bats-late.conf
 }
 
@@ -23,6 +24,16 @@ need_sshd() {
     run bash "$VPS_DIR/07_D-setup-logrotate.sh"
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
     [[ "$output" == *"validada con logrotate -d"* ]]
+}
+
+@test "07_D: systemd REAL lee el tope del journal en la configuracion efectiva de journald" {
+    command -v systemd-analyze > /dev/null || skip "falta systemd-analyze"
+    run bash "$VPS_DIR/07_D-setup-logrotate.sh"
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    run systemd-analyze cat-config systemd/journald.conf
+    [ "$status" -eq 0 ]
+    echo "$output" | grep -qx 'SystemMaxUse=200M'
+    rm -f /etc/systemd/journald.conf.d/vps-setup.conf
 }
 
 @test "07_D: una rotacion forzada ROTA los logs por dominio (el logrotate del paquete nginx no los cubre)" {

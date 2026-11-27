@@ -1,0 +1,47 @@
+name: Pruebas marketing
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "marketing/**"
+      # render.php puede leer los interruptores (--interruptores)
+      - "interruptores/**"
+      - ".github/workflows/pruebas-marketing.yml"
+  pull_request:
+    paths:
+      - "marketing/**"
+      - "interruptores/**"
+      - ".github/workflows/pruebas-marketing.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          coverage: none
+
+      - name: Los scripts compilan
+        run: |
+          php -l marketing/render.php
+          php -l marketing/pruebas/ejecutar.php
+
+      - name: config.json válido y marcadores contados
+        run: php marketing/render.php --check
+
+      - name: Pruebas de render.php con los interruptores
+        run: php marketing/pruebas/ejecutar.php

@@ -2,75 +2,34 @@
 
 ## [Sin publicar]
 
-### Cambiado
+### Corregido
 
-- **Alemán, sustantivos por terminación** (`GermanInflection`): plural y genitivo según la terminación
-  («Hund» → «Hunds», «Hunde», «Hundes»; «Beziehung» → «Beziehungen»; «Wagen» → «Wagens»; «Arsch» →
-  «Arsches», «Arsche»). Contra UniMorph, la cobertura pasa de 17 % a 67 % (precisión de 90 % a 81 %) y los
-  lemas sin reglas, de 64 % a 7 %. Con `bin/false-positives.php`: +22 formas marcadas en las 50.000 palabras más
-  frecuentes, todas de insultos del diccionario (`Diebe`, `Kühe`, `Bastarde`…), ninguna palabra corriente.
-- **Neerlandés, comparativo y superlativo del adjetivo** (`DutchInflection`): «dom» → «dommer», «dommere»,
-  «domste»; «zwaar» → «zwaarder». Cobertura de 28 % a 96 % (precisión de 92 % a 78 %); +8 formas marcadas, todas de
-  adjetivos que ya eran insultos (`stommer`, `smerigste`, `wreedste`…).
-- **Búlgaro, adjetivos en «-ски»** (`BulgarianInflection`): «американски» → «американска», «американския»…
-  Cobertura de 22 % a 26 %; los adjetivos sin reglas, de 18 % a 6 %.
-- Las pruebas que usaban el alemán como ejemplo de «idioma sin reglas» usan ahora el japonés.
+- **Islandés y tagalo: tres términos recién añadidos se retiran** tras medir con las listas de frecuencia
+  (`bin/false-positives.php`, FrequencyWords): «heimskur» («tonto», adjetivo corriente, rango 2.049) y
+  «salbahe» («travieso», rango 4.646) marcaban habla corriente, y «hudas» es un nombre bíblico (religioso: no se
+  toca sin revisión nativa). Los demás términos nuevos que aparecen en las listas son insultos reales.
+  `isl` queda en 108 términos y `tgl` en 121.
 
-
-### Cambiado
-
-- **Cantonés, no chino**: `yue` ya no declara el código `zh` (ISO 639-1 no tiene cantonés), así que
-  `Accept-Language: zh…` ya no recibe mensajes en cantonés: cae al español; solo la etiqueta `yue` los sirve.
-  Los mensajes de `yue` se ajustaron para que sean cantonés escrito y no chino estándar.
+## [6.0.0] - 2026-11-25
 
 ### Añadido
 
+- **Griego, adjetivos con comparativo** (`GreekInflection`): «κακός» → «κακή», «κακό», «κακοί», «κακά»,
+  «κακότερος»… (13 terminaciones y las mismas con «-τερ-»). Cobertura contra UniMorph de 56 % a 75 %
+  (precisión de 81 % a 52 %, sobre el umbral de 50 %); los sustantivos no reciben comparativo
+  (`GreekAdjectivesTest`).
+- **Más términos en los diccionarios `basic` de islandés, suajili y tagalo**, solo en categorías no
+  sensibles (animal, intelectual, moral, burlesco y ordinario): +14 islandés, +11 suajili y +14 tagalo,
+  marcados en el código como borrador sin revisión nativa. No se tocó ningún término étnico,
+  religioso, de discapacidad ni de género, ni ninguna severidad existente.
 - **Temas de biografía** (`config/bio-topics/`, `spa` y `eng`): un modo opcional que marca lo que alguien dice de
   **sí mismo** («tengo cáncer», «soy evangélica», «soy gay») como dato sensible, para revisar la biografía de un
   perfil. Se pide con el nuevo parámetro `$topics` de `ChatLineReviewer::create()` y de `TextMarks::of()`
   (`'bio-topics'`); el valor por defecto es `chat-topics`, así que **el comportamiento de siempre no cambia**
   (que «tengo cáncer» siga aprobándose en un chat es a propósito). Nunca bloquea: va a revisión.
 - **Mensajes de salida en 13 idiomas más** (`nor`, `dan`, `fin`, `hun`, `ell`, `bul`, `slk`, `ind`, `vie`,
-  `tha`, `tgl`, `isl` y `yue`): 31 de los 33 idiomas (falta solo el suajili). Traducciones propias, sin revisión
-  nativa. `yue` está en chino tradicional y atiende las etiquetas `zh` de `Accept-Language`.
-
-### Corregido
-
-- **README**: las amenazas con forma (`patterns`) están en 21 idiomas, no 18.
-- **`FileSizeLimitTest` tomaba `#[Atributo]` por un comentario** y contaba de menos las líneas de código de los
-  archivos con atributos de PHP.
-- **Un archivo de mensajes con marcadores que no casan** (un `%s` de más o de menos) ya no lanza una excepción:
-  `Messages::get()` usa la plantilla española, y si tampoco, la clave.
-- **Tagalo**: la forma con ligamento («tangang») lleva el rasgo `lig`, no `infl` (que sugería un caso).
-- `ModerationEndpoint` ya no reasigna `$language` dentro de un literal de array.
-
-### Cambiado
-
-- **Las traducciones de los mensajes** (`config/messages/*.php`) ya no se anuncian como pendientes de revisión
-  nativa: el proyecto decidió no hacerla. Siguen siendo traducciones propias, y así lo dice cada archivo y el README.
-  La revisión nativa de los diccionarios, las severidades y la flexión es otra cosa y no cambia.
-
-- **`config/languages/*.php`: el `meta` ya no repite `iso639_1`, `name`, `nativeName` ni `family`** (viven solo
-  en `supported-languages.php`); `LanguageMetaTest` lo comprueba.
-- **`Messages`**: las categorías en español salen de `risk-categories.php` (ya no hay que tratarlas aparte en las
-  pruebas); `explanation.end` es opcional (por omisión, el punto de `spa`); `requiredKeys()` no recibe archivo.
-- **`InflectionLanguages`**: una sola tabla `idioma => [clase, etiqueta]` en vez de tres listas.
-- `LanguageRegistry` normaliza el código en un único método.
-- Obsoletos (`@deprecated`, siguen funcionando): `WordList::getByCategory()`, `getBySeverity()`, `getMeta()`,
-  `requiresTokenizer()`, `ScoringPolicy::getAggregation()` y `ValidationResult::getNameCollisionTerms()`: nada
-  de la librería ni del monorepo los llama.
-- La prueba de «33 idiomas» compara el registro con los archivos de `config/languages/`, sin número fijo.
-
-- **El código de idioma es siempre de tres letras** (ISO 639-3): `LanguageRegistry::resolve()` e
-  `isSupported()` ya no aceptan `es`, `de`, `zh`… (el campo `language` del endpoint tampoco). Las etiquetas de
-  dos letras solo se leen en `Accept-Language`, con `LanguageRegistry::fromHeaderTag()`.
-- **`Messages` lee de la carpeta de configuración del revisor** (`<configDir>/messages`), no de la del
-  paquete; `negotiate()` respeta los pesos `q` de `Accept-Language`. Los textos de `explanation.related` usan
-  `%.2F` (no dependen del locale).
-- **`FileSizeLimitTest` cuenta líneas de código** (sin vacías ni comentarios), con el mismo límite de 100.
-- `RomanianInflection` genera sus clases palatalizables de una tabla (mismas formas que antes).
-
-### Añadido
+  `tha`, `tgl`, `isl` y `yue`): 32 de los 33 idiomas, `spa` incluido (falta solo el suajili). Traducciones propias, sin revisión
+  nativa. `yue` está en cantonés escrito y solo atiende la etiqueta `yue`.
 
 - **`Loader` y `Http\TextMarks`, para quien usa la librería sin Composer** (url-routing y sistema-nuevo, que
   tenían cada uno su copia del cargador de clases, de la lista de categorías descriptivas y del mapeo a
@@ -96,26 +55,6 @@
   `getDetailedReport($result, $locale)` y `getExplanations($locale)`. Español por defecto (la
   salida de siempre) y como respaldo de lo que falte. Borradores sin revisión nativa;
   `MessagesTest` comprueba que cada idioma tiene las mismas claves y marcadores que el español.
-
-### Corregido
-
-- **Rellenos invisibles entre letras** (`EvasionCleaner`): el Hangul filler
-  (U+3164, U+115F, U+1160, U+FFA0) y el braille en blanco (U+2800) dentro de una
-  palabra latina («pu\u{3164}ta») dejaban pasar el insulto y la amenaza. Se quitan
-  sólo entre letras latinas; en coreano siguen siendo letras. `FillerEvasionTest`.
-- **Datos personales con arroba o dígitos de ancho completo** (`PersonalData::findIn`):
-  «juan＠gmail.com» daba `approve` porque los datos personales se buscaban en la
-  línea sin limpiar. Ahora también en la línea limpia.
-- **Un apellido ambiguo ya no rebaja un insulto grave** (`ValidationResult::nameCollisionExplainsSeverity`):
-  «Puta Cerda» y «Cabron Moro» daban `review` porque «cerda» y «moro» son
-  apellidos, aunque «puta» y «cabron» son graves por sí solos. La colisión sólo baja a
-  revisión el rechazo que ella misma causa.
-- **Letras en cuadros** (`StyledLetters`): sólo los tres bloques A–Z; las siglas de
-  entre medias («🅪»…) ya no se convierten en puntuación ASCII.
-- **README**: conteos de términos por nivel de cobertura al día (292–679, 149–329 y
-  94–109; 8.206 en total) y el comentario del ejemplo 10.
-
-### Añadido
 
 - **Frases que no deben dar alerta** (`tests/fixtures/safe-phrases.php`,
   `SafePhrasesTest`): las frases corrientes que antes se marcaban por error
@@ -148,12 +87,110 @@
 
 ### Cambiado
 
+- **Versión mayor por el cambio de contrato**: los códigos de idioma de dos letras (`es`, `zh`…) dejan
+  de aceptarse en la API y en el campo `language` del endpoint; ver más abajo.
+- **`EvasionCleaner::clean()` salta el camino largo en el texto hecho solo de letras latinas que no cambia**
+  (`PlainLatin`: 631 letras de Latin-1, Latin Extendida-A y -B y Latin Extendida Adicional, comprobadas una a una). Antes, cualquier letra
+  no ASCII —`ı`, `ğ`, `ő`, `é`— corría varias expresiones regulares y NFKC. La primera revisión baja ~22 % en turco
+  (64,6 → 50,4 ms) y ~25 % en húngaro (42,9 → 32,4 ms), y cada búsqueda en texto con acentos también es más rápida.
+  `PlainLatinTest` comprueba que da lo mismo que el camino largo (`EvasionCleaner::deepClean()`) en todo el
+  vocabulario de los 33 diccionarios y en 2.000 cadenas al azar.
+- **`bin/inflection-check.php --min-precision=N`**: sale con código 1 si la precisión de algún tipo baja de N %
+  (el umbral de 50 % que pide `CLAUDE.md` para una regla nueva de flexión); antes solo imprimía cifras.
+- `TurkishInflection::cases()` usa `softened()` (el sonorizado estaba escrito dos veces) y `HungarianInflection`
+  declara una sola vez la lista de casos del singular y del plural.
+- Las pruebas de flexión comparten `AssertsInflectedForms` (siete archivos repetían la misma comprobación).
+
+- **`review/yue.csv` sin rangos de frecuencia**: la planilla del cantonés usaba la lista de chino tradicional
+  (`zh_tw`) como aproximación, y de ella salían 113 rangos y 27 filas «frecuente» que no eran cantonés. Ahora se
+  genera sin lista, como `swa.csv` (179 filas, sin respuestas perdidas: no había ninguna rellenada).
+- **Turco, posesivos y sus casos** (`TurkishInflection`): «kitap» → «kitabım», «kitabın», «kitabı»,
+  «kitabımız», «kitabınız», «kitapları», más los casos sobre cada uno («kitabımı», «kitabına», «kitabından»,
+  «kitabıyla»; con «n» de unión tras la 3.ª persona). Contra UniMorph, la cobertura pasa de 23 % a 81 % y la
+  precisión de 79 % a 54 % (de 14 a 71 formas por lema). Con `bin/false-positives.php`: +57 formas marcadas en
+  las 50.000 palabras más frecuentes, casi todas de insultos del diccionario; las tres que eran palabras
+  corrientes («katılım» —participación—, «kadınsın», «kadınsınız») pasan a `everyday` de `config/chat-topics/tur.php`.
+  Los adjetivos turcos llevan solo plural y casos, sin posesivos.
+- **Húngaro, casos del plural y casos menos comunes** (`HungarianInflection`): «barmoknak», «barmokkal» y los
+  casos ilativo («baromba»), adesivo («baromnál»), translativo («barommá»), terminativo («baromig») y formal
+  («baromként»). Sustantivos: cobertura de 24 % a 59 % (precisión de 80 % a 70 %); adjetivos: de 29 % a 70 %
+  (de 79 % a 68 %). +17 formas marcadas, todas de insultos del diccionario (`bűnözőknek`, `gyilkosokkal`…).
+- **Alemán, sustantivos por terminación** (`GermanInflection`): plural y genitivo según la terminación
+  («Hund» → «Hunds», «Hunde», «Hundes»; «Beziehung» → «Beziehungen»; «Wagen» → «Wagens»; «Arsch» →
+  «Arsches», «Arsche»). Contra UniMorph, la cobertura pasa de 17 % a 67 % (precisión de 90 % a 81 %) y los
+  lemas sin reglas, de 64 % a 7 %. Con `bin/false-positives.php`: +22 formas marcadas en las 50.000 palabras más
+  frecuentes, todas de insultos del diccionario (`Diebe`, `Kühe`, `Bastarde`…), ninguna palabra corriente.
+- **Neerlandés, comparativo y superlativo del adjetivo** (`DutchInflection`): «dom» → «dommer», «dommere»,
+  «domste»; «zwaar» → «zwaarder». Cobertura de 28 % a 96 % (precisión de 92 % a 78 %); +8 formas marcadas, todas de
+  adjetivos que ya eran insultos (`stommer`, `smerigste`, `wreedste`…).
+- **Búlgaro, adjetivos en «-ски»** (`BulgarianInflection`): «американски» → «американска», «американския»…
+  Cobertura de 22 % a 26 %; los adjetivos sin reglas, de 18 % a 6 %.
+- Las pruebas que usaban el alemán como ejemplo de «idioma sin reglas» usan ahora el japonés.
+
+- **Cantonés, no chino**: `yue` ya no declara el código `zh` (ISO 639-1 no tiene cantonés), así que
+  `Accept-Language: zh…` ya no recibe mensajes en cantonés: cae al español; solo la etiqueta `yue` los sirve.
+  Los mensajes de `yue` se ajustaron para que sean cantonés escrito y no chino estándar.
+
+- **Las traducciones de los mensajes** (`config/messages/*.php`) ya no se anuncian como pendientes de revisión
+  nativa: el proyecto decidió no hacerla. Siguen siendo traducciones propias, y así lo dice cada archivo y el README.
+  La revisión nativa de los diccionarios, las severidades y la flexión es otra cosa y no cambia.
+
+- **`config/languages/*.php`: el `meta` ya no repite `iso639_1`, `name`, `nativeName` ni `family`** (viven solo
+  en `supported-languages.php`); `LanguageMetaTest` lo comprueba.
+- **`Messages`**: las categorías en español salen de `risk-categories.php` (ya no hay que tratarlas aparte en las
+  pruebas); `explanation.end` es opcional (por omisión, el punto de `spa`); `requiredKeys()` no recibe archivo.
+- **`InflectionLanguages`**: una sola tabla `idioma => [clase, etiqueta]` en vez de tres listas.
+- `LanguageRegistry` normaliza el código en un único método.
+- Obsoletos (`@deprecated`, siguen funcionando): `WordList::getByCategory()`, `getBySeverity()`, `getMeta()`,
+  `requiresTokenizer()`, `ScoringPolicy::getAggregation()` y `ValidationResult::getNameCollisionTerms()`: nada
+  de la librería ni del monorepo los llama.
+- La prueba de «33 idiomas» compara el registro con los archivos de `config/languages/`, sin número fijo.
+
+- **El código de idioma es siempre de tres letras** (ISO 639-3): `LanguageRegistry::resolve()` e
+  `isSupported()` ya no aceptan `es`, `de`, `zh`… (el campo `language` del endpoint tampoco). Las etiquetas de
+  dos letras solo se leen en `Accept-Language`, con `LanguageRegistry::fromHeaderTag()`.
+- **`Messages` lee de la carpeta de configuración del revisor** (`<configDir>/messages`), no de la del
+  paquete; `negotiate()` respeta los pesos `q` de `Accept-Language`. Los textos de `explanation.related` usan
+  `%.2F` (no dependen del locale).
+- **`FileSizeLimitTest` cuenta líneas de código** (sin vacías ni comentarios), con el mismo límite de 100.
+- `RomanianInflection` genera sus clases palatalizables de una tabla (mismas formas que antes).
+
 - **Tope de letras sueltas por línea** (`SpacedRunTerms`): más de 120 letras
   deletreadas en una línea van a revisión como «texto deletreado», sin buscar
   insultos dentro. Buscar adentro costaba hasta 1 s por cada 2.000 caracteres;
   ahora un texto adversario de 10.000 caracteres se revisa en unos 100 ms.
 
-### Arreglado
+### Corregido
+
+- **Turco y húngaro: formas corrientes que se marcaban como insulto** (comprobado con las 400.000 palabras más
+  frecuentes de cada idioma, no solo las 50.000): `katılımı` y `katılımın` («participación»), `kadinsin` y `kadinsiniz`
+  pasan a `everyday` de `config/chat-topics/tur.php`; `sértésekkel`, `sértésként` y `tettükért` (colisionaban con
+  formas de «sertés» y «tetű» al plegar acentos), a las de `config/chat-topics/hun.php`. Aviso: `sertésekkel`
+  (plural de «cerdo», sin acento) también deja de marcarse, porque el plegado no distingue «sértés» de «sertés».
+
+- **README**: las amenazas con forma (`patterns`) están en 21 idiomas, no 18.
+- **`FileSizeLimitTest` tomaba `#[Atributo]` por un comentario** y contaba de menos las líneas de código de los
+  archivos con atributos de PHP.
+- **Un archivo de mensajes con marcadores que no casan** (un `%s` de más o de menos) ya no lanza una excepción:
+  `Messages::get()` usa la plantilla española, y si tampoco, la clave.
+- **Tagalo**: la forma con ligamento («tangang») lleva el rasgo `lig`, no `infl` (que sugería un caso).
+- `ModerationEndpoint` ya no reasigna `$language` dentro de un literal de array.
+
+- **Rellenos invisibles entre letras** (`EvasionCleaner`): el Hangul filler
+  (U+3164, U+115F, U+1160, U+FFA0) y el braille en blanco (U+2800) dentro de una
+  palabra latina («pu\u{3164}ta») dejaban pasar el insulto y la amenaza. Se quitan
+  sólo entre letras latinas; en coreano siguen siendo letras. `FillerEvasionTest`.
+- **Datos personales con arroba o dígitos de ancho completo** (`PersonalData::findIn`):
+  «juan＠gmail.com» daba `approve` porque los datos personales se buscaban en la
+  línea sin limpiar. Ahora también en la línea limpia.
+- **Un apellido ambiguo ya no rebaja un insulto grave** (`ValidationResult::nameCollisionExplainsSeverity`):
+  «Puta Cerda» y «Cabron Moro» daban `review` porque «cerda» y «moro» son
+  apellidos, aunque «puta» y «cabron» son graves por sí solos. La colisión sólo baja a
+  revisión el rechazo que ella misma causa.
+- **Letras en cuadros** (`StyledLetters`): sólo los tres bloques A–Z; las siglas de
+  entre medias («🅪»…) ya no se convierten en puntuación ASCII.
+- **README**: conteos de términos por nivel de cobertura al día (292–679, 149–329 y
+  94–109; 8.206 en total) y el comentario del ejemplo 10.
 
 - **README y CONTRIBUTING al día**: los dos ejemplos de la fusión fonética (`Elba Gina`) mostraban
   `riskType: 'ordinario'` y «tipo ordinario» cuando desde 4.3.2 devuelven `fonetico`; «~7.800 términos» pasa a

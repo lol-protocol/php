@@ -25,6 +25,18 @@
     "sources": {},
     "changes": [
       {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006069414/",
+        "to": "https://www.inpi.fr/"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://www.inpi.fr/",
+        "to": "https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006069414/"
+      },
+      {
         "date": "2026-10-08",
         "field": "treaties_signatory",
         "from": "Berne/TRIPS/WCT",

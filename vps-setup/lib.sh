@@ -12,7 +12,6 @@ print_header() {
     echo ""
 }
 
-# Start and enable a systemd service
 # service_enable_restart <servicio>: lo habilita al arranque y lo REINICIA (no solo "start"): si ya estaba
 # activo, "start" no hace nada y seguiria con la configuracion vieja. Usalo cuando el script acaba de
 # cambiar la configuracion del servicio (unidad systemd, jail.local, zona...).
@@ -138,8 +137,8 @@ enable_nginx_site() {
 
 # raise_php_upload_limit <tamano>: sube upload_max_filesize y post_max_size de PHP-FPM a <tamano>.
 # PHP tiene sus propios limites (2M y 8M por defecto): con solo subir el de Nginx, PHP seguiria
-# descartando el archivo. Es un ajuste GLOBAL de PHP-FPM (todas las apps comparten el pool); el
-# limite de cada sitio lo pone su client_max_body_size en Nginx. Si ya habia uno mas grande (de
+# descartando el archivo. Es un ajuste GLOBAL de PHP-FPM (vale para todos los pools, aunque cada app tenga el
+# suyo); el limite de cada sitio lo pone su client_max_body_size en Nginx. Si ya habia uno mas grande (de
 # otra app), se conserva. Archivo reemplazable con PHP_UPLOAD_INI (pruebas).
 raise_php_upload_limit() {
     local size=$1 ini current
@@ -197,6 +196,8 @@ app_has_code() {
 # comprometida no lee el codigo, el .env ni la base de las demas.
 # ---------------------------------------------------------------------------
 APP_USER_PREFIX=${APP_USER_PREFIX:-app-}
+# Llaves de despliegue (10_C): una carpeta por app, del usuario de la app y modo 700.
+DEPLOY_KEYS_DIR=${DEPLOY_KEYS_DIR:-/var/lib/vps-setup/deploy-keys}
 
 app_user_name() { echo "${APP_USER_PREFIX}$1"; }
 
@@ -295,7 +296,7 @@ setup_php_pool() {
         exit 1
     fi
     sudo tee "$conf" > /dev/null <<EOFPOOL
-; vps-setup: pool de la app $user (lo regenera 06_A; no lo edites a mano)
+; vps-setup: pool de la app $user (lo regenera 06_A o 06_E al re-correrlo; no lo edites a mano)
 [$user]
 user = $user
 group = $user
@@ -387,6 +388,32 @@ nginx_proxy_location() {
 EOFPROXY
 }
 
+# nginx_deny_hidden: 404 para archivos y carpetas ocultas (.git, .env, .env.example, .htaccess, .svn...), que si no
+# se descargarian tal cual desde la URL. Excepcion: /.well-known/ (la validacion de certbot la necesita).
+# Comillas simples en el heredoc: los "$" son de Nginx, no de bash.
+nginx_deny_hidden() {
+    cat <<'EOFHIDDEN'
+    # Archivos ocultos (.git, .env, .htaccess...): 404. Excepcion: /.well-known/ (certbot).
+    location ~ /\.(?!well-known/) {
+        return 404;
+    }
+EOFHIDDEN
+}
+
+# nginx_deny_app_internals: 404 para lo que una app PHP no debe servir si su raiz web es la carpeta de la app:
+# dependencias (vendor/, node_modules/) y manifiestos. Sin esto, un .php de vendor/ se podria ejecutar desde la URL.
+nginx_deny_app_internals() {
+    cat <<'EOFINTERNALS'
+    # Dependencias y manifiestos: no son parte del sitio.
+    location ~* ^/(vendor|node_modules)/ {
+        return 404;
+    }
+    location ~* ^/(composer\.(json|lock)|package(-lock)?\.json)$ {
+        return 404;
+    }
+EOFINTERNALS
+}
+
 # @deprecated desde PR 3 de vps-setup (aislamiento por app): 06_A ya no deja la app a www-data sino a su
 # usuario (create_app_user + own_app_dir). Se conserva como referencia; no la usa ningun script.
 # Setup app directories with correct ownership
@@ -424,7 +451,9 @@ deploy_files() {
     sudo cp -r "$source_dir"/. "$dest_dir"/
     sudo find "$dest_dir" -type f -exec chmod 644 {} \;
     sudo find "$dest_dir" -type d -exec chmod 755 {} \;
-    sudo chown -R www-data:www-data "$dest_dir"
+    # De root: Nginx (www-data) solo necesita LEER la landing (archivos 644, carpetas 755); si fuera de www-data, un
+    # proceso comprometido que corra como ese usuario podria reescribir el sitio.
+    sudo chown -R root:root "$dest_dir"
 }
 
 # Get public IP (cached if already fetched this session)
@@ -503,8 +532,33 @@ validate_ipv4() {
     [[ "$1" =~ ^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$ ]]
 }
 
-# Puerto TCP local para una app (fuera del rango privilegiado).
+# Numero de workers de gunicorn (entero positivo).
 validate_workers() { [[ "$1" =~ ^[1-9][0-9]{0,2}$ ]]; }
+
+# Subcarpeta de la app que Nginx sirve como raiz web (ej. public): componentes con letras, digitos, ".", "_" y "-",
+# sin "..", sin "/" al inicio ni al final.
+validate_docroot() {
+    [[ "$1" =~ ^[A-Za-z0-9._-]+(/[A-Za-z0-9._-]+)*$ ]] && [[ "$1" != *..* ]]
+}
+
+# Rama de git: letras, digitos, ".", "_", "-" y "/"; no empieza con "-" ni "/", sin ".." ni "//" ni final "/".
+validate_branch() {
+    [[ "$1" =~ ^[A-Za-z0-9._][A-Za-z0-9._/-]{0,99}$ ]] && [[ "$1" != *..* && "$1" != *//* && "$1" != */ && "$1" != *.lock ]]
+}
+
+# URL de un repositorio git: https://host/ruta, git@host:ruta (scp) o ssh://git@host/ruta. Sin usuario:clave en la URL
+# (quedaria guardada en .git/config), sin consultas ni espacios, y sin que empiece con "-" (se leeria como opcion).
+# DEPLOY_ALLOW_LOCAL=1 (solo para pruebas) admite una ruta absoluta.
+validate_repo_url() {
+    local u=$1
+    [ "${#u}" -le 300 ] && [[ "$u" != -* && "$u" != *..* ]] || return 1
+    [[ "$u" =~ ^https://[A-Za-z0-9.-]+(:[0-9]+)?/[A-Za-z0-9._~/%+-]+$ ]] && return 0
+    [[ "$u" =~ ^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+:[A-Za-z0-9._~/-]+$ ]] && return 0
+    [[ "$u" =~ ^ssh://[A-Za-z0-9._-]+@[A-Za-z0-9.-]+(:[0-9]+)?/[A-Za-z0-9._~/-]+$ ]] && return 0
+    [ "${DEPLOY_ALLOW_LOCAL:-0}" = 1 ] && [[ "$u" =~ ^/[A-Za-z0-9._/-]+$ ]]
+}
+
+# Puerto TCP local para una app (fuera del rango privilegiado).
 validate_port() {
     [[ "$1" =~ ^[0-9]{4,5}$ ]] && [ "$1" -ge 1024 ] && [ "$1" -le 65535 ]
 }
@@ -560,6 +614,9 @@ require_valid() {
         appuser)      hint="como maximo $((32 - ${#APP_USER_PREFIX})) caracteres (su usuario de sistema es ${APP_USER_PREFIX}<nombre>, y Linux admite 32)" ;;
         size)         hint="un numero seguido de K, M o G (ej. 20M)" ;;
         workers)      hint="un entero positivo (ej. 3)" ;;
+        branch)       hint="una rama de git (ej. main, release/1.2): letras, digitos, '.', '_', '-' y '/'" ;;
+        repo_url)     hint="https://host/dueno/repo.git, git@host:dueno/repo.git o ssh://git@host/dueno/repo.git (sin usuario:clave en la URL)" ;;
+        docroot)      hint="una subcarpeta de la app como public o web/public (letras, digitos, '.', '_' y '-'; sin '..')" ;;
         duration)     hint="un numero seguido de s o m (ej. 120s)" ;;
         name)         hint="minusculas, digitos, '_' y '-' (max. 63), debe empezar con letra o digito" ;;
         context_path) hint="letras, digitos, '.', '_' y '-' (sin '/' ni '..'); vacio = raiz" ;;

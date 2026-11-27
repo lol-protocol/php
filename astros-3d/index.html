@@ -107,6 +107,16 @@
     }
     #escena:active { cursor: grabbing; }
     .controles { display: flex; flex-wrap: wrap; align-items: center; gap: 0; }
+    .velocidad {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 0 6px 6px 0;
+      color: var(--texto-suave);
+      font-size: .9rem;
+    }
+    .velocidad input { accent-color: var(--acento); width: 140px; min-height: 36px; }
     .ayuda { color: var(--texto-suave); font-size: .9rem; margin: 4px 0 0; }
     #aviso {
       padding: 12px;
@@ -134,8 +144,8 @@
 <body>
   <header>
     <h1>Astros en 3D</h1>
-    <p class="intro">Planetas, lunas y estrellas dibujados con WebGL. Cada uno tiene su textura y sus colores, generados en el navegador a partir de su tipo y de su temperatura.</p>
-    <p class="escala">Escala: todos los astros se dibujan del mismo tamaño y giran a la misma velocidad, para que se vean. Los valores reales están en la ficha.</p>
+    <p class="intro">Planetas, lunas y estrellas dibujados con WebGL. Cada uno tiene su textura y sus colores, generados en el navegador a partir de su tipo; las estrellas, además, toman un color propio según su familia.</p>
+    <p class="escala">Escala: todos los astros se dibujan del mismo tamaño y giran a la misma velocidad, para que se vean. Los valores reales están en la ficha. El astro empieza quieto: con «Girar» lo pones en movimiento y eliges la velocidad.</p>
   </header>
 
   <main>
@@ -147,8 +157,12 @@
       <p id="aviso" hidden></p>
       <canvas id="escena" aria-label="Vista 3D del astro seleccionado"></canvas>
       <div class="controles">
-        <button type="button" id="girar" aria-pressed="true">Pausar giro</button>
+        <button type="button" id="girar" aria-pressed="false">Girar</button>
         <button type="button" id="reiniciar">Restablecer vista</button>
+        <label class="velocidad" for="velocidad">Velocidad de giro
+          <input type="range" id="velocidad" min="0.05" max="0.6" step="0.01" value="0.12">
+          <span id="velocidad-texto" aria-live="polite"></span>
+        </label>
       </div>
       <p class="ayuda">Arrastra para girar. Usa la rueda para acercar o alejar.</p>
     </div>
@@ -162,6 +176,8 @@
 
   <script src="js/datos.js"></script>
   <script src="js/texturas.js"></script>
+  <script src="js/ajustes.js"></script>
+  <script src="js/orientacion.js"></script>
   <script src="js/visor.js"></script>
 </body>
 </html>

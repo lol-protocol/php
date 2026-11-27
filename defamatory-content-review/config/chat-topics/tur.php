@@ -9,7 +9,7 @@ return [
         'before' => ['sen', 'siz', 'sensin', 'seni', 'sana', 'bu', 'pis', 'aptal', 'kokmuş', 'şişko', 'salak', 'lan', 'ulan', 'orospu'],
         'after' => ['sensin', 'seni', 'lan', 'sen'],
     ],
-    'everyday' => ['sık', 'şık', 'katıl', 'çinli'],
+    'everyday' => ['sık', 'şık', 'katıl', 'çinli', 'katılım', 'katılımı', 'katılımın', 'kadınsın', 'kadınsınız', 'kadinsin', 'kadinsiniz'],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high', 'also' => ['pornolar', 'pornoları', 'pornoya', 'pornoyu', 'pornoyla', 'pornodan']],

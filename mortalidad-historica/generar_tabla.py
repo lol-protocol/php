@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Valida los CSV de datos/ y genera por-idioma/*.md y el bloque «Resumen» del README.
+"""Valida los CSV de datos/ y genera lo que se deriva de ellos: por-idioma/*.md, epidemias.md, revisiones.md,
+datos/vectores.json, vista.html y el bloque «Resumen» del README.
 
   python3 generar_tabla.py              # valida y regenera la salida
   python3 generar_tabla.py --comprobar  # valida y falla si la salida no está al día (no escribe)
@@ -16,8 +17,8 @@ import consultas
 import modelo
 
 from comun import (
-    CALIDADES, CONFIANZAS, DATOS, ESTADOS, GRUPOS_CAUSA, HERENCIAS, IDIOMAS, INICIOS, POR_IDIOMA, RAIZ,
-    RE_FECHA, RESULTADOS_REVISION, huella,
+    CALIDADES, CAUSAS_DELICADAS, CONFIANZAS, DATOS, ESTADOS, GRUPOS_CAUSA, HERENCIAS, IDIOMAS, INICIOS, POR_IDIOMA, RAIZ,
+    RE_FECHA, RESULTADOS_REVISION, cie10_compacto, escritura_coherente, huella,
     RE_CIE10, RE_ID, RE_MONDO, RE_PAIS, REGIONES, SEXOS, leer_csv,
 )
 
@@ -33,6 +34,7 @@ COLUMNAS = {
     "hitos_registro": ["codigo", "tipo", "desde", "nota", "estado", "fuente"],
     "modelo_logcuadratico": ["sexo", "edad", "ax", "bx", "cx", "vx"],
     "londres_muertes": ["anio", "muertes_totales", "muertes_viruela", "estado", "fuente"],
+    "inglaterra_tasas": ["anio", "natalidad", "mortalidad", "estado", "fuente"],
     "esperanza_vida": ["codigo", "desde", "hasta", "sexo", "edad", "esperanza_restante",
                        "supervivencia_hasta_edad", "incertidumbre_baja", "incertidumbre_alta", "calidad",
                        "estado", "fuente"],
@@ -160,6 +162,8 @@ def validar_causas_historicas(error, causas):
             error("causas_historicas", i, "falta el término")
         if f["idioma"] not in IDIOMAS:
             error("causas_historicas", i, f"idioma «{f['idioma']}»: no es uno de los {len(IDIOMAS)} (ISO 639-3)")
+        elif f["termino"].strip() and not escritura_coherente(f["termino"].strip(), f["idioma"]):
+            error("causas_historicas", i, f"el término «{f['termino']}» no está escrito en la escritura de su idioma ({f['idioma']}): ¿idioma mal puesto?")
         if f["causa_id"] not in causas:
             error("causas_historicas", i, f"causa_id «{f['causa_id']}» no está en causas_modernas.csv")
         if f["confianza"] not in CONFIANZAS:
@@ -316,6 +320,27 @@ def validar_londres(error):
     return filas
 
 
+def validar_inglaterra(error):
+    filas = _leer("inglaterra_tasas", error)
+    if filas is None:
+        return []
+    anterior = None
+    for i, f in enumerate(filas, start=2):
+        anio = _entero(f["anio"], 1500, 2100)
+        if anio is None:
+            error("inglaterra_tasas", i, f"anio «{f['anio']}» no es un año")
+        elif anterior is not None and anio <= anterior:
+            error("inglaterra_tasas", i, f"anio {anio} repetido o fuera de orden (el anterior es {anterior})")
+        if anio is not None:
+            anterior = anio
+        for columna in ("natalidad", "mortalidad"):
+            valor = _numero(f[columna])
+            if valor is None or valor != valor or not 0 < valor < 100:
+                error("inglaterra_tasas", i, f"{columna} «{f[columna]}» no es una tasa por mil razonable (entre 0 y 100)")
+        _estado_y_fuente("inglaterra_tasas", i, f, error)
+    return filas
+
+
 def validar_esperanza_vida(error, paises):
     filas = _leer("esperanza_vida", error)
     if filas is None:
@@ -367,6 +392,7 @@ def validar():
         "hereditarias": validar_hereditarias(error),
         "hitos_registro": validar_hitos(error, paises),
         "londres_muertes": validar_londres(error),
+        "inglaterra_tasas": validar_inglaterra(error),
         "modelo_logcuadratico": validar_modelo(error),
         "revisiones": validar_revisiones(error),
         "esperanza_vida": validar_esperanza_vida(error, paises),
@@ -386,7 +412,8 @@ def pagina_idioma(codigo, datos):
         "",
         "<!-- Generado por generar_tabla.py: no lo edites a mano. -->",
         "",
-        "> **Borrador.** Lo escribió un asistente de IA y ninguna persona nativa lo ha revisado. Cada término"
+        "> **Borrador.** Lo escribió un asistente de IA y **no ha pasado por una revisión humana ni se prevé una revisión"
+        " por hablantes nativos**. Cada término"
         " lleva una **confianza** de su correspondencia con una causa moderna: es una pista para leer un"
         " registro antiguo, **no un diagnóstico**. Ver «Cómo leer una causa de defunción» en el"
         " [README](../README.md).",
@@ -395,17 +422,36 @@ def pagina_idioma(codigo, datos):
         "",
     ]
     if filas:
+        def tabla(grupo):
+            salida = ["| Término | Causa moderna | CIE-10 | Confianza | Nota | Estado |", "|---|---|---|---|---|---|"]
+            for f in grupo:
+                m = modernas[f["causa_id"]]
+                rango = ""
+                if f["desde"] or f["hasta"]:
+                    rango = f" ({f['desde'] or '…'}–{f['hasta'] or '…'})"
+                nota = (f["nota"] + rango).strip()
+                salida.append(f"| {f['termino']} | {m['nombre_spa']} | {cie10_compacto(m['cie10'].split(';'))} | "
+                              f"{f['confianza']} | {nota} | {f['estado']} |")
+            return salida
+        corrientes = [f for f in filas if f["causa_id"] not in CAUSAS_DELICADAS]
+        delicadas = [f for f in filas if f["causa_id"] in CAUSAS_DELICADAS]
         if rtl:
             lineas += ['<div dir="rtl">', ""]
-        lineas += ["| Término | Causa moderna | CIE-10 | Confianza | Nota | Estado |", "|---|---|---|---|---|---|"]
-        for f in filas:
-            m = modernas[f["causa_id"]]
-            rango = ""
-            if f["desde"] or f["hasta"]:
-                rango = f" ({f['desde'] or '…'}–{f['hasta'] or '…'})"
-            nota = (f["nota"] + rango).strip()
-            lineas.append(f"| {f['termino']} | {m['nombre_spa']} | {m['cie10'].replace(';', ', ')} | "
-                          f"{f['confianza']} | {nota} | {f['estado']} |")
+        lineas += tabla(corrientes)
+        if delicadas:
+            lineas += [
+                "",
+                "<details>",
+                f"<summary>{len(delicadas)} términos de causas delicadas (suicidio, enfermedad mental, sífilis, lepra, parto): "
+                "mostrar</summary>",
+                "",
+                "Son vocabulario de los registros antiguos, no un diagnóstico, y no dicen nada de ninguna persona: están "
+                "porque los registros los usaban. Ver [`PRIVACIDAD.md`](../PRIVACIDAD.md), §3.7.",
+                "",
+                *tabla(delicadas),
+                "",
+                "</details>",
+            ]
         if rtl:
             lineas += ["", "</div>"]
     return "\n".join(lineas) + "\n"
@@ -418,7 +464,7 @@ def indice_idiomas(datos):
         "",
         "<!-- Generado por generar_tabla.py: no lo edites a mano. -->",
         "",
-        "Una página por idioma, con el código ISO 639-3. Los términos son un **borrador sin revisión nativa**.",
+        "Una página por idioma, con el código ISO 639-3. Los términos son un **borrador de IA sin revisión humana, y no se prevé una revisión nativa**.",
         "",
         "| Idioma | Código | Términos |",
         "|---|---|---|",
@@ -461,7 +507,7 @@ def tabla_epidemias(datos):
 
 
 def estado_de_revision(datos):
-    """{idioma: contadores} y las listas de «atención» de la revisión por hablantes nativos.
+    """{idioma: contadores} y las listas de «atención» de la revisión del glosario.
 
     Un término está *revisado* si alguien dijo «correcto» o «corregido» con la huella actual del término; *abierto* si
     alguien dijo «corregir» o «dudoso» con la huella actual; *caducado* si su revisión es de un dato que cambió, y *en
@@ -500,18 +546,19 @@ def estado_de_revision(datos):
 
 
 def informe_revisiones(datos):
-    """revisiones.md: cuánto del glosario ha revisado una persona nativa, por idioma, y qué requiere atención."""
+    """revisiones.md: cuánto del glosario ha revisado una persona, por idioma, y qué requiere atención."""
     contadores, abiertas, caducadas, desacuerdos, huerfanas = estado_de_revision(datos)
     total = sum(c["total"] for c in contadores.values())
     revisados = sum(c["revisado"] for c in contadores.values())
     lineas = [
-        "# Revisión del glosario por hablantes nativos",
+        "# Revisión del glosario",
         "",
         "<!-- Generado por generar_tabla.py: no lo edites a mano. -->",
         "",
-        "Los términos del glosario los escribió un asistente de IA y **ninguna persona nativa los ha revisado** salvo lo que"
-        " diga este informe. `datos/revisiones.csv` es el registro de quién ha revisado qué; cómo revisar está en el"
-        " [README](README.md) («Revisión por hablantes nativos»).",
+        "Los términos del glosario los escribió un asistente de IA y **ninguna persona los ha revisado** salvo lo que diga"
+        " este informe. **No se prevé una revisión por hablantes nativos** (decisión de la persona a cargo, 18 de noviembre"
+        " de 2026): el glosario se queda como borrador. `datos/revisiones.csv` es el registro por si alguna vez alguien"
+        " quiere revisarlo; cómo hacerlo está en el [README](README.md) («Revisión del glosario»).",
         "",
         f"**{revisados} de {total} términos revisados** ({100 * revisados // total if total else 0} %).",
         "",
@@ -561,8 +608,8 @@ def vectores(datos):
                 epidemias.append([anio, region, pais, ids])
     paises = sorted(p["codigo"] for p in datos["paises"])
     esperanza = []
-    for codigo in ("CL", "SE", "ES", "GB", "JP", "NG", "AD", "XK", "FI", "ZZ"):
-        for anio in (1545, 1760, 1799, 1800, 1855, 1900, 1949, 1950, 1985, 2009, 2010):
+    for codigo in ("CL", "SE", "ES", "GB", "JP", "NG", "AD", "XK", "FI", "R:Europa", "R:África", "ZZ"):
+        for anio in (1545, 1760, 1775, 1799, 1800, 1855, 1900, 1949, 1950, 1985, 2009, 2010):
             for edad in (0, 5, 15):
                 for sexo in ("T", "F", "M"):
                     banda = consultas.banda_esperanza(codigo, anio, edad, sexo)
@@ -574,23 +621,46 @@ def vectores(datos):
         m = consultas.muertes_londres(anio)
         londres.append([anio, None if m is None else m["totales"], None if m is None else m["viruela"],
                         consultas.exceso_de_muertes_londres(anio)])
+    tasas = [f["anio"] for f in datos["inglaterra_tasas"]]
+    inglaterra = {
+        "puntos": [[int(a), consultas.tasas_inglaterra(int(a)), consultas.exceso_de_mortalidad_inglaterra(int(a))]
+                   for a in tasas] + [[1542, consultas.tasas_inglaterra(1542), consultas.exceso_de_mortalidad_inglaterra(1542)]],
+        "anormales": consultas.anios_de_mortalidad_anormal_inglaterra(),
+        "anormales_1_3": consultas.anios_de_mortalidad_anormal_inglaterra(1.3),
+    }
     huellas = [[f["termino"], f["idioma"], f["causa_id"], f["confianza"], huella(f["termino"], f["idioma"], f["causa_id"], f["confianza"])]
                for f in historicas[::25]] + [["", "", "", "", huella("", "", "", "")], ["Schlagfluß", "deu", "ictus", "alta", huella("Schlagfluß", "deu", "ictus", "alta")]]
+    plausibilidad = []
+    for codigo in ("SE", "CL", "ES", "NG", "JP", "GB", "R:Europa", "ZZ"):
+        for anio in (1545, 1775, 1805, 1895, 1955, 1995):
+            for sexo in ("T", "F", "M"):
+                comunes = lambda desde: consultas.edades_de_muerte_comunes(codigo, anio, desde, sexo)
+                plausibilidad.append([codigo, anio, sexo, {
+                    "llegar": [[e, consultas.probabilidad_de_llegar_a(codigo, anio, e, sexo)] for e in (0, 1, 5, 15, 40, 70, 110)],
+                    "esperados": [[6, e, consultas.supervivientes_esperados(codigo, anio, 6, e, sexo)] for e in (5, 15)],
+                    "fraccion": [[d, e, consultas.fraccion_de_muertes_antes_de(codigo, anio, e, d, sexo)]
+                                 for d, e in ((0, 5), (0, 15), (15, 40), (15, 60))],
+                    "percentiles": [[d, q, consultas.edad_de_muerte_percentil(codigo, anio, q, d, sexo)]
+                                    for d, q in ((0, 0.1), (0, 0.5), (0, 0.9), (15, 0.5))],
+                    "comunes": [[0, comunes(0)], [15, comunes(15)]],
+                }])
     return {
         "huellas": huellas,
+        "plausibilidad": plausibilidad,
         "causa_moderna": causa,
         "epidemias_en": epidemias,
         "region_de": [[c, consultas.region_de(c)] for c in paises + ["ZZ", "gb", ""]],
         "hitos_de": [[c, [[h["tipo"], int(h["desde"])] for h in consultas.hitos_de(c)]] for c in ("CL", "FR", "GB", "ES", "ZZ")],
         "esperanza": esperanza,
         "londres": londres,
+        "inglaterra": inglaterra,
     }
 
 
 def tablas_para_la_vista(datos):
     """Las tablas en columnas que incrusta vista.html: {nombre: {"columnas": [...], "filas": [[...]]}}."""
     tablas = {}
-    for nombre in ("paises", "causas_modernas", "causas_historicas", "epidemias", "hitos_registro", "londres_muertes", "revisiones"):
+    for nombre in ("paises", "causas_modernas", "causas_historicas", "epidemias", "hitos_registro", "londres_muertes", "inglaterra_tasas", "revisiones", "modelo_logcuadratico"):
         columnas = COLUMNAS[nombre]
         tablas[nombre] = {"columnas": columnas, "filas": [[f[c] for c in columnas] for f in datos[nombre]]}
     # La esperanza de vida es la tabla grande: solo las columnas que usan las consultas, y con números.
@@ -627,7 +697,7 @@ def resumen(datos):
     hist = datos["causas_historicas"]
     por_conf = Counter(f["confianza"] for f in hist)
     estados = Counter(f["estado"] for tabla in ("causas_historicas", "epidemias", "hereditarias", "hitos_registro",
-                                                 "londres_muertes", "esperanza_vida") for f in datos[tabla])
+                                                 "londres_muertes", "inglaterra_tasas", "esperanza_vida") for f in datos[tabla])
     sin_terminos = sorted(set(IDIOMAS) - {f["idioma"] for f in hist})
     usadas = {f["causa_id"] for f in hist}
     sin_uso = sorted(c["id"] for c in datos["causas_modernas"] if c["id"] not in usadas)
@@ -637,7 +707,7 @@ def resumen(datos):
         f"- **Causas modernas:** {len(datos['causas_modernas'])}; **términos históricos:** {len(hist)} en "
         f"{len({f['idioma'] for f in hist})} de {len(IDIOMAS)} idiomas "
         f"(confianza alta: {por_conf['alta']}, media: {por_conf['media']}, baja: {por_conf['baja']}).",
-        f"- **Términos revisados por una persona nativa:** {sum(c['revisado'] for c in estado_de_revision(datos)[0].values())} de {len(hist)}.",
+        f"- **Términos revisados por una persona:** {sum(c['revisado'] for c in estado_de_revision(datos)[0].values())} de {len(hist)} (no se prevé revisión).",
         f"- **Idiomas sin términos:** {', '.join(sin_terminos) if sin_terminos else 'ninguno'}.",
         f"- **Causas modernas sin ningún término histórico:** {', '.join(sin_uso) if sin_uso else 'ninguna'}.",
         f"- **Epidemias:** {len(datos['epidemias'])} ({sum(f['estado'] == 'verificado' for f in datos['epidemias'])} verificadas). "
@@ -646,6 +716,8 @@ def resumen(datos):
         f"**Países:** {len(datos['paises'])}.",
         f"- **Muertes en Londres:** {len(datos['londres_muertes'])} años"
         + (f" ({datos['londres_muertes'][0]['anio']}-{datos['londres_muertes'][-1]['anio']})." if datos["londres_muertes"] else "."),
+        f"- **Tasas de Inglaterra y Gales:** {len(datos['inglaterra_tasas'])} registros"
+        + (f" ({datos['inglaterra_tasas'][0]['anio']}-{datos['inglaterra_tasas'][-1]['anio']})." if datos["inglaterra_tasas"] else "."),
         f"- **Esperanza de vida:** {len(ev)} filas"
         + (f" ({len({f['codigo'] for f in ev})} países o regiones)." if ev else " (todavía sin datos)."),
         f"- **Filas verificadas contra su fuente:** {estados['verificado']} de {sum(estados.values())}.",

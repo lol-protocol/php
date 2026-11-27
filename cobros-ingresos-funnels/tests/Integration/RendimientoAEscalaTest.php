@@ -9,6 +9,7 @@ use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\CobranzaRepository;
 use App\Repositories\FlujoDeCajaRepository;
+use App\Repositories\FunnelRepository;
 use App\Repositories\IngresosYCobrosRepository;
 
 /**
@@ -25,6 +26,7 @@ use App\Repositories\IngresosYCobrosRepository;
 final class RendimientoAEscalaTest extends IntegracionTestCase
 {
     private const BOLETAS = 30000;
+    private const USUARIOS = 30000;
     private const MONTO = '100.00';
     private const EMISION = '1902-02-02';
 
@@ -170,6 +172,36 @@ final class RendimientoAEscalaTest extends IntegracionTestCase
             3 * 1024 * 1024,
             $pico,
             sprintf('el flujo de caja gasto %.1f MB: esta leyendo todas las boletas en PHP', $pico / 1048576)
+        );
+    }
+
+    /**
+     * Los ingresos por canal agrupan en SQL: con 30 mil usuarios del funnel (los de un solo dia de 1902, para no mezclarse
+     * con el seed) responden con las filas de sus canales y no traen los usuarios a PHP para sumarlos.
+     */
+    public function testLosIngresosPorCanalSeAgrupanEnSqlYNoTraenLosUsuariosAPhp(): void
+    {
+        $db = Database::connection();
+        $db->exec(
+            "INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, rango_de_edad, fecha_visita)
+             SELECT 'Visitante ' || n, 'escala-' || n || '@example.com',
+                    (ARRAY['ads', 'email', 'organico'])[1 + n % 3], 'US', 'Miami', 'Ingles', 'No especifica', '35-44', DATE '1902-02-02'
+             FROM generate_series(1, " . self::USUARIOS . ') n'
+        );
+        $repo = new FunnelRepository();
+        $resultado = [];
+
+        $pico = $this->picoDeMemoria(function () use ($repo, &$resultado): void {
+            $resultado = $repo->ingresosPorCanal('1902-02-02', '1902-02-02');
+        });
+
+        self::assertCount(3, $resultado['filas']);
+        self::assertSame(self::USUARIOS, $resultado['total']['visitantes']);
+        self::assertSame(0.0, $resultado['total']['cobrado_usd'], 'son visitantes, ninguno compro');
+        self::assertLessThan(
+            3 * 1024 * 1024,
+            $pico,
+            sprintf('los ingresos por canal gastaron %.1f MB: estan leyendo todos los usuarios en PHP', $pico / 1048576)
         );
     }
 

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Música infinita</title>
+  <meta name="description" content="Música infinita a partir de tus MIDI, con visualizaciones al estilo de Winamp. Uso personal; todo queda en tu navegador.">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <section id="inicio" class="inicio" aria-label="Bienvenida">
+    <h1>Música infinita</h1>
+    <p>Música que no se acaba, hecha con las melodías de tus MIDI, y visualizaciones como las de Winamp.</p>
+    <button id="empezar" class="grande">▶ Empezar</button>
+    <p class="nota">Todo pasa en tu navegador: los MIDI y la SoundFont que cargues se guardan aquí y no se suben a ningún lado.</p>
+  </section>
+
+  <!-- La aplicación está «inerte» (sin foco ni lectura) mientras se ve la bienvenida: así el teclado
+       y los lectores de pantalla no se meten detrás de ella. app.js lo quita al pulsar «Empezar». -->
+  <main id="aplicacion" aria-label="Música infinita" inert>
+  <canvas id="lienzo" role="img" aria-label="Visualización de la música"></canvas>
+
+  <!-- Sin aria-live a propósito: se actualiza con cada bloque de música y un lector de pantalla
+       lo leería sin parar. Los avisos de lo que hace la persona van en #aviso (role=status). -->
+  <section id="pantallita" class="pantallita" aria-label="Lo que suena">
+    <div class="lcd">
+      <div id="titulo" class="titulo">—</div>
+      <div id="detalle" class="detalle"></div>
+      <div id="acordes" class="acordes"></div>
+    </div>
+  </section>
+
+  <div id="aviso" class="aviso" role="status" hidden></div>
+
+  <section id="panel" class="panel">
+    <div class="fila controles">
+      <button id="play" title="Reproducir o pausar (espacio)">▶</button>
+      <button id="siguiente" title="Otra sección (N)">⏭</button>
+      <label class="vol">🔊 <input id="volumen" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volumen"></label>
+      <select id="modo-visual" title="Visualización (V)" aria-label="Visualización"></select>
+      <label class="chk" title="Cambiar de visualización sola cada minuto (no con «menos movimiento»)"><input id="auto-visual" type="checkbox"> auto</label>
+      <label class="chk" title="Visualizaciones más calmas: sin latidos de brillo, más lentas. Por omisión sigue lo que pide el sistema."><input id="movimiento-reducido" type="checkbox"> menos movimiento</label>
+      <button id="pantalla" title="Pantalla completa (F)">⛶</button>
+      <button id="grabar" title="Grabar lo que suena en FLAC (R)">● Grabar</button>
+      <span id="tiempo-grabacion" class="tiempo"></span>
+      <button id="ver-ajustes" title="Ajustes, biblioteca y exportación (H oculta el panel)">☰</button>
+    </div>
+
+    <div id="ajustes" class="ajustes" hidden>
+      <div class="columnas">
+        <fieldset>
+          <legend>Composición</legend>
+          <label>Fidelidad <span id="v-fidelidad"></span>
+            <input id="fidelidad" type="range" min="0" max="1" step="0.05" value="0.6">
+            <small>0: música nueva con su estilo · 1: casi las canciones tal cual</small>
+          </label>
+          <label>Variación <span id="v-variacion"></span>
+            <input id="variacion" type="range" min="0" max="1" step="0.05" value="0.4">
+            <small>cuánto se adornan y cambian las frases citadas</small>
+          </label>
+          <label>Color modal <span id="v-colorModal"></span>
+            <input id="colorModal" type="range" min="0" max="1" step="0.05" value="0.3">
+            <small>frases libres en dórico, frigio, mixolidio o lidio</small>
+          </label>
+          <label>Contramelodía <span id="v-contra"></span>
+            <input id="contra" type="range" min="0" max="1" step="0.05" value="0.6">
+            <small>una segunda voz en terceras o que responde a la melodía</small>
+          </label>
+          <label>Cambios de compás <span id="v-cambiosCompas"></span>
+            <input id="cambiosCompas" type="range" min="0" max="1" step="0.05" value="0.15">
+            <small>cuántas secciones pasan entre 3/4 y 4/4</small>
+          </label>
+          <label>Estilo
+            <select id="estilo"></select>
+          </label>
+          <label>Tempo <span id="v-tempo"></span>
+            <input id="tempo" type="range" min="0.6" max="1.4" step="0.05" value="1">
+          </label>
+          <label>Semilla
+            <input id="semilla" type="text" placeholder="al azar" maxlength="40">
+            <small>la misma semilla da la misma música</small>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Sonido</legend>
+          <p id="estado-sf" class="estado">Instrumentos propios (sintetizados).</p>
+          <label class="archivo">Cargar SoundFont (.sf2 o .sf3)
+            <input id="archivo-sf2" type="file" accept=".sf2,.sf3">
+          </label>
+          <button id="quitar-sf2" hidden>Volver a los instrumentos propios</button>
+          <small>Con una SoundFont buena (GeneralUser GS, FluidR3_GM, Salamander Grand Piano…) suena a instrumentos grabados. Ver el README.</small>
+          <label>Reverberación <input id="reverb" type="range" min="0" max="1.2" step="0.05" value="0.55"></label>
+        </fieldset>
+
+        <fieldset id="panel-visual" hidden>
+          <legend>MilkDrop</legend>
+          <label>Ajuste <select id="preset"></select></label>
+          <label class="chk"><input id="preset-fijo" type="checkbox"> fijar (que no cambie solo con la música)</label>
+          <div id="preset-controles"></div>
+          <div class="fila">
+            <button id="preset-guardar">Guardar como…</button>
+            <button id="preset-borrar">Borrar</button>
+            <button id="preset-exportar">Exportar</button>
+            <label class="archivo">Importar <input id="preset-importar" type="file" accept=".json,application/json"></label>
+          </div>
+          <small>Cada estilo de música trae su color y su grupo de ajustes, que cambian al empezar cada sección.</small>
+        </fieldset>
+
+        <fieldset>
+          <legend>Guardar</legend>
+          <label>Grabar en
+            <select id="bits-grabacion">
+              <option value="16">FLAC 16 bits</option>
+              <option value="24">FLAC 24 bits</option>
+            </select>
+          </label>
+          <hr>
+          <label>Exportar <input id="minutos" type="number" min="1" max="120" value="10"> minutos en
+            <select id="formato">
+              <option value="flac16">FLAC 16 bits</option>
+              <option value="flac24">FLAC 24 bits</option>
+              <option value="wav16">WAV 16 bits</option>
+              <option value="midi">MIDI</option>
+            </select>
+          </label>
+          <button id="exportar">Exportar</button>
+          <progress id="progreso" max="1" value="0" hidden></progress>
+          <small>Se calcula más rápido que en tiempo real, con la semilla de arriba y desde el principio.</small>
+        </fieldset>
+      </div>
+
+      <fieldset class="biblioteca">
+        <legend>Biblioteca</legend>
+        <div class="fila">
+          <label class="archivo">Cargar MIDI <input id="archivo-midi" type="file" accept=".mid,.midi,.kar,.rmi" multiple></label>
+          <label class="archivo">Cargar carpeta <input id="carpeta-midi" type="file" webkitdirectory multiple></label>
+          <button id="todos">Todos</button>
+          <button id="ninguno">Ninguno</button>
+          <span id="cuenta" class="estado"></span>
+        </div>
+        <small>Arrastra archivos .mid, .sf2 o .sf3 a la ventana. Las canciones marcadas son las que el generador aprende y cita. «Tal cual» toca el MIDI sin cambiarlo.</small>
+        <ul id="lista" class="lista"></ul>
+      </fieldset>
+
+      <fieldset class="sesiones" id="panel-sesiones">
+        <legend>Sesiones</legend>
+
+        <details open id="s-favoritos">
+          <summary>Favoritos <span id="s-n-fav" class="estado"></span></summary>
+          <div class="fila"><button id="fav-guardar">☆ Guardar lo que suena</button></div>
+          <small>Guarda la semilla, los ajustes y las canciones en uso. Al tocarlo suena igual que la primera vez, desde el principio, siempre que las canciones sigan en la biblioteca.</small>
+          <ul id="lista-fav" class="items"></ul>
+        </details>
+
+        <details id="s-listas">
+          <summary>Listas de reproducción <span id="s-n-listas" class="estado"></span></summary>
+          <div class="fila">
+            <select id="lista-sel" aria-label="Lista"></select>
+            <button id="lista-nueva">+ Nueva</button>
+            <button id="lista-renombrar">✎</button>
+            <button id="lista-borrar">Borrar</button>
+            <label class="chk"><input id="lista-aleatorio" type="checkbox"> al azar</label>
+            <label class="chk"><input id="lista-repetir" type="checkbox"> repetir</label>
+            <button id="lista-tocar">▶ Tocar lista</button>
+            <button id="lista-parar">■ Parar lista</button>
+          </div>
+          <div class="fila">
+            <select id="lista-agregar-fav" aria-label="Favorito a agregar"></select>
+            <input id="lista-minutos" type="number" min="1" max="120" value="5" aria-label="Minutos"> min
+            <button id="lista-agregar-fav-btn">+ favorito</button>
+            <select id="lista-agregar-midi" aria-label="MIDI a agregar"></select>
+            <button id="lista-agregar-midi-btn">+ MIDI tal cual</button>
+          </div>
+          <ol id="lista-items" class="items"></ol>
+          <div id="lista-estado" class="estado"></div>
+        </details>
+
+        <details id="s-historial">
+          <summary>Historial <span id="s-n-hist" class="estado"></span></summary>
+          <div class="fila"><button id="hist-borrar">Borrar historial</button></div>
+          <small>Cada fila es una corrida: una semilla con su configuración. «≈» quiere decir que moviste los controles mientras sonaba, y volver a oírla no da exactamente lo mismo.</small>
+          <ul id="lista-hist" class="items"></ul>
+        </details>
+
+        <details id="s-sesion">
+          <summary>Exportar e importar la sesión</summary>
+          <div class="fila">
+            <label class="chk"><input id="ses-incluir-midi" type="checkbox"> incluir mis MIDI</label>
+            <button id="ses-exportar">Exportar sesión</button>
+            <label class="chk"><input id="ses-aplicar-ajustes" type="checkbox" checked> aplicar los ajustes al importar</label>
+            <label class="archivo">Importar sesión <input id="ses-importar" type="file" accept=".json,application/json"></label>
+          </div>
+          <small>Lleva los favoritos, las listas, los ajustes de la aplicación y de la MilkDrop y qué canciones están en uso. Con «incluir mis MIDI» lleva también esos archivos: el archivo pesa más y lleva la música de esas canciones, así que guárdalo para ti.</small>
+        </details>
+      </fieldset>
+    </div>
+  </section>
+  </main>
+
+  <script src="js/midi.js"></script>
+  <script src="js/teoria.js"></script>
+  <script src="js/analisis.js"></script>
+  <script src="js/ejemplos.js"></script>
+  <script src="js/generador.js"></script>
+  <script src="js/sf2.js"></script>
+  <script src="js/flac.js"></script>
+  <script src="js/dsp.js"></script>
+  <script src="js/sintetizador.js"></script>
+  <script src="js/visual-puro.js"></script>
+  <script src="js/visualizador.js"></script>
+  <script src="js/almacen.js"></script>
+  <script src="js/planificador.js"></script>
+  <script src="js/exportar.js"></script>
+  <script src="js/panel-visual.js"></script>
+  <script src="js/sesiones.js"></script>
+  <script src="js/panel-sesiones.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

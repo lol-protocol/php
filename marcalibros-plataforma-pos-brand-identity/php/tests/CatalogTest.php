@@ -189,4 +189,15 @@ final class CatalogTest extends ImageTestCase
         $this->expectException(\JsonException::class);
         new Catalog($this->put('roto.json', '{no es json'));
     }
+
+    public function testACategoryFilterRemovesTheCategoryAndItsBookmarks(): void
+    {
+        $sin = new Catalog("$this->root/catalog/manifest.json", static fn (string $slug): bool => $slug !== 'romanticismo');
+
+        $this->assertFalse($sin->hasCategory('romanticismo'));
+        $this->assertTrue($sin->hasCategory('realismo'));
+        $this->assertCount(count($this->catalog->ids()) - 50, $sin->ids());
+        $this->assertFalse($sin->has($this->catalog->search('romanticismo')[0]['id']));
+        $this->assertSame([], $sin->search('romanticismo'));
+    }
 }

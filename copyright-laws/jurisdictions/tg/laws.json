@@ -5,11 +5,11 @@
     "region": "middle_east_africa",
     "law_name": "Law No. 91-12 of 10 June 1991 on the Protection of Copyright, Folklore and Related Rights",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years (per Commons summary; folklore protected without time limit) (unconfirmed)",
+    "term_of_protection": "Author's life + 50 calendar years from end of year of death (Art. 36); anonymous or pseudonymous works 50 years from making available (Art. 37); folklore no time limit (Art. 67)",
     "author_rights": "Economic rights (patrimonial attributes; art. 3 also recognises intellectual and moral attributes)",
-    "moral_rights": "Moral rights recognized (art. 3); details not seen (unconfirmed)",
-    "orphan_works": "Not specified (unconfirmed)",
-    "digital_protection": "UNKNOWN (law predates ICT; reform bill under preparation per BUTODRA 2022) (unconfirmed)",
+    "moral_rights": "Moral rights: claim authorship, decide disclosure, respect name and integrity (Art. 15); inalienable and imprescriptible (Art. 17)",
+    "orphan_works": "No orphan-works provision in the law text",
+    "digital_protection": "No digital or technological-protection rules found; computer programs are protected works (Art. 6(14))",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
     "enforcement_body": "Togolese Copyright Office (Bureau togolais du droit d'auteur, BUTODRA)",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8506",
@@ -34,9 +34,9 @@
         "checked": "2026-10-16"
       },
       "term_of_protection": {
-        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Togo.html",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8506",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "author_rights": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8506",
@@ -45,18 +45,18 @@
       },
       "moral_rights": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8506",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8506",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "digital_protection": {
-        "url": "https://butodra.tg/organisation/",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8506",
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "enforcement_body": {
         "url": "https://butodra.tg/organisation/",
@@ -70,6 +70,30 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "digital_protection",
+        "from": "UNKNOWN (law predates ICT; reform bill under preparation per BUTODRA 2022) (unconfirmed)",
+        "to": "No digital or technological-protection rules found; computer programs are protected works (Art. 6(14))"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "No orphan-works provision in the law text"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "moral_rights",
+        "from": "Moral rights recognized (art. 3); details not seen (unconfirmed)",
+        "to": "Moral rights: claim authorship, decide disclosure, respect name and integrity (Art. 15); inalienable and imprescriptible (Art. 17)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "term_of_protection",
+        "from": "Author's life + 50 years (per Commons summary; folklore protected without time limit) (unconfirmed)",
+        "to": "Author's life + 50 calendar years from end of year of death (Art. 36); anonymous or pseudonymous works 50 years from making available (Art. 37); folklore no time limit (Art. 67)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

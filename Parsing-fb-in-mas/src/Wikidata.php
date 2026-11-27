@@ -120,7 +120,27 @@ final class Wikidata
      */
     public static function resolverNombres(string $ruta, array $perfiles, ?Exclusiones $excluidos = null): array
     {
-        $quiero = [];
+        $quiero = self::identificadoresPedidos($perfiles);
+        $datos = self::leerNombres($ruta, $quiero);
+        $salida = [];
+        foreach ($perfiles as $p) {
+            $salida[] = self::completarNombres($p, $datos, $excluidos);
+        }
+
+        return ['perfiles' => $salida, 'resueltos' => self::contarResueltos($datos), 'pendientes' => array_values(array_diff(array_keys($quiero), array_keys($datos)))];
+    }
+
+    /**
+     * Primer paso de `resolverNombres()` por separado, para quien lee los perfiles en streaming:
+     * los identificadores (`Q…`) de lugares y parientes que piden los perfiles. Solo guarda
+     * identificadores, no los perfiles.
+     *
+     * @param iterable<array<string, mixed>> $perfiles
+     * @param array<string, true> $quiero se va completando; se devuelve
+     * @return array<string, true>
+     */
+    public static function identificadoresPedidos(iterable $perfiles, array $quiero = []): array
+    {
         foreach ($perfiles as $p) {
             foreach (['lugar_nacimiento', 'lugar_muerte'] as $campo) {
                 $v = $p[$campo] ?? null;
@@ -137,60 +157,90 @@ final class Wikidata
             }
         }
 
-        /** @var array<string, array{nombre: ?string, fallecido: bool}> $datos */
-        $datos = [];
-        if ($quiero !== []) {
-            $f = self::abrir($ruta);
-            while (count($datos) < count($quiero) && ($linea = fgets($f)) !== false) {
-                // El identificador de la entidad es el primer «id» de la línea: se mira sin decodificar.
-                if (preg_match('/"id"\s*:\s*"(Q\d+)"/', substr($linea, 0, 200), $m) !== 1
-                    || !isset($quiero[$m[1]]) || isset($datos[$m[1]])) {
-                    continue;
-                }
-                $entidad = json_decode(rtrim($linea, ",\r\n "), true);
-                if (is_array($entidad)) {
-                    $datos[$m[1]] = ['nombre' => self::texto($entidad, 'labels'), 'fallecido' => self::fecha($entidad, 'P570') !== null];
-                }
-            }
-            fclose($f);
-        }
+        return $quiero;
+    }
 
+    /**
+     * Segundo paso: lee el volcado una vez y devuelve nombre y si está fallecido de cada identificador
+     * pedido que encuentre. Sin identificadores no abre el volcado.
+     *
+     * @param array<string, true> $quiero
+     * @return array<string, array{nombre: ?string, fallecido: bool}>
+     */
+    public static function leerNombres(string $ruta, array $quiero): array
+    {
+        $datos = [];
+        if ($quiero === []) {
+            return $datos;
+        }
+        $f = self::abrir($ruta);
+        while (count($datos) < count($quiero) && ($linea = fgets($f)) !== false) {
+            // El identificador de la entidad es el primer «id» de la línea: se mira sin decodificar.
+            if (preg_match('/"id"\s*:\s*"(Q\d+)"/', substr($linea, 0, 200), $m) !== 1
+                || !isset($quiero[$m[1]]) || isset($datos[$m[1]])) {
+                continue;
+            }
+            $entidad = json_decode(rtrim($linea, ",\r\n "), true);
+            if (is_array($entidad)) {
+                $datos[$m[1]] = ['nombre' => self::texto($entidad, 'labels'), 'fallecido' => self::fecha($entidad, 'P570') !== null];
+            }
+        }
+        fclose($f);
+
+        return $datos;
+    }
+
+    /**
+     * @param array<string, array{nombre: ?string, fallecido: bool}> $datos
+     */
+    public static function contarResueltos(array $datos): int
+    {
         $resueltos = 0;
         foreach ($datos as $d) {
             $resueltos += $d['nombre'] !== null ? 1 : 0;
         }
-        $salida = [];
-        foreach ($perfiles as $p) {
-            foreach (['lugar_nacimiento' => 'lugar_nacimiento_nombre', 'lugar_muerte' => 'lugar_muerte_nombre'] as $campo => $destino) {
-                $v = $p[$campo] ?? null;
-                if (is_string($v) && preg_match('/^Q\d+$/', $v) === 1) {
-                    $p[$destino] = $datos[$v]['nombre'] ?? null;
-                }
+
+        return $resueltos;
+    }
+
+    /**
+     * Tercer paso: aplica los nombres a un perfil (las reglas de `resolverNombres()`: el pariente solo
+     * se nombra si está fallecido; el excluido se quita).
+     *
+     * @param array<string, mixed> $p
+     * @param array<string, array{nombre: ?string, fallecido: bool}> $datos
+     * @return array<string, mixed>
+     */
+    public static function completarNombres(array $p, array $datos, ?Exclusiones $excluidos = null): array
+    {
+        foreach (['lugar_nacimiento' => 'lugar_nacimiento_nombre', 'lugar_muerte' => 'lugar_muerte_nombre'] as $campo => $destino) {
+            $v = $p[$campo] ?? null;
+            if (is_string($v) && preg_match('/^Q\d+$/', $v) === 1) {
+                $p[$destino] = $datos[$v]['nombre'] ?? null;
             }
-            $nuevos = [];
-            $sinNombre = false;
-            $parientes = $p['parientes'] ?? null;
-            foreach (is_array($parientes) ? $parientes : [] as $pariente) {
-                $id = Json::texto($pariente, 'id');
-                if ($id !== null && $excluidos !== null && $excluidos->contiene(['red' => 'wikidata', 'usuario' => $id, 'url' => 'https://www.wikidata.org/wiki/' . $id])) {
-                    continue;
-                }
-                $nombre = $id !== null && ($datos[$id]['fallecido'] ?? false) ? ($datos[$id]['nombre'] ?? null) : null;
-                $sinNombre = $sinNombre || $nombre === null;
-                $nuevos[] = ['relacion' => Json::texto($pariente, 'relacion') ?? '', 'nombre' => $nombre, 'id' => $id];
+        }
+        $nuevos = [];
+        $sinNombre = false;
+        $parientes = $p['parientes'] ?? null;
+        foreach (is_array($parientes) ? $parientes : [] as $pariente) {
+            $id = Json::texto($pariente, 'id');
+            if ($id !== null && $excluidos !== null && $excluidos->contiene(['red' => 'wikidata', 'usuario' => $id, 'url' => 'https://www.wikidata.org/wiki/' . $id])) {
+                continue;
             }
-            if (is_array($parientes)) {
-                $p['parientes'] = $nuevos;
-            }
-            if ($sinNombre) {
-                $avisos = Json::en($p, 'avisos');
-                $p['avisos'] = [...(is_array($avisos) ? array_filter($avisos, 'is_string') : []),
-                    'hay parientes sin nombre: pueden estar vivos o no estar en el volcado'];
-            }
-            $salida[] = $p;
+            $nombre = $id !== null && ($datos[$id]['fallecido'] ?? false) ? ($datos[$id]['nombre'] ?? null) : null;
+            $sinNombre = $sinNombre || $nombre === null;
+            $nuevos[] = ['relacion' => Json::texto($pariente, 'relacion') ?? '', 'nombre' => $nombre, 'id' => $id];
+        }
+        if (is_array($parientes)) {
+            $p['parientes'] = $nuevos;
+        }
+        if ($sinNombre) {
+            $avisos = Json::en($p, 'avisos');
+            $p['avisos'] = [...(is_array($avisos) ? array_filter($avisos, 'is_string') : []),
+                'hay parientes sin nombre: pueden estar vivos o no estar en el volcado'];
         }
 
-        return ['perfiles' => $salida, 'resueltos' => $resueltos, 'pendientes' => array_values(array_diff(array_keys($quiero), array_keys($datos)))];
+        return $p;
     }
 
     /**
@@ -300,7 +350,9 @@ final class Wikidata
     }
 
     /**
-     * Etiqueta o descripción: en español, si no en inglés, si no la primera que haya.
+     * Etiqueta o descripción: en español, si no en inglés, si no en `mul` (el código con que Wikidata guarda hoy el
+     * nombre que vale para todos los idiomas: p. ej. «Douglas Adams» no tiene etiqueta `es` ni `en`, solo `mul`),
+     * si no la primera que haya. Sin `mul`, «la primera» era la árabe y el nombre salía en otra escritura.
      *
      * @param array<mixed> $e
      */
@@ -310,7 +362,7 @@ final class Wikidata
         if (!is_array($m)) {
             return null;
         }
-        foreach (['es', 'en'] as $idioma) {
+        foreach (['es', 'en', 'mul'] as $idioma) {
             $texto = Json::texto($m, $idioma, 'value');
             if ($texto !== null) {
                 return $texto;

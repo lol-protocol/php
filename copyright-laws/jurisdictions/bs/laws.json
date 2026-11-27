@@ -6,13 +6,13 @@
     "law_name": "Copyright Act, 1998 (Chapter 323), consolidated through Act No. 2 of 2004 (LRO 1/2010)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years (individual works: 70 years from end of calendar year of author's death; anonymous works publication + 70 years)",
-    "author_rights": "Economic rights (unconfirmed)",
+    "author_rights": "Owner has the exclusive right to reproduce, distribute, prepare derivative works, perform publicly, and authorise others to do so (s.9)",
     "moral_rights": "Right to be identified as author and right to object to derogatory treatment of a visual artwork (Part III; articles not seen)",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "No orphan-works licence found. Author acknowledgement is not required for unpublished works whose author cannot be identified by reasonable inquiry (s.57)",
     "digital_protection": "Not specified",
-    "fair_use_exceptions": "Fair dealing for research and private study, criticism, review and reporting (Part VI; list non-exclusive per commentary) (unconfirmed)",
+    "fair_use_exceptions": "Fair dealing (ss.58-59, Part VII): research, private study, scholarship or teaching; criticism, comment, parody or review; reporting current events; subject to s.60",
     "registration_required": "No (Part V provides voluntary registration; registration is not a prerequisite to infringement actions, per section headings)",
-    "enforcement_body": "Bahamas Copyright Office (named by a law-firm article; administering department not confirmed) (unconfirmed)",
+    "enforcement_body": "Registrar of Copyrights performs all administrative functions and runs the Copyright Registry, under the general direction of the Minister (s.88)",
     "treaties_signatory": "Berne/WCT",
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/8920",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8920",
@@ -40,8 +40,8 @@
       },
       "author_rights": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8920",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "moral_rights": {
         "url": "https://www.wipo.int/wipolex/zh/legislation/details/8920",
@@ -50,13 +50,13 @@
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8920",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "fair_use_exceptions": {
-        "url": "https://infojustice.org/wp-content/uploads/2013/03/band-and-gerafi-2013.pdf",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8920",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "registration_required": {
         "url": "https://www.wipo.int/wipolex/zh/legislation/details/8920",
@@ -64,9 +64,9 @@
         "checked": "2026-10-22"
       },
       "enforcement_body": {
-        "url": "https://www.cyriljarnias.com/creation-societe-etranger/creation-societe-destination-bahamas/proteger-propriete-intellectuelle-bahamas/",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8920",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "treaties_signatory": {
         "url": "https://www.wipo.int/wipolex/en/treaties/notifications/details/treaty_wct_111",
@@ -75,6 +75,30 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "enforcement_body",
+        "from": "Bahamas Copyright Office (named by a law-firm article; administering department not confirmed) (unconfirmed)",
+        "to": "Registrar of Copyrights performs all administrative functions and runs the Copyright Registry, under the general direction of the Minister (s.88)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "fair_use_exceptions",
+        "from": "Fair dealing for research and private study, criticism, review and reporting (Part VI; list non-exclusive per commentary) (unconfirmed)",
+        "to": "Fair dealing (ss.58-59, Part VII): research, private study, scholarship or teaching; criticism, comment, parody or review; reporting current events; subject to s.60"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "No orphan-works licence found. Author acknowledgement is not required for unpublished works whose author cannot be identified by reasonable inquiry (s.57)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Owner has the exclusive right to reproduce, distribute, prepare derivative works, perform publicly, and authorise others to do so (s.9)"
+      },
       {
         "date": "2026-10-22",
         "field": "row",

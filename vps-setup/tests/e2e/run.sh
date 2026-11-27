@@ -112,6 +112,26 @@ check "la base, el rol y el usuario de sistema de api ya no existen" bash -c "te
 check "el servicio y el sitio de api ya no estan" bash -c "! systemctl is-active --quiet api && test \"\$(curl -s -o /dev/null -m 10 -w '%{http_code}' -H 'Host: $D_API' http://127.0.0.1/)\" = 000"
 check "las demas apps siguen intactas ($APP_PY responde y conserva su base)" bash -c "curl -s -H 'Host: $D_PY' http://127.0.0.1/ | grep -q 'Hello from Python App' && set -a && . /var/www/$APP_PY/.env && set +a && cd / && psql \"\$DATABASE_URL\" -tAc 'select 1' | grep -qx 1"
 
+step "Despliegue por git (10_C) con un usuario de sistema real"
+REPO_E2E=/tmp/e2e-state/blog-repo
+mk_repo_v() { # mk_repo_v <texto>: deja app.py (con "app") y requirements.txt en el repo, como app-blog
+    printf 'from flask import Flask\napp = Flask(__name__)\n\n@app.route("/")\ndef r():\n    return "%s"\n' "$1" > "$REPO_E2E/app.py"
+    echo flask > "$REPO_E2E/requirements.txt"
+    git -C "$REPO_E2E" add -A && git -C "$REPO_E2E" -c user.name=e2e -c user.email=e2e@example.test commit -q -m "$1"
+    chown -R "app-$APP_PY:app-$APP_PY" "$REPO_E2E"
+}
+check "se arma un repositorio local de prueba" bash -c "rm -rf $REPO_E2E && git init -q -b main $REPO_E2E && true"
+mk_repo_v "DESPLEGADO v1"
+check "10_C despliega la app (usuario real, git real, pip real)" env DEPLOY_ALLOW_LOCAL=1 ./10_C-deploy-app.sh "$APP_PY" --repo "$REPO_E2E"
+wait_http "$D_PY" / 200
+check "Nginx sirve el codigo desplegado" bash -c "sleep 2; curl -s -H 'Host: $D_PY' http://127.0.0.1/ | grep -q 'DESPLEGADO v1'"
+check "los archivos son del usuario de la app" bash -c "test \"\$(stat -c %U /var/www/$APP_PY/app.py)\" = app-$APP_PY"
+check "la pagina de ejemplo se aparto (no se borro) y el .env sigue" bash -c "grep -q 'Hello from Python App' /var/backups/vps-setup/deploy/$APP_PY-*/app.py && grep -q '^DATABASE_URL=' /var/www/$APP_PY/.env"
+mk_repo_v "DESPLEGADO v2"
+check "re-correr sin argumentos actualiza (como un pull)" env DEPLOY_ALLOW_LOCAL=1 ./10_C-deploy-app.sh "$APP_PY"
+check "Nginx sirve la version nueva" bash -c "sleep 2; curl -s -H 'Host: $D_PY' http://127.0.0.1/ | grep -q 'DESPLEGADO v2'"
+check "un repo con .env se rechaza y deja el codigo como estaba" bash -c "echo 'X=1' > $REPO_E2E/.env && git -C $REPO_E2E add -f .env && git -C $REPO_E2E -c user.name=e -c user.email=e@example.test commit -q -m env && chown -R app-$APP_PY:app-$APP_PY $REPO_E2E && ! DEPLOY_ALLOW_LOCAL=1 ./10_C-deploy-app.sh $APP_PY && grep -q 'DESPLEGADO v2' /var/www/$APP_PY/app.py && grep -q '^DATABASE_URL=' /var/www/$APP_PY/.env"
+
 step "Tomcat (02_H + 06_D en la raiz)"
 check "02_H termina bien" ./02_H-install-tomcat.sh
 check "06_D termina bien" ./06_D-setup-tomcat-app.sh "$D_JAVA"
@@ -148,6 +168,11 @@ wait_http "nuevo.$D" / 000
 check "tras 10_B ya no se sirve" test "$(http "nuevo.$D" /)" = 000
 check "la landing sigue en 200" test "$(http "$D" /)" = 200
 check "nginx -t sigue OK" nginx -t
+
+step "Tope del journal de systemd (07_D)"
+check "07_D dejo el tope de 200M en el drop-in" grep -qx 'SystemMaxUse=200M' /etc/systemd/journald.conf.d/vps-setup.conf
+check "systemd lo ve en la configuracion efectiva de journald" bash -c "systemd-analyze cat-config systemd/journald.conf | grep -qx 'SystemMaxUse=200M'"
+check "journald sigue activo y responde tras el reinicio" bash -c "systemctl is-active --quiet systemd-journald && journalctl --disk-usage"
 
 step "Monitoreo (09_A) y healthcheck sin dominio (08)"
 check "09_A termina bien" ./09_A-setup-monitoring.sh

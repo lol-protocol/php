@@ -44,9 +44,9 @@ final class FunnelEtapasEnOrdenTest extends IntegracionTestCase
     {
         $pais = Database::connection()->query('SELECT codigo FROM paises ORDER BY codigo LIMIT 1')->fetchColumn();
         Database::connection()->prepare(
-            "INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, fecha_nacimiento,
+            "INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, rango_de_edad,
                                           fecha_visita, fecha_registro, fecha_lead, fecha_conversion)
-             VALUES ('Prueba de etapas', :email, 'organico', :pais, 'X', 'Espanol', 'No especifica', DATE '1990-01-01',
+             VALUES ('Prueba de etapas', :email, 'organico', :pais, 'X', 'Espanol', 'No especifica', '35-44',
                      DATE '2026-03-10', :registro, :lead, :conversion)"
         )->execute([':email' => 'etapas-' . uniqid() . '@example.com', ':pais' => $pais, ':registro' => $registro, ':lead' => $lead, ':conversion' => $conversion]);
     }

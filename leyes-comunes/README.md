@@ -11,6 +11,7 @@ vive aquí una sola vez. Cada script del proyecto queda como un envoltorio que d
 | `replace-url-core.js` | `scripts/replace-url.js` | Cambia una URL de referencia muerta por otra en el CSV maestro y en `source_urls.csv` (donde cada URL vive una vez) de una vez (`npm run replace-url -- <vieja> <nueva>`). |
 | `apply-research-core.js` | `scripts/apply-research.js` | Convierte un CSV de hallazgos (`code,field,value,conf,source`) en filas nuevas y celdas corregidas, cada una con su fuente en `field_sources.csv`; marca `(unconfirmed)` lo de confianza baja y no escribe nada que la validación del proyecto rechace. |
 | `sources-core.js` | `scripts/sources.js` | Edita los dos archivos de fuentes sin calcular ningún hash a mano: `npm run sources -- add <CÓDIGO> <campo> <url>` y `npm run sources -- fix` (recalcula los ids de las URL editadas a mano, ordena y quita las que nadie usa). |
+| `verify-core.js` | `scripts/verify.js` | La parte repetible de contrastar los valores marcados `(unconfirmed)` con el texto de sus fuentes (`npm run verify`): `plan` lista los países con valores sin confirmar y escribe una tarea por país; `apply` aplica los hallazgos de `out/<código>.csv` una ley a la vez, con `apply-research-core.js`. |
 | `translations-core.js` | `scripts/translations.js` | Cobertura de las traducciones automáticas, lo que falta por idioma e importación de las hechas. |
 | `dataset-core.js` | `scripts/lib/dataset.js` (los dos re-exportan lo suyo) | Nombres de los archivos de datos, niveles de confianza, `isRealDate`, `isHttpUrl`, `isPrivateHost`, los avisos de fuentes más nuevas o viejas que su fila, `toCsv`/`writeCsv`, `findLaw` y `withSideData`. Solo usa módulos de Node, sin paquetes. Además trae `createDataset({ masterCsv, dataDir, columns, metaFields, translatedFields, parseMaster, validateRecords, validateSources })`, que arma lo que es igual pero necesita algo de cada módulo (`loadMaster`, `loadSide`, `loadAndValidate`, `diffRecords`, `validateTranslations`, `validateChanges`, `translationDictionaries`, `translatableValues`, `applyWrites`); cada `dataset.js` lo llama una vez y re-exporta el resultado. Lo que sí cambia entre módulos (columnas, regiones, reglas de cada fila y de las fuentes, `parseMaster`, que usa `csv-parse`) se queda en cada `dataset.js`. |
 | `validate-csv-core.js` | `scripts/validate-csv.js` | Corre la validación del proyecto, imprime los problemas y escribe el resumen de GitHub Actions. |
@@ -38,7 +39,13 @@ Vive acá todo lo que no depende de qué módulo lo llama. Lo que sí depende de
   cuando no son la URL de referencia de la ley: una descarga por URL distinta, guardada como `<ley>--<8 hex del sha1>.md`.
   Sin la opción, esos archivos se tratan como textos que salieron del dataset y se borran.
   Los PDF se convierten con `pdftotext` (poppler-utils) si está instalado; si no, se saltan, como las páginas que
-  necesitan JavaScript.
+  necesitan JavaScript. En local: `sudo apt-get install poppler-utils` (Debian y Ubuntu) o `brew install poppler` (macOS);
+  `laws-textos-oficiales.yml` lo instala en el runner. Las pruebas del PDF se saltan si no está.
+  Con `--browser`, una página que sin JavaScript no tiene texto se renderiza con Chrome sin cabeza (`chrome-headless-shell`,
+  `google-chrome` o `chromium`; la variable `CHROMIUM` manda) y se vuelve a leer: solo para URL que ya pasaron la guarda de
+  direcciones privadas y `robots.txt`, y pensado para un runner, porque el navegador hace las peticiones de la página.
+  Va con el user-agent del navegador (cualquier `--user-agent` cuelga este Chrome con `--dump-dom`). Las pruebas se
+  saltan si no hay navegador.
 
 Cada envoltorio conserva además el comentario de uso de su script y, en `record-changes.js` y `translations.js`,
 reexporta las funciones que usan las pruebas, para que los `import` de las pruebas no cambien.
@@ -55,11 +62,11 @@ corriendo contra el script de su propio proyecto.
   privacidad frente a los de derechos de autor, y `website_url` frente a `linked_resources`). Un núcleo
   compartido sería un refactor más grande que el resto junto, con el riesgo de tocar cómo se valida cada CSV.
 - **`tests/`**: las pruebas son las que vigilan los envoltorios, así que cada proyecto conserva las suyas. Algunos
-  archivos son idénticos (`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`, `tests/app-names.test.js`).
+  archivos son idénticos (`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`, `tests/app-names.test.js`, `tests/importer.test.js`, `tests/verify.test.js`).
 
 No se pueden compartir, pero sí vigilar: `comprobar-copias.js` falla en CI si una de esas copias (`app/lib/chart.js`,
 `filters.js`, `util.js`, `view.js`, las hojas `app/styles/base.css`, `comparison.css` y `search.css`,
-`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`, `tests/app-names.test.js`).deja de ser igual en los dos módulos.
+`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`, `tests/app-names.test.js`, `tests/importer.test.js`, `tests/verify.test.js`, `scripts/verify.js`) deja de ser igual en los dos módulos.
 
 ## Sitios que rechazan a los runners
 

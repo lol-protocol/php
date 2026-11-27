@@ -12,6 +12,7 @@ Reglas de formato:
 """
 import argparse
 import base64
+from contextlib import contextmanager
 from functools import lru_cache
 import hashlib
 import json
@@ -20,6 +21,7 @@ import random
 import shutil
 import subprocess
 import tempfile
+import time
 from pathlib import Path
 
 import numpy as np
@@ -29,6 +31,7 @@ from PIL import Image
 from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
 import muestreo
 import texto as tx
+from regiones import lengua_de_autor, zona_de_autor
 from qa import (contraste_texto, ESCALA_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, OPACIDADES_VELO, TONOS_TEXTO, UMBRAL_CAMBIO, UMBRAL_DUPLICADO,
                 hoja_de_contacto, hoja_de_miniaturas, huella_visual, mejor_texto, parecido_a, validar_jpg,
                 validar_frases, validar_svg, validar_taxonomia)
@@ -121,6 +124,8 @@ def construir(config, mov, autor, v, intento=0, animos=None, ocultar_motivo=Fals
         "autor_id": autor["id"],
         "epoca": autor["epoca"],
         "region": autor["region"],
+        "zona": zona_de_autor(autor),
+        "lengua": lengua_de_autor(autor),
         "variante": v,
         "obra_id": obra["id"],
         "obra": obra["titulo"],
@@ -360,7 +365,7 @@ def copiar_muestras(generados, rutas, por_movimiento=3):
 # Módulos que dibujan las piezas. Los demás (editor, modelo, marca, revisión, Gutenberg) no cambian el
 # catálogo: tocarlos no debe invalidar la caché de las 1000 piezas. tests/test_incremental.py comprueba
 # que esta lista cubre todo lo que build.py importa.
-MODULOS_DE_RENDER = ("build", "color", "movimientos", "movimientos4", "muestreo", "plantillas", "qa", "render_raster", "render_svg", "scene", "texto")
+MODULOS_DE_RENDER = ("build", "color", "movimientos", "movimientos4", "muestreo", "plantillas", "qa", "regiones", "render_raster", "render_svg", "scene", "texto")
 
 
 def hash_generador():
@@ -369,7 +374,7 @@ def hash_generador():
     for ruta in ([RAIZ / "generator" / f"{m}.py" for m in MODULOS_DE_RENDER]
                  + sorted((RAIZ / "generator" / "fuentes").glob("*.[to]tf"))
                  + [CATALOGO / "animos.yaml", CATALOGO / "motivos.yaml", CATALOGO / "frases.yaml",
-                    CATALOGO / "escrituras.yaml"]):
+                    CATALOGO / "escrituras.yaml", CATALOGO / "regiones.yaml"]):
         h.update(ruta.name.encode() + b"\0" + ruta.read_bytes() + b"\0")
     return h.hexdigest()
 
@@ -408,10 +413,53 @@ def cargar_cache():
     return json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else {}
 
 
-def guardar_cache(cache):
-    ruta = CATALOGO / ".cache" / "piezas.json"
+def _escribir_atomico(ruta, texto):
+    """Escribe en un archivo temporal y lo renombra: quien lea a la vez ve el contenido viejo o el nuevo, nunca
+    uno a medias (con varios procesos generando, un `write_text` deja el archivo vacío un instante)."""
     ruta.parent.mkdir(parents=True, exist_ok=True)
-    ruta.write_text(json.dumps(cache, ensure_ascii=False) + "\n", encoding="utf-8")
+    tmp = ruta.with_name(f"{ruta.name}.{os.getpid()}.tmp")
+    tmp.write_text(texto, encoding="utf-8")
+    os.replace(tmp, ruta)
+
+
+def guardar_cache(cache):
+    _escribir_atomico(CATALOGO / ".cache" / "piezas.json", json.dumps(cache, ensure_ascii=False) + "\n")
+
+
+@contextmanager
+def _bloqueo(espera=0.05, caduca=120):
+    """Exclusión mutua entre procesos sobre los archivos compartidos (manifest y caché), para poder generar
+    varios movimientos a la vez (generator/build_paralelo.py). Portátil: un archivo creado con O_EXCL; uno
+    de más de `caduca` segundos es de un proceso caído y se retira."""
+    ruta = CATALOGO / ".cache" / "catalogo.lock"
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    while True:
+        try:
+            fd = os.open(ruta, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            break
+        except FileExistsError:
+            try:
+                if time.time() - ruta.stat().st_mtime > caduca:
+                    ruta.unlink()
+            except FileNotFoundError:
+                pass
+            time.sleep(espera)
+    try:
+        yield
+    finally:
+        os.close(fd)
+        try:
+            ruta.unlink()
+        except FileNotFoundError:
+            pass
+
+
+def guardar_cache_mezclando(propias, movimientos):
+    """Guarda la caché de los `movimientos` de esta ejecución sin pisar los de otros procesos: relee el archivo
+    bajo el bloqueo, conserva lo que no es de estos movimientos y pone `propias`."""
+    with _bloqueo():
+        ajenas = {k: v for k, v in cargar_cache().items() if v["entrada"]["movimiento"] not in movimientos}
+        guardar_cache({**ajenas, **propias})
 
 
 def _reutilizable(hit, clave):
@@ -461,6 +509,7 @@ def main(argv=None):
         return 1
     filtro = None if args.all else args.movimiento
     ids_movimientos = [m["id"] for m in config["movimientos"]]
+    propios = set(ids_movimientos) if args.all else {args.movimiento}  # movimientos que esta ejecución regenera
 
     gen = hash_generador()
     cache = {} if args.forzar else cargar_cache()
@@ -499,8 +548,9 @@ def main(argv=None):
             revisiones[ident].save(rev_ruta)
             rehechas.append(ident)
             if len(rehechas) % 25 == 0:  # guardado periódico: una interrupción no pierde lo hecho
-                guardar_cache({**{k: v for k, v in cache.items() if k not in nueva_cache}, **nueva_cache,
-                               ident: {"clave": clave, "huella": _huella_a_texto(h), "entrada": entrada}})
+                guardar_cache_mezclando(
+                    {**{k: v for k, v in cache.items() if k not in nueva_cache and v["entrada"]["movimiento"] in propios},
+                     **nueva_cache, ident: {"clave": clave, "huella": _huella_a_texto(h), "entrada": entrada}}, propios)
         if entrada["contraste_texto"] < MIN_CONTRASTE_TEXTO:
             avisos_texto.append(f"{ident}: franja a {entrada['contraste_texto']}:1 incluso con velo {entrada['velo']}")
         if entrada["velo"]:
@@ -514,25 +564,20 @@ def main(argv=None):
 
     # El manifest conserva los movimientos que no se regeneraron.
     manifiesto = CATALOGO / "manifest.json"
-    previas_manifest = []
-    if manifiesto.exists():
-        previas_manifest = json.loads(manifiesto.read_text(encoding="utf-8"))["entradas"]
     rehechos = {e["movimiento"] for e in generados}
-    entradas = sorted(
-        [e for e in previas_manifest if e["movimiento"] not in rehechos] + generados,
-        key=lambda e: e["id"],
-    )
-    manifiesto.write_text(
-        json.dumps({"version_generador": VERSION_GENERADOR, "total": len(entradas), "entradas": entradas},
-                   ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    with _bloqueo():  # leer y escribir, sin que otro proceso (otro movimiento) lo haga en medio
+        previas_manifest = []
+        if manifiesto.exists():
+            previas_manifest = json.loads(manifiesto.read_text(encoding="utf-8"))["entradas"]
+        entradas = sorted(
+            [e for e in previas_manifest if e["movimiento"] not in rehechos] + generados,
+            key=lambda e: e["id"],
+        )
+        _escribir_atomico(manifiesto, json.dumps({"version_generador": VERSION_GENERADOR, "total": len(entradas),
+                                                  "entradas": entradas}, ensure_ascii=False, indent=2) + "\n")
 
-    # Caché: se conservan los demás movimientos y se sustituyen los regenerados.
-    for ident, hit in cache.items():
-        if hit["entrada"]["movimiento"] not in rehechos:
-            nueva_cache.setdefault(ident, hit)
-    guardar_cache(nueva_cache)
+    # Caché: se conservan los demás movimientos (los que haya ahora en disco) y se sustituyen los regenerados.
+    guardar_cache_mezclando(nueva_cache, rehechos)
 
     # Archivos huérfanos (obras quitadas de la taxonomía) de los movimientos regenerados
     vigentes = {e["id"] for e in generados}

@@ -8,7 +8,7 @@
     "term_of_protection": "Author's life + 50 years (Law on Support of the Rights of Authors, Composers, Artists and Researchers 2008; joint works: 50 years after death of last author; pseudonymous: 50 years from first publication; unpublished: 50 years from fixation; Afghan calendar)",
     "author_rights": "Economic rights",
     "moral_rights": "Moral rights of authors protected (Art. 1; dedicated chapter)",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Not specified (the Act has no orphan-works licensing or use provision; it only defines anonymous works and sets their term)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-18",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/10197",
@@ -50,11 +50,17 @@
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/10197",
-        "confidence": "low",
-        "checked": "2026-10-18"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Not specified (the Act has no orphan-works licensing or use provision; it only defines anonymous works and sets their term)"
+      },
       {
         "date": "2026-10-18",
         "field": "row",

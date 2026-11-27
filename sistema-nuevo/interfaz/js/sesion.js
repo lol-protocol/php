@@ -21,7 +21,9 @@ async function pedir(path, options = {}) {
   }
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(mensajeDeError(data, t("error_http", { status: response.status, path })));
+    const error = new Error(mensajeDeError(data, t("error_http", { status: response.status, path })));
+    error.codigo = data?.codigo; // quien llama puede decidir según el código (p. ej. una función apagada)
+    throw error;
   }
   return data;
 }

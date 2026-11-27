@@ -14,6 +14,7 @@ from phone_directory_parser import MultiLanguagePhoneDirectoryParser
 HERE = os.path.dirname(os.path.abspath(__file__))
 SET = os.path.join(HERE, '..', '..', 'tests', 'fixtures', 'parser-evaluation.json')
 KNOWN_FAILURES = os.path.join(HERE, '..', 'fallas-conocidas.txt')
+PARITY = os.path.join(HERE, '..', '..', 'tests', 'fixtures', 'parser-paridad.json')
 
 
 def known_failures():
@@ -49,6 +50,18 @@ class EvaluationSetTest(unittest.TestCase):
             ids = {c['id'] for c in json.load(f)['casos']}
 
         self.assertEqual(set(), known_failures() - ids)
+
+
+class ParityCorpusTest(unittest.TestCase):
+    """The inputs of ../../src/PhoneDirectory/Parser/ParityCorpus.php, with what the PHP parser gives: this port
+    must give the same on every one (a change in one parser that the others do not follow fails here)."""
+
+    def test_the_port_gives_what_the_php_parser_gives(self):
+        with open(PARITY, encoding='utf-8') as f:
+            cases = json.load(f)['casos']
+
+        self.assertGreater(len(cases), 500)
+        self.assertEqual([], [c['id'] for c in cases if not passes(c)])
 
 
 if __name__ == '__main__':

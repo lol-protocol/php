@@ -12,7 +12,7 @@
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
-    "enforcement_body": "Congolese Copyright Office (Bureau Congolais du Droit d'Auteur, BCDA) (unconfirmed)",
+    "enforcement_body": "Courts: the investigating judge or President of the Tribunal de grande instance orders seizures (Art. 71); the authors' professional organisation may sue and appoint infringement agents (Art. 70, 83)",
     "treaties_signatory": "Berne",
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/642",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/642",
@@ -39,9 +39,9 @@
         "checked": "2026-10-25"
       },
       "enforcement_body": {
-        "url": "https://www.musicinafrica.net/node/15693",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/642",
+        "confidence": "high",
+        "checked": "2026-11-26"
       },
       "treaties_signatory": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Republic_of_the_Congo.html",
@@ -50,6 +50,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "enforcement_body",
+        "from": "Congolese Copyright Office (Bureau Congolais du Droit d'Auteur, BCDA) (unconfirmed)",
+        "to": "Courts: the investigating judge or President of the Tribunal de grande instance orders seizures (Art. 71); the authors' professional organisation may sue and appoint infringement agents (Art. 70, 83)"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

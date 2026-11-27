@@ -7,7 +7,7 @@ import { PRENDAS_POR_ID, PRENDAS } from './datos/prendas.js';
 import { ATUENDOS, ATUENDOS_POR_ID, REGIONES } from './datos/atuendos.js';
 import { MANDIBULAS_ID, PEINADOS, BARBAS, TOCADOS } from './cabeza.js';
 import { PATRONES_ID } from './patrones.js';
-import { CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria } from './cuerpo.js';
+import { CORPULENCIAS, POSTURAS, POSE_FIRME, SALUDOS_ESTILO, poseAleatoria } from './cuerpo.js';
 import { renderizar } from './svg.js';
 import { ETNIAS, ETNIAS_POR_ID } from './datos/etnias.js';
 import { distribucionColor, catalogoColores, muestrearColor, muestrearColorLibre, perfilDe, PERFILES } from './datos/colores-prendas.js';
@@ -286,10 +286,13 @@ const ESTATURA_REF = { f: 161, m: 174 }; // los promedios con los que medidas() 
 // ---------- Persona ----------
 
 /**
- * Opciones (todas opcionales): semilla, sexo ('f'|'m'), edad, corpulencia, altura (cm), postura,
- * atuendo (id), region, anio, clase ('baja'|'media'|'alta'), piel, cabello, barba (true|false|id),
- * peinado, tocado, calzado, paleta ({A,B,C,D} en hex), variacion (0..1), detalle ('minimo'|'medio'|'alto'),
- * rasgos (true: ojos, cejas y boca suaves), fondo, prendas (lista propia de prendas ya armadas).
+ * Opciones (todas opcionales; una opción mal escrita lanza un Error, ver validacion.js): semilla, sexo ('f'|'m'), edad (2 a 100),
+ * corpulencia (nombre o número), altura (cm), postura, atuendo (id), region, anio, clase ('baja'|'media'|'alta'), etnia (id, lista,
+ * texto con comas o { id: peso }), piel, cabello, barba (true|false|id), peinado, tocado, calzado, paleta ({A,B,C,D} en hex),
+ * variacion (0..1), colores ('atuendo'|'prenda'), vestir (ids de prenda o { ranura: id }), saludo ('derecha'|'izquierda'|'ninguno'),
+ * pose ('casual'|'firme'|'infantil'|'mayor'|'segun-edad' o un objeto parcial: brazoLibre, manos, carga, cabeza…), vista ('frente'|'espalda'),
+ * detalle ('minimo'|'medio'|'alto'), contorno ('ninguno'|'suave'), rasgos (true: ojos, cejas y boca suaves), fondo,
+ * prendas (lista propia de prendas ya armadas).
  */
 export function generarPersona(opc = {}) {
   validarOpciones(opc);
@@ -406,7 +409,7 @@ export function generarPersona(opc = {}) {
   else {
     const perfilPose = opc.pose === 'segun-edad' ? (edad <= 12 ? 'infantil' : edad >= 65 ? 'mayor' : undefined) : (opc.pose === 'infantil' || opc.pose === 'mayor' ? opc.pose : undefined);
     pose = poseAleatoria(azar.hijo('pose'), 1, perfilPose);
-    if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(opc.pose.saludo ?? {}) } };
+    if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(SALUDOS_ESTILO[opc.pose.saludoEstilo] ?? {}), ...(opc.pose.saludo ?? {}) } };
     if (opc.postura !== undefined && !(opc.pose && opc.pose.angulos)) {
       const base = typeof opc.postura === 'number' ? opc.postura : (POSTURAS[opc.postura] ?? POSTURAS.relajada);
       pose.angulos = { 1: base + pose.angulos[1] * 0.2 - 1, '-1': base + pose.angulos['-1'] * 0.2 - 1 };

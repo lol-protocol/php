@@ -26,7 +26,11 @@ final class Avisos
     private const CONFIRMACIONES = [
         'cobros' => ['creada' => 'Boleta #%d creada.', 'editada' => 'Boleta #%d actualizada.', 'anulada' => 'Boleta #%d anulada.'],
         'pagos' => ['creado' => 'Pago #%d registrado.', 'editado' => 'Pago #%d actualizado.', 'anulado' => 'Pago #%d anulado.'],
-        'cliente' => ['creado' => 'Cliente creado.'],
+        'cliente' => [
+            'creado' => 'Cliente creado.',
+            'anonimizado' => 'Cliente #%d anonimizado: ya no tiene nombre, email ni ciudad. Se puede deshacer durante 7 días.',
+            'restaurado' => 'Cliente #%d restaurado: volvieron su nombre, email y ciudad.',
+        ],
         'notas' => ['devuelta' => 'Devolución de la nota de crédito #%d registrada.'],
     ];
 

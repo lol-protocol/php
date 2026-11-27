@@ -18,7 +18,8 @@
     "translations": "node scripts/translations.js",
     "replace-url": "node scripts/replace-url.js",
     "apply-research": "node scripts/apply-research.js",
-    "sources": "node scripts/sources.js"
+    "sources": "node scripts/sources.js",
+    "verify": "node scripts/verify.js"
   },
   "keywords": [
     "copyright",
@@ -32,9 +33,9 @@
   "author": "lol-protocol",
   "license": "MIT",
   "devDependencies": {
-    "acorn": "8.15.0",
-    "axe-core": "4.14.0",
+    "acorn": "8.19.0",
+    "axe-core": "4.14.1",
     "csv-parse": "7.0.3",
-    "playwright": "1.65.0"
+    "playwright": "1.65.1"
   }
 }

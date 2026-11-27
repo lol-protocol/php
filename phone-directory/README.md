@@ -407,6 +407,7 @@ php bin/phonedir search --surname-sound=valdez --language=es --dsn=sqlite:madrid
 php bin/phonedir stats --dsn=sqlite:madrid.sqlite
 php bin/phonedir link --sources=es_1930_madrid,es_1975_national --dsn=sqlite:madrid.sqlite
 php bin/phonedir catalog list --country=ES
+php bin/phonedir catalog show es_1930_madrid
 php bin/phonedir help
 ```
 
@@ -505,6 +506,8 @@ phpstan analyse
 PHPStan no es una dependencia del proyecto: se instala aparte (por ejemplo `composer global require phpstan/phpstan:^2.1`) y la CI lo trae con `shivammathur/setup-php`. Revisa `src/`, `bin/` (incluido `bin/phonedir`) y `examples/`, no los tests.
 
 Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`. Leen las guías con las mismas reglas que el parser de PHP: las de calle por idioma (incluida `C/`, y «Dr.» y «St.» al abrir un nombre), la lectura de un bloque de líneas (palabras partidas con guion, varios registros sin línea en blanco, la calle sin palabra que cede ante una con palabra), las entradas de una sola línea, los teléfonos (los formatos de cada idioma, la central con nombre, la corrección de dígitos del OCR, el teléfono en la línea del nombre) y la detección de negocios. Corren además el mismo conjunto de evaluación que el parser de PHP (`tests/fixtures/parser-evaluation.json`): todo caso tiene que salir bien, salvo los que lista `ports/fallas-conocidas.txt`, que tienen que seguir fallando (hoy ninguno: la lista está vacía). Si agregas un caso al conjunto y los puertos no lo resuelven, va a esa lista; si un cambio en un puerto arregla uno, sale de ella.
+
+**Paridad entre los tres parsers.** Además del conjunto de evaluación (que dice lo que es *correcto*), `tests/fixtures/parser-paridad.json` guarda lo que el parser de PHP da hoy en unas 690 entradas: ~90 escritas a mano (`parser-paridad-entradas.json`, líneas inventadas de OCR en los seis idiomas) y 600 mezclas al azar con semilla fija (`ParityCorpus`). Los puertos de Python y Java tienen que dar exactamente lo mismo en todas, y el parser de PHP no puede lanzar una excepción con ninguna ni con líneas enormes, UTF-8 inválido o comillas tipográficas (`ParityCorpusTest`). Si cambias el parser de PHP, `php bin/generar-corpus-paridad.php` rehace el archivo (`--comprobar` solo dice si está al día); los puertos fallan hasta que sigan el cambio. Así se encontraron las diferencias de #632.
 
 ### Listas de palabras
 

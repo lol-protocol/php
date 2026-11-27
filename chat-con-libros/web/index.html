@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>Chat con libros</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Chat con libros</h1>
+      <p class="sub">Pregúntale a un libro. Te responde con sus propios pasajes.</p>
+    </header>
+
+    <section class="controles" aria-label="Opciones">
+      <div class="campo">
+        <label for="libro">Libro</label>
+        <select id="libro"></select>
+      </div>
+      <div class="campo">
+        <label class="casilla">
+          <input type="checkbox" id="estilo-original">
+          <span>Mostrar el texto como lo escribió el autor (libros largos)</span>
+        </label>
+      </div>
+      <div class="campo ia">
+        <label class="casilla">
+          <input type="checkbox" id="usar-ia">
+          <span>Redactar la respuesta con IA (Claude)</span>
+        </label>
+        <p id="nota-ia" class="nota"></p>
+      </div>
+    </section>
+
+    <div id="conversacion" role="log" aria-live="polite" aria-label="Conversación"></div>
+    <p id="error" role="alert" hidden></p>
+
+    <form id="formulario" autocomplete="off">
+      <label for="pregunta">Tu pregunta</label>
+      <div class="fila">
+        <input id="pregunta" type="text" maxlength="500" placeholder="Por ejemplo: ¿qué pasa con el reloj?" required>
+        <button type="submit" id="enviar">Preguntar</button>
+      </div>
+    </form>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

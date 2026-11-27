@@ -12,7 +12,8 @@ setup() {
     chmod +x "$FAKE"/*.sh
     # arbol falso para 10_B
     export NGINX_DIR="$BATS_TEST_TMPDIR/nginx" WWW_DIR="$BATS_TEST_TMPDIR/www" NGINX_LOG_DIR="$BATS_TEST_TMPDIR/log" \
-           SYSTEMD_DIR="$BATS_TEST_TMPDIR/systemd" REMOVED_DIR="$BATS_TEST_TMPDIR/removed"
+           SYSTEMD_DIR="$BATS_TEST_TMPDIR/systemd" REMOVED_DIR="$BATS_TEST_TMPDIR/removed" \
+           DEPLOY_KEYS_DIR="$BATS_TEST_TMPDIR/keys"
     mkdir -p "$NGINX_DIR/sites-available" "$NGINX_DIR/sites-enabled" "$WWW_DIR/landing-page/ejemplo.com" "$WWW_DIR/miapp" "$NGINX_LOG_DIR/ejemplo.com" "$SYSTEMD_DIR"
     echo conf > "$NGINX_DIR/sites-available/ejemplo.com"
     ln -s "$NGINX_DIR/sites-available/ejemplo.com" "$NGINX_DIR/sites-enabled/ejemplo.com"
@@ -276,4 +277,13 @@ exec "$@"'
     [ "$status" -eq 0 ]
     ! grep -q 'dropdb\|dropuser\|userdel\|pg_dump' "$SUDO_LOG"
     [[ "$output" == *"--purge-app"* ]]                                # sugiere como hacerlo
+}
+
+@test "10_B --app archiva tambien la copia de la llave de despliegue (10_C), no la borra" {
+    mkdir -p "$DEPLOY_KEYS_DIR/miapp"; echo 'LLAVE' > "$DEPLOY_KEYS_DIR/miapp/key"
+    del ejemplo.com --app miapp --yes
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    d=$(ls -d "$REMOVED_DIR"/ejemplo.com-*)
+    [ "$(cat "$d/deploy-key/miapp/key")" = LLAVE ] && [ ! -e "$DEPLOY_KEYS_DIR/miapp" ]
+    [ "$(stat -c %a "$d")" = 700 ]
 }

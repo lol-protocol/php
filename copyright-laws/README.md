@@ -80,6 +80,7 @@ npm run changes       # records what changed since the last commit in changes.cs
 npm run replace-url -- <old> <new>   # swaps a dead reference URL in the master CSV and source_urls.csv (--dry to count)
 npm run sources -- add <CODE> <field> <url>   # sets the source of one value in field_sources.csv / source_urls.csv
 npm run apply-research -- findings.csv --batch=batch.txt   # writes researched facts (code,field,value,conf,source) as new rows / patched cells, each with its source
+npm run verify -- plan --out=<dir>        # tasks to check the "(unconfirmed)" values against their sources (`--curated` adds the rows never checked); `verify apply --from=<dir>` applies the findings (see CONTRIBUTING.md)
 npm run validate      # strict checks: columns, treaties, types, URLs, regions, duplicates…
 npm run build         # regenerates {tld}/ folders and index.json (idempotent)
 npm test              # also fails if generated files are out of date
@@ -158,4 +159,4 @@ MIT
 
 ## Traducciones de los valores (`jurisdictions/value_translations.csv`)
 
-Los textos descriptivos de cada ley (alcance, sanciones, plazos…) están en inglés en el CSV maestro. `value_translations.csv` guarda su traducción a `spa`, `fra`, `deu` y `por` (columnas `lang,source,text`; `source` es el texto inglés exacto). Son **traducciones automáticas, no revisadas por un jurista**: la app las muestra con la marca «MT» y, si falta una, enseña el inglés. `npm run translations` da la cobertura por idioma; `npm run translations -- --missing=<lang>` lista lo que falta; `--import=<lang>` incorpora un archivo revisado. Cuando cambia un texto inglés, su traducción deja de aplicarse hasta que se actualice.
+Los textos descriptivos de cada ley (alcance, sanciones, plazos…) están en inglés en el CSV maestro. `value_translations.csv` guarda su traducción a `spa`, `fra`, `deu` y `por` (columnas `lang,source,text`; `source` es el texto inglés exacto). Son **traducciones automáticas, no revisadas por un jurista**: la app las muestra con la marca «MT» y, si falta una, enseña el inglés. `npm run translations` da la cobertura por idioma; `npm run translations -- --missing=<lang>` lista lo que falta; `--import=<lang>` incorpora un archivo revisado; `--prune` quita las traducciones de textos que ya cambiaron (no se publican). Cuando cambia un texto inglés, su traducción deja de aplicarse hasta que se actualice.

@@ -199,6 +199,41 @@ Estas son las marcas **⚖️** del borrador, por sección.
     desde el 1 de diciembre de 2026, y por cuánto tiempo conviene conservarla
     (la garantía legal es de seis meses)?
 
+## E. Registro de exclusiones (`personas-especiales/`)
+
+El módulo `personas-especiales/` guarda solicitudes para que una persona no sea
+conectada ni mostrada en la plataforma, a pedido de quien tiene derecho a pedirlo. **No
+guarda categorías de la persona** (religión, origen, pertenencia a un grupo): lo que
+guarda de cada solicitud es el identificador de la persona, quién la pide (la propia
+persona, un familiar directo de una persona fallecida o un apoderado), un motivo de una
+lista cerrada (privacidad personal, seguridad, asociación con un familiar u otro), la
+prueba con la que se verificó a quien pide y la fecha de cada cambio.
+
+33. **Quién puede pedir una exclusión y qué prueba basta.** Hoy se asumen tres figuras:
+    la persona viva, un familiar directo de una persona fallecida y un apoderado con
+    prueba de representación. ¿Son las correctas? ¿Qué grado de parentesco cuenta como
+    «directo»? ¿Qué documento prueba cada una (cédula, acta de defunción, poder
+    notarial)? Se parece a la 16 (quiénes pueden pedir el retiro por un
+    difunto), y conviene que las dos respuestas coincidan. **Sin decidir** (la persona a cargo respondió «todavía
+    no lo sé» el 20 de noviembre de 2026): mientras tanto el módulo asume esas tres.
+34. **Los datos de la propia solicitud.** La solicitud y su prueba son datos personales de
+    quien pide, y la prueba puede ser un documento de identidad. ¿Cuál es la base de
+    licitud para guardarlos? ¿Por cuánto tiempo, y se borra la prueba una vez verificada
+    la solicitud, o hay que conservarla para poder responder a un reclamo? El módulo
+    guarda además un historial que solo se agrega (quién actuó y cuándo, sin la razón ni
+    la prueba): ¿es compatible con un pedido de supresión de quien solicitó?
+35. **El efecto de una exclusión.** Excluir a una persona la saca de las conexiones, de las
+    listas y de las exportaciones, pero **no borra sus datos**: es la misma pregunta que
+    la 31, ahora para quien lo pide por su propia cuenta. ¿Basta para atender un derecho
+    de oposición o de supresión?
+36. **Los parientes.** La persona a cargo decidió (20 de noviembre de 2026) que, en la
+    ficha de un pariente, la persona excluida se muestre con el mismo marcador que ya
+    se usa para una persona viva («Persona viva»), sin nombre ni datos, para que no se
+    pueda distinguir de una persona viva oculta por privacidad. ¿Basta eso para no
+    identificar a la persona excluida por deducción (por ejemplo, por el número de hijos
+    o por las fechas de los demás)? ¿Y para quien es pariente de la persona excluida pero
+    no pidió nada?
+
 ## Lo que tiene que decidir la persona a cargo antes de la reunión
 
 Sin esto el abogado no puede cerrar los textos:
@@ -213,6 +248,13 @@ Sin esto el abogado no puede cerrar los textos:
   correo.
 - Si habrá cuentas y contenido subido por usuarios, o si el sitio seguirá siendo
   de solo lectura. Los términos de uso cambian mucho según la respuesta.
+- Quién puede pedir una exclusión y con qué prueba (pregunta 33). Sin decidir desde el
+  20 de noviembre de 2026.
+- ~~Qué se muestra en la ficha de los parientes de una persona excluida.~~ **Decidido el
+  20 de noviembre de 2026:** el marcador de «Persona viva» (pregunta 36 sigue abierta, para
+  confirmar que basta).
+- ~~Qué motivos puede elegir quien pide una exclusión.~~ **Decidido el 20 de noviembre de
+  2026:** una lista cerrada de cuatro, sin texto libre.
 
 ## Qué hacer con las respuestas
 

@@ -30,7 +30,7 @@ están al día, así que el resto del README las remite aquí en vez de repetirl
 - **IP de la mejor lengua**, países por nivel: 5: 181, 4: 16, 3: 7, 2: 1, 1: 3.
 - **IP local**, países por nivel: 5: 107, 4: 23, 3: 31, 2: 7, 1: 40.
 - **Lenguas por nivel:** 5: 21, 4: 26, 3: 35, 2: 11, 1: 70.
-- **Corrupción mediana por IO** (100 = sin corrupción): IO 1: 20; IO 2: 26; IO 3: 37; IO 4: 55; IO 5: 77.5.
+- **Corrupción mediana por IO** (100 = sin corrupción): IO 1: 16.5; IO 2: 26; IO 3: 38; IO 4: 56; IO 5: 77.
 <!-- fin del resumen -->
 
 ## Archivos
@@ -135,7 +135,7 @@ Vaticano ni otros territorios menores.
 | `emigrantes_pct` | Personas nacidas en el país que viven en otro, en porcentaje de la población residente, de 2024 (ONU, *International Migrant Stock*, vía Gapminder). Mide la diáspora que puede buscar sus raíces. Vacía en 12, entre ellos los territorios nuevos. |
 | `libertad_fh` | Estatus de Freedom House de 2022: `libre`, `parcial` o `no libre` (vía Gapminder). Vacía en 14. |
 | `democracia_eiu` | Índice de democracia de la EIU de 2020, de 0 a 100 (vía Gapminder). Vacía en 41. |
-| `corrupcion_cpi` | Índice de percepción de la corrupción de Transparencia Internacional de 2023, de 0 a 100; 100 es sin corrupción (vía Gapminder). Vacía en 30. |
+| `corrupcion_cpi` | Índice de percepción de la corrupción de Transparencia Internacional de 2024, de 0 a 100; 100 es sin corrupción (vía Our World in Data). Vacía en 27. |
 | `indice_genealogia` | IG, de 1 a 5. |
 | `indice_operabilidad` | IO, de 1 a 5. |
 | `comentarios` | Motivo de los puntajes de genealogía. |
@@ -444,6 +444,10 @@ los datos vienen de copias publicadas en GitHub: los repositorios de Our World i
 Gapminder (`open-numbers`) y los de `datasets` (de datahub.io), que copian los indicadores del
 Banco Mundial. `ourworldindata.org`, `www.prb.org` y `api.worldbank.org` se habilitaron después.
 
+- [Our World in Data, *Corruption Perception Index*](https://ourworldindata.org/grapher/ti-corruption-perception-index)
+  (`corrupcion-owid.csv`, columna `cpi_score`): índice de percepción de la corrupción de
+  Transparencia Internacional hasta 2024. Tampoco tiene versiones fijas: `fuentes.sha256` guarda el
+  SHA-256 del archivo usado.
 - [Our World in Data, *Population*](https://ourworldindata.org/grapher/population)
   (`population.csv`, columna `population_historical`; datos actualizados el 15 de julio de 2024):
   población por país desde el 10 000 a. C. hasta 2023 (HYDE 2023, Gapminder y ONU WPP 2024). El
@@ -476,8 +480,7 @@ Banco Mundial. `ourworldindata.org`, `www.prb.org` y `api.worldbank.org` se habi
   (`children_per_woman_total_fertility`), PIB per cápita PPA en dólares internacionales de 2021
   (`gdp_pcap`, versión 32, basado en el Banco Mundial), emigrantes por país de origen
   (`emigrant_n`, de la ONU), estatus de libertad de Freedom House (`freedstatus_fh`), índice de
-  democracia de la EIU (`demox_eiu`) e índice de percepción de la corrupción de Transparencia
-  Internacional (`corruption_perception_index_cpi`).
+  democracia de la EIU (`demox_eiu`).
 - [`datasets/world-development-indicators`](https://github.com/datasets/world-development-indicators),
   commit `4ebec5a` (1 de julio de 2026), archivo `indicators/ny.gdp.pcap.cd/data.csv`: PIB per
   cápita en dólares corrientes del Banco Mundial (`NY.GDP.PCAP.CD`), hasta 2025.
@@ -545,9 +548,10 @@ Léelo antes de usar la tabla para decidir.
   comparar países, no como conteo exacto.
 - **Alfabetización, internet y emigrantes: de fuente** (UNESCO, Banco Mundial y ONU, vía
   Gapminder). En alfabetización e internet el año varía por país; es el último disponible.
-- **Libertad, democracia y corrupción: de fuente** (Freedom House 2022, EIU 2020 y Transparencia
-  Internacional 2023, vía Gapminder). Son los últimos años que publica Gapminder; el de la EIU es
-  el más viejo.
+- **Libertad, democracia y corrupción: de fuente** (Freedom House 2022 y EIU 2020, vía Gapminder;
+  Transparencia Internacional 2024, vía Our World in Data). Son los últimos años que publican esas
+  fuentes; el de la EIU es el más viejo. La corrupción salió de Our World in Data porque va un año
+  por delante de Gapminder y trae Hong Kong, Kosovo y Taiwán.
 - **IP: medido** con las palabras anotadas de Universal Dependencies y MasakhaPOS. Solo cuenta
   corpus abiertos con etiqueta gramatical: una lengua con otros recursos (diccionarios, corpus sin
   anotar, modelos) queda en el nivel 1 si no tiene ninguno de esos.

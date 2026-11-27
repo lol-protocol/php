@@ -13,11 +13,11 @@
     "data_categories": "Personal information (incl. DNA, fingerprints, blood type); sensitive personal information (health, racial/ethnic origin, religion, sexual orientation, criminal/financial records)",
     "retention_period": "Not specified",
     "enforcement_authority": "Office of the Information Commissioner (vacant/not established; Ministry of Digital Transformation responsible)",
-    "penalties_range": "Up to TTD 50,000 and 3 years imprisonment reported by one commercial site; penalty Part V not proclaimed (unconfirmed)",
-    "exemptions": "Court/tribunal proceedings and judges' personal notes (s. 5); law enforcement collection exception (unconfirmed)",
+    "penalties_range": "Offences (s. 95): fine up to TTD 50,000 or 3 years' imprisonment (summary); TTD 100,000 or 5 years (indictment); bodies corporate TTD 250,000 / 500,000; s. 96: up to 10% of annual turnover",
+    "exemptions": "Act does not limit information available to a party in proceedings or the court's power to compel evidence, nor apply to a judge's or tribunal member's notes (s. 5); law-enforcement collection allowed (s. 30)",
     "deceased_data": "",
-    "research_exemption": "Sensitive information may be processed without consent for research or statistical analysis (section not found); archival/historical disclosure provision in revised text s. 44 (unconfirmed)",
-    "genetic_data": "DNA included in the definition of personal information; no specific genetic rule found (unconfirmed)",
+    "research_exemption": "Sensitive personal information may be processed for research and statistical purposes under s. 43 (public-body disclosure conditions); archival/historical disclosure under s. 44",
+    "genetic_data": "Deoxyribonucleic acid (DNA), blood type and biometric characteristics are expressly included in the definition of personal information (s. 2); no separate genetic-data regime",
     "website_url": "https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-18",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf",
@@ -75,27 +75,51 @@
         "checked": "2026-10-16"
       },
       "penalties_range": {
-        "url": "https://www.consentstack.io/regulations/tt-dpa",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf",
+        "confidence": "high",
+        "checked": "2026-11-26"
       },
       "exemptions": {
         "url": "https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "high",
+        "checked": "2026-11-26"
       },
       "research_exemption": {
-        "url": "https://www.consentstack.io/regulations/tt-dpa",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf",
+        "confidence": "high",
+        "checked": "2026-11-26"
       },
       "genetic_data": {
-        "url": "https://www.dlapiperdataprotection.com/?c=TT&t=law",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf",
+        "confidence": "high",
+        "checked": "2026-11-26"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "genetic_data",
+        "from": "DNA included in the definition of personal information; no specific genetic rule found (unconfirmed)",
+        "to": "Deoxyribonucleic acid (DNA), blood type and biometric characteristics are expressly included in the definition of personal information (s. 2); no separate genetic-data regime"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "research_exemption",
+        "from": "Sensitive information may be processed without consent for research or statistical analysis (section not found); archival/historical disclosure provision in revised text s. 44 (unconfirmed)",
+        "to": "Sensitive personal information may be processed for research and statistical purposes under s. 43 (public-body disclosure conditions); archival/historical disclosure under s. 44"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "exemptions",
+        "from": "Court/tribunal proceedings and judges' personal notes (s. 5); law enforcement collection exception (unconfirmed)",
+        "to": "Act does not limit information available to a party in proceedings or the court's power to compel evidence, nor apply to a judge's or tribunal member's notes (s. 5); law-enforcement collection allowed (s. 30)"
+      },
+      {
+        "date": "2026-11-26",
+        "field": "penalties_range",
+        "from": "Up to TTD 50,000 and 3 years imprisonment reported by one commercial site; penalty Part V not proclaimed (unconfirmed)",
+        "to": "Offences (s. 95): fine up to TTD 50,000 or 3 years' imprisonment (summary); TTD 100,000 or 5 years (indictment); bodies corporate TTD 250,000 / 500,000; s. 96: up to 10% of annual turnover"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

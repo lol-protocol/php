@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\FiltroDePeriodo;
 use App\Repositories\FunnelRepository;
+use App\Repositories\MonedaRepository;
 use App\View;
 
 final class FunnelController
@@ -20,6 +21,9 @@ final class FunnelController
         View::render('funnel/conversion', $filtros + [
             'resumen' => $funnelRepo->resumenEtapas($desde, $hasta),
             'porCanal' => $funnelRepo->porCanal($desde, $hasta),
+            'ingresosPorCanal' => $funnelRepo->ingresosPorCanal($desde, $hasta),
+            'clientesSinRecorrido' => $funnelRepo->clientesSinRecorrido(),
+            'tasas' => MonedaRepository::estadoDeLasTasas(),
             'porPais' => $funnelRepo->porPais($desde, $hasta),
             'porGenero' => $funnelRepo->porGenero($desde, $hasta),
             'porRangoEdad' => $funnelRepo->porRangoEdad($desde, $hasta),

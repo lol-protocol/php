@@ -2,7 +2,7 @@
 
 <!-- Generado por generar_tabla.py: no lo edites a mano. -->
 
-> **Borrador.** Lo escribió un asistente de IA y ninguna persona nativa lo ha revisado. Cada término lleva una **confianza** de su correspondencia con una causa moderna: es una pista para leer un registro antiguo, **no un diagnóstico**. Ver «Cómo leer una causa de defunción» en el [README](../README.md).
+> **Borrador.** Lo escribió un asistente de IA y **no ha pasado por una revisión humana ni se prevé una revisión por hablantes nativos**. Cada término lleva una **confianza** de su correspondencia con una causa moderna: es una pista para leer un registro antiguo, **no un diagnóstico**. Ver «Cómo leer una causa de defunción» en el [README](../README.md).
 
 26 términos.
 
@@ -22,15 +22,25 @@
 | padaczka | Epilepsia | G40 | alta |  | borrador |
 | puchlina | Edema o insuficiencia cardíaca (la «hidropesía» de los registros) | I50, R60 | media |  | borrador |
 | rak | Cáncer o tumor | C80, D49 | alta |  | borrador |
-| samobójstwo | Suicidio | X70, X84 | alta |  | borrador |
 | starość | Vejez, sin causa específica | R54 | alta |  | borrador |
-| suchoty | Tuberculosis | A15, A16, A17, A18, A19 | media |  | borrador |
-| syfilis | Sífilis | A50, A53 | alta |  | borrador |
+| suchoty | Tuberculosis | A15–A19 | media |  | borrador |
 | szkarlatyna | Escarlatina | A38 | alta |  | borrador |
-| trąd | Lepra | A30 | alta |  | borrador |
 | tyfus | Fiebre tifoidea | A01 | baja | puede ser tifus o tifoidea | borrador |
 | tyfus | Tifus | A75 | baja | puede ser tifus o tifoidea | borrador |
-| udar | Accidente cerebrovascular | I60, I61, I62, I63, I64 | alta |  | borrador |
+| udar | Accidente cerebrovascular | I60–I64 | alta |  | borrador |
 | utonął | Ahogamiento | W74, T75.1 | alta |  | borrador |
 | zapalenie płuc | Neumonía (pulmonía) | J18 | alta |  | borrador |
 | zgorzel | Gangrena | R02 | alta |  | borrador |
+
+<details>
+<summary>3 términos de causas delicadas (suicidio, enfermedad mental, sífilis, lepra, parto): mostrar</summary>
+
+Son vocabulario de los registros antiguos, no un diagnóstico, y no dicen nada de ninguna persona: están porque los registros los usaban. Ver [`PRIVACIDAD.md`](../PRIVACIDAD.md), §3.7.
+
+| Término | Causa moderna | CIE-10 | Confianza | Nota | Estado |
+|---|---|---|---|---|---|
+| samobójstwo | Suicidio | X60–X84 | alta |  | borrador |
+| syfilis | Sífilis | A50–A53 | alta |  | borrador |
+| trąd | Lepra | A30 | alta |  | borrador |
+
+</details>

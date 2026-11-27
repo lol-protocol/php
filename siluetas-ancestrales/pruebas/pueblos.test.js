@@ -1,10 +1,10 @@
-// Los pueblos agregados por listado-paises (sami, finés, romaní, bálticos, afrikáner, malayo del Cabo, francocanadiense
-// y criollo de las islas): cada uno viste de verdad con su propio traje, con confianza baja y nota.
+// Los pueblos agregados por cobertura de país (sami, finés, romaní, bálticos, afrikáner, malayo del Cabo, francocanadiense,
+// criollo de las islas, neerlandés, escandinavo, griego moderno, polaco e inglés): cada uno viste de verdad con su propio traje, con confianza baja y nota.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { generarPersona, renderizar, ETNIAS, ATUENDOS } from '../src/index.js';
 
-const NUEVOS = ['sami', 'fines', 'romani', 'baltico', 'afrikaner', 'malayo-cabo', 'francocanadiense', 'criollo-isleno'];
+const NUEVOS = ['sami', 'fines', 'romani', 'baltico', 'afrikaner', 'malayo-cabo', 'francocanadiense', 'criollo-isleno', 'neerlandes', 'escandinavo', 'griego-moderno', 'polaco', 'ingles'];
 
 test('cada pueblo nuevo existe, es de confianza baja y lleva nota', () => {
   for (const id of NUEVOS) {

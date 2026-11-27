@@ -48,10 +48,7 @@ $(nginx_server_head "$DOMAIN")
         return 404;
     }
 
-    # Bloquea el acceso a archivos ocultos tipo .htaccess/.htpasswd
-    location ~ /\.ht {
-        deny all;
-    }
+$(nginx_deny_hidden)
 }
 EOF
 

@@ -22,6 +22,11 @@ final class Twitter extends Analizador
         return ['home', 'i', 'search', 'explore', 'hashtag', 'intent', 'share', 'settings', 'login', 'notifications', 'messages', 'compose', 'tos', 'privacy'];
     }
 
+    protected function patronesDePublicacion(): array
+    {
+        return ['/status(es)?/\\d+'];
+    }
+
     protected function extraer(array $d, ?string $url): array
     {
         // «Ana Ejemplo (@anaejemplo) / X», «Ana Ejemplo (@anaejemplo) on Twitter»

@@ -19,7 +19,11 @@ final class Catalog
     /** @var array<string, string> */
     private array $motifNames = [];
 
-    public function __construct(string $manifestPath)
+    /**
+     * @param (\Closure(string): bool)|null $categoryAllowed Si se da, recibe el slug de una categoría y dice si se muestra:
+     *        las categorías que no (y sus marcalibros) no existen para el resto de la clase. Sin ella, se carga todo.
+     */
+    public function __construct(string $manifestPath, ?\Closure $categoryAllowed = null)
     {
         $json = @file_get_contents($manifestPath);
         if ($json === false) {
@@ -38,6 +42,9 @@ final class Catalog
             if (isset($this->entries[$entry['id']])) {
                 throw new \RuntimeException('El identificador está repetido en el manifiesto: ' . $entry['id']);
             }
+            if ($categoryAllowed !== null && !$categoryAllowed((string) ($entry['categoria_slug'] ?? ''))) {
+                continue;
+            }
             $this->entries[$entry['id']] = $entry;
         }
 
@@ -50,6 +57,9 @@ final class Catalog
         foreach ($manifest['categorias'] ?? [] as $category) {
             if (!is_array($category) || !isset($category['slug']) || !is_string($category['slug'])) {
                 throw new \RuntimeException('Hay una categoría del manifiesto sin "slug".');
+            }
+            if ($categoryAllowed !== null && !$categoryAllowed($category['slug'])) {
+                continue;
             }
             $this->categories[$category['slug']] = $category;
         }

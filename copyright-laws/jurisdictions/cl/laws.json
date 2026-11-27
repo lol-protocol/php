@@ -15,21 +15,27 @@
     "enforcement_body": "Department of Intellectual Property",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.leychile.cl/Navegar?idNorma=28933",
+    "linked_resources": "https://www.bcn.cl/leychile/navegar/imprimir?idNorma=28933",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-11-20",
     "sources": {
       "term_of_protection": {
-        "url": "https://en.wikipedia.org/wiki/Copyright_law_of_Chile",
-        "confidence": "medium",
-        "checked": "2026-10-14"
+        "url": "https://www.bcn.cl/leychile/navegar/imprimir?idNorma=28933",
+        "confidence": "high",
+        "checked": "2026-11-20"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-20",
+        "field": "linked_resources",
+        "from": "https://www.leychile.cl/Navegar?idNorma=28933",
+        "to": "https://www.bcn.cl/leychile/navegar/imprimir?idNorma=28933"
+      },
       {
         "date": "2026-11-11",
         "field": "linked_resources",

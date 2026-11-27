@@ -127,6 +127,15 @@ public class PhoneDirectoryParserTest {
             throw new java.io.UncheckedIOException(e);
         }
 
+        // The parity corpus (ParityCorpus.php): what the PHP parser gives on every input of the corpus, with no exceptions.
+        try {
+            assertEquals(List.of(), EvaluationSetCheck.wrongCases(
+                java.nio.file.Path.of("..", "..", "tests", "fixtures", "parser-paridad.json")
+            ));
+        } catch (java.io.IOException e) {
+            throw new java.io.UncheckedIOException(e);
+        }
+
         System.out.println("All Java port checks passed");
     }
 

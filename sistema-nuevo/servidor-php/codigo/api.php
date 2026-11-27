@@ -9,6 +9,7 @@ declare(strict_types=1);
  */
 
 require_once __DIR__ . '/api/ayudantes.php';
+require_once __DIR__ . '/api/interruptores.php';
 require_once __DIR__ . '/api/sesion.php';
 require_once __DIR__ . '/api/usuarios.php';
 require_once __DIR__ . '/api/alertas.php';
