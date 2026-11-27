@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PersonasEspeciales;
 
 use DateTimeImmutable;
-use InvalidArgumentException;
 
 /**
  * Un hecho de la auditoría: quién (un identificador opaco, no un nombre), qué y cuándo.
@@ -30,11 +29,6 @@ final class Evento
 
     private static function texto(string $valor, string $campo): string
     {
-        $limpio = trim($valor);
-        if ($limpio === '' || mb_strlen($limpio) > self::ACTOR_MAX) {
-            throw new InvalidArgumentException("El campo {$campo} debe tener entre 1 y " . self::ACTOR_MAX . ' caracteres.');
-        }
-
-        return $limpio;
+        return Texto::limpio($valor, $campo, self::ACTOR_MAX);
     }
 }

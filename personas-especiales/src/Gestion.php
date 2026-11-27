@@ -34,8 +34,11 @@ final class Gestion
         return $this->atomico(function () use ($id, $personaId, $solicitante, $motivo, $actor, $ahora): Exclusion {
             // insertar() rechaza un id repetido, también cuando dos solicitudes llegan a la vez.
             $nueva = Exclusion::solicitar($id, $personaId, $solicitante, $motivo, $ahora);
+            // El evento se arma (y se valida) antes de escribir: con un actor inválido no queda una
+            // solicitud sin su evento, tampoco cuando no hay PDO y la operación no es atómica.
+            $evento = new Evento($nueva->id(), TipoEvento::Solicitada, $actor, $ahora);
             $this->registro->insertar($nueva);
-            $this->auditoria->registrar(new Evento($nueva->id(), TipoEvento::Solicitada, $actor, $ahora));
+            $this->auditoria->registrar($evento);
 
             return $nueva;
         });
@@ -66,9 +69,11 @@ final class Gestion
             $actual = $this->registro->porId($id)
                 ?? throw new DomainException('No existe esa solicitud.');
             $nueva = $aplicar($actual);
+            // Antes de escribir: un actor inválido no deja un cambio de estado sin su evento.
+            $evento = new Evento($nueva->id(), $tipo, $actor, $ahora);
             // Falla si otro cambió la solicitud entre leerla y guardarla, en vez de pisarle el cambio.
             $this->registro->actualizar($nueva, $actual->estado());
-            $this->auditoria->registrar(new Evento($nueva->id(), $tipo, $actor, $ahora));
+            $this->auditoria->registrar($evento);
 
             return $nueva;
         });

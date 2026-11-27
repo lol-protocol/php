@@ -183,4 +183,37 @@ final class GestionTest extends TestCase
         $this->expectException(PDOException::class);
         (new AuditoriaPdo($pdo))->registrar(new Evento('fantasma', TipoEvento::Solicitada, 'a', $this->t0));
     }
+
+    public function testUnActorInvalidoNoDejaUnaSolicitudSinSuEventoNiAunSinPdo(): void
+    {
+        [$gestion, $registro, $auditoria] = $this->enMemoria();
+
+        try {
+            $gestion->solicitar('s-1', 'p-1', Solicitante::Persona, Motivo::Otro, "  ", $this->t0);
+            self::fail('Debía fallar.');
+        } catch (InvalidArgumentException) {
+            // esperado
+        }
+
+        self::assertNull($registro->porId('s-1'));
+        self::assertSame([], $auditoria->eventosDe('s-1'));
+    }
+
+    public function testUnActorInvalidoNoCambiaElEstadoSinSuEventoNiAunSinPdo(): void
+    {
+        [$gestion, $registro, $auditoria] = $this->enMemoria();
+        $gestion->solicitar('s-1', 'p-1', Solicitante::Persona, Motivo::Otro, 'a', $this->t0);
+
+        foreach (["", "dos\nlíneas", "con\0nul"] as $actorMalo) {
+            try {
+                $gestion->verificar('s-1', 'Cédula.', $actorMalo, $this->t0);
+                self::fail('Debía fallar.');
+            } catch (InvalidArgumentException) {
+                // esperado
+            }
+        }
+
+        self::assertSame(Estado::Pendiente, $registro->porId('s-1')?->estado());
+        self::assertCount(1, $auditoria->eventosDe('s-1')); // solo el de «solicitada»
+    }
 }

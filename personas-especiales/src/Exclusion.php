@@ -64,7 +64,7 @@ final class Exclusion
         if ($cambiadaEn < $creadaEn) {
             throw new InvalidArgumentException('cambiadaEn es anterior a creadaEn.');
         }
-        $prueba = $prueba === null ? null : self::texto($prueba, 'prueba', self::PRUEBA_MAX);
+        $prueba = $prueba === null ? null : self::texto($prueba, 'prueba', self::PRUEBA_MAX, true);
         if ($est === Estado::Activa && $prueba === null) {
             throw new InvalidArgumentException('Una exclusión activa necesita la prueba de quien pide.');
         }
@@ -85,7 +85,7 @@ final class Exclusion
     public function verificar(string $prueba, DateTimeImmutable $ahora): self
     {
         $this->exigir(Estado::Pendiente, 'verificar');
-        $prueba = self::texto($prueba, 'prueba', self::PRUEBA_MAX);
+        $prueba = self::texto($prueba, 'prueba', self::PRUEBA_MAX, true);
 
         return $this->con(Estado::Activa, $prueba, $ahora);
     }
@@ -94,7 +94,7 @@ final class Exclusion
     public function rechazar(string $razon, DateTimeImmutable $ahora): self
     {
         $this->exigir(Estado::Pendiente, 'rechazar');
-        $razon = self::texto($razon, 'razón', self::PRUEBA_MAX);
+        $razon = self::texto($razon, 'razón', self::PRUEBA_MAX, true);
 
         return $this->con(Estado::Rechazada, $this->prueba, $ahora, $razon);
     }
@@ -182,16 +182,9 @@ final class Exclusion
         );
     }
 
-    private static function texto(string $valor, string $campo, int $max): string
+    /** El id y la persona son identificadores (sin saltos de línea); la prueba y la razón admiten texto de varias líneas. */
+    private static function texto(string $valor, string $campo, int $max, bool $permiteSaltos = false): string
     {
-        $limpio = trim($valor);
-        if ($limpio === '') {
-            throw new InvalidArgumentException("El campo {$campo} no puede estar vacío.");
-        }
-        if (mb_strlen($limpio) > $max) {
-            throw new InvalidArgumentException("El campo {$campo} pasa de {$max} caracteres.");
-        }
-
-        return $limpio;
+        return Texto::limpio($valor, $campo, $max, $permiteSaltos);
     }
 }
