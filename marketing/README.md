@@ -37,3 +37,18 @@ php marketing/render.php --check    # valida config.json y no escribe nada
 Los archivos de origen nunca se modifican; el script se niega a escribir sobre ellos. El valor se inserta tal cual, así que si luego lo pegas en HTML, escápalo.
 
 `[Nombre]` no lo toca el script: es por destinatario y lo rellena quien envía cada mensaje.
+
+## Interruptores (opcional)
+
+```bash
+php marketing/render.php --interruptores=../interruptores
+```
+
+Con `--interruptores=<carpeta>` (la carpeta `interruptores/` del repositorio), las copias salen sin las secciones que el interruptor `gen.marketing` tiene apagadas: `lemas` (lemas principales), `esloganes` (eslóganes para el logo), `redes` (redes sociales) y `correo` (correo electrónico). Con la función apagada no se escribe ningún texto. Sin la opción, todo sale como siempre.
+
+- Las secciones se identifican por su **posición**, no por su título, porque los títulos cambian de idioma. Los 16 archivos tienen las mismas 10 secciones de contenido (el español, además, una nota «Antes de usar» al principio). Si un archivo tiene otra estructura, el script falla diciendo cuál, en vez de adivinar.
+- Las demás secciones (manifiesto, emoción, legado, confianza, privacidad y llamadas a la acción) no tienen interruptor y siempre salen.
+- Los interruptores se leen antes de crear nada: si no se pueden leer, el script sale con código 1 y no deja ni la carpeta de salida.
+- Los archivos de origen no cambian: el filtro solo afecta a las copias de `dist/`.
+
+Pruebas: `php marketing/pruebas/ejecutar.php`.
