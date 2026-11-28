@@ -69,3 +69,33 @@ movimientos:
     sobre_acento: '#FFFFFF'
     cielo_alto: '#1B1040'
     cielo_bajo: '#8E6BC4'
+  renacimiento:
+    paleta: toscana
+    acento: '#5A6B3C'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#5C7FA8'
+    cielo_bajo: '#F2D9A6'
+  ilustracion:
+    paleta: razon
+    acento: '#1B4170'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#183B6B'
+    cielo_bajo: '#CFE3F4'
+  expresionismo:
+    paleta: grito
+    acento: '#1E1A5E'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#B53A12'
+    cielo_bajo: '#F2A31B'
+  surrealismo:
+    paleta: delirio
+    acento: '#6B3414'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#B5431A'
+    cielo_bajo: '#F6C36B'
+  oriente:
+    paleta: bermellon
+    acento: '#3E0A08'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#8A1410'
+    cielo_bajo: '#F0C27A'

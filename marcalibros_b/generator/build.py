@@ -32,8 +32,8 @@ from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
 import muestreo
 import texto as tx
 from regiones import lengua_de_autor, zona_de_autor
-from qa import (contraste_texto, ESCALA_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, OPACIDADES_VELO, TONOS_TEXTO, UMBRAL_CAMBIO, UMBRAL_DUPLICADO,
-                hoja_de_contacto, hoja_de_miniaturas, huella_visual, mejor_texto, parecido_a, validar_jpg,
+from qa import (contraste_texto, ESCALA_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, OPACIDADES_VELO, TONOS_TEXTO, UMBRAL_CAMBIO,
+                hoja_de_contacto, hoja_de_miniaturas, mejor_texto, parecido_a, validar_jpg,
                 validar_frases, validar_svg, validar_taxonomia)
 from render_raster import a_imagen
 from render_svg import a_svg
@@ -363,7 +363,7 @@ def copiar_muestras(generados, rutas, por_movimiento=3):
 # y los archivos siguen ahí, la pieza se reutiliza sin dibujarla ni pasar por Chromium.
 
 # Módulos que dibujan las piezas. Los demás (editor, modelo, marca, revisión, Gutenberg) no cambian el
-# catálogo: tocarlos no debe invalidar la caché de las 1000 piezas. tests/test_incremental.py comprueba
+# catálogo: tocarlos no debe invalidar la caché de las 2000 piezas. tests/test_incremental.py comprueba
 # que esta lista cubre todo lo que build.py importa.
 MODULOS_DE_RENDER = ("build", "color", "movimientos", "movimientos4", "muestreo", "plantillas", "qa", "regiones", "render_raster", "render_svg", "scene", "texto")
 

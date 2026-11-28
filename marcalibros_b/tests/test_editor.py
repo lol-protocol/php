@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "generator"))
 import almacen  # noqa: E402
 import editor  # noqa: E402
 import modelo  # noqa: E402
-from qa import MIN_CONTRASTE_TEXTO, contraste_texto  # noqa: E402
+from qa import MIN_CONTRASTE_TEXTO  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 MANIFIESTO = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
@@ -157,7 +157,6 @@ def test_salida_jpeg_sin_metadatos():
 
 def test_foto_de_movil_mpo_y_png_de_16_bits():
     # MPO: JPEG con imágenes extra (fotos de móvil); se acepta y se usa la primera
-    jpg = _bytes(_foto(), "JPEG")
     mpo = _bytes(_foto(), "MPO", save_all=True, append_images=[_foto((10, 10, 10))])
     assert editor.recodificar(mpo)[:3] == b"\xff\xd8\xff"
     # 16 bits en grises: no debe saturar a blanco/negro

@@ -41,3 +41,20 @@ def test_tokens_con_contraste():
 
 def test_determinista():
     assert marca.todo() == PIEZAS
+
+
+def test_lo_versionado_esta_al_dia():
+    """marca/ se genera con `python generator/marca.py` y se versiona: si cambia el generador (o la taxonomía, que
+    decide los tokens por movimiento) hay que regenerarla. Se comprueban los SVG y el YAML, no los PNG."""
+    raiz = Path(__file__).resolve().parent.parent / "marca"
+    viejos = [r for r, contenido in PIEZAS.items() if not (raiz / r).exists() or (raiz / r).read_text(encoding="utf-8") != contenido]
+    assert not viejos, f"marca/ desactualizada, corre python generator/marca.py: {viejos[:5]}"
+
+
+def test_hay_tokens_de_todos_los_movimientos():
+    import yaml
+    taxonomia = yaml.safe_load((Path(__file__).resolve().parent.parent / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
+    movimientos = {m["id"] for m in taxonomia["movimientos"]}
+    tokens = yaml.safe_load(PIEZAS["brand-tokens.yaml"])
+    por_movimiento = next(v for v in tokens.values() if isinstance(v, dict) and movimientos & set(v))
+    assert movimientos <= set(por_movimiento), f"faltan tokens de: {sorted(movimientos - set(por_movimiento))}"

@@ -53,3 +53,17 @@ def test_solo_los_modulos_de_render_cambian_el_hash(tmp_path, monkeypatch):
         ruta.write_text(antes + "\n# cambio\n", encoding="utf-8")
         assert build.hash_generador() != base, propio
         ruta.write_text(antes, encoding="utf-8")
+
+
+def test_la_clave_de_cache_del_workflow_cubre_lo_que_dibuja_las_piezas():
+    """La clave exacta de la caché de la CI usa un hashFiles con una lista a mano. Si falta un módulo de render (o un
+    tipo de fuente), cambiarlo no cambia la clave: actions/cache no guarda otra y cada ejecución restaura la vieja y
+    rehace esas piezas de nuevo."""
+    import re
+    flujo = (RAIZ.parent / ".github" / "workflows" / "marcalibros-b.yml").read_text(encoding="utf-8")
+    clave = re.search(r"hashFiles\((.*?)\) \}\}", flujo).group(1)
+    faltan = [m for m in build.MODULOS_DE_RENDER if f"marcalibros_b/generator/{m}.py" not in clave]
+    assert not faltan, f"faltan en la clave de caché de marcalibros-b.yml: {faltan}"
+    for extension in sorted({f.suffix for f in (GENERADOR / "fuentes").glob("*") if f.suffix in (".ttf", ".otf")}):
+        assert f"fuentes/*{extension}" in clave, f"la clave no cubre las fuentes {extension}"
+    assert "marcalibros_b/catalog/*.yaml" in clave
