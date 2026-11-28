@@ -319,7 +319,10 @@ no_contiene "por HTTP plano la cookie no es secure" 'secure' "$(cabeceras "$H" "
 
 echo "== El sitio de cada dominio"
 ok "genealogía: idioma por omisión" '<html lang="es">' "$(cuerpo "$H" "$HTTP/" | grep -o -m1 '<html[^>]*>')"
-ok "genealogía: subdominio eng." '<html lang="en">' "$(cuerpo "eng.$GENEALOGIA" "$HTTP/" | grep -o -m1 '<html[^>]*>')"
+# Lo que está escrito en inglés lo declara; una página en español bajo eng. declara es y solo su encabezado va en inglés.
+ok "genealogía: subdominio eng., una página traducida" '<html lang="en">' "$(cuerpo "eng.$GENEALOGIA" "$HTTP/r/6128473105/" | grep -o -m1 '<html[^>]*>')"
+ok "genealogía: subdominio eng., una página en español" '<html lang="es">' "$(cuerpo "eng.$GENEALOGIA" "$HTTP/" | grep -o -m1 '<html[^>]*>')"
+ok "genealogía: subdominio eng., su encabezado" '<header lang="en">' "$(cuerpo "eng.$GENEALOGIA" "$HTTP/" | grep -o -m1 '<header[^>]*>')"
 ok "POS: /health" 200 "$(codigo "$POS" "$HTTP/health")"
 ok "POS: /" 200 "$(codigo "$POS" "$HTTP/")"
 ok "POS: /ready con sus migraciones" 200 "$(codigo "$POS" "$HTTP/ready")"

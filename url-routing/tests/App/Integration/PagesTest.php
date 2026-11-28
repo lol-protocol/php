@@ -557,6 +557,11 @@ class PagesTest extends TestCase
         $this->assertStringContainsString('<footer class="pie meta" lang="en">', $persona);
         $this->assertStringContainsString('Ask for this page to be withdrawn', $persona, 'the footer says it in English');
 
+        // The home page too (the deploy smoke test looks at it): Spanish page, English header.
+        [, $inicio] = $this->get('eng.tudominio.local', '/');
+        $this->assertStringContainsString('<html lang="es">', $inicio);
+        $this->assertStringContainsString('<header lang="en">', $inicio);
+
         // The same page under spa. needs no marks.
         [, $spa] = $this->get('spa.tudominio.local', '/6128473101/');
         $this->assertStringContainsString('<html lang="es">', $spa);
