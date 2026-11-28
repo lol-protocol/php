@@ -31,7 +31,7 @@ Si la aplicación es PHP, puede cargar `src/Interruptores.php` y llamar `activo(
 
 1. **Referencia desconocida:** si la aplicación pregunta por una ref que no está en el archivo, es un error de la aplicación (el catálogo cambió). No se debe tratar como «encendido» sin avisar: registrarlo y decidir por función.
 2. **Archivo ilegible o viejo:** la elección es por función. Lo que toca dinero o personas (`gen.pasarela`, `gen.pagos`, `gen.privacidad`, búsquedas y estimaciones) debe **cortarse**; lo cosmético (asistentes, estilo de iconos) puede seguir como estaba. `generado` sirve para detectar un archivo que dejó de actualizarse.
-3. **No cachear sin límite:** leer el archivo en cada petición es barato (pesa unos pocos KB); si se cachea, que sea por segundos, o un interruptor apagado seguirá encendido para los usuarios.
+3. **No cachear sin límite:** leer el archivo en cada petición es barato (pesa unos 40 KB con todo el catálogo); si se cachea, que sea por segundos, o un interruptor apagado seguirá encendido para los usuarios.
 4. **Lo apagado se aplica en el servidor**, no solo ocultando un botón: una opción apagada también tiene que rechazar la petición directa.
 5. **Cómo se ve lo apagado:** `ocultar` no deja rastro; `no_disponible` muestra un aviso, no un error genérico.
 6. **Dependencias que importan a la aplicación:** todo lo que busca, deduce, infiere o estima personas depende de `gen.privacidad`; la opción `gen.pagos:tarjeta` depende de `gen.pasarela:stripe`. Si la aplicación ve `gen.privacidad` apagada, no debe ejecutar ninguna de esas funciones aunque su propio interruptor aparezca encendido por un archivo desactualizado.

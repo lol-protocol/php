@@ -278,7 +278,11 @@ foreach ($cat->catalogo() as $id => $f) {
 $encendidos = count(array_filter($propios));
 $total = count($propios);
 
-/** Botón on/off de una ref, con su motivo si no se puede cambiar ahora. */
+/**
+ * Botón on/off de una ref, con su motivo si no se puede cambiar ahora.
+ *
+ * @param array<string, bool> $propios el interruptor propio de cada ref (Interruptores::interruptores())
+ */
 function boton(Interruptores $cat, array $propios, string $ref, string $csrf, bool $esOpcion, bool $puedeCambiar): string
 {
     $on = $propios[$ref];

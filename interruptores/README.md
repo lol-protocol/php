@@ -83,7 +83,7 @@ if ($int->activo('gen.vistas:abanico')) {
 ```
 
 - `activo(ref)`: lo que el sitio debe usar. Una opción solo está activa si su función también lo está.
-- `alApagar(ref)`: qué hacer cuando está apagada. `ocultar` (por defecto) o `no_disponible`. Una opción usa la política de su función. Cada función la define en `catalogo.json` con el campo `al_apagar`. Con `no_disponible` hoy: `gen.pagos`, `gen.pasarela`, `pos.pasarela`, `gen.exportar` y `gen.retiros` (esta última es una política supuesta: ocultar un pedido de retiro de datos sería peor que avisar que no está disponible).
+- `alApagar(ref)`: qué hacer cuando está apagada. `ocultar` (por defecto) o `no_disponible`. Una opción usa la política de su función. Cada función la define en `catalogo.json` con el campo `al_apagar`. Con `no_disponible` hoy: `gen.pagos`, `gen.pasarela`, `pos.pasarela`, `gen.exportar` y `gen.retiros` (confirmada por la persona: ocultar un pedido de retiro de datos sería peor que avisar que no está disponible).
 - Crea una instancia por petición: el estado es un archivo pequeño y se lee en cada consulta. Para recorrer muchos interruptores seguidos (un panel, un volcado) llama antes a `congelar()`: lee el estado una sola vez (bajó de 7,3 s a 0,35 s con todo el catálogo) y no ve cambios de otro proceso hasta `descongelar()`. `cambiar()` siempre trabaja con el estado real y descongela.
 
 **Consumidores hoy** (todos opcionales: sin su opción no leen nada de fuera, y cada uno es su propio PR):
@@ -147,7 +147,7 @@ Los cambios se hacen con un bloqueo exclusivo sobre el estado: dos personas que 
 2. `origen`:
    - `repo`: su código está en una carpeta de este repositorio; las pruebas comprueban que la carpeta exista.
    - `fuera_del_repo`: vive en la aplicación principal, que no está aquí.
-   - `pr_abierto`: su carpeta todavía está en un PR sin fusionar.
+   - `pr_abierto`: su carpeta todavía está en un PR sin fusionar (hoy ninguna función lo usa).
 3. Corre `php bin/generar.php` y `php pruebas/ejecutar.php`.
 
 Las pruebas rechazan un catálogo con ids repetidos, con `:` en un id, con una dependencia a algo que no existe o a sí mismo, con un mínimo mayor que el número de opciones, o con una plataforma que no existe.
@@ -158,7 +158,7 @@ Las pruebas rechazan un catálogo con ids repetidos, con `:` en un id, con una d
 - **Un cron para los cambios programados.** Nada se ejecuta solo: hay que poner `php bin/programados.php ejecutar` en un cron (cada minuto).
 - **Límites conocidos.** El bloqueo de archivo sirve con un solo servidor; con varios hace falta una base de datos. Un proxy comparte la IP entre sus usuarios. `sistema-nuevo/` lee el estado en cada petición. Los registros apartados al rotar quedan en `var/` sin borrarse.
 - **A confirmar de plataforma:** `document-formats` está fuera del interruptor; no se sabe si va en A o en B.
-- **Candidatos desde PR abiertos:** `newsletter-plugin` (#613, documentación de diseño) y `personas-especiales` (#614, registro de exclusiones) podrían ser funciones nuevas cuando se fusionen. `chat-con-libros` (#603) no está en `master`, y `pos.colores-revision` depende de la decisión del PR #595.
+- **Funciones que podrían sumarse:** `newsletter-plugin/` (diseño del boletín) y `personas-especiales/` (registro de exclusiones) ya están en `master` y no tienen interruptor. Hace falta decidir si lo merecen y qué opciones tendrían.
 
 ## Convenciones
 

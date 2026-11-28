@@ -1290,7 +1290,7 @@
       "tipo": "interno",
       "origen": "fuera_del_repo",
       "carpetas": [],
-      "descripcion": "País de origen de la fuente consultada. Las 101 opciones son los 100 países de mayor prioridad para genealogía en Listado-paises/ (sin excluidos), más los hispanohablantes y Chile que no entraban. Se regeneran con ese archivo.",
+      "descripcion": "País de origen de la fuente consultada. Las 101 opciones son los 100 países de mayor prioridad para genealogía en Listado-paises/ (sin excluidos), más los hispanohablantes y Chile que no entraban. Es una copia de esos datos de un día concreto: si cambian las prioridades de Listado-paises/, esta lista no se actualiza sola.",
       "depende_de": [
         "gen.privacidad"
       ],
@@ -2033,11 +2033,11 @@
       "plataforma": "pos",
       "nombre": "Chat con un libro",
       "tipo": "producto",
-      "origen": "pr_abierto",
+      "origen": "repo",
       "carpetas": [
         "chat-con-libros"
       ],
-      "descripcion": "Chat con un libro, en PHP y en Java. Sus opciones son sinónimos y un modo opcional con IA. Vive en el PR #603, sin fusionar.",
+      "descripcion": "Chat con un libro, en PHP y en Java. Sus opciones son sinónimos y un modo opcional con IA.",
       "depende_de": [],
       "por_defecto": false,
       "min_opciones": 0,
@@ -2053,7 +2053,8 @@
           "por_defecto": false
         }
       ],
-      "supuesto": false
+      "supuesto": false,
+      "nota": "Apagado por defecto: la persona decide cuándo se ofrece."
     },
     {
       "id": "pos.colores-lista",
@@ -2180,7 +2181,7 @@
       "carpetas": [
         "Listado-colores"
       ],
-      "descripcion": "Registro y visor de revisión. Todavía vacío. El PR #595 lo marca @deprecated.",
+      "descripcion": "Registro y visor de revisión por hablantes nativos. Todavía vacío. Está @deprecated desde #595.",
       "depende_de": [
         "pos.colores-lista"
       ],
