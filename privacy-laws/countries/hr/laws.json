@@ -47,12 +47,6 @@
     },
     "changes": [
       {
-        "date": "2026-11-16",
-        "field": "research_exemption",
-        "from": "Act contains specific provisions on processing for statistical purposes; otherwise GDPR art. 89 safeguards for research and archiving apply (unconfirmed)",
-        "to": "Specific provisions for processing for statistical purposes: state statistics bodies need not enable access, rectification, restriction or objection rights where exercising them would hinder statistical work"
-      },
-      {
         "date": "2026-11-14",
         "field": "research_exemption",
         "from": "Act contains specific provisions on processing for statistical purposes; otherwise GDPR art. 89 safeguards for research and archiving apply (unconfirmed)",

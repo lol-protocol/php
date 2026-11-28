@@ -92,12 +92,6 @@
     },
     "changes": [
       {
-        "date": "2026-11-16",
-        "field": "penalties_range",
-        "from": "Administrative fines and offences under Part VIII (unlawful disclosure, obstruction); amounts not found (unconfirmed)",
-        "to": "Administrative fines for contraventions, amounts set by the Information Commission; enforcement notices and compliance orders"
-      },
-      {
         "date": "2026-11-14",
         "field": "penalties_range",
         "from": "Administrative fines and offences under Part VIII (unlawful disclosure, obstruction); amounts not found (unconfirmed)",
