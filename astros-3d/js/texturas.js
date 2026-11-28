@@ -154,19 +154,46 @@
     }
   }
 
-  // Cráter: cuenco oscuro dentro y un borde claro afuera. Tamaños con pocos grandes y muchos pequeños.
-  function valorCrater(d) {
-    if (d < 1) return -0.22 * (1 - d * d);
-    return 0.05 * (1.3 - d) / 0.3;
+  // Forma de un cráter, en función de d (distancia al centro en radios): un cuenco poco profundo que
+  // llega a 0 sin escalón en el borde, y un reborde apenas insinuado. -1 en el centro, +0,25 en el borde.
+  // El color y el relieve parten de esta misma forma, con otra ganancia cada uno.
+  function formaCrater(d) {
+    if (d >= 1.3) return 0;
+    const cuenco = d < 1 ? -Math.pow(1 - d * d, 2) : 0;
+    const reborde = 0.25 * Math.exp(-Math.pow((d - 1) / 0.14, 2));
+    return cuenco + reborde;
   }
 
-  function estamparCrateres(mapa, ancho, alto, cantidad, rng) {
-    for (let i = 0; i < cantidad; i++) {
+  // Color: el centro del cráter se oscurece muy poco. Antes era el doble y con un escalón duro en el borde,
+  // y los cráteres se veían como agujeros oscuros.
+  function valorCrater(d) {
+    return 0.1 * formaCrater(d);
+  }
+
+  // Cuántos de los cráteres que pide el catálogo se dibujan, y el radio mínimo (en fracción del ancho de la
+  // textura). Muchos hoyitos iguales y juntos incomodan a quien tiene tripofobia: mejor pocos, y más anchos.
+  const DENSIDAD_CRATERES = 0.5;
+  const RADIO_MINIMO_CRATER = 1 / 170;
+
+  function estamparCrateres(mapa, ancho, alto, cantidad, rng, perfil) {
+    const n = Math.round(cantidad * DENSIDAD_CRATERES);
+    const rMin = ancho * RADIO_MINIMO_CRATER;
+    for (let i = 0; i < n; i++) {
       const cx = rng() * ancho;
       const cy = rng() * alto;
-      const r = 1 + (ancho / 36) * Math.pow(rng(), 3);
-      estampar(mapa, ancho, alto, cx, cy, r, valorCrater);
+      const r = rMin + (ancho / 36) * Math.pow(rng(), 3);
+      estampar(mapa, ancho, alto, cx, cy, r, perfil || valorCrater);
     }
+  }
+
+  // Mapa de alturas de los cráteres de un astro (negativo dentro del cuenco, positivo en el borde).
+  // Lo comparten el color y el relieve, así que ambos ven exactamente los mismos cráteres.
+  function mapaCrateres(astro, ancho, alto, perfil) {
+    const mapa = new Float32Array(ancho * alto);
+    if (astro.textura.craters) {
+      estamparCrateres(mapa, ancho, alto, astro.textura.craters, crearRng(semillaDe(astro.id)), perfil);
+    }
+    return mapa;
   }
 
   // Mancha elíptica (Gran Mancha Roja, Gran Mancha Oscura): devuelve la mezcla 0..1 en (u, v).
@@ -206,12 +233,9 @@
     const rng = crearRng(semilla);
     const salida = new Uint8Array(ancho * alto * 4);
     const paleta = (tx.colores || []).map(hexARgb);
-    const relieve = new Float32Array(ancho * alto);
+    const relieve = mapaCrateres(astro, ancho, alto);
     const marcas = new Float32Array(ancho * alto);
 
-    if (tx.craters) {
-      estamparCrateres(relieve, ancho, alto, tx.craters, rng);
-    }
     const oceano = (tx.oceano || []).map(hexARgb);
     const tierraFirme = (tx.tierra || []).map(hexARgb);
     if (tx.tipo === 'volcanico') {
@@ -276,9 +300,12 @@
             if (lat > 0.82) {
               c = mezclar(c, hexARgb(tx.hielo), suavizar((lat - 0.82) / 0.1));
             }
-            const nube = muestraEsfera(u, v, 3.2, semilla + 11, 5);
-            const cobertura = suavizar(clamp((nube - 0.52) / 0.12, 0, 1)) * 0.85;
-            c = mezclar(c, hexARgb(tx.nubes), cobertura);
+            if (!tx.capa_nubes) {
+              // Sin capa propia, las nubes van pintadas en el color base.
+              const nube = muestraEsfera(u, v, 3.2, semilla + 11, 5);
+              const cobertura = suavizar(clamp((nube - 0.52) / 0.12, 0, 1)) * 0.85;
+              c = mezclar(c, hexARgb(tx.nubes), cobertura);
+            }
             break;
           }
           case 'volcanico': {
@@ -322,6 +349,109 @@
     return salida;
   }
 
+  // Relieve: la misma forma que el color, con más ganancia para que se note al sombrearla con la luz.
+  function perfilRelieve(d) {
+    return 0.12 * formaCrater(d);
+  }
+
+  // Mapa de alturas del relieve (Float32Array, 0..1, con 0,5 como nivel medio): cráteres de perfil suave
+  // más ruido fino. Solo lo tienen los cuerpos de superficie sólida y a la vista: rocosos y helados.
+  // Los cráteres salen de la misma semilla que los del color, así que están en el mismo sitio.
+  function generarRelieve(astro, ancho, alto) {
+    ancho = ancho || 512;
+    alto = alto || 256;
+    const tx = astro.textura;
+    if (tx.tipo !== 'rocoso' && tx.tipo !== 'hielo') return null;
+    const semilla = semillaDe(astro.id);
+    const crateres = mapaCrateres(astro, ancho, alto, perfilRelieve);
+    // Ruido fino del terreno: el hielo es liso (Europa debe verse como hielo con grietas, no arrugado).
+    const amplitudDetalle = tx.tipo === 'hielo' ? 0.04 : 0.1;
+    const salida = new Float32Array(ancho * alto);
+    for (let y = 0; y < alto; y++) {
+      const v = (y + 0.5) / alto;
+      for (let x = 0; x < ancho; x++) {
+        const u = (x + 0.5) / ancho;
+        const i = y * ancho + x;
+        const detalle = (muestraEsfera(u, v, (tx.escala || 3) * 3, semilla + 21, 4) - 0.5) * amplitudDetalle;
+        salida[i] = clamp(0.5 + detalle + crateres[i] * 1.6, 0, 1);
+      }
+    }
+    return salida;
+  }
+
+  // Mapa de normales (RGBA, en el plano tangente: x al este, y al norte, z hacia fuera) a partir de un mapa
+  // de alturas equirectangular. Las pendientes se miden por radián sobre la esfera (el ancho de un píxel
+  // se encoge hacia los polos con el coseno de la latitud). La inclinación se limita para que ni los cráteres
+  // más pequeños den una pared vertical. Se calcula en la CPU y con las alturas sin redondear: derivarlas en
+  // el shader con dFdx daba píxeles sueltos en el borde de los cráteres.
+  // Pendiente máxima (tangente del ángulo): 0,6 son unos 31°. Con más, los cráteres pequeños daban paredes.
+  const TOPE_INCLINACION = 0.6;
+
+  function normalesDeAltura(altura, ancho, alto, fuerza) {
+    const salida = new Uint8Array(ancho * alto * 4);
+    const dx = (2 * Math.PI) / ancho, dy = Math.PI / alto, tope = TOPE_INCLINACION;
+    for (let y = 0; y < alto; y++) {
+      const cosLat = Math.max(Math.cos(((y + 0.5) / alto - 0.5) * Math.PI), 0.08);
+      const ya = Math.max(0, y - 1), yb = Math.min(alto - 1, y + 1);
+      for (let x = 0; x < ancho; x++) {
+        const xa = (x - 1 + ancho) % ancho, xb = (x + 1) % ancho;
+        const hx = (altura[y * ancho + xb] - altura[y * ancho + xa]) / (2 * dx * cosLat);
+        const hy = (altura[yb * ancho + x] - altura[ya * ancho + x]) / ((yb - ya) * dy);
+        let gx = -fuerza * hx, gy = -fuerza * hy;
+        const g = Math.hypot(gx, gy);
+        if (g > tope) { gx *= tope / g; gy *= tope / g; }
+        const n = Math.sqrt(gx * gx + gy * gy + 1);
+        const i = (y * ancho + x) * 4;
+        salida[i] = Math.round((gx / n * 0.5 + 0.5) * 255);
+        salida[i + 1] = Math.round((gy / n * 0.5 + 0.5) * 255);
+        salida[i + 2] = Math.round((1 / n * 0.5 + 0.5) * 255);
+        salida[i + 3] = 255;
+      }
+    }
+    return salida;
+  }
+
+  // Cuánto se inclina la normal con el relieve. Los cuerpos helados llevan menos que los rocosos, y
+  // textura.relieve ajusta astro por astro (1 = lo normal).
+  const FUERZA_RELIEVE = 0.06;
+
+  function generarNormales(astro, ancho, alto) {
+    ancho = ancho || 512;
+    alto = alto || 256;
+    const altura = generarRelieve(astro, ancho, alto);
+    if (!altura) return null;
+    const tx = astro.textura;
+    const fuerza = FUERZA_RELIEVE * (tx.relieve == null ? 1 : tx.relieve) * (tx.tipo === 'hielo' ? 0.6 : 1);
+    return normalesDeAltura(altura, ancho, alto, fuerza);
+  }
+
+  // Capa de nubes aparte (RGBA): el color de las nubes con su opacidad en el canal alfa. Solo si el astro
+  // trae capa_nubes; así se puede dibujar sobre el planeta y moverla con su propia deriva.
+  function generarCapaNubes(astro, ancho, alto) {
+    ancho = ancho || 512;
+    alto = alto || 256;
+    const tx = astro.textura;
+    if (!tx.capa_nubes) return null;
+    const semilla = semillaDe(astro.id);
+    const color = hexARgb(tx.nubes || '#ffffff');
+    const umbral = tx.capa_nubes.umbral == null ? 0.52 : tx.capa_nubes.umbral;
+    const salida = new Uint8Array(ancho * alto * 4);
+    for (let y = 0; y < alto; y++) {
+      const v = (y + 0.5) / alto;
+      for (let x = 0; x < ancho; x++) {
+        const u = (x + 0.5) / ancho;
+        const i = y * ancho + x;
+        const nube = muestraEsfera(u, v, 3.2, semilla + 11, 5);
+        const alfa = suavizar(clamp((nube - umbral) / 0.12, 0, 1)) * 0.85;
+        salida[i * 4] = color[0];
+        salida[i * 4 + 1] = color[1];
+        salida[i * 4 + 2] = color[2];
+        salida[i * 4 + 3] = Math.round(alfa * 255);
+      }
+    }
+    return salida;
+  }
+
   // Anillo: franja 1D de radios interior..exterior, con su propio canal alfa.
   // Devuelve un buffer RGBA de ancho x 1 (la vista lo estira radialmente).
   function generarAnillo(anillos, ancho, opacidadMaxima) {
@@ -355,6 +485,15 @@
     rampa: rampa,
     temperaturaARgb: temperaturaARgb,
     generarTextura: generarTextura,
+    formaCrater: formaCrater,
+    valorCrater: valorCrater,
+    estamparCrateres: estamparCrateres,
+    DENSIDAD_CRATERES: DENSIDAD_CRATERES,
+    TOPE_INCLINACION: TOPE_INCLINACION,
+    generarRelieve: generarRelieve,
+    normalesDeAltura: normalesDeAltura,
+    generarNormales: generarNormales,
+    generarCapaNubes: generarCapaNubes,
     generarAnillo: generarAnillo
   };
 

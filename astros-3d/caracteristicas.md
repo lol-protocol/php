@@ -1,7 +1,7 @@
 <!-- Generado por generar.js desde datos/astros.json: no lo edites a mano. -->
 # Características de los astros
 
-Versión de los datos: 1.1.0. Valores de referencia redondeados (NASA Planetary Fact Sheet y fichas de satélites; estrellas, valores aproximados de la literatura). El radio de cada estrella trae su incertidumbre (baja, media o alta). Las texturas son procedurales: colores aproximados, no fotografías ni mapas científicos.
+Versión de los datos: 1.2.0. Valores de referencia redondeados (NASA Planetary Fact Sheet y fichas de satélites; estrellas, valores aproximados de la literatura). El radio de cada estrella trae su incertidumbre (baja, media o alta). Las texturas son procedurales: colores aproximados, no fotografías ni mapas científicos.
 
 ## Planetas
 

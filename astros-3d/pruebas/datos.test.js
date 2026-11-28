@@ -154,7 +154,7 @@ const EXIGE = {
 const ADMITIDOS = new Set([
   'tipo', 'colores', 'oceano', 'tierra', 'hielo', 'nubes', 'bandas', 'bandas_amplitud',
   'contraste', 'deformacion', 'grano', 'mancha', 'halo', 'anillos', 'craters', 'escala',
-  'maria', 'casquetes', 'lineas', 'dicotomia', 'volcanes', 'granulos', 'color'
+  'maria', 'casquetes', 'lineas', 'dicotomia', 'volcanes', 'granulos', 'color', 'relieve', 'capa_nubes'
 ]);
 
 test('cada tipo de textura trae los parámetros que necesita y ninguno desconocido', () => {
