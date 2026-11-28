@@ -29,15 +29,23 @@ final class Coincidencias
         'ñ' => 'n', 'ç' => 'c', 'ß' => 'ss',
     ];
 
+    /** Las formas del apóstrofo: ', ’, ‘, `, ´, ʼ (modificador) y ʻ (okina). */
+    private const APOSTROFOS = ["'", "\u{2019}", "\u{2018}", '`', "\u{B4}", "\u{2BC}", "\u{2BB}"];
+
     /** Minúsculas, sin tildes ni signos, con espacios simples. */
     public static function normalizar(string $apellido): string
     {
         $texto = mb_strtolower(trim($apellido), 'UTF-8');
         $texto = strtr($texto, self::LETRAS);
-        // El apóstrofo se borra («O'Brien» es «OBrien»); lo demás que no sea letra separa palabras
-        // («Sánchez-Vidal» es «sanchez vidal»). \p{L} conserva las letras de otros alfabetos.
-        $texto = str_replace(["'", '’', '`'], '', $texto);
-        $texto = (string) preg_replace('/[^\p{L} ]+/u', ' ', $texto);
+        // Una tilde descompuesta («e» + U+0301, como la dan algunos teclados y sistemas) se quita igual que
+        // la precompuesta («é»). Solo detrás de una letra latina: en otros alfabetos las marcas son parte de
+        // la palabra, y quitarlas juntaría apellidos distintos.
+        $texto = (string) preg_replace('/\p{Latin}\K\p{Mn}+/u', '', $texto);
+        // El apóstrofo se borra («O'Brien» es «OBrien») en cualquiera de sus formas; lo demás que no sea
+        // letra separa palabras («Sánchez-Vidal» es «sanchez vidal»). \p{L} conserva las letras de otros
+        // alfabetos, y \p{M} las marcas que les quedan, para que no partan la palabra con un espacio.
+        $texto = str_replace(self::APOSTROFOS, '', $texto);
+        $texto = (string) preg_replace('/[^\p{L}\p{M} ]+/u', ' ', $texto);
         $texto = (string) preg_replace('/\s+/', ' ', $texto);
 
         return trim($texto);

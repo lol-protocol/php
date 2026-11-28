@@ -39,8 +39,9 @@ integración con `url-routing` espera a que se fusione #611.
 | `src/Gestion.php` | El camino de una solicitud: aplica la transición, la guarda y deja el evento de auditoría. Con un `PDO`, las tres cosas van en una transacción. |
 | `src/Evento.php`, `src/TipoEvento.php`, `src/Auditoria.php` | Un hecho de la auditoría: quién (identificador opaco), qué y cuándo. No lleva razones ni pruebas. |
 | `src/AuditoriaPdo.php`, `src/AuditoriaEnMemoria.php` | Las dos implementaciones de la auditoría. |
+| `src/Texto.php` | Valida los textos que entran (ids, actor, prueba): rechaza UTF-8 inválido, caracteres de control (un NUL, un salto de línea dentro de un id) y lo vacío o demasiado largo, antes de escribir nada. La prueba y la razón de un rechazo admiten varias líneas. |
 | `src/Fila.php` | Lectura comprobada de lo que devuelve la base: un tipo inesperado falla con un error claro en vez de convertirse en `""`. |
-| `src/Migrador.php`, `bin/migrar.php` | Aplican en orden las migraciones que faltan, cada una en su transacción, con un candado asesor de PostgreSQL para que dos instancias no choquen. |
+| `src/Migrador.php`, `bin/migrar.php` | Aplican en orden las migraciones que faltan, cada una en su transacción, con un candado asesor de PostgreSQL para que dos instancias no choquen. `bin/migrar.php` sale con 0 (sin errores, haya o no pendientes), 1 (falló la conexión o una migración: un mensaje de una línea, sin traza) o 2 (falta `PE_DSN`). |
 | `database/migraciones/` | `001_exclusion.sql`: tabla `exclusion`, con `CHECK` de longitudes, estados y motivos, y de que una activa tenga prueba. `002_exclusion_evento.sql`: la auditoría. |
 
 ### Respuesta uniforme
@@ -66,9 +67,11 @@ ocultar por apellido tendría falsos positivos (una familia entera), así que la
 decisión queda en una persona.
 
 - Dos apellidos coinciden si, normalizados, son iguales y tienen al menos 3 letras.
-  La normalización pasa a minúsculas, quita tildes y eñes, borra el apóstrofo
-  («O'Brien» = «OBrien») y separa con espacio el guion y lo demás.
-- Conserva las letras de otros alfabetos (un apellido en cirílico no se vacía).
+  La normalización pasa a minúsculas, quita tildes y eñes (también las tildes **descompuestas**,
+  «e» + una marca aparte, pero solo detrás de una letra latina), borra el apóstrofo en cualquiera de
+  sus formas (`'`, `’`, `‘`, `ʼ`, `ʻ`…: «O'Brien» = «OBrien») y separa con espacio el guion y lo demás.
+- Conserva las letras de otros alfabetos, y sus marcas (un apellido en cirílico o en devanagari no se
+  vacía ni se parte con un espacio).
 - **Límites conocidos**: no hay coincidencia fonética ni difusa, y «Müller» no es
   «Mueller». Cada una agrega falsos positivos; se decide aparte.
 - No usa la librería de `defamatory-content-review` a propósito: depender de otra
@@ -136,4 +139,6 @@ motivo de texto libre y editar o borrar la auditoría), y corre PHPStan 2.1 en n
 
 ## Dependencias
 
-Sin dependencias de runtime fuera de `ext-mbstring`. PHPUnit 10 solo para pruebas.
+Sin paquetes de runtime. Necesita `ext-mbstring`; los registros y la auditoría sobre PostgreSQL
+(`RegistroPdo`, `AuditoriaPdo` y `Migrador`) necesitan además `ext-pdo_pgsql`, que `composer.json` solo
+sugiere porque las implementaciones en memoria funcionan sin ella. PHPUnit 10 solo para pruebas.

@@ -71,4 +71,47 @@ final class CoincidenciasTest extends TestCase
     {
         self::assertSame('sanchez vidal', Coincidencias::normalizar('Sánchez-Vidal.'));
     }
+
+    public function testUnaTildeDescompuestaCoincideConLaPrecompuesta(): void
+    {
+        // «e» + U+0301 (como la dan algunos teclados y sistemas) es lo mismo que «é».
+        self::assertSame('perez', Coincidencias::normalizar("Pe\u{301}rez"));
+        self::assertTrue(Coincidencias::coincide("Pe\u{301}rez", "P\u{e9}rez"));
+        self::assertTrue(Coincidencias::coincide("Mun\u{303}oz", "Mu\u{f1}oz")); // n + tilde, ñ
+    }
+
+    public function testVariasMarcasSeguidasSeQuitanDetrasDeUnaLetraLatina(): void
+    {
+        // Vietnamita: «ệ» descompuesta lleva dos marcas seguidas.
+        self::assertSame('nguyen', Coincidencias::normalizar("Nguye\u{323}\u{302}n"));
+    }
+
+    public function testLasMarcasDeOtrosAlfabetosNoPartenLaPalabra(): void
+    {
+        // Antes de quitar solo las de las letras latinas, una marca suelta se volvía un espacio.
+        $iv = "\u{418}\u{432}\u{430}\u{301}\u{43d}\u{43e}\u{432}"; // «Ива́нов» con el acento descompuesto
+        self::assertStringNotContainsString(' ', Coincidencias::normalizar($iv));
+        self::assertTrue(Coincidencias::coincide($iv, $iv));
+        // Devanagari: las vocales son marcas y forman parte de la palabra.
+        $singh = "\u{938}\u{93F}\u{902}\u{939}"; // «सिंह»
+        self::assertStringNotContainsString(' ', Coincidencias::normalizar($singh));
+    }
+
+    /** @dataProvider apostrofos */
+    public function testTodasLasFormasDelApostrofoSeBorran(string $variante): void
+    {
+        self::assertTrue(Coincidencias::coincide("O{$variante}Brien", 'OBrien'));
+    }
+
+    /** @return iterable<string, array{string}> */
+    public static function apostrofos(): iterable
+    {
+        yield 'recto' => ["'"];
+        yield 'curvo derecho' => ["\u{2019}"];
+        yield 'curvo izquierdo' => ["\u{2018}"];
+        yield 'acento agudo suelto' => ["\u{B4}"];
+        yield 'acento grave' => ['`'];
+        yield 'modificador' => ["\u{2BC}"];
+        yield 'okina' => ["\u{2BB}"];
+    }
 }
