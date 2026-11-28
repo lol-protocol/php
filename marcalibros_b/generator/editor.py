@@ -29,7 +29,7 @@ from almacen import Documentos
 from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
 from qa import MIN_CONTRASTE_TEXTO, OPACIDADES_VELO, TONOS_TEXTO, contraste_texto, mejor_texto
 from render_raster import ESCALA, _pintar_texto, a_imagen
-from scene import ALTO, ANCHO, FRANJA_CENTRAL, Escena
+from scene import ALTO, ANCHO, FRANJA_CENTRAL
 
 RAIZ = Path(__file__).resolve().parent.parent
 

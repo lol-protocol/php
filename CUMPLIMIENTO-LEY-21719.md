@@ -54,17 +54,18 @@
     y lo anota sin los valores.
   - **Supresión:** `persona.php suprimir` la borra, deja un registro sin su nombre y se puede repetir si algún día
     se restaura una copia de seguridad vieja.
-  - **Copias:** `php bin/copias.php` hace la copia diaria y borra las viejas; con `--cifrar-para` las cifra con
-    age (solo la clave pública va al servidor: **sin la clave privada no hay restauración**). **No corre solo**
-    hasta que se programe su cron.
+  - **Copias:** `php bin/copias.php` hace la copia diaria y borra las viejas (30 días, aprobado el 22 de noviembre de 2026). Con
+    `--cifrar-para` las cifraría con age (solo la clave pública va al servidor: **sin la clave privada no hay
+    restauración**), pero **por ahora no se cifran** (decidido el mismo día). **No corre solo** hasta que se
+    programe su cron.
 
 **Lo que falta para poder abrir el sitio** (detalle en §5):
 
 1. La política de privacidad es un **borrador con huecos** ([`POLITICA-DE-PRIVACIDAD.md`](POLITICA-DE-PRIVACIDAD.md)) y
    los términos también (responsable, domicilio, correo, país del servidor, plazos).
 2. Los pedidos de retiro y las solicitudes de datos tienen un plazo de conservación (`--depurar`, 12 meses; ya
-   están en las guías de despliegue y falta instalarlos en el cron del servidor); las direcciones de la tienda, los
-   logs y las copias de seguridad no (para las copias hay una **propuesta** de 30 días, sin aprobar).
+   están en las guías de despliegue y falta instalarlos en el cron del servidor); las direcciones de la tienda y los
+   logs no; las copias de seguridad sí: 30 días, aprobado el 22 de noviembre de 2026.
 3. Para **ver, corregir y borrar** a una persona hay formulario y herramientas
    (`/s/{id}/`, `bin/solicitudes.php`, `bin/persona.php`), pero falta ensayarlas con datos reales
    ([`ENSAYO-SOLICITUDES.md`](url-routing/docs/ENSAYO-SOLICITUDES.md)) y ponerlas en práctica: la comprobación
@@ -89,7 +90,7 @@ Lo que se decidió y lo que **se dejó sin decidir**, para que quede por escrito
 |---|---|---|
 | **Responsable** del tratamiento (fila 1, §5 punto 4) | **Una persona natural**: la persona a cargo | Su nombre, su domicilio y el **correo de contacto**. El correo será público: sin decidir si es uno propio para esto o el de su cuenta, y no se usa ninguno hasta que lo autorice por escrito |
 | **País del servidor** (fila 15) | **Sin decidir** | Elegirlo y, si es fuera de Chile, comprobar qué exige la ley para una transferencia al extranjero ⚖️ |
-| **Política de copias** (fila 11): una al día, 30 días, fuera del servidor, cifradas con age | **No aprobada todavía** | Aprobarla, cambiarla o descartarla; hasta entonces `bin/copias.php` no tiene cron y el plazo de 30 días es solo una propuesta |
+| **Política de copias** (fila 11): una al día, 30 días, fuera del servidor, **sin cifrar por ahora** | **Aprobada el 22 de noviembre de 2026** (30 días; cifrar, no por ahora) | Programar `bin/copias.php` (y `--vigilar`) en el cron y ensayar una restauración (`--verificar`): hasta entonces el plazo de 30 días es una intención, no una práctica. Si algún día se cifran, decidir dónde vive la clave privada |
 | **Base para tratar la ficha de una persona fallecida** (fila 2) | **Pendiente del texto de la ley**: se decide «más adelante» | Comprobar las preguntas 2 y 3 de §7 contra el texto oficial; después, elegir la base |
 | **Texto oficial de la ley** (§7) | **Sin cotejar** | Quien lo lea necesita un navegador: el 22 de noviembre se intentó desde la sesión y `bcn.cl` y `leychile.cl` solo devuelven una página vacía de JavaScript, y el Diario Oficial no enlaza la ley. Sin él, el plazo de respuesta, a quién se avisa de una fuga y la base legal siguen en ⚖️ |
 
@@ -140,7 +141,7 @@ privacidad. Cada fila se comprobó en el código.
 | IP de quien visita, como hash SHA-256 | Archivo del limitador, en el directorio temporal | Frenar el abuso (100 peticiones por minuto) | Nadie | Se borra a la hora |
 | Log de la aplicación: errores, y el número y la página de un pedido de retiro, **nunca quién lo pidió** | `LOG_FILE` | Operar el sitio | Quien administra el servidor | Lo que dure el archivo: no hay rotación definida para este |
 | **Log de acceso de nginx**: IP, navegador y dirección pedida | `/var/log/nginx/url-routing/access.log` | Operar el sitio | Quien administra el servidor | 14 días, si el servidor se armó con `vps-setup/` (`07_D-setup-logrotate.sh`); si no, lo que tenga el sistema |
-| Copias de seguridad | Donde las guarde quien administra (`bin/copias.php --destino=…`) | Recuperarse de un desastre | Quien las guarde: traen **lo que el sitio oculta** | **Propuesta sin aprobar: 30 días**, por la fecha del nombre. El script existe pero **no corre solo** hasta programar su cron; **puede cifrarlas** con age (`--cifrar-para`), pero cifrar es opcional y no está decidido |
+| Copias de seguridad | Donde las guarde quien administra (`bin/copias.php --destino=…`) | Recuperarse de un desastre | Quien las guarde: traen **lo que el sitio oculta** | **30 días** (aprobado el 22 de noviembre de 2026), por la fecha del nombre. El script existe pero **no corre solo** hasta programar su cron; **puede cifrarlas** con age (`--cifrar-para`), pero **por ahora no se cifran** (decidido el mismo día) |
 
 ### Tienda (POS, mismo código)
 
@@ -175,10 +176,10 @@ solo el apellido y se oculta de más la que tiene una palabra que también es no
 | 8 | **Bloqueo temporal** mientras se revisa | El estado «oculto» hace justo eso. A las 24 horas se aplica solo, **cuando el cron del servidor lleve `--ocultar`** (decidido; falta instalarlo) | ✅ | Comprobar que la ley lo pide con ese nombre, e instalar el cron |
 | 9 | **Plazo de respuesta** | El borrador de términos promete 10 días hábiles para responder | ◐ | Si el plazo legal son 30 días corridos, lo prometido es más estricto; no firmar un plazo que no se puede cumplir |
 | 10 | **Decisiones automatizadas** sobre personas | Ninguna. El filtro de difamación solo marca para quien revisa; decide una persona | ✅ | — |
-| 11 | **Seguridad** | HTTPS obligatorio, un solo secreto que se rota, cabeceras, limitador, sin contraseñas de visitantes, sin pagos. **Sin cifrado de la base en reposo** (depende del servidor); las copias sí pueden cifrarse con age. Las entregas con clave guardan solo hashes y limitan intentos, aperturas y vigencia | ◐ | Aprobar la política de copias (paso 11 de [`DESPLIEGUE.md`](url-routing/docs/DESPLIEGUE.md): propuesta de 30 días, fuera del servidor) y programar `bin/copias.php`. Decidir si se cifran (ya se puede) y dónde se guarda la clave privada |
+| 11 | **Seguridad** | HTTPS obligatorio, un solo secreto que se rota, cabeceras, limitador, sin contraseñas de visitantes, sin pagos. **Sin cifrado de la base en reposo** (depende del servidor); las copias sí pueden cifrarse con age. Las entregas con clave guardan solo hashes y limitan intentos, aperturas y vigencia | ◐ | La política de copias está aprobada (paso 11 de [`DESPLIEGUE.md`](url-routing/docs/DESPLIEGUE.md): 30 días, fuera del servidor, sin cifrar por ahora); falta programar `bin/copias.php` y `--vigilar` en el cron. Si algún día se cifran, decidir dónde vive la clave privada |
 | 12 | **Avisar de una vulneración** a la Agencia y a las personas | [`SECURITY.md`](SECURITY.md) dice cómo **reportarle** una falla al mantenedor. Para cuando **ya pasó** hay un borrador, [`SI-HAY-UNA-FUGA.md`](SI-HAY-UNA-FUGA.md): detectar, contener (rotar el token cierra todas las sesiones), evaluar, avisar, anotar | ◐ | Ensayarla, completar los contactos y **comprobar contra el texto de la ley a quién se avisa y en qué plazo** (§7, pregunta 8) |
 | 13 | **Registro de lo que se trata** | §3 de este documento | ◐ | Pasarlo a un lugar estable y mantenerlo al día |
-| 14 | **Conservación limitada** | Los pedidos de retiro tienen `--depurar` (12 meses; ya está en el cron de [`DESPLIEGUE.md`](url-routing/docs/DESPLIEGUE.md), falta instalarlo en el servidor; igual las solicitudes de datos con `bin/solicitudes.php --depurar`). Caducan las sesiones, el hash de IP y el log de nginx. **No tienen plazo**: la ficha y sus sucesos, las direcciones de la tienda, el log de la aplicación y las copias | ◐ | Decidir un plazo para esos cuatro y poner `--depurar` en el cron (§5, punto 2) |
+| 14 | **Conservación limitada** | Los pedidos de retiro tienen `--depurar` (12 meses; ya está en el cron de [`DESPLIEGUE.md`](url-routing/docs/DESPLIEGUE.md), falta instalarlo en el servidor; igual las solicitudes de datos con `bin/solicitudes.php --depurar`). Caducan las sesiones, el hash de IP y el log de nginx. **No tienen plazo**: la ficha y sus sucesos, las direcciones de la tienda y el log de la aplicación. Las copias tienen 30 días (aprobado el 22 de noviembre de 2026) | ◐ | Decidir un plazo para esos tres y poner `--depurar` en el cron (§5, punto 2) |
 | 15 | **Encargados y transferencias** | El servidor es un VPS de un proveedor; no se ha decidido el país (22 de noviembre: sigue sin decidirse) | ❌ | Decidir el país y comprobar qué exige la ley con el proveedor |
 | 16 | **Datos de categorías especiales** | Genéticos o de salud no se piden. Un acta puede decir la causa de una muerte, una religión o un origen | ❔ | Mirar si alguna ficha o registro lo dice (§7, pregunta 4) |
 | 17 | **Menores** | Los vivos no se muestran, así que no hay fichas de niños visibles. El formulario de retiro pide un correo a quien sea | ✅ | — |
@@ -195,8 +196,8 @@ solo el apellido y se oculta de más la que tiene una palabra que también es no
 
 1. **Política de privacidad escrita y términos completos**, con un correo real que
    alguien lea.
-2. **Plazos de conservación** decididos para las direcciones de la tienda, los logs
-   de la aplicación y las copias de seguridad, y `--depurar` puesto en el cron de los
+2. **Plazos de conservación** decididos para las direcciones de la tienda y los logs
+   de la aplicación (el de las copias, 30 días, ya está aprobado), y `--depurar` puesto en el cron de los
    pedidos de retiro (ya existe, con 12 meses como valor inicial).
 3. **Una forma de ver, corregir y borrar de verdad** cuando alguien lo pida y corresponda, con
    registro. Ya existe (`/s/{id}/`, `bin/solicitudes.php`, `bin/persona.php`). Para borrar, `suprimir`: se borra a la persona, sus sucesos
@@ -210,8 +211,8 @@ solo el apellido y se oculta de más la que tiene una palabra que también es no
 
 **Puede esperar a después de abrir:**
 
-- Cifrado de la base en reposo (las copias ya pueden cifrarse con age), y poner `bin/copias.php` en el cron (el
-  script ya existe).
+- Cifrado de la base en reposo (las copias pueden cifrarse con age, pero por ahora no se cifran), y poner
+  `bin/copias.php` en el cron (el script ya existe).
 - Un registro de actividades más fino que el de §3.
 
 ---

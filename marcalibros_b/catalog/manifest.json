@@ -13119,7 +13119,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "jpg",
-      "motivo": "tren",
+      "motivo": "casas_torcidas",
       "paleta": "hollin",
       "arquetipo": "bosque",
       "intento": 0,
@@ -13131,7 +13131,7 @@
       "archivo_2x": "catalog/jpg2x/expresionismo-doblin-01.jpg",
       "ancho_2x": 400,
       "alto_2x": 2800,
-      "pixeles_motivo": 368,
+      "pixeles_motivo": 754,
       "franja": [
         16,
         440,
@@ -13149,8 +13149,8 @@
         "idioma": "de",
         "firmada": true
       },
-      "sha256_2x": "b82d6cc08fe59416a1e7b0a3f0886ec02b651531e91145e482b422f2ae74250d",
-      "sha256": "d3c238f5963eac6095d9e9715a792eccef25e81524ea822e22d8906cd53379c3"
+      "sha256_2x": "24374945374846b9b72c558766cf47dca8ea87112fdafe769ad6f14ea4fa0849",
+      "sha256": "3b3082d150f64feeb02842e01c4517845285af9c395700fc9ad0e8717e47a323"
     },
     {
       "id": "expresionismo-doblin-02",
@@ -13169,7 +13169,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "pagoda",
-      "paleta": "grito",
+      "paleta": "brasa",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 280533520978502,
@@ -13184,12 +13184,12 @@
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 5.0,
+      "texto_recomendado": "claro",
+      "contraste_texto": 7.2,
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "0ed3017aee0e6837b5dc75e2f115dd3ceea732e059c57b961fbb6508a06775df"
+      "sha256": "5c0afa4b8d349500493d450d54a66be443bd99aa2290532bcb7b8f1492afcb41"
     },
     {
       "id": "expresionismo-doblin-03",
@@ -13343,7 +13343,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "tren",
-      "paleta": "brasa",
+      "paleta": "bilis",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 51546133532758,
@@ -13358,10 +13358,10 @@
         184,
         860
       ],
-      "texto_recomendado": "claro",
-      "contraste_texto": 8.1,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 5.3,
       "velo": 0.0,
-      "calma_cielo": 0.0,
+      "calma_cielo": 0.2,
       "frase": {
         "texto": "Ein Käfig ging einen Vogel suchen",
         "autor": "Franz Kafka",
@@ -13369,7 +13369,7 @@
         "idioma": "de",
         "firmada": true
       },
-      "sha256": "236f8be91b95cb1947eff7908a531259b5f686372b65ac6f9a8bc3d029e4bc66"
+      "sha256": "1c3ab47bf66d5f51115dffbd7454e3e53e1840a8a07bcb909a645bc415f2a9e9"
     },
     {
       "id": "expresionismo-doblin-07",
@@ -14236,7 +14236,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "calavera",
-      "paleta": "cripta",
+      "paleta": "lunafria",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 35016330948057,
@@ -14252,11 +14252,11 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 15.7,
+      "contraste_texto": 5.0,
       "velo": 0.0,
-      "calma_cielo": 0.0,
+      "calma_cielo": 0.1,
       "frase": null,
-      "sha256": "27ead79c56789b4adbe7c1b90b62c749439be619ffba55e6ad702dd7592f3c3f"
+      "sha256": "a94a4e86c81b98350d627bf53a8ff50cccda4718c3caaa82291f8168c620b4b1"
     },
     {
       "id": "expresionismo-kafka-08",
@@ -15333,7 +15333,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "corazon",
-      "paleta": "grito",
+      "paleta": "sangre",
       "arquetipo": "llanura",
       "intento": 0,
       "semilla": 135982746217020,
@@ -15348,8 +15348,8 @@
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 5.0,
+      "texto_recomendado": "claro",
+      "contraste_texto": 13.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
@@ -15359,7 +15359,7 @@
         "idioma": "de",
         "firmada": true
       },
-      "sha256": "601b9a645340b409f8b30aea2fa6c2efb20d1385edf3c22c8c47f2d1730940b0"
+      "sha256": "9bd43f129a9f43552e4b741ab3f48e741dc618d12d5f3f818e6f7447e75b6c06"
     },
     {
       "id": "expresionismo-stramm-04",
@@ -16266,12 +16266,12 @@
       "variante": 5,
       "obra_id": "de-profundis",
       "obra": "De profundis",
-      "animo": "lugubre",
+      "animo": "angustia",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "lluvia",
-      "paleta": "lunafria",
+      "motivo": "grito",
+      "paleta": "grito",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 57607059011468,
@@ -16279,19 +16279,19 @@
       "alto": 1400,
       "archivo": "catalog/svg/expresionismo-trakl-05.svg",
       "version_generador": "0.10.0",
-      "pixeles_motivo": 68,
+      "pixeles_motivo": 279,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "claro",
-      "contraste_texto": 5.0,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 4.6,
       "velo": 0.0,
-      "calma_cielo": 0.1,
+      "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "6aa7ff3428f8095b95ba1033a4df7bfd9aeafd2559e05ca7840ee0ff8c33f4bb"
+      "sha256": "c8053ff8a5501552068dea9c55bbe5d31bf4ab0d21c03c0cb16e7372897d18c3"
     },
     {
       "id": "expresionismo-trakl-06",
@@ -16739,15 +16739,15 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "ataud",
-      "paleta": "bilis",
-      "arquetipo": "bosque",
+      "paleta": "grito",
+      "arquetipo": "llanura",
       "intento": 0,
       "semilla": 240965268720961,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/expresionismo-werfel-06.svg",
       "version_generador": "0.10.0",
-      "pixeles_motivo": 74,
+      "pixeles_motivo": 171,
       "franja": [
         16,
         440,
@@ -16755,9 +16755,9 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 4.9,
+      "contraste_texto": 5.0,
       "velo": 0.0,
-      "calma_cielo": 0.1,
+      "calma_cielo": 0.0,
       "frase": {
         "texto": "Am Abend tönen die herbstlichen Wälder",
         "autor": "Georg Trakl",
@@ -16765,7 +16765,7 @@
         "idioma": "de",
         "firmada": true
       },
-      "sha256": "05c27448c15836c498d6bb19f121bb787cb5074d9d6e93276b36d67010b9e5f9"
+      "sha256": "2be3b6def31bfd0bb7b138be76fdb6b50fb7db0c033aa75ee0d01f58d45f93aa"
     },
     {
       "id": "expresionismo-werfel-07",
@@ -27015,7 +27015,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "nube",
+      "motivo": "globo",
       "paleta": "aguamarina",
       "arquetipo": "colinas",
       "intento": 0,
@@ -27024,7 +27024,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/ilustracion-swift-08.svg",
       "version_generador": "0.10.0",
-      "pixeles_motivo": 312,
+      "pixeles_motivo": 340,
       "franja": [
         16,
         440,
@@ -27042,7 +27042,7 @@
         "idioma": "en",
         "firmada": true
       },
-      "sha256": "f2174bab804d74b90c1400d8feb17b9a922681a2fb4965ce1703aff076e00c47"
+      "sha256": "dd4d098c77b5d0735c9d287b76c538bb01e7dcc73c9aa21059bce24938d12869"
     },
     {
       "id": "ilustracion-swift-09",
@@ -58821,14 +58821,14 @@
       "formato": "svg",
       "motivo": "rosa",
       "paleta": "laurel",
-      "arquetipo": "montanas",
+      "arquetipo": "llanura",
       "intento": 0,
       "semilla": 250105001761575,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/renacimiento-fray-luis-05.svg",
       "version_generador": "0.10.0",
-      "pixeles_motivo": 94,
+      "pixeles_motivo": 97,
       "franja": [
         16,
         440,
@@ -58840,7 +58840,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "9ce0ad660da08bfb497ec3e37fb68a099cf7f40b4e7ee13001d60c87caaf5502"
+      "sha256": "b10ae8e306d626daefb1792b30162736e939cb849fe17f818e9a9138d3da12e3"
     },
     {
       "id": "renacimiento-fray-luis-06",
@@ -58937,15 +58937,15 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "puerta",
-      "paleta": "dorada",
-      "arquetipo": "llanura",
+      "paleta": "niebla",
+      "arquetipo": "marina",
       "intento": 0,
       "semilla": 81794086250776,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/renacimiento-fray-luis-08.svg",
       "version_generador": "0.10.0",
-      "pixeles_motivo": 750,
+      "pixeles_motivo": 547,
       "franja": [
         16,
         440,
@@ -58953,11 +58953,11 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 13.4,
+      "contraste_texto": 12.1,
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "0d57b2b7e4112bdbf5d6fc36d4f79b0a2d6ce51fc1a53c2b7c2afd1ce9cd6050"
+      "sha256": "09d1ca4f0e743b09a5e66817d3c8a7623c4cfd2deedc5fbef6aca462df90f2af"
     },
     {
       "id": "renacimiento-fray-luis-09",
@@ -59104,20 +59104,20 @@
       "variante": 2,
       "obra_id": "discursos-sobre-la-primera-decada-de-tit",
       "obra": "Discursos sobre la primera década de Tito Livio",
-      "animo": "humanista",
+      "animo": "armonico",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "columna",
+      "motivo": "compas",
       "paleta": "lapislazuli",
       "arquetipo": "llanura",
-      "intento": 2,
-      "semilla": 3288927705517,
+      "intento": 0,
+      "semilla": 63702227507661,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/renacimiento-maquiavelo-02.svg",
       "version_generador": "0.10.0",
-      "pixeles_motivo": 288,
+      "pixeles_motivo": 141,
       "franja": [
         16,
         440,
@@ -59129,7 +59129,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "779fe9a572988d038d7c7f6f6d5efa109d2678470cffe600fa3b54cffad1fc51"
+      "sha256": "94e18fc5ec004ee7487f486d659543cbf56bb50304543163b66bbaeb52964247"
     },
     {
       "id": "renacimiento-maquiavelo-03",
@@ -59600,12 +59600,12 @@
       "variante": 4,
       "obra_id": "de-la-experiencia",
       "obra": "De la experiencia",
-      "animo": "sereno",
+      "animo": "armonico",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "espejo",
-      "paleta": "laurel",
+      "motivo": "hombre_vitruvio",
+      "paleta": "dorada",
       "arquetipo": "llanura",
       "intento": 0,
       "semilla": 93761002975220,
@@ -59613,15 +59613,15 @@
       "alto": 1400,
       "archivo": "catalog/svg/renacimiento-montaigne-04.svg",
       "version_generador": "0.10.0",
-      "pixeles_motivo": 307,
+      "pixeles_motivo": 222,
       "franja": [
         16,
-        440,
+        700,
         184,
-        860
+        1120
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 5.0,
+      "contraste_texto": 14.2,
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": {
@@ -59631,7 +59631,7 @@
         "idioma": "en",
         "firmada": true
       },
-      "sha256": "277e5cd3037ab85464d5e10009d0dfe04dadf612c41385bbae3e63c64cb7b883"
+      "sha256": "6467eaae81afc2128fe8da0d96989fd7d3e96fbada343073fe541413293b5245"
     },
     {
       "id": "renacimiento-montaigne-05",

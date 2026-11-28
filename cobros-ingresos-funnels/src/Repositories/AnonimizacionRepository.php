@@ -159,7 +159,7 @@ final class AnonimizacionRepository
         });
     }
 
-    /** Cuantos clientes tienen sus originales guardados todavia (vencidos o no): lo que bin/estado.php o un reporte pueden mostrar. */
+    /** Cuantos clientes tienen guardados todavia sus originales con el plazo ya vencido, es decir, los que purgarVencidos() borraria ahora. Los que aun se pueden deshacer no cuentan. */
     public function pendientesDePurga(): int
     {
         return (int) $this->db->query('SELECT COUNT(*) FROM datos_anonimizados WHERE vence_en <= now()')->fetchColumn();

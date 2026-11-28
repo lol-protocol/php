@@ -164,7 +164,6 @@ def _libro(ident, titulo, autor, nac, mue, descargas=0):
 
 
 def test_prellenado_de_gutenberg_solo_con_lo_que_gutendex_afirma(tmp_path):
-    import csv
     import verificar_gutenberg
     config = __import__("yaml").safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
     poe = ("Poe, Edgar Allan", 1809, 1849)

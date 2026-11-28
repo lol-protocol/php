@@ -39,6 +39,7 @@ final class Interruptores
     private array $plataformas = [];
 
     /** Instantánea del estado mientras está congelado (ver congelar()); null si no hay o aún no se leyó. */
+    /** @var array<string, bool>|null */
     private ?array $instantanea = null;
     private bool $congelado = false;
 

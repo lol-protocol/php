@@ -57,7 +57,11 @@ final class Usuarios
         return $salida;
     }
 
-    /** Rol actual de un usuario, o null si ya no existe. Sirve para refrescar una sesión abierta. */
+    /**
+     * Rol actual de un usuario, o null si ya no existe. Sirve para refrescar una sesión abierta.
+     *
+     * @return array{nombre: string, rol: string}|null
+     */
     public function buscar(string $nombre): ?array
     {
         $u = $this->leer()[$nombre] ?? null;

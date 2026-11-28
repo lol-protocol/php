@@ -551,7 +551,7 @@ Qué tipos de fuente se consultan al buscar, deducir o estimar: cada uno se pued
 
 ### `gen.busqueda-paises` · Países de las búsquedas externas
 
-País de origen de la fuente consultada. Las 101 opciones son los 100 países de mayor prioridad para genealogía en Listado-paises/ (sin excluidos), más los hispanohablantes y Chile que no entraban. Se regeneran con ese archivo.
+País de origen de la fuente consultada. Las 101 opciones son los 100 países de mayor prioridad para genealogía en Listado-paises/ (sin excluidos), más los hispanohablantes y Chile que no entraban. Es una copia de esos datos de un día concreto: si cambian las prioridades de Listado-paises/, esta lista no se actualiza sola.
 
 | Opción (ref) | Nombre | Por defecto |
 |---|---|---|
@@ -670,7 +670,7 @@ País de origen de la fuente consultada. Las 101 opciones son los 100 países de
 | `pos.mb-h-propios` | Marcalibros horizontales: marcalibros propios (PHP) | — | producto | `repo` | encendida | `gen.filtro:textos` |
 | `pos.mb-h-app` | Aplicación web de marcalibros (sin cuentas) | — | producto | `repo` | encendida | `pos.mb-h-propios` |
 | `pos.mb-h-paisajes` | Paisajes y vista previa del catálogo horizontal | — | visual | `repo` | encendida | — |
-| `pos.chat-libros` | Chat con un libro | 2 | producto | `pr_abierto` | apagada | — |
+| `pos.chat-libros` | Chat con un libro | 2 | producto | `repo` | apagada | — |
 | `pos.colores-lista` | Léxico de colores: lista completa | — | datos | `repo` | encendida | — |
 | `pos.colores-css` | Léxico de colores: 148 colores CSS anotados | — | datos | `repo` | encendida | — |
 | `pos.colores-categorias` | Categorías gramaticales de los colores | — | datos | `repo` | encendida | — |
@@ -796,9 +796,11 @@ Carpetas: `marcalibros-plataforma-pos-brand-identity/`.
 
 ### `pos.chat-libros` · Chat con un libro
 
-Chat con un libro, en PHP y en Java. Sus opciones son sinónimos y un modo opcional con IA. Vive en el PR #603, sin fusionar.
+Chat con un libro, en PHP y en Java. Sus opciones son sinónimos y un modo opcional con IA.
 
 Carpetas: `chat-con-libros/`.
+
+*Nota:* Apagado por defecto: la persona decide cuándo se ofrece.
 
 | Opción (ref) | Nombre | Por defecto |
 |---|---|---|
@@ -852,7 +854,7 @@ Carpetas: `Listado-colores/`.
 
 ### `pos.colores-revision` · Revisión por hablantes nativos
 
-Registro y visor de revisión. Todavía vacío. El PR #595 lo marca @deprecated.
+Registro y visor de revisión por hablantes nativos. Todavía vacío. Está @deprecated desde #595.
 
 Carpetas: `Listado-colores/`.
 

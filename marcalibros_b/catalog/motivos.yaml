@@ -1,5 +1,5 @@
 version: '0.5'
-nota: 'Biblioteca compartida de motivos: 93 + ninguno. requiere limita cuando un motivo tiene sentido visual.'
+nota: 'Biblioteca compartida de motivos: 110 + ninguno. requiere limita cuando un motivo tiene sentido visual.'
 motivos:
 - id: torre
   nombre: Torre

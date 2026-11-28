@@ -18,6 +18,7 @@ Marcalibros son los marcadores de lectura con diseño propio (libros en SVG y pa
 
     pip install -r generator/requirements.txt -r generator/requirements-dev.txt
     python generator/build.py --movimiento romanticismo     # o --all
+    python generator/build_paralelo.py                      # todo, un proceso por movimiento (lo que usa la CI)
     python -m pytest -q tests
     python generator/build.py --all --forzar              # ignora la caché y lo rehace todo
 
@@ -26,5 +27,5 @@ Requiere Chromium (variable `CHROMIUM` o `/opt/pw-browsers/chromium`): el QA ras
 ## Convenciones
 
 - Cada marcalibro sale en un solo formato: la variante 01 de cada autor es JPG (paisaje con grano, calidad 85, sin metadatos); el resto, SVG.
-- Los colores se definen una sola vez, en `generator/plantillas.py`, y se reutilizan en SVG y en raster.
+- Los colores se definen una sola vez, en `generator/plantillas.py` y en los módulos `movimientos.py` y `movimientos4.py` (que `plantillas.py` mezcla en `PALETAS`), y se reutilizan en SVG y en raster.
 - Estado, decisiones y pendientes: `PLAN.md`.
