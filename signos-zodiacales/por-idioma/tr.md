@@ -335,7 +335,7 @@ Kutsal Kitap'ın parçası olmayan bir büyü kitabı olan Goetia'dan (17. yüzy
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Kral | 66 | 21/03 – 25/03 | Görünmezlik, bilgelik |
 | 2 | Agares | Dük | 31 | 26/03 – 30/03 | Diller, kaçaklar, depremler |
-| 3 | Vassago | Prens | — | 31/03 – 04/04 | Geçmiş ve gelecek, kayıp eşyalar |
+| 3 | Vassago | Prens | 26 | 31/03 – 04/04 | Geçmiş ve gelecek, kayıp eşyalar |
 | 4 | Samigina | Marki | 30 | 05/04 – 09/04 | Hür sanatlar, ölülerin ruhları |
 | 5 | Marbas | Başkan | 36 | 10/04 – 14/04 | Sırlar, hastalıklar, şifa, mekanik sanatlar |
 | 6 | Valefor | Dük | 10 | 15/04 – 19/04 | Musahip ruhlar, hırsızlık |
@@ -353,7 +353,7 @@ Kutsal Kitap'ın parçası olmayan bir büyü kitabı olan Goetia'dan (17. yüzy
 | 18 | Bathin | Dük | 30 | 16/06 – 20/06 | Bitkiler, değerli taşlar, hızlı yolculuklar |
 | 19 | Sallos | Dük | 30 | 21/06 – 26/06 | Aşk |
 | 20 | Purson | Kral | 22 | 27/06 – 02/07 | Hazineler, geçmiş ve gelecek, musahip ruhlar |
-| 21 | Marax | Başkan / Kont | 30 | 03/07 – 07/07 | Astronomi, hür sanatlar, bitkiler |
+| 21 | Marax | Başkan / Kont | 36 | 03/07 – 07/07 | Astronomi, hür sanatlar, bitkiler |
 | 22 | Ipos | Kont / Prens | 36 | 08/07 – 12/07 | Geçmiş ve gelecek, cesaret, zekâ |
 | 23 | Aim | Dük | 26 | 13/07 – 17/07 | Yangınlar, zekâ, sırlar |
 | 24 | Naberius | Marki | 19 | 18/07 – 22/07 | Retorik, sanatlar, onurlar |
@@ -389,7 +389,7 @@ Kutsal Kitap'ın parçası olmayan bir büyü kitabı olan Goetia'dan (17. yüzy
 | 54 | Murmur | Dük / Kont | 30 | 17/12 – 21/12 | Müzik, felsefe, ölülerin ruhları |
 | 55 | Orobas | Prens | 20 | 22/12 – 26/12 | Geçmiş ve gelecek, lütuf, bağlılık |
 | 56 | Gremory | Dük | 26 | 27/12 – 31/12 | Hazineler, aşk, geçmiş ve gelecek |
-| 57 | Ose | Başkan | 3 | 01/01 – 05/01 | Hür sanatlar, dönüşüm, delilik |
+| 57 | Ose | Başkan | 30 | 01/01 – 05/01 | Hür sanatlar, dönüşüm, delilik |
 | 58 | Amy | Başkan | 36 | 06/01 – 10/01 | Astroloji, hür sanatlar, hazineler |
 | 59 | Orias | Marki | 30 | 11/01 – 15/01 | Astroloji, dönüşüm, onurlar |
 | 60 | Vapula | Dük | 36 | 16/01 – 19/01 | Mekanik sanatlar, felsefe, bilimler |
@@ -400,7 +400,7 @@ Kutsal Kitap'ın parçası olmayan bir büyü kitabı olan Goetia'dan (17. yüzy
 | 65 | Andrealphus | Marki | 30 | 09/02 – 13/02 | Matematik, astronomi, dönüşüm |
 | 66 | Kimaris | Marki | 20 | 14/02 – 18/02 | Retorik, mantık, kayıp eşyalar |
 | 67 | Amdusias | Dük | 29 | 19/02 – 23/02 | Müzik, ağaçlar |
-| 68 | Belial | Kral | 50 | 24/02 – 28/02 | Lütuf, makamlar, musahip ruhlar |
+| 68 | Belial | Kral | 80 | 24/02 – 28/02 | Lütuf, makamlar, musahip ruhlar |
 | 69 | Decarabia | Marki | 30 | 01/03 – 05/03 | Kuşlar, değerli taşlar, bitkiler |
 | 70 | Seere | Prens | 26 | 06/03 – 10/03 | Hızlı yolculuklar, hırsızlık, kayıp eşyalar |
 | 71 | Dantalion | Dük | 36 | 11/03 – 15/03 | Düşünceler, bilimler, aşk |

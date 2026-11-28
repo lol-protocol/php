@@ -18,9 +18,8 @@ RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ / "generator"))
 
 import build  # noqa: E402
-from qa import UMBRAL_DUPLICADO, validar_taxonomia, huella_visual, validar_jpg, validar_svg  # noqa: E402
+from qa import UMBRAL_DUPLICADO, validar_taxonomia, validar_jpg, validar_svg  # noqa: E402
 from plantillas import NOMBRES_ARQUETIPOS, PALETAS  # noqa: E402
-from render_raster import a_imagen  # noqa: E402
 from render_svg import a_svg  # noqa: E402
 
 REFERENCIA = Path(__file__).with_name("hashes_referencia.json")
@@ -267,3 +266,15 @@ if __name__ == "__main__":
             json.dumps({k: _hash_pieza(*v) for k, v in sorted(piezas.items())}, indent=2) + "\n",
             encoding="utf-8")
         print(f"escrito {REFERENCIA} ({len(piezas)} piezas)")
+
+
+def test_los_ids_de_autor_repetidos_son_solo_los_conocidos():
+    """Varias tablas se indexan por el id del autor a secas (catalog/titulos-originales.yaml, `lengua_por_autor` de
+    regiones.yaml): dos autores con el mismo id compartirían entradas. Hoy solo se repite `eliot` (George Eliot en
+    Realismo y T. S. Eliot en Vanguardias), sin entradas en esas tablas y con la misma lengua; renombrar uno cambiaría
+    los ids de sus 10 piezas y sus hashes. Un id nuevo repetido debe elegirse distinto."""
+    from collections import Counter
+    ids = Counter(a["id"] for m in CONFIG["movimientos"] for a in m["autores"])
+    assert {k for k, n in ids.items() if n > 1} == {"eliot"}
+    titulos = yaml.safe_load((RAIZ / "catalog" / "titulos-originales.yaml").read_text(encoding="utf-8")) or {}
+    assert "eliot" not in titulos.get("autores", titulos)

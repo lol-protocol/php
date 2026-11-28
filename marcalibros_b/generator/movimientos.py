@@ -10,7 +10,7 @@ de 200×1400; plantillas.py los escala y los encaja en el ancho.
 """
 import math
 
-from scene import ALTO, ANCHO, bezier, mover, suave
+from scene import ALTO, ANCHO, mover, suave
 
 # --- Paletas -----------------------------------------------------------------------------
 # `figura` es el color nominal de las siluetas; plantillas.paleta_legible lo ajusta si no

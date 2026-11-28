@@ -335,7 +335,7 @@ Da Goécia (século XVII), um grimório que não faz parte da Bíblia. Cada esp�
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Rei | 66 | 21/03 – 25/03 | Invisibilidade, sabedoria |
 | 2 | Agares | Duque | 31 | 26/03 – 30/03 | Idiomas, fugitivos, terremotos |
-| 3 | Vassago | Príncipe | — | 31/03 – 04/04 | Passado e futuro, objetos perdidos |
+| 3 | Vassago | Príncipe | 26 | 31/03 – 04/04 | Passado e futuro, objetos perdidos |
 | 4 | Samigina | Marquês | 30 | 05/04 – 09/04 | Artes liberais, almas dos mortos |
 | 5 | Marbas | Presidente | 36 | 10/04 – 14/04 | Segredos, doenças, cura, artes mecânicas |
 | 6 | Valefor | Duque | 10 | 15/04 – 19/04 | Espíritos familiares, roubo |
@@ -353,7 +353,7 @@ Da Goécia (século XVII), um grimório que não faz parte da Bíblia. Cada esp�
 | 18 | Bathin | Duque | 30 | 16/06 – 20/06 | Plantas, pedras preciosas, deslocamentos rápidos |
 | 19 | Sallos | Duque | 30 | 21/06 – 26/06 | Amor |
 | 20 | Purson | Rei | 22 | 27/06 – 02/07 | Tesouros, passado e futuro, espíritos familiares |
-| 21 | Marax | Presidente / Conde | 30 | 03/07 – 07/07 | Astronomia, artes liberais, plantas |
+| 21 | Marax | Presidente / Conde | 36 | 03/07 – 07/07 | Astronomia, artes liberais, plantas |
 | 22 | Ipos | Conde / Príncipe | 36 | 08/07 – 12/07 | Passado e futuro, coragem, engenho |
 | 23 | Aim | Duque | 26 | 13/07 – 17/07 | Incêndios, engenho, segredos |
 | 24 | Naberius | Marquês | 19 | 18/07 – 22/07 | Retórica, artes, honras |
@@ -389,7 +389,7 @@ Da Goécia (século XVII), um grimório que não faz parte da Bíblia. Cada esp�
 | 54 | Murmur | Duque / Conde | 30 | 17/12 – 21/12 | Música, filosofia, almas dos mortos |
 | 55 | Orobas | Príncipe | 20 | 22/12 – 26/12 | Passado e futuro, favor, lealdade |
 | 56 | Gremory | Duque | 26 | 27/12 – 31/12 | Tesouros, amor, passado e futuro |
-| 57 | Ose | Presidente | 3 | 01/01 – 05/01 | Artes liberais, transformação, loucura |
+| 57 | Ose | Presidente | 30 | 01/01 – 05/01 | Artes liberais, transformação, loucura |
 | 58 | Amy | Presidente | 36 | 06/01 – 10/01 | Astrologia, artes liberais, tesouros |
 | 59 | Orias | Marquês | 30 | 11/01 – 15/01 | Astrologia, transformação, honras |
 | 60 | Vapula | Duque | 36 | 16/01 – 19/01 | Artes mecânicas, filosofia, ciências |
@@ -400,7 +400,7 @@ Da Goécia (século XVII), um grimório que não faz parte da Bíblia. Cada esp�
 | 65 | Andrealphus | Marquês | 30 | 09/02 – 13/02 | Matemática, astronomia, transformação |
 | 66 | Kimaris | Marquês | 20 | 14/02 – 18/02 | Retórica, lógica, objetos perdidos |
 | 67 | Amdusias | Duque | 29 | 19/02 – 23/02 | Música, árvores |
-| 68 | Belial | Rei | 50 | 24/02 – 28/02 | Favor, dignidades, espíritos familiares |
+| 68 | Belial | Rei | 80 | 24/02 – 28/02 | Favor, dignidades, espíritos familiares |
 | 69 | Decarabia | Marquês | 30 | 01/03 – 05/03 | Aves, pedras preciosas, plantas |
 | 70 | Seere | Príncipe | 26 | 06/03 – 10/03 | Deslocamentos rápidos, roubo, objetos perdidos |
 | 71 | Dantalion | Duque | 36 | 11/03 – 15/03 | Pensamentos, ciências, amor |

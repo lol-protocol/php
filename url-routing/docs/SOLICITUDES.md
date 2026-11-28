@@ -132,7 +132,7 @@ Estos textos son un punto de partida; **el plazo de respuesta sigue ⚖️ sin d
 - **Rectificación.** «Recibimos tu solicitud el [FECHA]. Corregimos [qué dato] el [FECHA]. Puedes verlo en [enlace].»
 - **Supresión.** «Recibimos tu solicitud el [FECHA]. Borramos la ficha de [NOMBRE]. Los sucesos que comparte con
   otras personas **se conservan** sin ella, porque también son datos de las otras. Una copia de seguridad puede
-  guardarla hasta [PLAZO: 30 días si se aprueba la propuesta de `DESPLIEGUE.md`, sección 11 ⚖️].»
+  guardarla hasta [PLAZO: 30 días, aprobado el 22 de noviembre de 2026 en `DESPLIEGUE.md`, sección 11 ⚖️].»
 - **Si no se puede atender** (no se comprobó quién pide, o no hay nada de esa persona): dilo, con la razón.
 
 Los textos tipo en 16 idiomas de [`respuestas-tipo/`](respuestas-tipo/README.md) son solo para **retiros**; para
@@ -167,7 +167,7 @@ php bin/persona.php entrega <id> --revocar       # termina las que siguen vigent
 - **Poner en práctica la comprobación de quién pide** (sección anterior) y ensayarla.
 - **La dirección del correo propio del sitio** que reemplaza el `[CORREO]` de los términos (o un formulario como
   `/r/{id}/`): hay que preguntarla, no se inventa.
-- **Los plazos** de respuesta y de conservación de la nota de cada solicitud. El de las copias de seguridad tiene una
-  propuesta de 30 días en [`DESPLIEGUE.md`](DESPLIEGUE.md) (sección 11), sin aprobar ni puesta en práctica.
+- **Los plazos** de respuesta y de conservación de la nota de cada solicitud. El de las copias de seguridad ya está decidido:
+  30 días, aprobados el 22 de noviembre de 2026 en [`DESPLIEGUE.md`](DESPLIEGUE.md) (sección 11), sin puesta en práctica todavía.
 - Ensayar todo con **datos reales**, no con la base de demostración: la guía está en
   [`ENSAYO-SOLICITUDES.md`](ENSAYO-SOLICITUDES.md).

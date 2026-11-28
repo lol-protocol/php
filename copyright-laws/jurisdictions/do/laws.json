@@ -9,7 +9,7 @@
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
     "orphan_works": "Not specified",
-    "digital_protection": "Detailed technological-measure protection, amended by Law 424-06 (DR-CAFTA) (unconfirmed)",
+    "digital_protection": "Criminal offences: Art. 169(8)-(9) penalise making, importing or selling devices that defeat technical protection, or evading such devices; Art. 179(4) allows seizure of such devices. The text does not mention Law 424-06",
     "fair_use_exceptions": "Statutory limitations & exceptions",
     "registration_required": "No",
     "enforcement_body": "Oficina Nacional de Derecho de Autor (ONDA)",
@@ -21,15 +21,21 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-11-26",
     "sources": {
       "digital_protection": {
-        "url": "https://www.wipo.org/edocs/mdocs/lac/es/ompi_jpi_jda_gdl_04/ompi_jpi_jda_gdl_04_2_rd.pdf",
-        "confidence": "low",
-        "checked": "2026-10-14"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/1191",
+        "confidence": "high",
+        "checked": "2026-11-26"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "digital_protection",
+        "from": "Detailed technological-measure protection, amended by Law 424-06 (DR-CAFTA) (unconfirmed)",
+        "to": "Criminal offences: Art. 169(8)-(9) penalise making, importing or selling devices that defeat technical protection, or evading such devices; Art. 179(4) allows seizure of such devices. The text does not mention Law 424-06"
+      },
       {
         "date": "2026-10-14",
         "field": "digital_protection",

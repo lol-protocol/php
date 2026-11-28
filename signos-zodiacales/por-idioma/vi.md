@@ -335,7 +335,7 @@ Lấy từ Goetia (thế kỷ 17), một cuốn grimoire không thuộc Kinh Th�
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bael | Vua | 66 | 21/03 – 25/03 | Sự vô hình, trí tuệ |
 | 2 | Agares | Công tước | 31 | 26/03 – 30/03 | Ngôn ngữ, kẻ đào tẩu, động đất |
-| 3 | Vassago | Hoàng tử | — | 31/03 – 04/04 | Quá khứ và tương lai, đồ vật thất lạc |
+| 3 | Vassago | Hoàng tử | 26 | 31/03 – 04/04 | Quá khứ và tương lai, đồ vật thất lạc |
 | 4 | Samigina | Hầu tước | 30 | 05/04 – 09/04 | Nghệ thuật tự do, linh hồn người chết |
 | 5 | Marbas | Chủ tịch | 36 | 10/04 – 14/04 | Bí mật, bệnh tật, sự chữa lành, nghệ thuật cơ khí |
 | 6 | Valefor | Công tước | 10 | 15/04 – 19/04 | Linh hầu cận, trộm cắp |
@@ -353,7 +353,7 @@ Lấy từ Goetia (thế kỷ 17), một cuốn grimoire không thuộc Kinh Th�
 | 18 | Bathin | Công tước | 30 | 16/06 – 20/06 | Thực vật, đá quý, di chuyển nhanh |
 | 19 | Sallos | Công tước | 30 | 21/06 – 26/06 | Tình yêu |
 | 20 | Purson | Vua | 22 | 27/06 – 02/07 | Kho báu, quá khứ và tương lai, linh hầu cận |
-| 21 | Marax | Chủ tịch / Bá tước | 30 | 03/07 – 07/07 | Thiên văn học, nghệ thuật tự do, thực vật |
+| 21 | Marax | Chủ tịch / Bá tước | 36 | 03/07 – 07/07 | Thiên văn học, nghệ thuật tự do, thực vật |
 | 22 | Ipos | Bá tước / Hoàng tử | 36 | 08/07 – 12/07 | Quá khứ và tương lai, lòng dũng cảm, sự thông minh |
 | 23 | Aim | Công tước | 26 | 13/07 – 17/07 | Hỏa hoạn, sự thông minh, bí mật |
 | 24 | Naberius | Hầu tước | 19 | 18/07 – 22/07 | Thuật hùng biện, nghệ thuật, danh dự |
@@ -389,7 +389,7 @@ Lấy từ Goetia (thế kỷ 17), một cuốn grimoire không thuộc Kinh Th�
 | 54 | Murmur | Công tước / Bá tước | 30 | 17/12 – 21/12 | Âm nhạc, triết học, linh hồn người chết |
 | 55 | Orobas | Hoàng tử | 20 | 22/12 – 26/12 | Quá khứ và tương lai, sự ưu ái, lòng trung thành |
 | 56 | Gremory | Công tước | 26 | 27/12 – 31/12 | Kho báu, tình yêu, quá khứ và tương lai |
-| 57 | Ose | Chủ tịch | 3 | 01/01 – 05/01 | Nghệ thuật tự do, sự biến đổi, sự điên loạn |
+| 57 | Ose | Chủ tịch | 30 | 01/01 – 05/01 | Nghệ thuật tự do, sự biến đổi, sự điên loạn |
 | 58 | Amy | Chủ tịch | 36 | 06/01 – 10/01 | Chiêm tinh, nghệ thuật tự do, kho báu |
 | 59 | Orias | Hầu tước | 30 | 11/01 – 15/01 | Chiêm tinh, sự biến đổi, danh dự |
 | 60 | Vapula | Công tước | 36 | 16/01 – 19/01 | Nghệ thuật cơ khí, triết học, các ngành khoa học |
@@ -400,7 +400,7 @@ Lấy từ Goetia (thế kỷ 17), một cuốn grimoire không thuộc Kinh Th�
 | 65 | Andrealphus | Hầu tước | 30 | 09/02 – 13/02 | Toán học, thiên văn học, sự biến đổi |
 | 66 | Kimaris | Hầu tước | 20 | 14/02 – 18/02 | Thuật hùng biện, logic học, đồ vật thất lạc |
 | 67 | Amdusias | Công tước | 29 | 19/02 – 23/02 | Âm nhạc, cây cối |
-| 68 | Belial | Vua | 50 | 24/02 – 28/02 | Sự ưu ái, chức vị, linh hầu cận |
+| 68 | Belial | Vua | 80 | 24/02 – 28/02 | Sự ưu ái, chức vị, linh hầu cận |
 | 69 | Decarabia | Hầu tước | 30 | 01/03 – 05/03 | Loài chim, đá quý, thực vật |
 | 70 | Seere | Hoàng tử | 26 | 06/03 – 10/03 | Di chuyển nhanh, trộm cắp, đồ vật thất lạc |
 | 71 | Dantalion | Công tước | 36 | 11/03 – 15/03 | Suy nghĩ, các ngành khoa học, tình yêu |

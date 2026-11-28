@@ -24,6 +24,22 @@ final class SwedishInflection extends NordicInflection
         return [$word . ($vowel ? 'n' : 'en'), $word . ($vowel ? 't' : 'et'), ...array_map(fn(string $p): string => $p . (str_ends_with($p, 'r') ? 'na' : 'en'), $plurals)];
     }
 
+    /**
+     * «chippad» → «chippat», «chippade»; «bjuden» → «bjudet», «bjudna», «bjudne» (medido con UniMorph: lo
+     * que generaba la regla general en -d y en -en casi nunca existe).
+     */
+    protected function adjective(string $word): array
+    {
+        if (preg_match('/[^aeiouyåäö]d$|ad$/u', $word) === 1) {
+            return [$word, substr($word, 0, -1) . 't', $word . 'a', $word . 'e'];
+        }
+        if (str_ends_with($word, 'en') && mb_strlen($word) > 3) {
+            $stem = substr($word, 0, -2);
+            return [$word, $stem . 'et', $stem . 'na', $stem . 'ne'];
+        }
+        return parent::adjective($word);
+    }
+
     protected function adjectiveEnding(): string
     {
         return 'a';

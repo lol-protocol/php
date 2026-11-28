@@ -139,7 +139,7 @@ const GRUPOS = [
   ['principal', 'CALZADO_CUERO', 'zapatos-cuero zapatos-hebilla zapatos-vestir botas-altas botas-vaqueras botas-militares botas-mongolas botas-tibetanas'],
   ['principal', 'BLANCOS', 'enaguas tallit dishdasha cuello-alto kihei'],
   ['principal', 'TIERRAS', 'bragae escapulario faldon-campesina capa-viaje capa-lluvia-paja sombrero-paja-capa manto-lana-ancho falda-lana-gruesa'],
-  ['principal', 'BLANCOS_RUSTICOS', 'delantal-peto'],
+  ['principal', 'BLANCOS_RUSTICOS', 'delantal-peto foustanella'],
   ['principal', 'LANAS_OSCURAS', 'kepam'],
   ['principal', 'VESTIDOS_GALA', 'capa-ceremonial capa-opera'],
   ['principal', 'LUTO', 'chador'],

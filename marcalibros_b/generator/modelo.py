@@ -70,7 +70,7 @@ def sugerencias_por_gutenberg(manifiesto):
 # --- Sugerencias a partir de los metadatos del texto abierto (sin ids verificados) -------------
 # Gutendex (y el propio texto de Gutenberg) dan autor, años y título de cada libro. Con eso se puede
 # reconocer al autor del catálogo en el momento de abrir el texto, sin tener que verificar antes
-# los ids de Gutenberg de 1000 obras: basta el nombre y los años de vida.
+# los ids de Gutenberg de 2000 obras: basta el nombre y los años de vida.
 
 PALABRAS_VACIAS = {"de", "del", "la", "los", "las", "el", "y", "e", "van", "von", "da", "di", "le", "les", "l", "d", "du", "des",
                    "un", "une", "et", "the", "of", "a", "an", "or", "and", "der", "die", "das"}

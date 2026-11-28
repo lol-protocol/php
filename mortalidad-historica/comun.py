@@ -52,6 +52,9 @@ HERENCIAS = (
     "mitocondrial", "multifactorial",
 )
 INICIOS = ("infancia", "adultez", "variable")
+# Causas que `vista.html` y las páginas de `por-idioma/` muestran detrás de un aviso (suicidio, enfermedad mental,
+# sífilis, lepra, parto). Es solo presentación: los datos y las consultas no cambian. Ver PRIVACIDAD.md, §3.7.
+CAUSAS_DELICADAS = ("suicidio", "locura", "sifilis", "lepra", "muerte_de_parto", "fiebre_puerperal")
 SEXOS = ("M", "F", "T")
 CALIDADES = ("A", "B", "C")  # A: registro civil completo; B: reconstrucción parcial; C: estimación
 
@@ -63,6 +66,24 @@ RE_MONDO = re.compile(r"^MONDO:[0-9]{7}$")
 
 RESULTADOS_REVISION = ("correcto", "corregir", "dudoso", "corregido")
 RE_FECHA = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
+
+
+def cie10_compacto(codigos):
+    """Los códigos CIE-10 como texto para leer: las series de 4 o más consecutivos («A15, A16, A17, A18, A19») se
+    acortan a «A15–A19»; los códigos con punto y los sueltos quedan como están. La misma función, en la vista, está
+    en vista_plantilla.html."""
+    salida, i = [], 0
+    while i < len(codigos):
+        j = i
+        while (j + 1 < len(codigos) and "." not in codigos[j] and "." not in codigos[j + 1]
+               and codigos[j + 1][0] == codigos[j][0] and int(codigos[j + 1][1:]) == int(codigos[j][1:]) + 1):
+            j += 1
+        if j - i + 1 >= 4:
+            salida.append(f"{codigos[i]}–{codigos[j]}")
+        else:
+            salida.extend(codigos[i:j + 1])
+        i = j + 1
+    return ", ".join(salida)
 
 
 def huella(termino, idioma, causa_id, confianza):

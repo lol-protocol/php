@@ -14,8 +14,8 @@ gantt
   Carga inicial de apellidos       :done, g2b, 2026-12-02, 30d
   section Perfil y envíos
   Perfil activo cada 7 días        :active, g2c, 2026-12-08, 82d
-  Perfil ocasional cada 14 días    :g2d, 2027-03-01, 121d
-  Perfil latente cada 30 días      :g2e, 2027-07-01, 62d
+  Perfil ocasional cada 14 días    :g2d, 2027-02-28, 76d
+  Perfil latente cada 30 días      :g2e, 2027-05-15, 113d
   Vuelve a activo                  :g2f, 2027-09-06, 86d
   section Árbol
   Novedad en rama materna          :milestone, g2g, 2027-04-12, 0d

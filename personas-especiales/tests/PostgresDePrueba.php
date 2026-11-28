@@ -16,13 +16,9 @@ trait PostgresDePrueba
 {
     private function conectar(): PDO
     {
-        $dsn = getenv('TEST_PG_DSN');
-        if ($dsn === false || $dsn === '') {
-            self::markTestSkipped('Sin TEST_PG_DSN: se omite la prueba contra PostgreSQL.');
-        }
-
         $pdo = $this->abrir();
-        $pdo->exec('DROP TABLE IF EXISTS exclusion, schema_migraciones CASCADE');
+        $pdo->exec('DROP TABLE IF EXISTS exclusion_evento, exclusion, schema_migraciones CASCADE');
+        $pdo->exec('DROP FUNCTION IF EXISTS exclusion_evento_solo_agrega() CASCADE');
         (new Migrador($pdo, __DIR__ . '/../database/migraciones'))->aplicar();
 
         return $pdo;

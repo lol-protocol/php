@@ -197,4 +197,43 @@ final class ExclusionTest extends TestCase
 
         self::assertSame(['persona', 'familiar_fallecido', 'apoderado'], $valores);
     }
+
+    /** @dataProvider idsInvalidos */
+    public function testUnIdOUnaPersonaConControlesOUtf8InvalidoSeRechaza(string $malo): void
+    {
+        try {
+            Exclusion::solicitar($malo, 'p-1', Solicitante::Persona, Motivo::Otro, $this->t0);
+            self::fail('Aceptó un id inválido.');
+        } catch (InvalidArgumentException) {
+            // esperado
+        }
+        $this->expectException(InvalidArgumentException::class);
+        Exclusion::solicitar('s-1', $malo, Solicitante::Persona, Motivo::Otro, $this->t0);
+    }
+
+    /** @return iterable<string, array{string}> */
+    public static function idsInvalidos(): iterable
+    {
+        yield 'NUL' => ["con\0nul"];
+        yield 'salto de línea' => ["uno\ndos"];
+        yield 'UTF-8 inválido' => ["\xC3\x28"];
+    }
+
+    public function testLaPruebaAdmiteVariasLineasPeroNoNul(): void
+    {
+        $e = Exclusion::solicitar('s-1', 'p-1', Solicitante::Persona, Motivo::Otro, $this->t0)
+            ->verificar("Cédula vista.\nNúmero anotado aparte.", $this->t0);
+        self::assertSame("Cédula vista.\nNúmero anotado aparte.", $e->prueba());
+
+        $this->expectException(InvalidArgumentException::class);
+        Exclusion::solicitar('s-2', 'p-1', Solicitante::Persona, Motivo::Otro, $this->t0)->verificar("mala\0", $this->t0);
+    }
+
+    public function testLaRazonDeUnRechazoAdmiteVariasLineas(): void
+    {
+        $e = Exclusion::solicitar('s-1', 'p-1', Solicitante::Persona, Motivo::Otro, $this->t0)
+            ->rechazar("No coincide.\nSe pidió otra prueba.", $this->t0);
+
+        self::assertSame(Estado::Rechazada, $e->estado());
+    }
 }

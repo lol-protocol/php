@@ -706,6 +706,10 @@ class PruebasDeTextosTraducidos(unittest.TestCase):
         for codigo, ui in contenido["ui"].items():
             self.assertEqual(set(ui), generar.TERMINOS_DE_INTERFAZ, codigo)
 
+    def test_cada_opcion_del_selector_de_idioma_lleva_su_lang(self):
+        # El nombre de cada idioma está escrito en ese idioma: sin `lang`, un lector de pantalla lo lee con la voz de la página.
+        self.assertIn("opcion.lang = codigo;", self.archivos[generar.GALERIA])
+
     def test_la_validacion_detecta_un_termino_de_interfaz_sin_traducir(self):
         datos = copy.deepcopy(self.datos)
         del datos["terminos"]["sin_fondo"]["ko"]
@@ -914,7 +918,7 @@ class PruebasDeEspiritus(unittest.TestCase):
         ficha = generar.ficha_de(self.datos, "es")
         self.assertIn("| 1 | Vehuiah | Serafines | 21/03 – 25/03 | Voluntad, comienzos, energía |", ficha)
         self.assertIn("| 17 | Botis | Presidente / Conde | 60 | 11/06 – 15/06 |", ficha)
-        self.assertIn("| 3 | Vassago | Príncipe | — | 31/03 – 04/04 |", ficha)  # sin legiones en la fuente
+        self.assertIn("| 3 | Vassago | Príncipe | 26 | 31/03 – 04/04 |", ficha)
 
     def test_las_tablas_van_dentro_del_bloque_de_derecha_a_izquierda(self):
         ficha = generar.ficha_de(self.datos, "ar")
@@ -940,6 +944,10 @@ class PruebasDeValidacionDeEspiritus(unittest.TestCase):
     def test_detecta_una_cualidad_que_no_esta_en_el_glosario(self):
         self.esp["angeles"][0]["cualidades"].append("inventada")
         self.assertTrue(self.errores_con("'inventada' no está en el glosario"))
+
+    def test_detecta_dos_cualidades_de_una_ficha_que_se_dicen_igual(self):
+        self.esp["cualidades"]["lealtad"]["fa"] = self.esp["cualidades"]["fidelidad"]["fa"]
+        self.assertTrue(self.errores_con("'fidelidad' y 'lealtad' se dicen igual en fa"))
 
     def test_detecta_una_cualidad_que_nadie_usa(self):
         self.esp["cualidades"]["sobrante"] = dict(self.esp["cualidades"]["amor"])
@@ -1114,6 +1122,19 @@ class PruebasDeArboles(unittest.TestCase):
                 palabras = [glosario[r][codigo].strip().lower() for r in rasgos]
                 self.assertEqual(len(palabras), len(set(palabras)), (rasgos, codigo, palabras))
 
+    def test_el_horoscopo_cambia_justo_en_el_limite_de_cada_tramo(self):
+        # El primer y el último día de cada tramo son del árbol; el día de antes y el de después, no.
+        un_dia = datetime.timedelta(days=1)
+        for anio in (2025, 2024):
+            for h in zodiaco.cargar_arboles()["horoscopo"]:
+                for (m1, d1), (m2, d2) in h["tramos"]:
+                    primero = datetime.date(anio, m1, min(d1, 28 if (m1, d1) == (2, 29) and anio == 2025 else d1))
+                    ultimo = datetime.date(anio + ((m2, d2) < (m1, d1)), m2, min(d2, 28 if (m2, d2) == (2, 29) and anio == 2025 else d2))
+                    for dia in (primero, ultimo):
+                        self.assertEqual(zodiaco.arbol_de_fecha(dia)["arbol"]["id"], h["arbol"], (h["arbol"], dia))
+                    for dia in (primero - un_dia, ultimo + un_dia):
+                        self.assertNotEqual(zodiaco.arbol_de_fecha(dia)["arbol"]["id"], h["arbol"], (h["arbol"], dia))
+
     def test_rasgos_rechaza_entradas_no_validas(self):
         for args in (("bosque", "beth", "es"), ("celta", "no-existe", "es"), ("celta", "beth", "xx"), ("horoscopo", "beth", "es")):
             with self.assertRaises(ValueError):
@@ -1143,6 +1164,12 @@ class PruebasDeValidacionDeArboles(unittest.TestCase):
 
     def errores_con(self, texto):
         return [e for e in generar.validar_arboles(self.arb, self.esp) if texto in e]
+
+    def test_detecta_dos_rasgos_de_una_ficha_que_se_dicen_igual(self):
+        # El pino lleva «disciplina» (glosario de árboles) y «orden» (glosario de espíritus).
+        self.arb["rasgos"]["disciplina"]["ur"] = self.esp["cualidades"]["orden"]["ur"]
+        errores = self.errores_con("'disciplina' y 'orden' se dicen igual en ur")
+        self.assertTrue(errores, generar.validar_arboles(self.arb, self.esp))
 
     def test_detecta_un_mes_que_se_solapa_o_deja_un_hueco(self):
         self.arb["calendario_celta"]["meses"][1]["desde"] = [1, 25]
@@ -1564,6 +1591,34 @@ class PruebasDeLosPaquetesDeRevision(unittest.TestCase):
         for codigo in generar.IDIOMAS:
             ruta = generar.SALIDA_REVISION / f"{codigo}.csv"
             self.assertEqual(ruta.read_text(encoding="utf-8"), self.archivos[ruta], codigo)
+
+
+class PruebasDelReadme(unittest.TestCase):
+    """Los números que cita el README salen de los datos: si cambian, esta prueba avisa."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.readme = (generar.RAIZ / "README.md").read_text(encoding="utf-8")
+
+    def cifra(self, patron):
+        encontrado = re.search(patron, self.readme)
+        self.assertIsNotNone(encontrado, patron)
+        return int(encontrado.group(1))
+
+    def test_el_glosario_de_cualidades(self):
+        self.assertEqual(self.cifra(r"glosario de (\d+) cualidades"), len(zodiaco.cargar_espiritus()["cualidades"]))
+
+    def test_los_arboles_del_horoscopo(self):
+        horoscopo = len(zodiaco.cargar_arboles()["horoscopo"])
+        self.assertEqual(self.cifra(r"el horóscopo de los árboles \((\d+)\)"), horoscopo)
+        self.assertEqual(self.cifra(r"Son (\d+) árboles con"), horoscopo)
+
+    def test_los_arboles_del_esquema(self):
+        self.assertEqual(self.cifra(r"// (\d+) árboles × 30"), len(zodiaco.cargar_arboles()["arboles"]))
+
+    def test_los_textos_por_idioma_de_los_paquetes_de_revision(self):
+        textos_en_espanol = sum(1 for _, codigo, _ in generar.textos_de(zodiaco.cargar_datos()) if codigo == "es")
+        self.assertEqual(self.cifra(r"Son (\d+) textos por idioma"), textos_en_espanol)
 
 
 if __name__ == "__main__":

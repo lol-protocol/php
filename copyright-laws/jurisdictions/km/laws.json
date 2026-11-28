@@ -6,9 +6,9 @@
     "law_name": "Law of 11 March 1957 on Literary and Artistic Property (French law applied in Comoros); Bangui Agreement (OAPI) since 2013",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years (Art. 21 of 1957 law); anonymous, collective and posthumous works 50 years from publication",
-    "author_rights": "Economic rights (unconfirmed)",
+    "author_rights": "Moral and economic (patrimonial) rights (Art. 1); exclusive right to exploit the work for profit (Art. 21)",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Not specified (no orphan-works provision in the 1957 law text)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8839",
@@ -40,13 +40,13 @@
       },
       "author_rights": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8839",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/8839",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "treaties_signatory": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Comoros.html",
@@ -55,6 +55,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Not specified (no orphan-works provision in the 1957 law text)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "author_rights",
+        "from": "Economic rights (unconfirmed)",
+        "to": "Moral and economic (patrimonial) rights (Art. 1); exclusive right to exploit the work for profit (Art. 21)"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

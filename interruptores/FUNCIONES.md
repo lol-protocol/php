@@ -4,7 +4,7 @@
 
 - **62 funciones** (41 de genealogía y 21 de POS).
 - **315 opciones** (sub-interruptores), y **377 interruptores** en total.
-- **2 funciones supuestas**, marcadas con *(supuesto)*: no vienen de la lista de la persona, las propuse a partir de sus respuestas. Hay que confirmarlas o quitarlas.
+- **0 funciones supuestas**, marcadas con *(supuesto)*: no vienen de la lista de la persona, las propuse a partir de sus respuestas. Hay que confirmarlas o quitarlas.
 
 Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: una opción está encendida solo si su función también lo está. «Mínimo de opciones» dice cuántas tienen que quedar encendidas mientras la función esté encendida.
 
@@ -69,8 +69,8 @@ Cada función tiene su interruptor. Si tiene opciones, cada una tiene el suyo: u
 | `gen.inferencia` | Inferencia de datos faltantes | — | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
 | `gen.estimacion` | Estimación de fechas y lugares | 2 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
 | `gen.pasarela` | Pasarela de pagos | 1 | producto | `fuera_del_repo` | encendida | — |
-| `gen.busqueda-fuentes` | Tipos de fuente de las búsquedas externas *(supuesto)* | 5 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
-| `gen.busqueda-paises` | Países de las búsquedas externas *(supuesto)* | 101 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.busqueda-fuentes` | Tipos de fuente de las búsquedas externas | 5 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
+| `gen.busqueda-paises` | Países de las búsquedas externas | 101 | interno | `fuera_del_repo` | encendida | `gen.privacidad` |
 
 ### `gen.vistas` · Modos de visualización del árbol
 
@@ -440,7 +440,7 @@ Carpetas: `url-routing/`.
 
 Al apagar: `no_disponible` (se muestra como no disponible en vez de ocultarse).
 
-*Nota:* Ocultar un pedido de retiro de datos sería peor que avisar que no está disponible por ahora (derechos de la persona; ver RECLAMOS.md). Política supuesta, confirmar.
+*Nota:* Apagada se muestra como «no disponible» y no se oculta: ocultar un pedido de retiro de datos sería peor que avisar (derechos de la persona; ver RECLAMOS.md). Política confirmada por la persona.
 
 ### `gen.backoffice` · Backoffice de actividad
 
@@ -551,7 +551,7 @@ Qué tipos de fuente se consultan al buscar, deducir o estimar: cada uno se pued
 
 ### `gen.busqueda-paises` · Países de las búsquedas externas
 
-País de origen de la fuente consultada. Las 101 opciones son los 100 países de mayor prioridad para genealogía en Listado-paises/ (sin excluidos), más los hispanohablantes y Chile que no entraban. Se regeneran con ese archivo.
+País de origen de la fuente consultada. Las 101 opciones son los 100 países de mayor prioridad para genealogía en Listado-paises/ (sin excluidos), más los hispanohablantes y Chile que no entraban. Es una copia de esos datos de un día concreto: si cambian las prioridades de Listado-paises/, esta lista no se actualiza sola.
 
 | Opción (ref) | Nombre | Por defecto |
 |---|---|---|
@@ -670,7 +670,7 @@ País de origen de la fuente consultada. Las 101 opciones son los 100 países de
 | `pos.mb-h-propios` | Marcalibros horizontales: marcalibros propios (PHP) | — | producto | `repo` | encendida | `gen.filtro:textos` |
 | `pos.mb-h-app` | Aplicación web de marcalibros (sin cuentas) | — | producto | `repo` | encendida | `pos.mb-h-propios` |
 | `pos.mb-h-paisajes` | Paisajes y vista previa del catálogo horizontal | — | visual | `repo` | encendida | — |
-| `pos.chat-libros` | Chat con un libro | 2 | producto | `pr_abierto` | apagada | — |
+| `pos.chat-libros` | Chat con un libro | 2 | producto | `repo` | apagada | — |
 | `pos.colores-lista` | Léxico de colores: lista completa | — | datos | `repo` | encendida | — |
 | `pos.colores-css` | Léxico de colores: 148 colores CSS anotados | — | datos | `repo` | encendida | — |
 | `pos.colores-categorias` | Categorías gramaticales de los colores | — | datos | `repo` | encendida | — |
@@ -796,9 +796,11 @@ Carpetas: `marcalibros-plataforma-pos-brand-identity/`.
 
 ### `pos.chat-libros` · Chat con un libro
 
-Chat con un libro, en PHP y en Java. Sus opciones son sinónimos y un modo opcional con IA. Vive en el PR #603, sin fusionar.
+Chat con un libro, en PHP y en Java. Sus opciones son sinónimos y un modo opcional con IA.
 
 Carpetas: `chat-con-libros/`.
+
+*Nota:* Apagado por defecto: la persona decide cuándo se ofrece.
 
 | Opción (ref) | Nombre | Por defecto |
 |---|---|---|
@@ -852,7 +854,7 @@ Carpetas: `Listado-colores/`.
 
 ### `pos.colores-revision` · Revisión por hablantes nativos
 
-Registro y visor de revisión. Todavía vacío. El PR #595 lo marca @deprecated.
+Registro y visor de revisión por hablantes nativos. Todavía vacío. Está @deprecated desde #595.
 
 Carpetas: `Listado-colores/`.
 

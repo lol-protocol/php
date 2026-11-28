@@ -31,7 +31,7 @@ Si la aplicación es PHP, puede cargar `src/Interruptores.php` y llamar `activo(
 
 1. **Referencia desconocida:** si la aplicación pregunta por una ref que no está en el archivo, es un error de la aplicación (el catálogo cambió). No se debe tratar como «encendido» sin avisar: registrarlo y decidir por función.
 2. **Archivo ilegible o viejo:** la elección es por función. Lo que toca dinero o personas (`gen.pasarela`, `gen.pagos`, `gen.privacidad`, búsquedas y estimaciones) debe **cortarse**; lo cosmético (asistentes, estilo de iconos) puede seguir como estaba. `generado` sirve para detectar un archivo que dejó de actualizarse.
-3. **No cachear sin límite:** leer el archivo en cada petición es barato (pesa unos pocos KB); si se cachea, que sea por segundos, o un interruptor apagado seguirá encendido para los usuarios.
+3. **No cachear sin límite:** leer el archivo en cada petición es barato (pesa unos 40 KB con todo el catálogo); si se cachea, que sea por segundos, o un interruptor apagado seguirá encendido para los usuarios.
 4. **Lo apagado se aplica en el servidor**, no solo ocultando un botón: una opción apagada también tiene que rechazar la petición directa.
 5. **Cómo se ve lo apagado:** `ocultar` no deja rastro; `no_disponible` muestra un aviso, no un error genérico.
 6. **Dependencias que importan a la aplicación:** todo lo que busca, deduce, infiere o estima personas depende de `gen.privacidad`; la opción `gen.pagos:tarjeta` depende de `gen.pasarela:stripe`. Si la aplicación ve `gen.privacidad` apagada, no debe ejecutar ninguna de esas funciones aunque su propio interruptor aparezca encendido por un archivo desactualizado.
@@ -39,3 +39,7 @@ Si la aplicación es PHP, puede cargar `src/Interruptores.php` y llamar `activo(
 ## Qué no garantiza
 
 El estado efectivo viene de un archivo: no hay notificación ni empuje. Un cambio llega a la aplicación cuando se regenera el archivo y ella lo vuelve a leer. Con varios servidores, el archivo tiene que estar en un lugar compartido o copiarse a cada uno.
+
+## Escenas y cambios programados
+
+Una escena o un cambio programado no son un canal aparte: terminan cambiando interruptores, y el estado efectivo que ve la aplicación es el de siempre. Lo que sí cambia es **cuándo** se regenera `estado-efectivo.json`: si usas `bin/estado.php --salida=…`, hay que volver a correrlo después de aplicar una escena y de cada `bin/programados.php ejecutar` (o dejarlo en el mismo cron). Una escena de emergencia apaga cientos de interruptores de golpe; una aplicación que lee un archivo viejo seguirá mostrándolos encendidos.

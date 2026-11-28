@@ -8,7 +8,7 @@
     "term_of_protection": "Author's life + 50 years (s. 10(1); anonymous works 50 years from publication, s. 10(2); sound recordings and films s. 11)",
     "author_rights": "Not specified",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Not specified (no orphan-works licence or use regime; s. 10(6)-(7) only define unknown authorship for the term of protection)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "No (optional registration system may be provided by regulations)",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.belipo.bz/wp-content/uploads/2024/01/Cap_252_Copyright_Act-Revised-2020.pdf",
@@ -40,8 +40,8 @@
       },
       "orphan_works": {
         "url": "https://www.belipo.bz/wp-content/uploads/2024/01/Cap_252_Copyright_Act-Revised-2020.pdf",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "registration_required": {
         "url": "https://www.belipo.bz/wp-content/uploads/2024/01/Cap_252_Copyright_Act-Revised-2020.pdf",
@@ -60,6 +60,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Not specified (no orphan-works licence or use regime; s. 10(6)-(7) only define unknown authorship for the term of protection)"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

@@ -4,6 +4,17 @@ Los cambios de `datos/` y de lo que se calcula con ellos, de lo más reciente a 
 
 Versionado semántico: la **mayor** cambia si se rompe el esquema de `datos/signos.json` o lo que devuelven las consultas; la **menor** cuando se agregan datos, campos o funciones; la **parche** cuando se corrige un texto, una fecha o una figura sin cambiar la forma.
 
+## [1.3.6] - 2026-11-27
+
+### Agregado
+- `validar_espiritus()` y `validar_arboles()` rechazan una ficha cuyas cualidades o rasgos se dicen igual en algún idioma (el fallo que arregló 1.3.4: «lealtad, lealtad»). Antes solo lo vigilaban las pruebas; ahora falla `generar.py --comprobar`.
+- Pruebas: los números que cita el README (158 cualidades, 21 árboles del horóscopo, 29 árboles, 389 textos por idioma) salen de los datos, y el horóscopo de los árboles cambia justo en el límite de cada tramo (primer y último día, y el de antes y el de después).
+
+## [1.3.5] - 2026-11-22
+
+### Corregido
+- Cuatro cifras de legiones se alinean con Wikipedia, donde las fuentes difieren entre ediciones: Belial pasa de 50 a 80, Marax (Morax) de 30 a 36, Ose de 3 a 30, y Vassago, que no tenía cifra, queda en 26. El campo `legiones` sigue admitiendo `null` para un demonio sin cifra.
+
 ## [1.3.4] - 2026-11-21
 
 ### Corregido

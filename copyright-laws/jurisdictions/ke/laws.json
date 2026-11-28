@@ -8,22 +8,45 @@
     "term_of_protection": "Author's life + 50 years",
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights recognized",
-    "orphan_works": "Collective administration required",
+    "orphan_works": "No orphan works regime in the Act",
     "digital_protection": "Anti-circumvention & rights-management info infringement (s. 35(3))",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
     "enforcement_body": "Kenya Copyright Board (KECOBO)",
     "treaties_signatory": "Berne/TRIPS",
     "treaties_not_party": "WCT/WPPT",
-    "linked_resources": "https://copyright.go.ke/",
+    "linked_resources": "https://new.kenyalaw.org/akn/ke/act/2001/12/eng@2022-12-31",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
     "data_status": "curated",
     "confidence": "",
     "last_checked": "",
-    "sources": {},
+    "sources": {
+      "term_of_protection": {
+        "url": "https://new.kenyalaw.org/akn/ke/act/2001/12/eng@2022-12-31",
+        "confidence": "high",
+        "checked": "2026-11-25"
+      },
+      "orphan_works": {
+        "url": "https://new.kenyalaw.org/akn/ke/act/2001/12/eng@2022-12-31",
+        "confidence": "medium",
+        "checked": "2026-11-25"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Collective administration required",
+        "to": "No orphan works regime in the Act"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "linked_resources",
+        "from": "https://copyright.go.ke/",
+        "to": "https://new.kenyalaw.org/akn/ke/act/2001/12/eng@2022-12-31"
+      },
       {
         "date": "2026-10-14",
         "field": "digital_protection",

@@ -4,14 +4,99 @@
 
 ### Corregido
 
-- **Turco y húngaro: formas corrientes que se marcaban como insulto** (comprobado con las 400.000 palabras más
-  frecuentes de cada idioma, no solo las 50.000): `katılımı` y `katılımın` («participación»), `kadinsin` y `kadinsiniz`
-  pasan a `everyday` de `config/chat-topics/tur.php`; `sértésekkel`, `sértésként` y `tettükért` (colisionaban con
-  formas de «sertés» y «tetű» al plegar acentos), a las de `config/chat-topics/hun.php`. Aviso: `sertésekkel`
-  (plural de «cerdo», sin acento) también deja de marcarse, porque el plegado no distingue «sértés» de «sertés».
+- **Adjetivos del sueco, el danés y el noruego** (`NordicInflection`, `SwedishInflection`): los acabados en
+  «-e» («moderne») ya no reciben «-ee» ni «-et» (0 % de precisión contra UniMorph) y los acabados en «-t» no
+  reciben una segunda «t» en el neutro. En sueco, los participios y adjetivos en «-ad»/«-d» y en «-en» llevan
+  sus formas reales: «korkad» → «korkat», «korkade»; «naken» → «naket», «nakna», «nakne». Contra UniMorph
+  (400 lemas): adjetivos suecos de 53 % / 27 % a 78 % / 39 % (precisión / cobertura), daneses de 59 % a
+  65 % y noruegos de 51 % a 57 %. Con `bin/false-positives.php`: +8 formas marcadas en sueco, todas de
+  palabras del diccionario (`korkade`, `nakna`, `efterblivna`…); nada en danés ni en noruego. Los
+  sustantivos no cambian (la sincopa «sabel» → «sabler» se probó y bajaba la precisión del danés de 42 % a 40 %).
+- **Islandés y tagalo: tres términos recién añadidos se retiran** tras medir con las listas de frecuencia
+  (`bin/false-positives.php`, FrequencyWords): «heimskur» («tonto», adjetivo corriente, rango 2.049) y
+  «salbahe» («travieso», rango 4.646) marcaban habla corriente, y «hudas» es un nombre bíblico (religioso: no se
+  toca sin revisión nativa). Los demás términos nuevos que aparecen en las listas son insultos reales.
+  `isl` queda en 108 términos y `tgl` en 121.
+
+## [6.0.0] - 2026-11-25
+
+### Añadido
+
+- **Griego, adjetivos con comparativo** (`GreekInflection`): «κακός» → «κακή», «κακό», «κακοί», «κακά»,
+  «κακότερος»… (13 terminaciones y las mismas con «-τερ-»). Cobertura contra UniMorph de 56 % a 75 %
+  (precisión de 81 % a 52 %, sobre el umbral de 50 %); los sustantivos no reciben comparativo
+  (`GreekAdjectivesTest`).
+- **Más términos en los diccionarios `basic` de islandés, suajili y tagalo**, solo en categorías no
+  sensibles (animal, intelectual, moral, burlesco y ordinario): +14 islandés, +11 suajili y +14 tagalo,
+  marcados en el código como borrador sin revisión nativa. No se tocó ningún término étnico,
+  religioso, de discapacidad ni de género, ni ninguna severidad existente.
+- **Temas de biografía** (`config/bio-topics/`, `spa` y `eng`): un modo opcional que marca lo que alguien dice de
+  **sí mismo** («tengo cáncer», «soy evangélica», «soy gay») como dato sensible, para revisar la biografía de un
+  perfil. Se pide con el nuevo parámetro `$topics` de `ChatLineReviewer::create()` y de `TextMarks::of()`
+  (`'bio-topics'`); el valor por defecto es `chat-topics`, así que **el comportamiento de siempre no cambia**
+  (que «tengo cáncer» siga aprobándose en un chat es a propósito). Nunca bloquea: va a revisión.
+- **Mensajes de salida en 13 idiomas más** (`nor`, `dan`, `fin`, `hun`, `ell`, `bul`, `slk`, `ind`, `vie`,
+  `tha`, `tgl`, `isl` y `yue`): 32 de los 33 idiomas, `spa` incluido (falta solo el suajili). Traducciones propias, sin revisión
+  nativa. `yue` está en cantonés escrito y solo atiende la etiqueta `yue`.
+
+- **`Loader` y `Http\TextMarks`, para quien usa la librería sin Composer** (url-routing y sistema-nuevo, que
+  tenían cada uno su copia del cargador de clases, de la lista de categorías descriptivas y del mapeo a
+  etiquetas). `Loader::register($dir)` carga las clases una vez; `TextMarks::of($texto, $configDir, ['spa',
+  'eng'])` devuelve `decision` y las etiquetas sin repetir («acusación de delito», «insulto»…), revisando los
+  textos largos por trozos y creando cada revisor una sola vez por proceso.
+- **Árabe**: 13 plurales más en `ArabicPlurals` (rotos y sanos irregulares de palabras del diccionario).
+
+- **Más idiomas de salida del informe**: `ara`, `heb`, `jpn`, `kor`, `hin`, `tur`, `ukr`, `ces`,
+  `swe` y `ron` se suman a los ocho de antes (18 en total, borradores sin revisión nativa).
+- **Errores del endpoint en el idioma del cliente** (`ModerationEndpoint::handle(…, $locale)`,
+  `Messages::negotiate()`): `public/moderar.php` lee `Accept-Language` y los mensajes de error
+  (`error.message`) salen en ese idioma; el `code` no cambia. Español por defecto.
+- **Flexión del islandés** (`IcelandicInflection`): sustantivos por terminación y con artículo
+  pospuesto (62 % de precisión y 64 % de cobertura contra UniMorph; antes no había reglas).
+- **Rumano mejorado contra UniMorph**: artículo («idiotul», «idiotului»), vocativo («idiotule») y
+  los plurales con artículo; sustantivos de 37 % / 22 % a 46 % / 37 % (precisión / cobertura) y
+  adjetivos de 71 % / 20 % a 80 % / 77 %.
+
+- **Idioma de salida del informe** (`Messages`, `config/messages/`): la explicación de cada
+  término, la recomendación y la descripción de cada categoría de riesgo se pueden pedir en
+  `eng`, `por`, `fra`, `deu`, `ita`, `nld`, `pol` o `rus` con
+  `getDetailedReport($result, $locale)` y `getExplanations($locale)`. Español por defecto (la
+  salida de siempre) y como respaldo de lo que falte. Borradores sin revisión nativa;
+  `MessagesTest` comprueba que cada idioma tiene las mismas claves y marcadores que el español.
+
+- **Frases que no deben dar alerta** (`tests/fixtures/safe-phrases.php`,
+  `SafePhrasesTest`): las frases corrientes que antes se marcaban por error
+  («la mer de Chine», «matou a saudade», «el forro del abrigo», «antecedentes de la
+  familia»…) y una lista de control que sigue marcándose. Al arreglar un falso
+  positivo, la frase se agrega ahí.
+- **`public/moderar.php` limita las peticiones por IP** (`Http\RateLimiter`):
+  30 por minuto por omisión (`MODERAR_POR_MINUTO`, `0` lo apaga); al pasarse,
+  429 con `Retry-After`. La IP se guarda como HMAC con una clave del servidor.
+  Antes el README sólo recomendaba hacerlo en nginx. `RateLimiterTest`.
+- **README al día**: datos sensibles, datos personales (`privado`) y
+  acusaciones en seis idiomas, que ya estaban en el código pero no en el README.
+- **Textos largos en el endpoint**: `text` acepta hasta 10.000 caracteres (antes
+  2.000) y el cuerpo, hasta 64 KB. Lo que pasa de 2.000 se revisa por partes
+  (`LongText`): por párrafos y, si uno es muy largo, por oraciones. Manda la
+  parte más grave. Un texto corto se sigue revisando entero («pu⏎ta» se sigue
+  viendo). `LongTextTest`.
+- **Acusaciones y datos sensibles en portugués, francés, italiano y alemán**:
+  delito («roubou dinheiro», «a été condamné», «è un ladro», «hat Geld
+  gestohlen»), salud, vida privada y orientación sexual van a revisión, como en
+  español e inglés. Son los patrones básicos, sin revisión nativa; «pão e café»,
+  «l'oiseau a volé haut» o «er hat Recht» se siguen aprobando.
+  `AccusationPatternsEuropeanTest`.
+- **Religión, origen étnico y opinión política de alguien** (español e inglés):
+  «la familia era judía», «Fulano es mapuche», «su abuelo era de origen árabe»,
+  «Fulano es comunista», «he's a republican» van a revisión. Son datos sensibles
+  aunque sean ciertos; en genealogía son frecuentes, por eso no se bloquean.
+  «el vino es negro», «la iglesia evangélica de Concepción» o «el partido
+  comunista» se siguen aprobando. `SensitiveDataPatternsTest`.
 
 ### Cambiado
 
+- **Versión mayor por el cambio de contrato**: los códigos de idioma de dos letras (`es`, `zh`…) dejan
+  de aceptarse en la API y en el campo `language` del endpoint; ver más abajo.
 - **`EvasionCleaner::clean()` salta el camino largo en el texto hecho solo de letras latinas que no cambia**
   (`PlainLatin`: 631 letras de Latin-1, Latin Extendida-A y -B y Latin Extendida Adicional, comprobadas una a una). Antes, cualquier letra
   no ASCII —`ı`, `ğ`, `ő`, `é`— corría varias expresiones regulares y NFKC. La primera revisión baja ~22 % en turco
@@ -50,35 +135,9 @@
   Cobertura de 22 % a 26 %; los adjetivos sin reglas, de 18 % a 6 %.
 - Las pruebas que usaban el alemán como ejemplo de «idioma sin reglas» usan ahora el japonés.
 
-
-### Cambiado
-
 - **Cantonés, no chino**: `yue` ya no declara el código `zh` (ISO 639-1 no tiene cantonés), así que
   `Accept-Language: zh…` ya no recibe mensajes en cantonés: cae al español; solo la etiqueta `yue` los sirve.
   Los mensajes de `yue` se ajustaron para que sean cantonés escrito y no chino estándar.
-
-### Añadido
-
-- **Temas de biografía** (`config/bio-topics/`, `spa` y `eng`): un modo opcional que marca lo que alguien dice de
-  **sí mismo** («tengo cáncer», «soy evangélica», «soy gay») como dato sensible, para revisar la biografía de un
-  perfil. Se pide con el nuevo parámetro `$topics` de `ChatLineReviewer::create()` y de `TextMarks::of()`
-  (`'bio-topics'`); el valor por defecto es `chat-topics`, así que **el comportamiento de siempre no cambia**
-  (que «tengo cáncer» siga aprobándose en un chat es a propósito). Nunca bloquea: va a revisión.
-- **Mensajes de salida en 13 idiomas más** (`nor`, `dan`, `fin`, `hun`, `ell`, `bul`, `slk`, `ind`, `vie`,
-  `tha`, `tgl`, `isl` y `yue`): 31 de los 33 idiomas (falta solo el suajili). Traducciones propias, sin revisión
-  nativa. `yue` está en chino tradicional y atiende las etiquetas `zh` de `Accept-Language`.
-
-### Corregido
-
-- **README**: las amenazas con forma (`patterns`) están en 21 idiomas, no 18.
-- **`FileSizeLimitTest` tomaba `#[Atributo]` por un comentario** y contaba de menos las líneas de código de los
-  archivos con atributos de PHP.
-- **Un archivo de mensajes con marcadores que no casan** (un `%s` de más o de menos) ya no lanza una excepción:
-  `Messages::get()` usa la plantilla española, y si tampoco, la clave.
-- **Tagalo**: la forma con ligamento («tangang») lleva el rasgo `lig`, no `infl` (que sugería un caso).
-- `ModerationEndpoint` ya no reasigna `$language` dentro de un literal de array.
-
-### Cambiado
 
 - **Las traducciones de los mensajes** (`config/messages/*.php`) ya no se anuncian como pendientes de revisión
   nativa: el proyecto decidió no hacerla. Siguen siendo traducciones propias, y así lo dice cada archivo y el README.
@@ -104,34 +163,26 @@
 - **`FileSizeLimitTest` cuenta líneas de código** (sin vacías ni comentarios), con el mismo límite de 100.
 - `RomanianInflection` genera sus clases palatalizables de una tabla (mismas formas que antes).
 
-### Añadido
-
-- **`Loader` y `Http\TextMarks`, para quien usa la librería sin Composer** (url-routing y sistema-nuevo, que
-  tenían cada uno su copia del cargador de clases, de la lista de categorías descriptivas y del mapeo a
-  etiquetas). `Loader::register($dir)` carga las clases una vez; `TextMarks::of($texto, $configDir, ['spa',
-  'eng'])` devuelve `decision` y las etiquetas sin repetir («acusación de delito», «insulto»…), revisando los
-  textos largos por trozos y creando cada revisor una sola vez por proceso.
-- **Árabe**: 13 plurales más en `ArabicPlurals` (rotos y sanos irregulares de palabras del diccionario).
-
-- **Más idiomas de salida del informe**: `ara`, `heb`, `jpn`, `kor`, `hin`, `tur`, `ukr`, `ces`,
-  `swe` y `ron` se suman a los ocho de antes (18 en total, borradores sin revisión nativa).
-- **Errores del endpoint en el idioma del cliente** (`ModerationEndpoint::handle(…, $locale)`,
-  `Messages::negotiate()`): `public/moderar.php` lee `Accept-Language` y los mensajes de error
-  (`error.message`) salen en ese idioma; el `code` no cambia. Español por defecto.
-- **Flexión del islandés** (`IcelandicInflection`): sustantivos por terminación y con artículo
-  pospuesto (62 % de precisión y 64 % de cobertura contra UniMorph; antes no había reglas).
-- **Rumano mejorado contra UniMorph**: artículo («idiotul», «idiotului»), vocativo («idiotule») y
-  los plurales con artículo; sustantivos de 37 % / 22 % a 46 % / 37 % (precisión / cobertura) y
-  adjetivos de 71 % / 20 % a 80 % / 77 %.
-
-- **Idioma de salida del informe** (`Messages`, `config/messages/`): la explicación de cada
-  término, la recomendación y la descripción de cada categoría de riesgo se pueden pedir en
-  `eng`, `por`, `fra`, `deu`, `ita`, `nld`, `pol` o `rus` con
-  `getDetailedReport($result, $locale)` y `getExplanations($locale)`. Español por defecto (la
-  salida de siempre) y como respaldo de lo que falte. Borradores sin revisión nativa;
-  `MessagesTest` comprueba que cada idioma tiene las mismas claves y marcadores que el español.
+- **Tope de letras sueltas por línea** (`SpacedRunTerms`): más de 120 letras
+  deletreadas en una línea van a revisión como «texto deletreado», sin buscar
+  insultos dentro. Buscar adentro costaba hasta 1 s por cada 2.000 caracteres;
+  ahora un texto adversario de 10.000 caracteres se revisa en unos 100 ms.
 
 ### Corregido
+
+- **Turco y húngaro: formas corrientes que se marcaban como insulto** (comprobado con las 400.000 palabras más
+  frecuentes de cada idioma, no solo las 50.000): `katılımı` y `katılımın` («participación»), `kadinsin` y `kadinsiniz`
+  pasan a `everyday` de `config/chat-topics/tur.php`; `sértésekkel`, `sértésként` y `tettükért` (colisionaban con
+  formas de «sertés» y «tetű» al plegar acentos), a las de `config/chat-topics/hun.php`. Aviso: `sertésekkel`
+  (plural de «cerdo», sin acento) también deja de marcarse, porque el plegado no distingue «sértés» de «sertés».
+
+- **README**: las amenazas con forma (`patterns`) están en 21 idiomas, no 18.
+- **`FileSizeLimitTest` tomaba `#[Atributo]` por un comentario** y contaba de menos las líneas de código de los
+  archivos con atributos de PHP.
+- **Un archivo de mensajes con marcadores que no casan** (un `%s` de más o de menos) ya no lanza una excepción:
+  `Messages::get()` usa la plantilla española, y si tampoco, la clave.
+- **Tagalo**: la forma con ligamento («tangang») lleva el rasgo `lig`, no `infl` (que sugería un caso).
+- `ModerationEndpoint` ya no reasigna `$language` dentro de un literal de array.
 
 - **Rellenos invisibles entre letras** (`EvasionCleaner`): el Hangul filler
   (U+3164, U+115F, U+1160, U+FFA0) y el braille en blanco (U+2800) dentro de una
@@ -148,46 +199,6 @@
   entre medias («🅪»…) ya no se convierten en puntuación ASCII.
 - **README**: conteos de términos por nivel de cobertura al día (292–679, 149–329 y
   94–109; 8.206 en total) y el comentario del ejemplo 10.
-
-### Añadido
-
-- **Frases que no deben dar alerta** (`tests/fixtures/safe-phrases.php`,
-  `SafePhrasesTest`): las frases corrientes que antes se marcaban por error
-  («la mer de Chine», «matou a saudade», «el forro del abrigo», «antecedentes de la
-  familia»…) y una lista de control que sigue marcándose. Al arreglar un falso
-  positivo, la frase se agrega ahí.
-- **`public/moderar.php` limita las peticiones por IP** (`Http\RateLimiter`):
-  30 por minuto por omisión (`MODERAR_POR_MINUTO`, `0` lo apaga); al pasarse,
-  429 con `Retry-After`. La IP se guarda como HMAC con una clave del servidor.
-  Antes el README sólo recomendaba hacerlo en nginx. `RateLimiterTest`.
-- **README al día**: datos sensibles, datos personales (`privado`) y
-  acusaciones en seis idiomas, que ya estaban en el código pero no en el README.
-- **Textos largos en el endpoint**: `text` acepta hasta 10.000 caracteres (antes
-  2.000) y el cuerpo, hasta 64 KB. Lo que pasa de 2.000 se revisa por partes
-  (`LongText`): por párrafos y, si uno es muy largo, por oraciones. Manda la
-  parte más grave. Un texto corto se sigue revisando entero («pu⏎ta» se sigue
-  viendo). `LongTextTest`.
-- **Acusaciones y datos sensibles en portugués, francés, italiano y alemán**:
-  delito («roubou dinheiro», «a été condamné», «è un ladro», «hat Geld
-  gestohlen»), salud, vida privada y orientación sexual van a revisión, como en
-  español e inglés. Son los patrones básicos, sin revisión nativa; «pão e café»,
-  «l'oiseau a volé haut» o «er hat Recht» se siguen aprobando.
-  `AccusationPatternsEuropeanTest`.
-- **Religión, origen étnico y opinión política de alguien** (español e inglés):
-  «la familia era judía», «Fulano es mapuche», «su abuelo era de origen árabe»,
-  «Fulano es comunista», «he's a republican» van a revisión. Son datos sensibles
-  aunque sean ciertos; en genealogía son frecuentes, por eso no se bloquean.
-  «el vino es negro», «la iglesia evangélica de Concepción» o «el partido
-  comunista» se siguen aprobando. `SensitiveDataPatternsTest`.
-
-### Cambiado
-
-- **Tope de letras sueltas por línea** (`SpacedRunTerms`): más de 120 letras
-  deletreadas en una línea van a revisión como «texto deletreado», sin buscar
-  insultos dentro. Buscar adentro costaba hasta 1 s por cada 2.000 caracteres;
-  ahora un texto adversario de 10.000 caracteres se revisa en unos 100 ms.
-
-### Arreglado
 
 - **README y CONTRIBUTING al día**: los dos ejemplos de la fusión fonética (`Elba Gina`) mostraban
   `riskType: 'ordinario'` y «tipo ordinario» cuando desde 4.3.2 devuelven `fonetico`; «~7.800 términos» pasa a

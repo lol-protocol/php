@@ -8,9 +8,9 @@
     "term_of_protection": "Author's life + 50 years after death (art. 72); anonymous or pseudonymous works 50 years from disclosure (art. 73.1); photographs and applied art 25 years from creation (art. 75)",
     "author_rights": "Not specified",
     "moral_rights": "Moral rights (facultades de carácter moral) of authors (art. 17: attribution, disclosure, integrity, modification, withdrawal from circulation) and of performers (art. 18)",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Anonymous or pseudonymous works (art. 12): economic rights belong to the person who discloses the work until the author reveals identity; term 50 years from disclosure (art. 73)",
     "digital_protection": "Art. 71: a technological measure or contractual agreement that circumvents the limits on economic rights is unlawful; no protection of technological measures for rightholders was found",
-    "fair_use_exceptions": "Non-profit libraries and archives may copy works from permanent collections to preserve or replace them; other exceptions not seen (unconfirmed)",
+    "fair_use_exceptions": "Free uses without authorization or fee, with credit to the creator (art. 86.1-2): accessible formats, libraries, archives, museums and schools as needed, quotation, teaching illustration",
     "registration_required": "Not specified",
     "enforcement_body": "National Copyright Centre (CENDA; created by Decree 20 of 21 Feb 1978)",
     "treaties_signatory": "Berne/TRIPS",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-11-16",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/edocs/lexdocs/laws/es/cu/cu097es_1.pdf",
@@ -44,14 +44,14 @@
         "checked": "2026-11-16"
       },
       "orphan_works": {
-        "url": "https://files.sld.cu/bmn/files/2018/05/La-Propiedad-Intelectual.pdf",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21621",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "fair_use_exceptions": {
-        "url": "https://files.sld.cu/bmn/files/2018/05/La-Propiedad-Intelectual.pdf",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21621",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "enforcement_body": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/10650",
@@ -70,6 +70,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "fair_use_exceptions",
+        "from": "Non-profit libraries and archives may copy works from permanent collections to preserve or replace them; other exceptions not seen (unconfirmed)",
+        "to": "Free uses without authorization or fee, with credit to the creator (art. 86.1-2): accessible formats, libraries, archives, museums and schools as needed, quotation, teaching illustration"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Anonymous or pseudonymous works (art. 12): economic rights belong to the person who discloses the work until the author reveals identity; term 50 years from disclosure (art. 73)"
+      },
       {
         "date": "2026-11-16",
         "field": "notes",

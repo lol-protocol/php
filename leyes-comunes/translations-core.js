@@ -48,12 +48,24 @@ export function createTranslations({ dataset }) {
     return [...translatableValues(records)].filter((v) => !have.has(v)).sort();
   }
 
+  /** Rows whose English source no longer matches any value: they are not published, so they only add noise. */
+  function pruned(records, rows) {
+    const live = translatableValues(records);
+    return rows.filter((r) => live.has(r.source));
+  }
+
   function main(argv = process.argv.slice(2)) {
     const arg = (name) => argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
     const { records } = loadMaster();
     const side = loadSide(MASTER_CSV, TRANSLATIONS_FILE, TRANSLATION_COLUMNS);
     const wanted = arg("missing");
     const importLang = arg("import");
+    if (argv.includes("--prune")) {
+      const rows = pruned(records, side.rows);
+      writeCsv(side.path, TRANSLATION_COLUMNS, rows);
+      console.log(`✔ ${side.rows.length - rows.length} translation(s) of edited values removed (${rows.length} kept)`);
+      return 0;
+    }
     for (const lang of [wanted, importLang].filter(Boolean)) {
       if (!TRANSLATION_LANGS.includes(lang)) throw new Error(`language must be one of ${TRANSLATION_LANGS.join(", ")}`);
     }
@@ -77,5 +89,5 @@ export function createTranslations({ dataset }) {
     return 0;
   }
 
-  return { coverage, missing, main };
+  return { coverage, missing, pruned, main };
 }

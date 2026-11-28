@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "escenas": [
+    {
+      "id": "mantenimiento",
+      "nombre": "Mantenimiento",
+      "descripcion": "Corta lo que cobra, exporta o consulta fuentes externas, para tocar la infraestructura sin que entre nada nuevo. Propuesta: edita escenas.json.",
+      "confirmar": false,
+      "apagar": [
+        "gen.pagos", "gen.pasarela", "pos.pasarela", "gen.exportar", "gen.acc-archivos",
+        "gen.fuentes-externas", "gen.directorios", "gen.busqueda", "gen.prensa", "gen.congresos",
+        "gen.deduccion", "gen.inferencia", "gen.estimacion", "gen.busqueda-fuentes", "gen.busqueda-paises"
+      ]
+    },
+    {
+      "id": "emergencia",
+      "nombre": "Apagado de emergencia",
+      "descripcion": "Apaga todo salvo la protección de personas vivas, el filtro de contenido y los pedidos de retiro. Deshacer la restaura. Propuesta: edita escenas.json.",
+      "confirmar": true,
+      "apagar_tipos": ["producto", "interno", "datos", "visual", "contenido"],
+      "mantener": ["gen.privacidad", "gen.filtro", "gen.retiros"]
+    },
+    {
+      "id": "silencio",
+      "nombre": "Silencio comercial",
+      "descripcion": "Apaga los asistentes (perritos y gatitos) y los textos de marketing. Propuesta: edita escenas.json.",
+      "confirmar": false,
+      "apagar": ["gen.mascotas", "gen.marketing"]
+    },
+    {
+      "id": "campana",
+      "nombre": "Campaña",
+      "descripcion": "Enciende los asistentes y los textos de marketing, con todas sus opciones. Propuesta: edita escenas.json.",
+      "confirmar": false,
+      "encender": [
+        "gen.mascotas", "gen.mascotas:perritos", "gen.mascotas:gatitos",
+        "gen.marketing", "gen.marketing:lemas", "gen.marketing:esloganes", "gen.marketing:redes", "gen.marketing:correo"
+      ]
+    }
+  ]
+}

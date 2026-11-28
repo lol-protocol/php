@@ -31,13 +31,13 @@ debilidad_congenita,Debilidad congénita o prematuridad,Congenital debility or p
 denticion,"Dentición («teething», tal como la anotaban)",Teething (as the records listed it),K00.7,mal_definida
 ahogamiento,Ahogamiento,Drowning,W74;T75.1,externa
 muerte_violenta,"Muerte violenta, herida u homicidio","Violent death, wound or homicide",X99;Y09;T14,externa
-suicidio,Suicidio,Suicide,X70;X84,externa
+suicidio,Suicidio,Suicide,X60;X61;X62;X63;X64;X65;X66;X67;X68;X69;X70;X71;X72;X73;X74;X75;X76;X77;X78;X79;X80;X81;X82;X83;X84,externa
 accidente,"Accidente (caída, quemadura, atropello…)","Accident (fall, burn, being run over…)",X59;W19,externa
 guerra,Muerte en guerra,Death in war (killed in action),Y36,externa
 inanicion,Hambre o inanición,Starvation,E43;E46;T73.0,desnutricion
 fiebre_tifoidea,Fiebre tifoidea,Typhoid fever,A01,infecciosa
 lepra,Lepra,Leprosy,A30,infecciosa
-sifilis,Sífilis,Syphilis,A50;A53,infecciosa
+sifilis,Sífilis,Syphilis,A50;A51;A52;A53,infecciosa
 epilepsia,Epilepsia,Epilepsy,G40,neurologica
 locura,"Demencia, locura o enfermedad mental","Insanity, dementia or mental illness",F03;F29;F99,mental
 ictericia,Ictericia (un síntoma),Jaundice (a symptom),R17,mal_definida

@@ -13,7 +13,7 @@
     "data_categories": "Personal information; sensitive personal information",
     "retention_period": "Storage limitation principle (section not confirmed) (unconfirmed)",
     "enforcement_authority": "Data Protection Commission (not yet appointed)",
-    "penalties_range": "Commission cannot impose fines; enforcement through the courts (unconfirmed)",
+    "penalties_range": "Commission cannot impose fines; sanctions via the courts: up to LSL 50,000 and imprisonment of up to 5 years for controllers",
     "exemptions": "Personal/household activity, de-identified data, national security and public safety, journalistic/artistic/literary purposes (s. 4)",
     "deceased_data": "",
     "research_exemption": "No research exemption among the general exemptions in s. 4 (unconfirmed)",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://lesotholii.org/akn/ls/act/2012/5/eng@2012-02-22",
@@ -80,9 +80,9 @@
         "checked": "2026-10-16"
       },
       "penalties_range": {
-        "url": "https://dataprotection.africa/lesotho/",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.dataguidance.com/jurisdiction/lesotho",
+        "confidence": "medium",
+        "checked": "2026-11-26"
       },
       "exemptions": {
         "url": "https://lesotholii.org/akn/ls/act/2012/5",
@@ -101,6 +101,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "penalties_range",
+        "from": "Commission cannot impose fines; enforcement through the courts (unconfirmed)",
+        "to": "Commission cannot impose fines; sanctions via the courts: up to LSL 50,000 and imprisonment of up to 5 years for controllers"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

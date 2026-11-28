@@ -4,7 +4,7 @@ namespace DefamatoryContentReview\Chat\Inflection;
 
 /**
  * Declinación regular del griego: sustantivos en -ας, -ης, -ος, -α, -η, -ο, -ι, -μα y adjetivos
- * en -ος (con -η/-α y -ο). La tilde no importa: el diccionario la pliega. Ver SuffixInflection.
+ * en -ος (con -η/-α y -ο, y su comparativo en -ότερος). La tilde no importa: el diccionario la pliega. Ver SuffixInflection.
  */
 final class GreekInflection extends SuffixInflection
 {
@@ -24,8 +24,11 @@ final class GreekInflection extends SuffixInflection
 
     protected function adjectives(): array
     {
+        $endings = ['ος', 'η', 'α', 'ο', 'ου', 'ης', 'ας', 'οι', 'ες', 'ων', 'ους', 'ον', 'ε'];
+
         return [
-            '/^(.+)[οό]ς$/u' => ['ος', 'η', 'α', 'ο', 'ου', 'ης', 'ας', 'οι', 'ες', 'ων', 'ους', 'ον', 'ε'],
+            // el positivo y el comparativo declinado: «κακός» → «κακή», «κακότερος», «κακότερη»
+            '/^(.+)[οό]ς$/u' => [...$endings, ...array_map(static fn(string $ending): string => 'οτερ' . $ending, $endings)],
         ];
     }
 }

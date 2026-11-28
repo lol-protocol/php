@@ -39,6 +39,7 @@ final class Interruptores
     private array $plataformas = [];
 
     /** Instantánea del estado mientras está congelado (ver congelar()); null si no hay o aún no se leyó. */
+    /** @var array<string, bool>|null */
     private ?array $instantanea = null;
     private bool $congelado = false;
 
@@ -193,6 +194,93 @@ final class Interruptores
     }
 
     /**
+     * Aplica varios cambios a la vez (una escena, el apagado de emergencia, un cambio programado). Se valida el estado
+     * final completo, no cada paso: apagar una cadena de dependencias de uno en uno pasaría por estados inválidos.
+     * Si el estado final rompería algo (una función encendida sin lo que necesita, o sin su mínimo de opciones),
+     * no se guarda nada.
+     *
+     * @param array<string, bool> $cambios ref => valor nuevo
+     * @return array<string, bool> ref => valor anterior, solo de lo que de verdad cambió (vacío si no cambió nada)
+     * @throws UnknownInterruptor si alguna ref no existe.
+     * @throws DependenciaRota si el estado final no es válido.
+     */
+    public function aplicar(array $cambios, string $quien = 'sistema', string $motivo = ''): array
+    {
+        foreach (array_keys($cambios) as $ref) {
+            $this->partir((string) $ref);
+        }
+        $bloqueo = $this->bloquear();
+        try {
+            $this->descongelar();
+            $actual = $this->leerEstadoDelArchivo();
+            $nuevo = $actual;
+            $antes = [];
+            foreach ($cambios as $ref => $valor) {
+                $ref = (string) $ref;
+                $previo = $actual[$ref] ?? $this->valorPorDefecto($ref);
+                if ($previo !== (bool) $valor) {
+                    $antes[$ref] = $previo;
+                    $nuevo[$ref] = (bool) $valor;
+                }
+            }
+            if ($antes === []) {
+                return [];
+            }
+            // El estado final se valida como si ya estuviera guardado.
+            $this->congelado = true;
+            $this->instantanea = $nuevo;
+            $errores = $this->erroresDelEstado();
+            if ($errores !== []) {
+                throw new DependenciaRota(implode(' ', $errores));
+            }
+            $this->escribirEstado($nuevo);
+            foreach ($antes as $ref => $previo) {
+                $this->anotar($ref, $previo, $nuevo[$ref], $quien, $motivo);
+            }
+            return $antes;
+        } finally {
+            $this->descongelar();
+            $this->desbloquear($bloqueo);
+        }
+    }
+
+    /**
+     * Lo que está roto en el estado actual (el leído o el de la instantánea): una función encendida sin una dependencia
+     * encendida, o sin su mínimo de opciones, y lo mismo para sus opciones encendidas.
+     *
+     * @return list<string>
+     */
+    private function erroresDelEstado(): array
+    {
+        $errores = [];
+        foreach ($this->funciones as $id => $f) {
+            if (!$this->propio($id)) {
+                continue;
+            }
+            foreach ($f['depende_de'] as $dep) {
+                if (!$this->activo($dep)) {
+                    $errores[] = "«{$id}» necesita encendida: {$dep}.";
+                }
+            }
+            if ($f['min_opciones'] > 0 && $this->minimoSinCubrir($id, null)) {
+                $errores[] = "«{$id}» necesita al menos {$f['min_opciones']} opción(es) encendida(s).";
+            }
+            foreach ($f['opciones'] as $o) {
+                $ref = "{$id}:{$o['id']}";
+                if (!$this->propio($ref)) {
+                    continue;
+                }
+                foreach ($o['depende_de'] as $dep) {
+                    if (!$this->activo($dep)) {
+                        $errores[] = "«{$ref}» necesita encendida: {$dep}.";
+                    }
+                }
+            }
+        }
+        return $errores;
+    }
+
+    /**
      * Cambios recientes, el más nuevo primero.
      *
      * @return list<array{ts: string, quien: string, ref: string, antes: bool, despues: bool}>
@@ -279,16 +367,20 @@ final class Interruptores
     }
 
     /** Añade un cambio al registro (el estado ya está bloqueado por cambiar()). */
-    private function anotar(string $ref, bool $antes, bool $despues, string $quien): void
+    private function anotar(string $ref, bool $antes, bool $despues, string $quien, string $motivo = ''): void
     {
         $quien = substr((string) preg_replace('/[[:cntrl:]]/', '', $quien), 0, 64);
-        $this->registroCambios()->anotar([
+        $evento = [
             'ts' => gmdate('Y-m-d\TH:i:s\Z'),
             'quien' => $quien,
             'ref' => $ref,
             'antes' => $antes,
             'despues' => $despues,
-        ]);
+        ];
+        if ($motivo !== '') {
+            $evento['motivo'] = substr((string) preg_replace('/[[:cntrl:]]/', '', $motivo), 0, 80);
+        }
+        $this->registroCambios()->anotar($evento);
     }
 
     private function registroCambios(): RegistroJsonl

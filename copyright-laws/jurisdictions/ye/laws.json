@@ -8,7 +8,7 @@
     "term_of_protection": "Author's life + 50 years (Art. 31)",
     "author_rights": "Economic rights",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Art. 48: Minister may grant a non-exclusive licence to copy or translate for public, educational or research needs if the owner refused or cannot be found after reasonable effort; fair pay to owner",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-26",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/19994",
@@ -45,11 +45,17 @@
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/19994",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "high",
+        "checked": "2026-11-26"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Art. 48: Minister may grant a non-exclusive licence to copy or translate for public, educational or research needs if the owner refused or cannot be found after reasonable effort; fair pay to owner"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

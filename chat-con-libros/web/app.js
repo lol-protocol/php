@@ -6,6 +6,7 @@ const API = 'api.php';
 
 const selLibro = document.getElementById('libro');
 const casillaIa = document.getElementById('usar-ia');
+const casillaOriginal = document.getElementById('estilo-original');
 const notaIa = document.getElementById('nota-ia');
 const conversacion = document.getElementById('conversacion');
 const errorCaja = document.getElementById('error');
@@ -119,6 +120,7 @@ formulario.addEventListener('submit', async (ev) => {
         libro: selLibro.value,
         pregunta,
         modo: casillaIa.checked ? 'ia' : 'sin-ia',
+        estilo: casillaOriginal.checked ? 'original' : 'moderno',
         historial,
       }),
     });

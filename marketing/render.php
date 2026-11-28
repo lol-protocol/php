@@ -13,6 +13,9 @@ declare(strict_types=1);
  *   php marketing/render.php --out=RUTA       genera en otra carpeta
  *   php marketing/render.php --check          valida config.json y no escribe nada
  *   php marketing/render.php --config=RUTA    usa otro archivo de configuración
+ *   php marketing/render.php --interruptores=../interruptores
+ *                                             quita de las copias las secciones que el interruptor gen.marketing
+ *                                             tiene apagadas (lemas, eslóganes, redes y correo)
  *
  * Códigos de salida: 0 correcto, 1 configuración inválida o incompleta,
  * 2 uso incorrecto.
@@ -24,6 +27,15 @@ const MARCADOR = '[Marca]';
 const MARCADOR_DESTINATARIO = '[Nombre]';
 const LARGO_MAXIMO = 80;
 const CLAVES_PERMITIDAS = ['marca', 'marca_por_idioma'];
+
+/**
+ * Las secciones («## ») de los textos que pueden apagarse con los interruptores, por su posición entre las 10 secciones
+ * de contenido, que es la misma en todos los idiomas aunque los títulos cambien: lemas principales, eslóganes para el
+ * logo, manifiesto, emoción, legado, confianza, privacidad, llamadas a la acción, redes sociales y correo.
+ * El español tiene además una nota «Antes de usar» al principio, que no cuenta.
+ */
+const SECCIONES_APAGABLES = ['lemas' => 0, 'esloganes' => 1, 'redes' => 8, 'correo' => 9];
+const SECCIONES_DE_CONTENIDO = 10;
 
 final class ErrorDeConfiguracion extends RuntimeException
 {
@@ -37,15 +49,17 @@ function uso(): string
       --check         Valida config.json y cuenta los marcadores; no escribe nada.
       --out=RUTA      Carpeta de salida (por defecto marketing/dist).
       --config=RUTA   Archivo de configuración (por defecto marketing/config.json).
+      --interruptores=RUTA
+                      Carpeta interruptores/: quita de las copias las secciones apagadas.
       -h, --help      Muestra esta ayuda.
 
     TXT;
 }
 
-/** @return array{out: string, config: string, check: bool} */
+/** @return array{out: string, config: string, check: bool, interruptores: ?string} */
 function leerOpciones(array $argv): array
 {
-    $opciones = ['out' => __DIR__ . '/dist', 'config' => __DIR__ . '/config.json', 'check' => false];
+    $opciones = ['out' => __DIR__ . '/dist', 'config' => __DIR__ . '/config.json', 'check' => false, 'interruptores' => null];
     $total = count($argv);
     for ($i = 1; $i < $total; $i++) {
         $arg = $argv[$i];
@@ -57,7 +71,7 @@ function leerOpciones(array $argv): array
             fwrite(STDOUT, uso());
             exit(0);
         }
-        foreach (['out', 'config'] as $nombre) {
+        foreach (['out', 'config', 'interruptores'] as $nombre) {
             $valor = null;
             if ($arg === "--$nombre") {
                 $valor = $argv[++$i] ?? null;
@@ -95,6 +109,67 @@ function archivosOrigen(string $base): array
         }
     }
     return $archivos;
+}
+
+/**
+ * Qué se ve según los interruptores: si la función está apagada, nada; si no, las opciones apagadas.
+ *
+ * @return array{encendida: bool, apagadas: list<string>} apagadas: ids de SECCIONES_APAGABLES
+ * @throws ErrorDeConfiguracion si no se pueden leer los interruptores
+ */
+function leerInterruptores(string $carpeta): array
+{
+    $carpeta = rtrim($carpeta, '/');
+    try {
+        if (!class_exists(\LolProtocol\Interruptores\Interruptores::class, false)) {
+            if (!is_file("$carpeta/src/Interruptores.php")) {
+                throw new RuntimeException('falta src/Interruptores.php');
+            }
+            require_once "$carpeta/src/Interruptores.php";
+        }
+        $cat = new \LolProtocol\Interruptores\Interruptores("$carpeta/catalogo.json", "$carpeta/var/estado.json");
+        $apagadas = [];
+        foreach (array_keys(SECCIONES_APAGABLES) as $id) {
+            if (!$cat->activo("gen.marketing:$id")) {
+                $apagadas[] = $id;
+            }
+        }
+        return ['encendida' => $cat->activo('gen.marketing'), 'apagadas' => $apagadas];
+    } catch (Throwable $e) {
+        throw new ErrorDeConfiguracion("No se pudieron leer los interruptores en $carpeta: " . $e->getMessage());
+    }
+}
+
+/**
+ * Quita las secciones «## » de las opciones apagadas. Falla si el archivo no tiene la estructura conocida, en vez de adivinar.
+ *
+ * @param list<string> $apagadas
+ */
+function quitarSecciones(string $texto, array $apagadas, string $archivo): string
+{
+    if ($apagadas === []) {
+        return $texto;
+    }
+    $lineas = explode("\n", $texto);
+    $inicios = [];
+    foreach ($lineas as $n => $linea) {
+        if (str_starts_with($linea, '## ')) {
+            $inicios[] = $n;
+        }
+    }
+    $desfase = count($inicios) - SECCIONES_DE_CONTENIDO;
+    if ($desfase !== 0 && $desfase !== 1) {
+        throw new ErrorDeConfiguracion("$archivo tiene " . count($inicios) . ' secciones «## » y se esperaban ' . SECCIONES_DE_CONTENIDO . ' (u 11 con la nota inicial): no se sabe qué quitar.');
+    }
+    $quitar = [];
+    foreach ($apagadas as $id) {
+        $k = SECCIONES_APAGABLES[$id] + $desfase;
+        $fin = $inicios[$k + 1] ?? count($lineas);
+        for ($n = $inicios[$k]; $n < $fin; $n++) {
+            $quitar[$n] = true;
+        }
+    }
+    return implode("\n", array_values(array_diff_key($lineas, $quitar)));
 }
 
 function validarMarca(mixed $valor, string $campo): string
@@ -169,6 +244,17 @@ function main(array $argv): int
     try {
         [$marca, $porIdioma] = cargarConfig($opciones['config'], array_values(array_unique($archivos)));
 
+        // Los interruptores se leen antes de crear nada: apagados o ilegibles, no queda ni la carpeta de salida.
+        $apagadas = [];
+        if ($opciones['interruptores'] !== null) {
+            $estado = leerInterruptores($opciones['interruptores']);
+            if (!$estado['encendida']) {
+                echo "El interruptor gen.marketing está apagado: no se escribe ningún texto.\n";
+                return 0;
+            }
+            $apagadas = $estado['apagadas'];
+        }
+
         if (!$opciones['check']) {
             $destino = $opciones['out'];
             if (!is_dir($destino) && !mkdir($destino, 0775, true) && !is_dir($destino)) {
@@ -188,6 +274,7 @@ function main(array $argv): int
                 throw new ErrorDeConfiguracion("No se pudo leer $relativa");
             }
             $usada = $porIdioma[$codigo] ?? $marca;
+            $texto = quitarSecciones($texto, $apagadas, $relativa);
             $cantidad = substr_count($texto, MARCADOR);
             $resumen[] = [$relativa, $codigo, $usada, $cantidad];
             if ($opciones['check']) {

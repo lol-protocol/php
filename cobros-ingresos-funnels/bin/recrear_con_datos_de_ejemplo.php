@@ -19,6 +19,7 @@ use App\Config;
 use App\Database;
 use App\Dinero;
 use App\MayoriaDeEdad;
+use App\RangoEdad;
 use App\Migrador;
 
 // Borra todo lo que haya en la base: que no pueda correr por accidente contra
@@ -177,7 +178,7 @@ function enLaMoneda(float $monto, string $moneda, array $decimalesPorMoneda): fl
     return round($monto, min($decimalesPorMoneda[$moneda] ?? 2, 3));
 }
 
-/** @return array{pais_codigo:string, ciudad:string, idioma:string, genero:string, fecha_nacimiento:string, moneda:string} */
+/** @return array{pais_codigo:string, ciudad:string, idioma:string, genero:string, rango_de_edad:string, moneda:string} */
 function perfilAleatorio(array $paisPesos, array $ciudadesPorPais, array $idiomaPorPais, array $monedaPorPais, array $mayoriaPorPais, array $generoPesos, DateTimeImmutable $hoy): array
 {
     $paisCodigo = eleccionPonderada($paisPesos);
@@ -186,7 +187,7 @@ function perfilAleatorio(array $paisPesos, array $ciudadesPorPais, array $idioma
     $edad = mt_rand(max(18, $mayoria), 68);
     $nacimiento = $hoy->modify("-{$edad} years")->modify('-' . mt_rand(0, 364) . ' days');
     // Un 29 de febrero, restarle 18 anios cae en el 1 de marzo de hace 18 anios: esa persona todavia tiene 17, y el
-    // trigger de la migracion 007 no la deja entrar como cliente. Cualquier otro dia esto no hace nada.
+    // ClienteRepository no la deja entrar como cliente. Cualquier otro dia esto no hace nada.
     while (!MayoriaDeEdad::cumplida(fecha($nacimiento), $hoy, $mayoria)) {
         $nacimiento = $nacimiento->modify('-1 day');
     }
@@ -197,20 +198,20 @@ function perfilAleatorio(array $paisPesos, array $ciudadesPorPais, array $idioma
         'ciudad' => $ciudades[array_rand($ciudades)],
         'idioma' => $idiomaPorPais[$paisCodigo],
         'genero' => eleccionPonderada($generoPesos),
-        'fecha_nacimiento' => fecha($nacimiento),
+        'rango_de_edad' => RangoEdad::deFecha(fecha($nacimiento), $hoy),   // la fecha no se guarda (migracion 021)
         'moneda' => $monedaPorPais[$paisCodigo],
     ];
 }
 
 $insCliente = $pdo->prepare(
-    'INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
-     VALUES (:nombre, :email, :segmento, :fecha_alta, :pais_codigo, :ciudad, :idioma, :genero, :fecha_nacimiento)
+    'INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, rango_de_edad)
+     VALUES (:nombre, :email, :segmento, :fecha_alta, :pais_codigo, :ciudad, :idioma, :genero, :rango_de_edad)
      RETURNING id'
 );
 $insUsuario = $pdo->prepare(
-    'INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, fecha_nacimiento,
+    'INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, rango_de_edad,
                                   fecha_visita, fecha_registro, fecha_lead, fecha_conversion, cliente_id)
-     VALUES (:nombre, :email, :canal, :pais_codigo, :ciudad, :idioma, :genero, :fecha_nacimiento,
+     VALUES (:nombre, :email, :canal, :pais_codigo, :ciudad, :idioma, :genero, :rango_de_edad,
              :fecha_visita, :fecha_registro, :fecha_lead, :fecha_conversion, :cliente_id)'
 );
 $insBoleta = $pdo->prepare(
@@ -245,7 +246,7 @@ for ($i = 0; $i < 18; $i++) {
         ':ciudad' => $perfil['ciudad'],
         ':idioma' => $perfil['idioma'],
         ':genero' => $perfil['genero'],
-        ':fecha_nacimiento' => $perfil['fecha_nacimiento'],
+        ':rango_de_edad' => $perfil['rango_de_edad'],
     ]);
     $id = (int) $insCliente->fetchColumn();
     $clientesInfo[] = ['id' => $id, 'fecha_alta' => fecha($altaLegacy), 'moneda' => $perfil['moneda']];
@@ -284,7 +285,7 @@ for ($i = 0; $i < 320; $i++) {
                     ':ciudad' => $perfil['ciudad'],
                     ':idioma' => $perfil['idioma'],
                     ':genero' => $perfil['genero'],
-                    ':fecha_nacimiento' => $perfil['fecha_nacimiento'],
+                    ':rango_de_edad' => $perfil['rango_de_edad'],
                 ]);
                 $clienteId = (int) $insCliente->fetchColumn();
                 $clientesInfo[] = ['id' => $clienteId, 'fecha_alta' => fecha($fConversion), 'moneda' => $perfil['moneda']];
@@ -300,7 +301,7 @@ for ($i = 0; $i < 320; $i++) {
         ':ciudad' => $perfil['ciudad'],
         ':idioma' => $perfil['idioma'],
         ':genero' => $perfil['genero'],
-        ':fecha_nacimiento' => $perfil['fecha_nacimiento'],
+        ':rango_de_edad' => $perfil['rango_de_edad'],
         ':fecha_visita' => fecha($fVisita),
         ':fecha_registro' => $fRegistro ? fecha($fRegistro) : null,
         ':fecha_lead' => $fLead ? fecha($fLead) : null,

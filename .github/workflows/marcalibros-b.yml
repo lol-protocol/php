@@ -70,15 +70,19 @@ jobs:
             marcalibros_b/catalog/jpg
             marcalibros_b/catalog/jpg2x
             marcalibros_b/catalog/revision
-          key: marcalibros-${{ runner.os }}-py3.13-${{ hashFiles('marcalibros_b/generator/build.py', 'marcalibros_b/generator/color.py', 'marcalibros_b/generator/movimientos.py', 'marcalibros_b/generator/plantillas.py', 'marcalibros_b/generator/qa.py', 'marcalibros_b/generator/render_raster.py', 'marcalibros_b/generator/render_svg.py', 'marcalibros_b/generator/scene.py', 'marcalibros_b/generator/texto.py', 'marcalibros_b/generator/fuentes/*.ttf', 'marcalibros_b/catalog/*.yaml') }}
+          key: marcalibros-${{ runner.os }}-py3.13-${{ hashFiles('marcalibros_b/generator/build.py', 'marcalibros_b/generator/color.py', 'marcalibros_b/generator/movimientos.py', 'marcalibros_b/generator/movimientos4.py', 'marcalibros_b/generator/muestreo.py', 'marcalibros_b/generator/plantillas.py', 'marcalibros_b/generator/qa.py', 'marcalibros_b/generator/regiones.py', 'marcalibros_b/generator/render_raster.py', 'marcalibros_b/generator/render_svg.py', 'marcalibros_b/generator/scene.py', 'marcalibros_b/generator/texto.py', 'marcalibros_b/generator/fuentes/*.ttf', 'marcalibros_b/generator/fuentes/*.otf', 'marcalibros_b/catalog/*.yaml') }}
           restore-keys: |
             marcalibros-${{ runner.os }}-py3.13-
 
+      # Un proceso por movimiento, tantos a la vez como nucleos (4 en ubuntu-24.04): el resultado es el
+      # mismo que con `build.py --all` (mismos bytes). El ahorro es modesto y variable (en las ejecuciones
+      # medidas, entre 0 y 6 minutos sobre los 21-25 del build en serie): cada SVG abre su propio Chromium
+      # para el QA y los procesos compiten por la maquina.
       - name: Generar el catalogo completo
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
           FORZAR: ${{ inputs.forzar && '--forzar' || '' }}
-        run: python generator/build.py --all $FORZAR
+        run: python generator/build_paralelo.py $FORZAR
 
       - name: Pruebas
         run: python -m pytest -q tests

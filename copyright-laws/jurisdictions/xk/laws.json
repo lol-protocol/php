@@ -8,11 +8,11 @@
     "term_of_protection": "Author's life + 70 years (counted from 1 January of the year after death; joint works from death of last surviving author; anonymous works publication + 70 years)",
     "author_rights": "Economic rights",
     "moral_rights": "Moral rights protected without time limit (article numbers not found)",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "Yes (permitted use of orphan works is one of the exceptions in Law No. 08/L-205, per AIPPI newsletter; article not given)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "No (the 2011 law removed deposit of copies with the Office; no registration requirement found; unconfirmed)",
-    "enforcement_body": "Copyright Office under the Ministry of Culture, Youth and Sports (Zyra e të Drejtës së Autorit) (unconfirmed)",
+    "enforcement_body": "Office on the Copyright and Related Rights, under the Ministry of Culture, Youth and Sports",
     "treaties_signatory": "",
     "treaties_not_party": "",
     "linked_resources": "https://cps.rks-gov.net/wp-content/uploads/2020/09/LAW_NO._04_L-065_ON_COPYRIGHT_AND_RELATED_RIGHTS.pdf",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Kosovo.html",
@@ -49,9 +49,9 @@
         "checked": "2026-10-22"
       },
       "orphan_works": {
-        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Kosovo.html",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.aippi.org/news/new-law-on-copyright-entered-into-force-in-kosovo/",
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "registration_required": {
         "url": "https://www.petosevic.com/node/1435",
@@ -60,11 +60,23 @@
       },
       "enforcement_body": {
         "url": "https://www.petosevic.com/node/1435",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "enforcement_body",
+        "from": "Copyright Office under the Ministry of Culture, Youth and Sports (Zyra e të Drejtës së Autorit) (unconfirmed)",
+        "to": "Office on the Copyright and Related Rights, under the Ministry of Culture, Youth and Sports"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "Yes (permitted use of orphan works is one of the exceptions in Law No. 08/L-205, per AIPPI newsletter; article not given)"
+      },
       {
         "date": "2026-10-22",
         "field": "row",

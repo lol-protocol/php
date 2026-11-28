@@ -60,7 +60,8 @@ use App\Validacion;
 
         <label for="fecha_nacimiento">Fecha de nacimiento</label>
         <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" required max="<?= $nacimientoMasReciente ?>" value="<?= e($_POST['fecha_nacimiento'] ?? '') ?>">
-        <p class="nota">Solo se admiten clientes mayores de edad (<?= MayoriaDeEdad::POR_DEFECTO ?> años cumplidos).
+        <p class="nota">La fecha solo sirve para comprobar la mayoría de edad y calcular el rango de edad: <strong>no se guarda</strong>, queda únicamente el rango (por ejemplo «25-34»).
+            Solo se admiten clientes mayores de edad (<?= MayoriaDeEdad::POR_DEFECTO ?> años cumplidos).
             <?php if ($mayoriaDeEdadPorPais !== []): ?>
                 Según el país:
                 <?php foreach ($mayoriaDeEdadPorPais as $edad => $nombres): ?>

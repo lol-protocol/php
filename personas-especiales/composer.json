@@ -14,6 +14,9 @@
     "require-dev": {
         "phpunit/phpunit": "^10.0"
     },
+    "suggest": {
+        "ext-pdo_pgsql": "Para RegistroPdo, AuditoriaPdo y Migrador (PostgreSQL). Los registros en memoria no la necesitan."
+    },
     "autoload": {
         "psr-4": {
             "PersonasEspeciales\\": "src/"

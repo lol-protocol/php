@@ -10,9 +10,9 @@
     "moral_rights": "Not specified",
     "orphan_works": "Not specified (unconfirmed)",
     "digital_protection": "Not specified",
-    "fair_use_exceptions": "Educational and research exceptions introduced by 2024 amendment (unconfirmed)",
+    "fair_use_exceptions": "Educational and research exceptions (limited fair use) added by the 2024 amendment (news report; no section given)",
     "registration_required": "No (registration is voluntary)",
-    "enforcement_body": "Ministry of Economic Development and Trade (Maldives Intellectual Property Office under Act No. 13/2025) (unconfirmed)",
+    "enforcement_body": "Maldives Intellectual Property Office (Act No. 13/2025), under the Ministry of Economic Development and Trade; in force 1 January 2026 (law firm blog)",
     "treaties_signatory": "Berne/TRIPS",
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/3140",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.ifacca.org/news/2024/12/10/president-ratifies-first-amendment-copyright-and-r/",
@@ -45,8 +45,8 @@
       },
       "fair_use_exceptions": {
         "url": "https://atolltimes.mv/post/news/10624",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "registration_required": {
         "url": "https://atolltimes.mv/post/news/10624",
@@ -55,8 +55,8 @@
       },
       "enforcement_body": {
         "url": "https://www.lysaght.co.uk/blog-home/maldives-prepares-for-a-new-era-of-trade-mark-protection-in-2026",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "treaties_signatory": {
         "url": "https://www.wipo.int/wipolex/en/treaties/notifications/details/treaty_berne_294",
@@ -65,6 +65,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "enforcement_body",
+        "from": "Ministry of Economic Development and Trade (Maldives Intellectual Property Office under Act No. 13/2025) (unconfirmed)",
+        "to": "Maldives Intellectual Property Office (Act No. 13/2025), under the Ministry of Economic Development and Trade; in force 1 January 2026 (law firm blog)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "fair_use_exceptions",
+        "from": "Educational and research exceptions introduced by 2024 amendment (unconfirmed)",
+        "to": "Educational and research exceptions (limited fair use) added by the 2024 amendment (news report; no section given)"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

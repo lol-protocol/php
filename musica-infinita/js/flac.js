@@ -5,11 +5,12 @@
  * música. FLAC guarda exactamente las mismas muestras que un WAV, en cerca de la mitad
  * del espacio.
  *
- * Usa predictores fijos (órdenes 0 a 4) con residuos en código de Rice y particiones, y
- * decorrelación estéreo (izquierda/lateral, derecha/lateral o medio/lateral, la que
- * ocupe menos), como el modo rápido de la herramienta flac. No usa LPC: comprime un poco
- * menos (en torno a un 5-10 %), pero es simple y rápido. El MD5 de STREAMINFO va
- * calculado, así que `flac -t` y ffmpeg pueden verificar el archivo.
+ * Cada canal de cada bloque se guarda con el más corto de: constante, literal, predictor
+ * fijo (órdenes 0 a 4) o predictor lineal (LPC de orden 4, 8 o 12, con ventana de Tukey,
+ * Levinson-Durbin y coeficientes de 13 bits), con residuos en código de Rice y particiones.
+ * La decorrelación estéreo (izquierda/lateral, derecha/lateral o medio/lateral) se elige
+ * con los predictores fijos. El MD5 de STREAMINFO va calculado, así que `flac -t` y ffmpeg
+ * pueden verificar el archivo.
  */
 (function (raiz) {
   'use strict';
@@ -255,7 +256,136 @@
     return mejor;
   }
 
-  /** Escribe una subtrama de un canal (bps bits por muestra). */
+  // ------------------------------------------------------------ LPC (predicción lineal)
+
+  const ORDENES_LPC = [4, 8, 12];
+  const PRECISION_LPC = 13; // bits de cada coeficiente cuantizado (el formato admite de 5 a 15)
+
+  /** Autocorrelación de x (con ventana de Tukey 0,5) hasta el retardo maxLag. */
+  function autocorrelacion(x, n, maxLag, ventana, out) {
+    const v = ventana;
+    for (let i = 0; i < n; i++) v.datos[i] = x[i] * v.pesos[i];
+    for (let l = 0; l <= maxLag; l++) {
+      let s = 0;
+      for (let i = l; i < n; i++) s += v.datos[i] * v.datos[i - l];
+      out[l] = s;
+    }
+    return out;
+  }
+
+  const VENTANAS = new Map();
+  function ventanaTukey(n) {
+    let v = VENTANAS.get(n);
+    if (v) return v;
+    const pesos = new Float64Array(n);
+    const borde = Math.floor((0.5 * (n - 1)) / 2); // el 25 % de cada extremo sube o baja suave
+    for (let i = 0; i < n; i++) {
+      if (i < borde) pesos[i] = 0.5 - 0.5 * Math.cos((Math.PI * i) / borde);
+      else if (i >= n - borde) pesos[i] = 0.5 - 0.5 * Math.cos((Math.PI * (n - 1 - i)) / borde);
+      else pesos[i] = 1;
+    }
+    v = { pesos: pesos, datos: new Float64Array(n) };
+    VENTANAS.set(n, v);
+    return v;
+  }
+
+  /** Levinson-Durbin: los coeficientes del predictor de cada orden, de 1 a maxOrden. */
+  function levinson(r, maxOrden) {
+    const porOrden = [];
+    let a = new Float64Array(maxOrden + 1);
+    let err = r[0];
+    for (let m = 1; m <= maxOrden; m++) {
+      if (!(err > 0)) break;
+      let acc = r[m];
+      for (let j = 1; j < m; j++) acc -= a[j] * r[m - j];
+      const k = acc / err;
+      const nuevo = new Float64Array(maxOrden + 1);
+      for (let j = 1; j < m; j++) nuevo[j] = a[j] - k * a[m - j];
+      nuevo[m] = k;
+      a = nuevo;
+      err *= 1 - k * k;
+      porOrden[m] = Float64Array.from(a.subarray(1, m + 1));
+    }
+    return porOrden;
+  }
+
+  /** Coeficientes a enteros de `precision` bits con su desplazamiento, arrastrando el error de redondeo. */
+  function cuantizar(coefs, precision) {
+    let cmax = 0;
+    for (const c of coefs) cmax = Math.max(cmax, Math.abs(c));
+    if (!(cmax > 0)) return null;
+    const log2 = Math.floor(Math.log2(cmax)) + 1;
+    let shift = precision - log2 - 1;
+    if (shift > 15) shift = 15;
+    if (shift < 0) return null; // coeficientes enormes: que lo cubra el predictor fijo
+    const tope = (1 << (precision - 1)) - 1;
+    const q = new Int32Array(coefs.length);
+    let error = 0;
+    for (let i = 0; i < coefs.length; i++) {
+      error += coefs[i] * Math.pow(2, shift);
+      let v = Math.round(error);
+      if (v > tope) v = tope;
+      else if (v < -tope - 1) v = -tope - 1;
+      q[i] = v;
+      error -= v;
+    }
+    return { q: q, shift: shift };
+  }
+
+  /** Residuo del predictor lineal: x[i] menos la predicción (suma de coeficientes por muestras previas, desplazada). */
+  function residuoLpc(x, n, q, shift, out) {
+    const orden = q.length;
+    const div = Math.pow(2, shift);
+    for (let i = orden; i < n; i++) {
+      let suma = 0;
+      for (let j = 0; j < orden; j++) suma += q[j] * x[i - 1 - j];
+      out[i] = x[i] - Math.floor(suma / div);
+    }
+  }
+
+  /** Mejor predictor lineal de la lista de órdenes, por bits reales: {bits, orden, q, shift, plan} o null. */
+  function mejorLpc(x, n, bps, tmp, u, maxParam) {
+    const maxOrden = ORDENES_LPC[ORDENES_LPC.length - 1];
+    if (n < maxOrden * 4) return null;
+    const r = new Float64Array(maxOrden + 1);
+    autocorrelacion(x, n, maxOrden, ventanaTukey(n), r);
+    if (!(r[0] > 0)) return null;
+    const coefs = levinson(r, maxOrden);
+    let mejor = null;
+    for (const orden of ORDENES_LPC) {
+      if (!coefs[orden] || orden >= n) continue;
+      const c = cuantizar(coefs[orden], PRECISION_LPC);
+      if (!c) continue;
+      residuoLpc(x, n, c.q, c.shift, tmp);
+      for (let i = orden; i < n; i++) u[i] = tmp[i] >= 0 ? tmp[i] * 2 : -tmp[i] * 2 - 1;
+      const plan = planRice(u, n, orden, maxParam);
+      const bits = 8 + orden * bps + 4 + 5 + orden * PRECISION_LPC + 2 + 4 + plan.bits;
+      if (!mejor || bits < mejor.bits) mejor = { bits: bits, orden: orden, q: c.q, shift: c.shift, plan: plan, res: Int32Array.from(tmp.subarray(0, n)) };
+    }
+    return mejor;
+  }
+
+  function escribirResiduo(w, res, n, orden, plan, maxParam) {
+    const ancho = maxParam > 14 ? 5 : 4;
+    w.escribir(maxParam > 14 ? 1 : 0, 2);
+    w.escribir(plan.ordenParticion, 4);
+    const tam = n >> plan.ordenParticion;
+    for (let p = 0; p < plan.parametros.length; p++) {
+      const k = plan.parametros[p];
+      w.escribir(k, ancho);
+      const desde = p === 0 ? orden : p * tam;
+      const hasta = (p + 1) * tam;
+      for (let i = desde; i < hasta; i++) {
+        const e = res[i];
+        const v = e >= 0 ? e * 2 : -e * 2 - 1;
+        w.ceros(Math.floor(v / Math.pow(2, k)));
+        w.escribir(1, 1);
+        if (k) w.escribir(v % Math.pow(2, k), k);
+      }
+    }
+  }
+
+  /** Escribe una subtrama de un canal (bps bits por muestra): constante, literal, predictor fijo o lineal, la más corta. */
   function escribirSubtrama(w, x, n, bps, tmp, u) {
     // constante (silencio, por ejemplo)
     let constante = true;
@@ -267,13 +397,16 @@
       w.escribir(x[0] & ((1 << bps) - 1), bps);
       return;
     }
+    const maxParam = bps > 16 ? 30 : 14;
     const o = mejorOrden(x, n, tmp).orden;
     residuo(x, n, o, tmp);
     for (let i = o; i < n; i++) u[i] = tmp[i] >= 0 ? tmp[i] * 2 : -tmp[i] * 2 - 1;
-    const maxParam = bps > 16 ? 30 : 14;
     const plan = planRice(u, n, o, maxParam);
     const bitsFijo = 8 + o * bps + 2 + 4 + plan.bits;
-    if (bitsFijo >= 8 + n * bps) {
+    const resFijo = Int32Array.from(tmp.subarray(0, n));
+    const lpc = mejorLpc(x, n, bps, tmp, u, maxParam);
+    const bitsLpc = lpc ? lpc.bits : Infinity;
+    if (Math.min(bitsFijo, bitsLpc) >= 8 + n * bps) {
       // verbatim: no comprime
       w.escribir(0, 1);
       w.escribir(1, 6);
@@ -281,27 +414,23 @@
       for (let i = 0; i < n; i++) w.escribir(x[i] & ((1 << bps) - 1), bps);
       return;
     }
+    if (bitsLpc < bitsFijo) {
+      const orden = lpc.orden;
+      w.escribir(0, 1);
+      w.escribir(32 | (orden - 1), 6); // 1xxxxx: lineal de orden xxxxx + 1
+      w.escribir(0, 1);
+      for (let i = 0; i < orden; i++) w.escribir(x[i] & ((1 << bps) - 1), bps);
+      w.escribir(PRECISION_LPC - 1, 4);
+      w.escribir(lpc.shift, 5);
+      for (let i = 0; i < orden; i++) w.escribir(lpc.q[i] & ((1 << PRECISION_LPC) - 1), PRECISION_LPC);
+      escribirResiduo(w, lpc.res, n, orden, lpc.plan, maxParam);
+      return;
+    }
     w.escribir(0, 1);
     w.escribir(8 | o, 6); // 001xxx: fijo de orden xxx
     w.escribir(0, 1);
     for (let i = 0; i < o; i++) w.escribir(x[i] & ((1 << bps) - 1), bps);
-    const ancho = maxParam > 14 ? 5 : 4;
-    w.escribir(maxParam > 14 ? 1 : 0, 2);
-    w.escribir(plan.ordenParticion, 4);
-    const tam = n >> plan.ordenParticion;
-    for (let p = 0; p < plan.parametros.length; p++) {
-      const k = plan.parametros[p];
-      w.escribir(k, ancho);
-      const desde = p === 0 ? o : p * tam;
-      const hasta = (p + 1) * tam;
-      for (let i = desde; i < hasta; i++) {
-        const v = u[i];
-        const q = v >>> k;
-        w.ceros(q);
-        w.escribir(1, 1);
-        if (k) w.escribir(v & ((1 << k) - 1), k);
-      }
-    }
+    escribirResiduo(w, resFijo, n, o, plan, maxParam);
   }
 
   function utf8Numero(w, v) {

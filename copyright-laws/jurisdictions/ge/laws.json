@@ -9,7 +9,7 @@
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity (inalienable)",
     "orphan_works": "Not specified",
-    "digital_protection": "Art. 4 defines technological measures and circumvention; circumvention, trafficking in devices and removing electronic RMI are infringements (article no. unverified) (unconfirmed)",
+    "digital_protection": "Art. 4(s)-(t) define technological measures, circumvention and rights management information; Art. 58(3)(b)-(f) make altering RMI, circumvention, and making or selling circumvention devices or services infringements",
     "fair_use_exceptions": "Closed list: personal copying (art. 21), quotation, criticism, teaching extracts (art. 23)",
     "registration_required": "No (voluntary registration with Sakpatenti available)",
     "enforcement_body": "National Intellectual Property Center of Georgia (Sakpatenti)",
@@ -21,12 +21,12 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-11-26",
     "sources": {
       "digital_protection": {
         "url": "https://matsne.gov.ge/en/document/view/16198",
-        "confidence": "low",
-        "checked": "2026-10-15"
+        "confidence": "high",
+        "checked": "2026-11-26"
       },
       "fair_use_exceptions": {
         "url": "https://www.wipo.int/wipolex/en/text/481370",
@@ -35,6 +35,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-26",
+        "field": "digital_protection",
+        "from": "Art. 4 defines technological measures and circumvention; circumvention, trafficking in devices and removing electronic RMI are infringements (article no. unverified) (unconfirmed)",
+        "to": "Art. 4(s)-(t) define technological measures, circumvention and rights management information; Art. 58(3)(b)-(f) make altering RMI, circumvention, and making or selling circumvention devices or services infringements"
+      },
       {
         "date": "2026-10-15",
         "field": "digital_protection",

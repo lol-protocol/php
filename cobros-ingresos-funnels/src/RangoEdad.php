@@ -22,7 +22,44 @@ namespace App;
  */
 final class RangoEdad
 {
-    /** $columna es siempre una columna fija del codigo (ej. 'c.fecha_nacimiento'), nunca entrada de usuario. */
+    /** Los tramos de un adulto, de menor a mayor: los unicos que puede tener un cliente (el CHECK de la migracion 021). */
+    public const ADULTOS = ['18-24', '25-34', '35-44', '45-54', '55-64', '65+'];
+
+    public const MENOR = 'Menor de 18';
+    public const FECHA_INVALIDA = 'Fecha inválida';
+
+    /**
+     * El tramo de quien nacio en $fechaNacimiento (Y-m-d), visto en $hoy: lo mismo que expresionSql(), en PHP. Desde la
+     * migracion 021 la base ya no guarda la fecha de nacimiento sino solo este tramo, asi que se calcula aca, una vez, al
+     * cargar a la persona (ClienteRepository::crear); no se recalcula despues, y por eso es el tramo AL ALTA. Una fecha que
+     * no existe o posterior a hoy da FECHA_INVALIDA.
+     */
+    public static function deFecha(string $fechaNacimiento, \DateTimeImmutable $hoy): string
+    {
+        $nacimiento = \DateTimeImmutable::createFromFormat('!Y-m-d', $fechaNacimiento);
+        $hoy = $hoy->setTime(0, 0);
+        if ($nacimiento === false || $nacimiento->format('Y-m-d') !== $fechaNacimiento || $nacimiento > $hoy) {
+            return self::FECHA_INVALIDA;
+        }
+
+        $edad = $nacimiento->diff($hoy)->y;
+
+        return match (true) {
+            $edad < 18 => self::MENOR,
+            $edad < 25 => '18-24',
+            $edad < 35 => '25-34',
+            $edad < 45 => '35-44',
+            $edad < 55 => '45-54',
+            $edad < 65 => '55-64',
+            default => '65+',
+        };
+    }
+
+    /**
+     * @deprecated Desde la migracion 021 (2026-11) no hay columna fecha_nacimiento: la segmentacion y el funnel agrupan por
+     *             la columna rango_de_edad. Se conserva porque RangoEdadTest la compara con deFecha(), y como referencia.
+     *
+     * $columna es siempre una columna fija del codigo (ej. 'c.fecha_nacimiento'), nunca entrada de usuario. */
     public static function expresionSql(string $columna): string
     {
         $edad = "date_part('year', age({$columna}))";

@@ -43,6 +43,9 @@ final class Mortalidad
     /** @var array<int, array{int, int}>|null [totales, viruela] por año */
     private ?array $muertesDeLondres = null;
 
+    /** @var list<array{int, float, float}>|null [año, natalidad, mortalidad] de Inglaterra, en orden */
+    private ?array $tasasDeInglaterra = null;
+
     private string $carpetaDeDatos;
 
     private ?Modelo $modelo = null;
@@ -247,6 +250,76 @@ final class Mortalidad
     }
 
     /**
+     * Tasas brutas de natalidad y mortalidad (por mil) de Inglaterra y Gales, de 1541 a 2015 (Wrigley y Schofield, y
+     * después el registro civil). Hasta 1861 hay un punto cada cinco años, que resume el quinquenio. Null si ese año
+     * no tiene punto.
+     *
+     * @return array{natalidad: float, mortalidad: float}|null
+     */
+    public function tasasInglaterra(int $anio): ?array
+    {
+        foreach ($this->inglaterra() as [$a, $natalidad, $mortalidad]) {
+            if ($a === $anio) {
+                return ['natalidad' => $natalidad, 'mortalidad' => $mortalidad];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Cuántas veces la tasa de mortalidad de ese punto supera a la de los `$vecinos` puntos de cada lado (mediana). Los
+     * vecinos se cuentan en puntos de la serie, no en años. Null si el año no tiene punto o hay menos de 4 vecinos.
+     */
+    public function excesoDeMortalidadInglaterra(int $anio, int $vecinos = 2): ?float
+    {
+        $serie = $this->inglaterra();
+        $indice = null;
+        foreach ($serie as $i => [$a]) {
+            if ($a === $anio) {
+                $indice = $i;
+                break;
+            }
+        }
+        if ($indice === null) {
+            return null;
+        }
+        $valores = [];
+        for ($j = $indice - $vecinos; $j <= $indice + $vecinos; $j++) {
+            if ($j !== $indice && isset($serie[$j])) {
+                $valores[] = $serie[$j][2];
+            }
+        }
+        if (count($valores) < 4) {
+            return null;
+        }
+        sort($valores);
+        $mitad = intdiv(count($valores), 2);
+        $mediana = count($valores) % 2 === 1 ? $valores[$mitad] : ($valores[$mitad - 1] + $valores[$mitad]) / 2;
+
+        return $serie[$indice][2] / $mediana;
+    }
+
+    /**
+     * Los puntos de la serie de Inglaterra cuyo exceso de mortalidad llega a `$umbral`, en orden. Hasta 1861 la serie es
+     * quinquenal: sirve para ver épocas, no para fechar un brote.
+     *
+     * @return list<array{anio: int, exceso: float}>
+     */
+    public function aniosDeMortalidadAnormalInglaterra(float $umbral = 1.15): array
+    {
+        $resultado = [];
+        foreach ($this->inglaterra() as [$a]) {
+            $exceso = $this->excesoDeMortalidadInglaterra($a);
+            if ($exceso !== null && $exceso >= $umbral) {
+                $resultado[] = ['anio' => $a, 'exceso' => $exceso];
+            }
+        }
+
+        return $resultado;
+    }
+
+    /**
      * Probabilidad (0 a 1) de que un recién nacido de esa década y ese país llegue con vida a `$edad` (0 a 110). Null si no
      * hay datos (hacen falta la esperanza al nacer y la mortalidad de 0 a 5 años de la década). Estadística de población
      * por país y década, modelada: no dice nada de una persona ni de una familia.
@@ -396,6 +469,19 @@ final class Mortalidad
         }
 
         return $this->muertesDeLondres;
+    }
+
+    /** @return list<array{int, float, float}> */
+    private function inglaterra(): array
+    {
+        if ($this->tasasDeInglaterra === null) {
+            $this->tasasDeInglaterra = [];
+            foreach ($this->filas('inglaterra_tasas') as $f) {
+                $this->tasasDeInglaterra[] = [(int) $f['anio'], (float) $f['natalidad'], (float) $f['mortalidad']];
+            }
+        }
+
+        return $this->tasasDeInglaterra;
     }
 
     /** @return list<array<string, string>> Las filas de datos/<nombre>.csv, como arrays asociativos. */

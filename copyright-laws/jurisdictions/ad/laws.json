@@ -7,11 +7,11 @@
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years (Art. 18(1); joint works from death of last surviving author; collective and anonymous works 70 years from publication)",
     "author_rights": "Economic rights",
-    "moral_rights": "Moral rights recognized (protected for author's life + 70 years per Commons summary) (unconfirmed)",
-    "orphan_works": "Not specified (unconfirmed)",
+    "moral_rights": "Moral rights: claim authorship and object to distortion (Art. 6); protected for life + 70 years (Art. 18)",
+    "orphan_works": "No orphan-works provision in the law text",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
-    "registration_required": "No (unconfirmed)",
+    "registration_required": "No (protection is not subject to any formality such as registration or marking of copies; Art. 2)",
     "enforcement_body": "Not specified",
     "treaties_signatory": "Berne",
     "treaties_not_party": "",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-25",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/6925",
@@ -44,22 +44,40 @@
         "checked": "2026-10-22"
       },
       "moral_rights": {
-        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Andorra.html",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/6925",
+        "confidence": "high",
+        "checked": "2026-11-25"
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/6925",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-25"
       },
       "registration_required": {
         "url": "https://www.wipo.int/wipolex/en/legislation/details/6925",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "high",
+        "checked": "2026-11-25"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-25",
+        "field": "registration_required",
+        "from": "No (unconfirmed)",
+        "to": "No (protection is not subject to any formality such as registration or marking of copies; Art. 2)"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "No orphan-works provision in the law text"
+      },
+      {
+        "date": "2026-11-25",
+        "field": "moral_rights",
+        "from": "Moral rights recognized (protected for author's life + 70 years per Commons summary) (unconfirmed)",
+        "to": "Moral rights: claim authorship and object to distortion (Art. 6); protected for life + 70 years (Art. 18)"
+      },
       {
         "date": "2026-10-22",
         "field": "row",

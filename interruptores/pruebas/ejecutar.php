@@ -8,10 +8,14 @@ require_once __DIR__ . '/../src/Interruptores.php';
 require_once __DIR__ . '/../src/Usuarios.php';
 require_once __DIR__ . '/../src/RegistroJsonl.php';
 require_once __DIR__ . '/../src/Ip.php';
+require_once __DIR__ . '/../src/Escenas.php';
+require_once __DIR__ . '/../src/Programados.php';
 
 use LolProtocol\Interruptores\DependenciaRota;
 use LolProtocol\Interruptores\Interruptores;
+use LolProtocol\Interruptores\Escenas;
 use LolProtocol\Interruptores\Ip;
+use LolProtocol\Interruptores\Programados;
 use LolProtocol\Interruptores\RegistroJsonl;
 use LolProtocol\Interruptores\Usuarios;
 use LolProtocol\Interruptores\UnknownInterruptor;
@@ -386,8 +390,8 @@ foreach ($conNoDisponible as $id) {
 }
 comprobar('una opción de la pasarela hereda «no_disponible»', $i->alApagar('gen.pasarela:stripe') === 'no_disponible');
 comprobar('perritos y gatitos son dos interruptores independientes', array_column($i->catalogo()['gen.mascotas']['opciones'], 'id') === ['perritos', 'gatitos']);
-comprobar('las dos funciones nuevas de búsqueda están marcadas como supuestas; las ya confirmadas no',
-    $i->catalogo()['gen.busqueda-paises']['supuesto'] === true && $i->catalogo()['gen.prensa']['supuesto'] === false);
+comprobar('ya no queda ninguna función supuesta: la persona confirmó las de búsqueda',
+    array_filter($i->catalogo(), fn ($f) => $f['supuesto']) === []);
 
 // --- Dependencias de una opción: la tarjeta depende de Stripe ----------------------------------------------------
 
@@ -459,6 +463,101 @@ foreach (array_keys($rapido->interruptores()) as $ref) {
 }
 $segundos = microtime(true) - $inicio;
 comprobar('calcular las dependencias de todos los botones tarda menos de 3 s', $segundos < 3.0, sprintf('%.2f s', $segundos));
+
+// --- aplicar(): varios cambios a la vez, validando el estado final ---------------------------------------------------
+
+@unlink($estado);
+$i = $nuevo();
+$antes = $i->aplicar(['gen.mascotas:perritos' => false, 'gen.mascotas:gatitos' => false, 'gen.vistas:abanico' => true], 'ana', 'prueba');
+comprobar('aplicar devuelve solo lo que cambió, con su valor anterior', $antes === ['gen.mascotas:perritos' => true, 'gen.mascotas:gatitos' => true]);
+comprobar('aplicar guarda todo', !$i->activo('gen.mascotas:perritos') && !$i->activo('gen.mascotas:gatitos'));
+$h = $i->historial(2);
+comprobar('aplicar anota cada cambio con su motivo', count($h) === 2 && $h[0]['motivo'] === 'prueba' && $h[0]['quien'] === 'ana');
+$n = count($i->historial(100000));
+comprobar('aplicar sin cambios reales devuelve [] y no anota', $i->aplicar(['gen.mascotas:perritos' => false]) === [] && count($i->historial(100000)) === $n);
+$i->aplicar(['gen.mascotas:perritos' => true, 'gen.mascotas:gatitos' => true]);
+
+comprobar('aplicar no deja un estado final roto: nada se guarda',
+    lanza(fn () => $i->aplicar(['gen.privacidad' => false]), DependenciaRota::class) && $i->activo('gen.privacidad') === true);
+comprobar('aplicar valida el estado final, no cada paso: se apaga la cadena entera de una vez',
+    count($i->aplicar(array_fill_keys(['gen.privacidad', ...$buscan], false))) === count($buscan) + 1 && !$i->activo('gen.privacidad'));
+comprobar('aplicar respeta el mínimo de opciones',
+    lanza(fn () => $i->aplicar(['gen.pagos:transferencia' => false, 'gen.pagos:tarjeta' => false, 'gen.pagos:efectivo' => false]), DependenciaRota::class));
+comprobar('aplicar con una ref que no existe lanza UnknownInterruptor', lanza(fn () => $i->aplicar(['no.existe' => true]), UnknownInterruptor::class));
+$i->aplicar(array_fill_keys(['gen.privacidad', ...$buscan], true));
+
+// --- Escenas -------------------------------------------------------------------------------------------------------
+
+@unlink($estado);
+$ultima = $tmp . '/ultima-escena.json';
+@unlink($ultima);
+$i = $nuevo();
+$esc = new Escenas($raiz . '/escenas.json', $i, $ultima);
+comprobar('hay escenas, y cada una nombra solo refs y tipos que existen (si no, el constructor falla)', count($esc->escenas()) >= 4);
+
+$antesEstado = $i->interruptores();
+$cambiados = $esc->aplicar('mantenimiento', 'ana');
+comprobar('mantenimiento apaga los pagos y las búsquedas externas', !$i->activo('gen.pagos') && !$i->activo('gen.prensa') && count($cambiados) > 5);
+comprobar('mantenimiento deja un estado válido', $i->activo('gen.privacidad') === true);
+$esc->deshacer('ana');
+comprobar('deshacer restaura exactamente el estado de antes', $i->interruptores() === $antesEstado);
+comprobar('deshacer sin nada que deshacer lanza error', lanza(fn () => $esc->deshacer('ana'), \RuntimeException::class));
+
+$esc->aplicar('emergencia', 'ana');
+comprobar('emergencia apaga lo de producto, interno, datos y visual', !$i->activo('gen.vistas') && !$i->activo('gen.backoffice') && !$i->activo('gen.pagos') && !$i->activo('pos.portadas'));
+comprobar('emergencia mantiene la protección, el filtro y los retiros',
+    $i->activo('gen.privacidad') && $i->activo('gen.filtro') && $i->activo('gen.retiros') && $i->activo('gen.filtro:textos'));
+comprobar('emergencia pide confirmación', $esc->escenas()['emergencia']['confirmar'] === true);
+$esc->deshacer('ana');
+comprobar('deshacer la emergencia restaura todo', $i->interruptores() === $antesEstado);
+
+$esc->aplicar('silencio', 'ana');
+comprobar('silencio apaga los asistentes y el marketing', !$i->activo('gen.mascotas:perritos') && !$i->activo('gen.marketing'));
+$esc->aplicar('campana', 'ana');
+comprobar('campaña enciende lo que silencio apagó', $i->activo('gen.mascotas:perritos') && $i->activo('gen.marketing:correo'));
+comprobar('una escena inexistente lanza UnknownInterruptor', lanza(fn () => $esc->aplicar('nada', 'ana'), UnknownInterruptor::class));
+$esc->deshacer('ana'); // solo se recuerda la última escena: deshace la campaña
+comprobar('solo se deshace la última escena', $esc->ultima() === null);
+
+$roto = $tmp . '/escenas-rotas.json';
+file_put_contents($roto, json_encode(['escenas' => [['id' => 'mala', 'apagar' => ['no.existe']]]]));
+comprobar('una escena que nombra una ref inexistente impide cargar', lanza(fn () => new Escenas($roto, $i, $ultima), \RuntimeException::class));
+file_put_contents($roto, json_encode(['escenas' => [['id' => 'mala', 'apagar_tipos' => ['inventado']]]]));
+comprobar('una escena con un tipo inexistente impide cargar', lanza(fn () => new Escenas($roto, $i, $ultima), \RuntimeException::class));
+
+// --- Cambios programados -------------------------------------------------------------------------------------------
+
+@unlink($estado);
+$ahoraP = 3000000;
+$relojP = function () use (&$ahoraP): int {
+    return $ahoraP;
+};
+$i = $nuevo();
+$esc = new Escenas($raiz . '/escenas.json', $i, $ultima);
+$prog = new Programados($tmp . '/programados.json', $relojP);
+comprobar('no se programa en el pasado', lanza(fn () => $prog->agendar($ahoraP - 1, ['escena' => 'silencio'], 'ana'), \InvalidArgumentException::class));
+comprobar('no se programa con más de un año de adelanto', lanza(fn () => $prog->agendar($ahoraP + Programados::MAX_ADELANTO_SEGUNDOS + 1, ['escena' => 'silencio'], 'ana'), \InvalidArgumentException::class));
+comprobar('hay que dar una escena o una ref con su valor', lanza(fn () => $prog->agendar($ahoraP + 60, ['x' => 1], 'ana'), \InvalidArgumentException::class));
+$idEscena = $prog->agendar($ahoraP + 60, ['escena' => 'silencio'], 'ana');
+$idRef = $prog->agendar($ahoraP + 120, ['ref' => 'gen.pagos', 'valor' => false], 'ana');
+$idMalo = $prog->agendar($ahoraP + 180, ['ref' => 'gen.privacidad', 'valor' => false], 'ana');
+$idCancelado = $prog->agendar($ahoraP + 240, ['ref' => 'gen.exportar', 'valor' => false], 'ana');
+$prog->cancelar($idCancelado);
+$listaP = $prog->listar();
+comprobar('listar trae los pendientes primero', $listaP[0]['estado'] === 'pendiente' && end($listaP)['estado'] === 'cancelado');
+comprobar('antes de la hora no se ejecuta nada', $prog->ejecutarVencidos($i, $esc) === [] && $i->activo('gen.pagos'));
+$ahoraP += 125;
+$hechos = $prog->ejecutarVencidos($i, $esc);
+comprobar('pasada la hora se ejecutan los vencidos, en orden', array_column($hechos, 'id') === [$idEscena, $idRef] && !$i->activo('gen.pagos') && !$i->activo('gen.marketing'));
+comprobar('lo ejecutado queda anotado como programado', $i->historial(1)[0]['quien'] === 'programado:ana');
+comprobar('lo ya ejecutado no se repite', $prog->ejecutarVencidos($i, $esc) === []);
+$ahoraP += 60;
+$hechos = $prog->ejecutarVencidos($i, $esc);
+comprobar('un cambio que ya no es válido queda en error, con el motivo, y no cambia nada',
+    count($hechos) === 1 && $hechos[0]['estado'] === 'error' && str_contains($hechos[0]['resultado'], 'necesita') && $i->activo('gen.privacidad'));
+comprobar('un cancelado no se ejecuta ni se puede cancelar de nuevo', $i->activo('gen.exportar') && lanza(fn () => $prog->cancelar($idCancelado), \RuntimeException::class));
+comprobar('cancelar un cambio que no existe lanza error', lanza(fn () => $prog->cancelar('zzzz'), \RuntimeException::class));
+comprobar('lo ya hecho no se cancela', lanza(fn () => $prog->cancelar($idEscena), \RuntimeException::class));
 
 // Limpieza de la carpeta temporal.
 foreach (glob($tmp . '/*') ?: [] as $archivo) {
