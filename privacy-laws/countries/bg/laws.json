@@ -112,12 +112,6 @@
     },
     "changes": [
       {
-        "date": "2026-11-16",
-        "field": "exemptions",
-        "from": "Journalism, academic and artistic expression, and archiving in the public interest (national rules under GDPR art. 85); household use; security and criminal-justice processing under separate regime (unconfirmed)",
-        "to": "Journalism and academic, artistic or literary expression (art. 25h(1); ten-criteria test struck down 2019); household use (GDPR art. 2(2)(c)); National Archive Fund archiving (GDPR arts 15, 16, 18-21 disapplied)"
-      },
-      {
         "date": "2026-11-14",
         "field": "exemptions",
         "from": "Journalism, academic and artistic expression, and archiving in the public interest (national rules under GDPR art. 85); household use; security and criminal-justice processing under separate regime (unconfirmed)",
