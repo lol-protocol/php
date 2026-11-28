@@ -6,4 +6,4 @@ ob_start(); ?>
 <p><?= $detalleHtml ?></p>
 <?php endif; ?>
 <p><a href="/"><?= esc(t('error.volver_inicio')) ?></a> · <a href="/b/10/"><?= esc(t('error.buscar_personas')) ?></a></p>
-<?php $content = ob_get_clean(); $title = $titulo; $noindex = true; $sinCanonica = true; include __DIR__ . '/_layout.php';
+<?php $content = ob_get_clean(); $title = $titulo; $noindex = true; $sinCanonica = true; $traducida = true; include __DIR__ . '/_layout.php';

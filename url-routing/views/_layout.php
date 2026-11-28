@@ -16,13 +16,20 @@ use App\Support\Textos;
  * data of the persona the page is about.
  * A view may set $sinCanonica to leave out the canonical and hreflang links: an error page has no address of its own.
  * A view whose whole body goes through t() sets $traducida: only then does the page announce its other languages
- * (hreflang, for the languages that have a lang/ table) and, when this request's language has one too, take its own
- * subdomain as canonical. Any other page is Spanish text whatever the subdomain: it announces no other language and
+ * (hreflang, for the languages that have a lang/ table), take its own subdomain as canonical (when this request's
+ * language has a table too) and declare <html lang> in this request's language. Any other page is Spanish text whatever the subdomain: it announces no other language and
  * its canonical is the base-language address.
  * A view may set $scripts, local paths of scripts (public/) to load at the end of the body: the CSP only
  * allows scripts from this origin, so there are no inline ones.
  */
-$lang = HostParser::IDIOMAS_CONOCIDOS[get_locale()] ?? HostParser::IDIOMAS_CONOCIDOS[HostParser::IDIOMA_BASE];
+// The language of what t() says (header, footer: this request's, or Spanish when it has no table) and of the page as a
+// whole: this request's when the page is written in it ($traducida), the base one otherwise, because the body of any
+// other page is Spanish text under every subdomain. When they differ, header and footer carry their own lang.
+$idiomaMarco = Textos::traducido(get_locale()) ? get_locale() : HostParser::IDIOMA_BASE;
+$propia = !empty($traducida) && $idiomaMarco === get_locale();
+$lang = HostParser::IDIOMAS_CONOCIDOS[$propia ? $idiomaMarco : HostParser::IDIOMA_BASE] ?? HostParser::IDIOMAS_CONOCIDOS[HostParser::IDIOMA_BASE];
+$langMarco = HostParser::IDIOMAS_CONOCIDOS[$idiomaMarco] ?? $lang;
+$atributoMarco = $langMarco !== $lang ? ' lang="' . esc($langMarco) . '"' : '';
 $flash = (new Flash())->consumir();
 // On a search page (/b/...), the box shows that search.
 $qActual = isset($query) && is_string($query) ? $query : '';
@@ -37,7 +44,6 @@ $tActual = isset($digitos) ? (string)$digitos : (string)array_key_first($tiposBu
     <meta name="robots" content="noindex">
 <?php endif; ?>
 <?php $ruta = (string)strtok($_SERVER['REQUEST_URI'] ?? '/', '?'); ?>
-<?php $propia = !empty($traducida) && Textos::traducido(get_locale()); ?>
 <?php if (empty($sinCanonica)): ?>
     <link rel="canonical" href="<?= esc(($propia ? HostParser::origen() : HostParser::origenEnBase()) . $ruta) ?>">
 <?php foreach (empty($traducida) ? [] : HostParser::alternos($ruta, true) as $hreflang => $url): ?>
@@ -99,7 +105,7 @@ foreach ($jsonLd as $objeto): ?>
     </style>
 </head>
 <body>
-<header>
+<header<?= $atributoMarco ?>>
     <div class="barra">
         <a class="marca" href="/"><?= esc($sitio) ?></a>
         <form action="/" method="get" role="search">
@@ -133,7 +139,7 @@ foreach ($jsonLd as $objeto): ?>
 <script src="<?= esc($script) ?>"></script>
 <?php endforeach; ?>
 <?php if (!empty($pedirRetiro)): ?>
-<footer class="pie meta"><a href="<?= esc($pedirRetiro) ?>" rel="nofollow"><?= esc(t('layout.pedir_retiro')) ?></a><?php if (!empty($pedirDatos)): ?> · <a href="<?= esc($pedirDatos) ?>" rel="nofollow"><?= esc(t('layout.pedir_datos')) ?></a><?php endif; ?></footer>
+<footer class="pie meta"<?= $atributoMarco ?>><a href="<?= esc($pedirRetiro) ?>" rel="nofollow"><?= esc(t('layout.pedir_retiro')) ?></a><?php if (!empty($pedirDatos)): ?> · <a href="<?= esc($pedirDatos) ?>" rel="nofollow"><?= esc(t('layout.pedir_datos')) ?></a><?php endif; ?></footer>
 <?php endif; ?>
 </body>
 </html>
