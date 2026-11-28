@@ -547,13 +547,42 @@ class PagesTest extends TestCase
         $this->assertStringContainsString('<link rel="alternate" hreflang="x-default" href="http://tudominio.local/r/6128473101/">', $form);
     }
 
+    /** The page declares the language its text is in: Spanish body under eng. is not English, only its header and footer are. */
+    public function testThePageDeclaresTheLanguageItIsWrittenIn(): void
+    {
+        // A person's page under eng.: Spanish body, English header and footer.
+        [, $persona] = $this->get('eng.tudominio.local', '/6128473101/');
+        $this->assertStringContainsString('<html lang="es">', $persona);
+        $this->assertStringContainsString('<header lang="en">', $persona);
+        $this->assertStringContainsString('<footer class="pie meta" lang="en">', $persona);
+        $this->assertStringContainsString('Ask for this page to be withdrawn', $persona, 'the footer says it in English');
+
+        // The home page too (the deploy smoke test looks at it): Spanish page, English header.
+        [, $inicio] = $this->get('eng.tudominio.local', '/');
+        $this->assertStringContainsString('<html lang="es">', $inicio);
+        $this->assertStringContainsString('<header lang="en">', $inicio);
+
+        // The same page under spa. needs no marks.
+        [, $spa] = $this->get('spa.tudominio.local', '/6128473101/');
+        $this->assertStringContainsString('<html lang="es">', $spa);
+        $this->assertStringNotContainsString('<header lang=', $spa);
+        $this->assertStringNotContainsString('<footer class="pie meta" lang=', $spa);
+
+        // What is written in English, whole, says so at the top and marks nothing inside.
+        foreach (['/r/6128473101/', '/999999999/'] as $ruta) {
+            [, $ingles] = $this->get('eng.tudominio.local', $ruta);
+            $this->assertStringContainsString('<html lang="en">', $ingles, $ruta);
+            $this->assertStringNotContainsString('<header lang=', $ingles, $ruta);
+        }
+    }
+
     public function testALanguageIsServedOnlyOnceItIsListed(): void
     {
         $activos = ['IDIOMAS_ACTIVOS' => 'spa,eng,fra'];
 
         // French is listed but has no lang/ table yet: its pages are the Spanish ones, so it announces nothing in French.
         [, $fr] = $this->get('fra.tudominio.local', '/r/6128473101/', entorno: $activos);
-        $this->assertStringContainsString('<html lang="fr">', $fr);
+        $this->assertStringContainsString('<html lang="es">', $fr, 'its texts are Spanish, and the page says so');
         $this->assertStringNotContainsString('hreflang="fr"', $fr, 'no French texts: it must not be announced');
         $this->assertStringContainsString('hreflang="en" href="http://eng.tudominio.local/r/6128473101/"', $fr, 'the languages that are written are');
         $this->assertStringContainsString('<link rel="canonical" href="http://spa.tudominio.local/r/6128473101/">', $fr);
@@ -765,7 +794,8 @@ class PagesTest extends TestCase
         [$codigo, $cuerpo] = $this->get('fra.' . self::GENEALOGIA, '/999999999/', entorno: ['IDIOMAS_ACTIVOS' => 'spa,eng,fra']);
 
         $this->assertSame(404, $codigo);
-        $this->assertStringContainsString('<html lang="fr">', $cuerpo, 'the language is the one of the subdomain');
+        $this->assertStringContainsString('<html lang="es">', $cuerpo, 'there is no French table yet: the page is Spanish, whatever the subdomain');
+        $this->assertStringNotContainsString('lang="fr"', $cuerpo);
         $this->assertStringContainsString('<h1>404 - Página no encontrada</h1>', $cuerpo, 'but there is no French table yet: Spanish, not a key');
     }
 
