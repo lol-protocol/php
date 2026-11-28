@@ -706,6 +706,10 @@ class PruebasDeTextosTraducidos(unittest.TestCase):
         for codigo, ui in contenido["ui"].items():
             self.assertEqual(set(ui), generar.TERMINOS_DE_INTERFAZ, codigo)
 
+    def test_cada_opcion_del_selector_de_idioma_lleva_su_lang(self):
+        # El nombre de cada idioma está escrito en ese idioma: sin `lang`, un lector de pantalla lo lee con la voz de la página.
+        self.assertIn("opcion.lang = codigo;", self.archivos[generar.GALERIA])
+
     def test_la_validacion_detecta_un_termino_de_interfaz_sin_traducir(self):
         datos = copy.deepcopy(self.datos)
         del datos["terminos"]["sin_fondo"]["ko"]

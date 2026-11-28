@@ -789,7 +789,12 @@ _PLANTILLA_GALERIA = """<!doctype html>
 const DATOS = __DATOS__;
 const idioma = document.getElementById("idioma");
 const variante = document.getElementById("variante");
-for (const [codigo, nombre] of DATOS.idiomas) idioma.add(new Option(nombre + " (" + codigo + ")", codigo));
+for (const [codigo, nombre] of DATOS.idiomas) {
+  // El nombre está en su propio idioma: se marca para que los lectores de pantalla lo pronuncien bien.
+  const opcion = new Option(nombre + " (" + codigo + ")", codigo);
+  opcion.lang = codigo;
+  idioma.add(opcion);
+}
 function pintar() {
   const codigo = idioma.value, carpeta = variante.value, ui = DATOS.ui[codigo];
   const main = document.getElementById("contenido");
