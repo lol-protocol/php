@@ -1,5 +1,5 @@
 %% Arquitectura por capas. La búsqueda es equivalente en PHP y Java y se comprueba con
-%% pruebas/vectores.tsv. La web y el modo con IA son solo PHP.
+%% pruebas/vectores.tsv. Los EPUB, las colecciones, el modo largo, la paráfrasis, la web y el modo con IA son solo PHP.
 flowchart TB
     subgraph interfaz["Capa de interfaz"]
         paginaweb["web/index.html + app.js<br/>(sin scripts en línea, CSP estricta)"]
@@ -18,9 +18,21 @@ flowchart TB
         sin_php["Sinonimos"]
         libro_php["Libro<br/>título, autor, capítulos, pasajes"]
         norm_php["Normaliza<br/>minúsculas, sin acentos,<br/>palabras vacías, raíz"]
+        bib["Biblioteca<br/>.txt, .epub y carpetas (colecciones)"]
+        epub["Epub<br/>zip + DOM, con topes y sin red"]
+        ajustes["Ajustes<br/>párrafos, o libro largo (1000+ pasajes)"]
+        ventanas["Ventanas<br/>de 3 oraciones, con solape"]
+        parafrasea["Parafrasea<br/>moderno u original, sin inventar"]
         gen["Generador (interfaz)"]
         claude["GeneradorClaude<br/>SDK de Anthropic (opcional)"]
+        api --> bib
         api --> dialogo
+        bib --> libro_php
+        bib --> epub
+        epub --> libro_php
+        conv_php --> ajustes
+        ajustes --> ventanas
+        conv_php -. "libro largo" .-> parafrasea
         dialogo --> conv_php
         dialogo -. "solo con IA" .-> gen
         gen --> claude
@@ -50,6 +62,7 @@ flowchart TB
     end
 
     apiphp --> api
+    chatphp --> bib
     chatphp --> dialogo
     chatjava --> conv_java
 

@@ -82,12 +82,19 @@ async function cargar() {
     for (const l of datos.libros) {
       const o = document.createElement('option');
       o.value = l.id;
-      o.textContent = l.titulo + ' — ' + l.autor;
+      if (l.error) {
+        // Un EPUB que no se pudo leer: aparece, pero no se puede elegir, y dice por qué.
+        o.disabled = true;
+        o.textContent = l.titulo + ' (no se pudo leer: ' + l.error + ')';
+      } else {
+        const coleccion = l.libros > 0 ? ' · colección de ' + l.libros + ' libros' : '';
+        o.textContent = l.titulo + ' — ' + l.autor + coleccion;
+      }
       o.dataset.titulo = l.titulo;
       selLibro.appendChild(o);
     }
     if (datos.libros.length === 0) {
-      mostrarError('No hay libros: pon un .txt en ejemplos/ o en mis-libros/.');
+      mostrarError('No hay libros: pon un .txt o un .epub en ejemplos/ o en mis-libros/ (o una carpeta con varios libros).');
       boton.disabled = true;
     }
     if (datos.ia.disponible) {

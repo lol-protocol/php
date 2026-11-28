@@ -15,7 +15,7 @@ namespace ChatLibros;
  *    traen Origin, que sea el mismo sitio (contra páginas ajenas que le escriban a tu servidor).
  *  - El POST exige application/json: un formulario de otra página no puede mandarlo sin pasar por
  *    CORS, y esta API no manda cabeceras CORS.
- *  - El libro se elige de una lista (ejemplos/ y mis-libros/), nunca por una ruta que mande el cliente.
+ *  - El libro (o la colección) se elige de una lista (ejemplos/ y mis-libros/), nunca por una ruta que mande el cliente.
  *  - Todo tiene tope de tamaño: el modo con IA gasta saldo de tu clave.
  */
 final class Api
@@ -51,27 +51,29 @@ final class Api
         return self::error(404, 'Acción desconocida.');
     }
 
-    /** @return list<string> ids de libro: rutas relativas a la raíz, como «ejemplos/muestra.txt» */
+    /** @return list<string> ids de libro: rutas relativas a la raíz, como «ejemplos/muestra.txt» o «mis-libros/Elena Varela» (una colección) */
     public function idsDeLibros(): array
     {
-        $ids = [];
-        foreach (['ejemplos', 'mis-libros'] as $carpeta) {
-            $archivos = glob($this->raiz . '/' . $carpeta . '/*.txt') ?: [];
-            sort($archivos);
-            foreach ($archivos as $archivo) {
-                $ids[] = $carpeta . '/' . basename($archivo);
-            }
-        }
-        return $ids;
+        return (new Biblioteca($this->raiz))->ids();
     }
 
     /** @return array{codigo:int, cuerpo:array<string,mixed>} */
     private function listar(): array
     {
+        $biblioteca = new Biblioteca($this->raiz);
         $libros = [];
-        foreach ($this->idsDeLibros() as $id) {
-            $libro = Libro::desdeArchivo($this->raiz . '/' . $id);
-            $libros[] = ['id' => $id, 'titulo' => $libro->titulo, 'autor' => $libro->autor, 'pasajes' => count($libro->pasajes)];
+        foreach ($biblioteca->ids() as $id) {
+            try {
+                $libro = $biblioteca->cargar($id);
+            } catch (\RuntimeException $e) {
+                // Un EPUB que no se puede leer no tumba la lista: aparece con su motivo y no se puede elegir.
+                $libros[] = ['id' => $id, 'titulo' => basename($id), 'autor' => '', 'pasajes' => 0, 'libros' => 0, 'error' => $e->getMessage()];
+                continue;
+            }
+            $libros[] = [
+                'id' => $id, 'titulo' => $libro->titulo, 'autor' => $libro->autor,
+                'pasajes' => count($libro->pasajes), 'libros' => count($libro->obras),
+            ];
         }
         $motivo = $this->generador !== null ? null : GeneradorClaude::motivoNoDisponible();
         return ['codigo' => 200, 'cuerpo' => [
@@ -133,12 +135,16 @@ final class Api
             }
         }
 
-        $ruta = $this->raiz . '/' . $id;
-        $sinonimos = Sinonimos::desdeArchivos([
-            $this->raiz . '/datos/sinonimos.tsv',
-            (string) preg_replace('/\.txt$/i', '', $ruta) . '.sinonimos.tsv',
-        ]);
-        $conversador = new Conversador(Libro::desdeArchivo($ruta), $sinonimos);
+        $biblioteca = new Biblioteca($this->raiz);
+        try {
+            $libro = $biblioteca->cargar($id);
+        } catch (\RuntimeException $e) {
+            return self::error(422, 'No se pudo leer ese libro: ' . $e->getMessage());
+        }
+        if ($libro->pasajes === []) {
+            return self::error(422, 'Ese libro no tiene texto que leer.');
+        }
+        $conversador = new Conversador($libro, $biblioteca->sinonimos($id));
         $conversador->conEstilo($estilo);
         $dialogo = new Dialogo($conversador, $generador);
         return ['codigo' => 200, 'cuerpo' => $dialogo->responder(trim($pregunta), $historial)];

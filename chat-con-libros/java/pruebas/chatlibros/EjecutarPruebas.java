@@ -84,6 +84,9 @@ public final class EjecutarPruebas {
                 && Normaliza.raiz("llegando").equals("lleg") && Normaliza.raiz("claramente").equals("clara"));
         comprobar("raiz no destroza las palabras cortas", Normaliza.raiz("mar").equals("mar")
                 && Normaliza.raiz("mujer").equals("mujer") && Normaliza.raiz("mente").equals("mente"));
+        comprobar("«pasó», «sucedió», «hizo»… (el molde de la pregunta) no cuentan como palabras de búsqueda",
+                Normaliza.palabras("¿Qué pasó, sucedió u ocurrió? ¿Qué hizo? Lo que pasa y hace.").isEmpty()
+                        && Normaliza.palabras("¿Qué pasó con el naranjo?").equals(List.of("naranjo")));
         comprobar("terminos aplica raíz", Normaliza.terminos("Los sueños de los relojeros").equals(List.of("sueno", "relojero")));
 
         System.out.println("Libro");

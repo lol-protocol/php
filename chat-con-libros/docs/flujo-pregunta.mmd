@@ -17,6 +17,7 @@ sequenceDiagram
         D-->>U: modo «reglas» (sin llamadas)
     else pregunta sobre el contenido, sin IA
         V->>V: términos + sinónimos (mensaje → carta)
+        Note over V,I: libro largo (1000 pasajes o más, solo PHP):<br/>ventanas, primero el capítulo y paráfrasis
         V->>I: buscar(términos, 2)
         I-->>V: pasajes por puntaje coseno
         alt algún puntaje >= UMBRAL (0,10)

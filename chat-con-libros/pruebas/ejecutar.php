@@ -10,8 +10,10 @@ require __DIR__ . '/../src/cargar.php';
 
 use ChatLibros\Api;
 use ChatLibros\Ajustes;
+use ChatLibros\Biblioteca;
 use ChatLibros\Conversador;
 use ChatLibros\Dialogo;
+use ChatLibros\Epub;
 use ChatLibros\Generador;
 use ChatLibros\GeneradorClaude;
 use ChatLibros\GeneradorError;
@@ -501,6 +503,227 @@ foreach ($preguntas as [$pregunta, $esperados, $claves]) {
 }
 echo "  frase mostrada con la palabra clave: $frase de $n\n";
 comprobar('la respuesta principal trae la palabra clave en al menos 36 de 53', $frase >= 36, "$frase de $n");
+
+echo "EPUB (archivos de prueba armados al vuelo: no hay ningún libro real en el repo)\n";
+
+$tmp = sys_get_temp_dir() . '/chat-libros-pruebas-' . getmypid();
+mkdir($tmp, 0700, true);
+
+if (!Epub::disponible()) {
+    comprobar('las extensiones zip y dom están (la CI las instala con setup-php)', false, 'faltan zip o dom: no se pudo probar el lector de EPUB');
+} else {
+    $contenedor = '<?xml version="1.0"?><container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container"><rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles></container>';
+    $xhtml = static fn (string $cuerpo): string => '<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml"><head><title>x</title><style>p{color:red}</style></head><body>' . $cuerpo . '</body></html>';
+    $cap1 = $xhtml('<h1>Capítulo 1</h1><p>El relojero&nbsp;Tomás vivía en Arenal, un pueblo con una plaza y una fuente, y desde su ventana se oía el reloj de la torre cada hora.</p>'
+        . '<script>alert("no")</script><p>Corto.</p><p>Otro corto.</p><div><p>Dentro de un div, con &aacute;rbol y &mdash; raya.</p></div>');
+    $cap2 = $xhtml('<h2>La carta</h2><p>Llegó una carta en pleno invierno, con sello de un puerto del sur, y era de Lucía, la hermana menor de Tomás, a quien no había visto en doce años.</p><p>Tercera.</p>');
+    $opf3 = '<?xml version="1.0"?><package xmlns="http://www.idpf.org/2007/opf" version="3.0"><metadata xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>Las horas de Tomás (EPUB)</dc:title><dc:creator>Elena Varela</dc:creator><dc:creator>Otra Persona</dc:creator></metadata>'
+        . '<manifest><item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/><item id="c1" href="cap1.xhtml" media-type="application/xhtml+xml"/><item id="c2" href="texto/cap2.xhtml" media-type="application/xhtml+xml"/>'
+        . '<item id="ap" href="apendice.xhtml" media-type="application/xhtml+xml"/><item id="falta" href="no-esta.xhtml" media-type="application/xhtml+xml"/><item id="img" href="x.png" media-type="image/png"/></manifest>'
+        . '<spine><itemref idref="nav"/><itemref idref="c1"/><itemref idref="falta"/><itemref idref="c2"/><itemref idref="ap" linear="no"/></spine></package>';
+    $nav = '<?xml version="1.0"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><body><nav epub:type="toc"><ol><li><a href="cap1.xhtml">Capítulo 1: El relojero</a></li><li><a href="texto/cap2.xhtml#inicio">La carta</a></li><li><a href="../../etc/passwd">Fuera</a></li></ol></nav></body></html>';
+    $armar = static function (string $ruta, array $entradas) use ($contenedor): void {
+        $zip = new \ZipArchive();
+        $zip->open($ruta, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+        $zip->addFromString('mimetype', 'application/epub+zip');
+        $zip->addFromString('META-INF/container.xml', $contenedor);
+        foreach ($entradas as $nombre => $contenido) {
+            $zip->addFromString($nombre, $contenido);
+        }
+        $zip->close();
+    };
+    $armar("$tmp/libro3.epub", [
+        'OEBPS/content.opf' => $opf3, 'OEBPS/nav.xhtml' => $nav, 'OEBPS/cap1.xhtml' => $cap1,
+        'OEBPS/texto/cap2.xhtml' => $cap2, 'OEBPS/apendice.xhtml' => $xhtml('<p>Esto es un apéndice no lineal.</p>'),
+    ]);
+    $e3 = Epub::desdeArchivo("$tmp/libro3.epub");
+    $textos3 = array_column($e3->pasajes, 'texto');
+    comprobar('EPUB 3: título y autores salen de los metadatos', $e3->titulo === 'Las horas de Tomás (EPUB)' && $e3->autor === 'Elena Varela, Otra Persona');
+    comprobar('EPUB 3: el capítulo sale de la tabla de contenido (nav) y manda sobre el encabezado que contiene',
+        ($e3->pasajes[0]['capitulo'] ?? '') === 'Capítulo 1: El relojero' && ($e3->pasajes[count($e3->pasajes) - 1]['capitulo'] ?? '') === 'La carta');
+    comprobar('EPUB 3: los encabezados no son pasajes; la nav, el apéndice no lineal y el archivo ausente se saltan',
+        !in_array('Capítulo 1', $textos3, true) && !str_contains(implode(' ', $textos3), 'apéndice') && !str_contains(implode(' ', $textos3), 'Capítulo 1: El relojero') && count($e3->pasajes) === 2, (string) count($e3->pasajes));
+    comprobar('EPUB 3: el espacio duro y las entidades de HTML pasan a texto', str_contains($textos3[0] ?? '', 'El relojero Tomás vivía') && str_contains($textos3[0] ?? '', 'árbol y — raya'));
+    comprobar('EPUB 3: no se cuela el script ni el estilo', !str_contains(implode(' ', $textos3), 'alert') && !str_contains(implode(' ', $textos3), 'color'));
+    comprobar('EPUB 3: los párrafos cortos se unen con el que sigue, dentro de su capítulo', str_contains($textos3[0] ?? '', 'Corto. Otro corto.')
+        && str_ends_with($textos3[1] ?? '', 'Tercera.'));
+    comprobar('una cita de un EPUB dice su capítulo', str_contains((new Conversador($e3))->responder('la carta de la hermana'), '[La carta]'));
+
+    $opf2 = '<?xml version="1.0"?><package xmlns="http://www.idpf.org/2007/opf" version="2.0"><metadata xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>Libro viejo</dc:title></metadata>'
+        . '<manifest><item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/><item id="c1" href="c1.html" media-type="application/xhtml+xml"/><item id="c2" href="c2.html" media-type="application/xhtml+xml"/><item id="c3" href="c3.html" media-type="text/html"/></manifest>'
+        . '<spine toc="ncx"><itemref idref="c1"/><itemref idref="c2"/><itemref idref="c3"/></spine></package>';
+    $ncx = '<?xml version="1.0"?><ncx xmlns="http://www.daisy.org/z3986/2005/ncx/"><navMap><navPoint id="a"><navLabel><text>Primera parte</text></navLabel><content src="c1.html"/></navPoint></navMap></ncx>';
+    $armar("$tmp/libro2.epub", [
+        'OEBPS/content.opf' => $opf2, 'OEBPS/toc.ncx' => $ncx,
+        'OEBPS/c1.html' => $xhtml('<p>Texto de la primera parte, con bastantes palabras para que sea un pasaje por sí solo y no se una con nada más allá de él.</p>'),
+        'OEBPS/c2.html' => $xhtml('<h1>Un título propio</h1><p>Texto de la segunda, también bastante largo, sin entrada en la tabla de contenido y con su propio encabezado arriba de todo.</p>'),
+        'OEBPS/c3.html' => $xhtml('<p>Texto de la tercera, sin tabla de contenido ni encabezado, y también lo bastante largo para quedar como un pasaje aparte del resto.</p>'),
+    ]);
+    $e2 = Epub::desdeArchivo("$tmp/libro2.epub");
+    comprobar('EPUB 2: el capítulo sale de la NCX; sin ella, del primer encabezado; sin nada, «Sección N»',
+        array_column($e2->pasajes, 'capitulo') === ['Primera parte', 'Un título propio', 'Sección 3'], json_encode(array_column($e2->pasajes, 'capitulo')) ?: '');
+    comprobar('sin dc:creator, el autor es el genérico', $e2->autor === Libro::AUTOR_POR_DEFECTO);
+
+    comprobar('resolver: quita el #fragmento, decodifica y normaliza', Epub::resolver('OEBPS', 'a/../b.xhtml#x') === 'OEBPS/b.xhtml' && Epub::resolver('OEBPS', '%41.xhtml') === 'OEBPS/A.xhtml'
+        && Epub::resolver('OEBPS', '/abs.xhtml') === 'abs.xhtml');
+    comprobar('resolver: no se sale del zip ni sigue URL', Epub::resolver('', '../x') === null && Epub::resolver('OEBPS', '../../etc/passwd') === null
+        && Epub::resolver('OEBPS', 'http://evil/x') === null && Epub::resolver('OEBPS', 'file:///etc/passwd') === null && Epub::resolver('OEBPS', '') === null);
+
+    // Una entrada que declara un tamaño enorme se salta; el resto del libro se lee.
+    $grande = $xhtml('<p>' . str_repeat('a', Epub::MAX_ENTRADA + 10) . '</p>');
+    $armar("$tmp/grande.epub", [
+        'OEBPS/content.opf' => str_replace('<item id="c3" href="c3.html" media-type="text/html"/>', '', str_replace('<itemref idref="c3"/>', '', $opf2)),
+        'OEBPS/toc.ncx' => $ncx, 'OEBPS/c1.html' => $xhtml('<p>Texto de la primera parte, con bastantes palabras para que sea un pasaje por sí solo y no se una con nada.</p>'),
+        'OEBPS/c2.html' => $grande,
+    ]);
+    comprobar('una entrada más grande que MAX_ENTRADA se salta y el resto se lee', count(Epub::desdeArchivo("$tmp/grande.epub")->pasajes) === 1);
+
+    $conDrm = ['OEBPS/content.opf' => $opf3, 'OEBPS/nav.xhtml' => $nav, 'OEBPS/cap1.xhtml' => $cap1, 'OEBPS/texto/cap2.xhtml' => $cap2];
+    $armar("$tmp/drm.epub", $conDrm + ['META-INF/encryption.xml' => '<encryption xmlns="urn:oasis:names:tc:opendocument:xmlns:container" xmlns:enc="http://www.w3.org/2001/04/xmlenc#"><enc:EncryptedData><enc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/></enc:EncryptedData></encryption>']);
+    $mensaje = '';
+    try {
+        Epub::desdeArchivo("$tmp/drm.epub");
+    } catch (\RuntimeException $e) {
+        $mensaje = $e->getMessage();
+    }
+    comprobar('un EPUB con DRM se rechaza diciendo por qué', str_contains($mensaje, 'DRM'));
+    $armar("$tmp/fuentes.epub", $conDrm + ['META-INF/encryption.xml' => '<encryption xmlns="urn:oasis:names:tc:opendocument:xmlns:container" xmlns:enc="http://www.w3.org/2001/04/xmlenc#"><enc:EncryptedData><enc:EncryptionMethod Algorithm="http://www.idpf.org/2008/embedding"/></enc:EncryptedData></encryption>']);
+    comprobar('la ofuscación de fuentes no es DRM: el texto se lee', count(Epub::desdeArchivo("$tmp/fuentes.epub")->pasajes) === 2);
+
+    file_put_contents("$tmp/no-es-zip.epub", 'esto no es un zip');
+    $armar("$tmp/sin-opf.epub", []);
+    $rechazados = 0; // no llamarlo $fallos: es el contador global de comprobar()
+    foreach (["$tmp/no-es-zip.epub", "$tmp/sin-opf.epub", "$tmp/no-existe.epub"] as $malo) {
+        try {
+            Epub::desdeArchivo($malo);
+        } catch (\RuntimeException) {
+            $rechazados++;
+        }
+    }
+    comprobar('un archivo que no es EPUB, uno sin paquete y uno inexistente dan error claro, no un aviso de PHP', $rechazados === 3);
+    comprobar('Libro::desdeArchivo manda los .epub al lector de EPUB', Libro::desdeArchivo("$tmp/libro3.epub")->titulo === 'Las horas de Tomás (EPUB)');
+}
+
+echo "Colecciones y Biblioteca\n";
+$a = new Libro('Libro A', 'Autora Uno', [['capitulo' => 'Cap 1: x', 'texto' => 'Texto de A.']]);
+$b = new Libro('Libro B', 'Autora Dos', [['capitulo' => 'Cap 1', 'texto' => 'Texto de B.']]);
+$c = new Libro('Libro C', Libro::AUTOR_POR_DEFECTO, []);
+$col = Libro::coleccion('Mi colección', [$a, $b]);
+comprobar('una colección antepone el título del libro al capítulo de cada pasaje', array_column($col->pasajes, 'capitulo') === ['Libro A — Cap 1: x', 'Libro B — Cap 1']
+    && $col->obras === ['Libro A', 'Libro B'] && $col->titulo === 'Mi colección');
+comprobar('el autor de una colección: uno, varios («A y B»), ninguno', Libro::coleccion('x', [$a])->autor === 'Autora Uno' && $col->autor === 'Autora Uno y Autora Dos'
+    && Libro::coleccion('x', [$c])->autor === Libro::AUTOR_POR_DEFECTO
+    && Libro::coleccion('x', [new Libro('1', 'A', []), new Libro('2', 'B', []), new Libro('3', 'C', []), new Libro('4', 'D', [])])->autor === 'varios autores');
+comprobar('un libro suelto no tiene obras', $libro->obras === []);
+
+$cc = new Conversador($col);
+comprobar('una colección dice cómo se llama y qué libros reúne', $cc->responder('¿cómo se llama?') === 'Esta colección se llama «Mi colección» y reúne: «Libro A» y «Libro B».');
+comprobar('el resumen de una colección cuenta sus libros', str_contains($cc->responder('de qué trata'), 'reúne 2 libros: «Libro A» y «Libro B»'));
+
+$raizTmp = "$tmp/raiz";
+mkdir("$raizTmp/ejemplos/Dos cuentos", 0700, true);
+mkdir("$raizTmp/ejemplos/Vacia", 0700, true);
+mkdir("$raizTmp/ejemplos/.oculta", 0700, true);
+mkdir("$raizTmp/datos", 0700, true);
+file_put_contents("$raizTmp/ejemplos/suelto.txt", "Título: Suelto\n\nUn párrafo del libro suelto sobre un faro.");
+file_put_contents("$raizTmp/ejemplos/Dos cuentos/uno.txt", "Título: Uno\nAutor: X\n\nUn cuento sobre un naranjo.");
+file_put_contents("$raizTmp/ejemplos/Dos cuentos/dos.txt", "Título: Dos\nAutor: X\n\nOtro cuento sobre una balsa y su río.");
+file_put_contents("$raizTmp/ejemplos/Dos cuentos/sinonimos.tsv", "naranjo, cítrico\n");
+file_put_contents("$raizTmp/ejemplos/Dos cuentos/leeme.md", 'no es un libro');
+file_put_contents("$raizTmp/ejemplos/.oculto.txt", 'oculto');
+file_put_contents("$raizTmp/ejemplos/Vacia/nota.md", 'sin libros');
+$biblio = new Biblioteca($raizTmp);
+comprobar('la biblioteca lista archivos y colecciones (primero archivos), sin ocultos ni carpetas sin libros, y sin avisos si falta mis-libros/',
+    $biblio->ids() === ['ejemplos/suelto.txt', 'ejemplos/Dos cuentos'], json_encode($biblio->ids()) ?: '');
+$colT = $biblio->cargar('ejemplos/Dos cuentos');
+comprobar('cargar una carpeta arma la colección (título = nombre de la carpeta, con mayúscula inicial)', $colT->titulo === 'Dos cuentos' && $colT->obras === ['Dos', 'Uno'] && $colT->autor === 'X');
+comprobar('los sinónimos de una colección salen de su sinonimos.tsv', (new Conversador($colT, $biblio->sinonimos('ejemplos/Dos cuentos')))->pasajesPara('un cítrico') !== []
+    && (new Conversador($colT, Sinonimos::desdeArchivos([])))->pasajesPara('un cítrico') === []);
+comprobar('Biblioteca::cargarRuta acepta un archivo suelto', Biblioteca::cargarRuta("$raizTmp/ejemplos/suelto.txt")->titulo === 'Suelto');
+$sinCarpeta = new Biblioteca("$tmp/no-hay-nada");
+comprobar('una raíz sin ejemplos/ ni mis-libros/ da una lista vacía, sin avisos', $sinCarpeta->ids() === []);
+
+echo "Molde de pregunta y etiquetas de colección\n";
+comprobar('«pasó», «sucedió», «hizo»… (el molde de la pregunta) no cuentan como palabras de búsqueda', Normaliza::palabras('¿Qué pasó, sucedió u ocurrió? ¿Qué hizo? Lo que pasa y hace.') === []
+    && Normaliza::palabras('¿Qué pasó con el naranjo?') === ['naranjo']);
+comprobar('presentacion pone entre comillas angulares una etiqueta que no es del Quijote', (new Parafrasea(dirname(__DIR__) . '/datos/modernizar.json'))
+    ->presentacion('¿Quién es?', 'La balsa — Capítulo 2: El pescador') === 'De eso habla «La balsa — Capítulo 2: El pescador»:');
+
+echo "La obra de ejemplo (ejemplos/Obra de Elena Varela) por la API y la terminal\n";
+$api2 = new Api($raiz);
+$lista2 = $api2->manejar('GET', 'libros', ['host' => 'localhost'], '')['cuerpo']['libros'];
+$entrada = array_values(array_filter($lista2, static fn (array $l): bool => $l['id'] === 'ejemplos/Obra de Elena Varela'))[0] ?? [];
+comprobar('la lista dice que la obra es una colección de 2 libros', ($entrada['libros'] ?? 0) === 2 && ($entrada['titulo'] ?? '') === 'Obra de Elena Varela' && ($entrada['pasajes'] ?? 0) === 12);
+$r = $api2->manejar('POST', 'preguntar', $buenas, $json(['libro' => 'ejemplos/Obra de Elena Varela', 'pregunta' => '¿Quién ayudó al pescador?']));
+comprobar('una pregunta a la colección cita el libro y el capítulo de donde sale', $r['codigo'] === 200 && str_contains($r['cuerpo']['texto'], '[La balsa — Capítulo 2: El pescador]'));
+$r = $api2->manejar('POST', 'preguntar', $buenas, $json(['libro' => 'ejemplos/Obra de Elena Varela', 'pregunta' => 'el naranjo']));
+comprobar('y distingue entre los libros de la colección', str_contains($r['cuerpo']['texto'], '[El jardín de la señora Ibarra — Capítulo') && !str_contains($r['cuerpo']['texto'], 'La balsa'));
+$r = $api2->manejar('POST', 'preguntar', $buenas, $json(['libro' => 'ejemplos/Obra de Elena Varela', 'pregunta' => '¿Qué pasó con el naranjo?']));
+comprobar('«¿qué pasó con el naranjo?» va al jardín y no al pasaje que dice «pasó una hora»', str_contains($r['cuerpo']['texto'], '[El jardín de la señora Ibarra — Capítulo') && !str_contains($r['cuerpo']['texto'], 'La balsa'));
+$r = $api2->manejar('POST', 'preguntar', $buenas, $json(['libro' => 'ejemplos/Obra de Elena Varela', 'pregunta' => '¿Qué decía el mensaje?']));
+comprobar('lo que no está en ninguno de los libros se dice', str_starts_with($r['cuerpo']['texto'], 'No encuentro eso'));
+comprobar('un archivo de dentro de una colección no es un id válido', $api2->manejar('POST', 'preguntar', $buenas, $json(['libro' => 'ejemplos/Obra de Elena Varela/la-balsa.txt', 'pregunta' => 'x']))['codigo'] === 404);
+
+mkdir("$tmp/raiz2/ejemplos", 0700, true);
+file_put_contents("$tmp/raiz2/ejemplos/roto.epub", 'esto no es un zip');
+file_put_contents("$tmp/raiz2/ejemplos/bueno.txt", "Título: Bueno\n\nUn párrafo.");
+$api3 = new Api("$tmp/raiz2");
+$l3 = $api3->manejar('GET', 'libros', ['host' => 'localhost'], '');
+comprobar('un EPUB ilegible no tumba la lista: aparece con su motivo', $l3['codigo'] === 200 && count($l3['cuerpo']['libros']) === 2
+    && isset(array_values(array_filter($l3['cuerpo']['libros'], static fn (array $l): bool => $l['id'] === 'ejemplos/roto.epub'))[0]['error']));
+$r = $api3->manejar('POST', 'preguntar', $buenas, $json(['libro' => 'ejemplos/roto.epub', 'pregunta' => 'hola']));
+comprobar('preguntarle a un EPUB ilegible es 422 con el motivo, no un error de PHP', $r['codigo'] === 422 && str_contains($r['cuerpo']['error'], 'No se pudo leer'));
+
+$salida = (string) shell_exec('printf %s ' . escapeshellarg("¿cómo se llama?\n¿Quién ayudó al pescador?\n") . ' | ' . escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg("$raiz/bin/chat.php") . ' ' . escapeshellarg("$raiz/ejemplos/Obra de Elena Varela") . ' 2>&1');
+comprobar('bin/chat.php acepta una carpeta de libros', str_contains($salida, '2 libros, 12 pasajes') && str_contains($salida, 'reúne: «El jardín de la señora Ibarra» y «La balsa»')
+    && str_contains($salida, '[La balsa — Capítulo 2: El pescador]'));
+$salida = (string) shell_exec(escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg("$raiz/bin/chat.php") . ' ' . escapeshellarg("$tmp/no-existe") . ' 2>&1; echo "codigo=$?"');
+comprobar('bin/chat.php con una ruta que no existe sale con error claro', str_contains($salida, 'No encuentro el libro') && str_contains($salida, 'codigo=1'));
+
+// Limpieza de lo que armaron estas pruebas (solo dentro del directorio temporal propio).
+if (str_starts_with($tmp, sys_get_temp_dir() . '/chat-libros-pruebas-')) {
+    $it = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($tmp, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST);
+    foreach ($it as $f) {
+        $f->isDir() ? rmdir($f->getPathname()) : unlink($f->getPathname());
+    }
+    rmdir($tmp);
+}
+
+echo "Consistencia: el código fuente y las tablas de PHP y Java\n";
+// PHP lee como parte del nombre de una variable cualquier byte no ASCII que le sigue: "$titulo»" es la variable «titulo»»,
+// vacía, con un aviso. Se escribe «{$titulo}». Ya pasó tres veces (dos mías y una en bin/preparar-quijote.php).
+$mal = [];
+if (!function_exists('token_get_all')) {
+    comprobar('la extensión tokenizer está (hace falta para revisar el código fuente)', false);
+} else {
+    $archivosPhp = array_merge(glob("$raiz/src/*.php") ?: [], glob("$raiz/bin/*.php") ?: [], glob("$raiz/web/*.php") ?: [], glob("$raiz/pruebas/*.php") ?: []);
+    foreach ($archivosPhp as $archivoPhp) {
+        foreach (token_get_all((string) file_get_contents($archivoPhp)) as $ficha) {
+            if (is_array($ficha) && $ficha[0] === T_VARIABLE && preg_match('/[\x80-\xff]/', $ficha[1])) {
+                $mal[] = basename($archivoPhp) . ':' . $ficha[2] . ' ' . $ficha[1];
+            }
+        }
+    }
+    comprobar('ninguna variable lleva una letra no ASCII pegada (el error de «$titulo»); se escribe «{$titulo}»', $mal === [] && count($archivosPhp) > 10, implode(', ', $mal));
+}
+
+$java = (string) file_get_contents("$raiz/java/src/chatlibros/Normaliza.java");
+$entreComillas = static function (string $patron, string $texto): array {
+    preg_match($patron, $texto, $m);
+    return preg_match_all('/"([^"]+)"/u', (string) preg_replace('#//[^\n]*#', '', $m[1] ?? ''), $palabras) ? $palabras[1] : [];
+};
+$constantes = (new \ReflectionClass(Normaliza::class))->getConstants();
+$vaciasJava = $entreComillas('/VACIAS = new HashSet<>\(List\.of\((.*?)\)\);/s', $java);
+comprobar('las palabras vacías de PHP y de Java son las mismas', $vaciasJava !== [] && count($constantes['VACIAS']) === count(array_unique($constantes['VACIAS']))
+    && array_diff($constantes['VACIAS'], $vaciasJava) === [] && array_diff($vaciasJava, $constantes['VACIAS']) === [],
+    'solo PHP: ' . implode(',', array_diff($constantes['VACIAS'], $vaciasJava)) . ' | solo Java: ' . implode(',', array_diff($vaciasJava, $constantes['VACIAS'])));
+comprobar('las terminaciones que quita la raíz de PHP y de Java son las mismas y están en el mismo orden', $entreComillas('/SUFIJOS = \{(.*?)\};/s', $java) === $constantes['SUFIJOS']);
+preg_match('/ORIGEN = "([^"]+)";/u', $java, $origen);
+preg_match('/DESTINO = "([^"]+)";/u', $java, $destino);
+comprobar('la tabla de acentos de PHP y de Java es la misma', ($origen[1] ?? '') === implode('', array_keys($constantes['ACENTOS'])) && ($destino[1] ?? '') === implode('', array_values($constantes['ACENTOS'])));
+preg_match('/double UMBRAL = ([0-9.]+);/', (string) file_get_contents("$raiz/java/src/chatlibros/Conversador.java"), $umbralJava);
+preg_match('/int MAX_CITAS = (\d+);/', (string) file_get_contents("$raiz/java/src/chatlibros/Conversador.java"), $citasJava);
+comprobar('el umbral y el máximo de citas de PHP y de Java son los mismos', (float) ($umbralJava[1] ?? -1) === Conversador::UMBRAL && (int) ($citasJava[1] ?? -1) === Conversador::MAX_CITAS);
 
 echo "\n$total pruebas, $fallos fallos\n";
 exit($fallos === 0 ? 0 : 1);

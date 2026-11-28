@@ -6,9 +6,11 @@ namespace ChatLibros;
 /**
  * Responde preguntas sobre un libro citando sus pasajes.
  *
- * No genera texto nuevo: o saluda, o da el autor, el título o un resumen armado con las
- * palabras más repetidas (intencion), o busca en el libro los pasajes más parecidos a la
- * pregunta y los cita con su capítulo (pasajesPara). Si nada pasa el umbral, lo dice.
+ * No inventa nada: o saluda, o da el autor, el título o un resumen armado con las palabras más
+ * repetidas (intencion), o busca en el libro los pasajes más parecidos a la pregunta y los cita
+ * con su capítulo (pasajesPara). En un libro largo, en vez de citar el pasaje tal cual, lo dice
+ * con otras palabras con reglas y tablas (Parafrasea, que descarta lo que no salga del pasaje).
+ * Si nada pasa el umbral, lo dice.
  */
 final class Conversador
 {
@@ -167,7 +169,9 @@ final class Conversador
             return "«{$titulo}» lo escribió {$autor}.";
         }
         if (preg_match('/\b(como se llama|titulo del libro|nombre del libro)\b/', $p)) {
-            return "El libro se llama «{$titulo}».";
+            return $this->libro->obras === []
+                ? "El libro se llama «{$titulo}»."
+                : "Esta colección se llama «{$titulo}» y reúne: " . self::lista($this->libro->obras) . '.';
         }
         if (preg_match('/^\/(original|moderno)$/', $p, $m)) {
             if ($this->parafrasea === null) {
@@ -284,8 +288,12 @@ final class Conversador
 
     private function resumen(): string
     {
-        $primero = $this->libro->pasajes[0]['texto'] ?? '';
         $temas = $this->temas === [] ? 'nada que destacar' : implode(', ', $this->temas);
+        if ($this->libro->obras !== []) {
+            return "«{$this->libro->titulo}», de {$this->libro->autor}, reúne " . count($this->libro->obras) . ' libros: '
+                . self::lista($this->libro->obras) . ". Lo que más se repite: $temas.";
+        }
+        $primero = $this->libro->pasajes[0]['texto'] ?? '';
         $inicio = $primero === '' ? '' : ' Empieza así: «' . self::extracto($primero, 300) . '»';
         return "«{$this->libro->titulo}», de {$this->libro->autor}, trata sobre: $temas.$inicio";
     }
@@ -310,6 +318,19 @@ final class Conversador
             $lineas[] = '— [' . $pasaje['capitulo'] . '] «' . self::extracto($pasaje['texto']) . '»';
         }
         return implode("\n\n", $lineas);
+    }
+
+    /**
+     * «A», «A y B», «A, B y C», con cada título entre comillas angulares.
+     *
+     * @param list<string> $titulos
+     */
+    private static function lista(array $titulos): string
+    {
+        $citados = array_map(static fn (string $t): string => "«{$t}»", $titulos);
+        return count($citados) <= 1
+            ? implode('', $citados)
+            : implode(', ', array_slice($citados, 0, -1)) . ' y ' . $citados[count($citados) - 1];
     }
 
     /** Corta un texto en el último espacio antes de $max caracteres y agrega «…». */

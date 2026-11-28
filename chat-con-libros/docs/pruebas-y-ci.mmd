@@ -3,11 +3,11 @@ flowchart LR
     cambio(["Cambio en chat-con-libros/<br/>o en su workflow"]) --> ci["GitHub Actions<br/>pruebas-chat-con-libros.yml"]
 
     subgraph jphp["Job php"]
-        t1["php pruebas/ejecutar.php<br/>91 pruebas: núcleo, API web,<br/>modo con IA con cliente falso"]
+        t1["php pruebas/ejecutar.php<br/>181 pruebas: núcleo, Quijote, EPUB,<br/>colecciones, API web, IA con cliente falso"]
         t2["php bin/vectores.php --comprobar<br/>vectores.tsv al día"]
     end
     subgraph jjava["Job java"]
-        t3["javac + EjecutarPruebas<br/>54 pruebas de la búsqueda"]
+        t3["javac + EjecutarPruebas<br/>55 pruebas de la búsqueda"]
     end
 
     ci --> jphp

@@ -1,6 +1,11 @@
 %% Qué pasa al arrancar: del .txt al índice.
 flowchart TD
-    inicio(["Arranque: bin/chat.php o Chat.java"]) --> leer["Leer el archivo en UTF-8<br/>(quita el BOM)"]
+    inicio(["Arranque: bin/chat.php o Chat.java"]) --> que{"¿Qué es?"}
+    que -- "carpeta (solo PHP)" --> coleccion["Leer cada libro y juntarlos:<br/>capítulo = «Libro — Capítulo»"]
+    coleccion --> pasajes
+    que -- ".epub (solo PHP)" --> epub["Epub: zip + DOM con topes;<br/>capítulos de la tabla de contenido;<br/>párrafos cortos unidos"]
+    epub --> pasajes
+    que -- ".txt" --> leer["Leer el archivo en UTF-8<br/>(quita el BOM)"]
     leer --> lineas["Recorrer línea por línea"]
     lineas --> tipo{"Tipo de línea"}
     tipo -- "en blanco" --> cerrar["Cerrar el párrafo en curso<br/>como un Pasaje"]

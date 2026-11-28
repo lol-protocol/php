@@ -32,9 +32,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # Las pruebas del núcleo (normalización, sinónimos, lectura del libro, índice, conversador, la API
-      # de la página web, el modo con IA con un cliente falso, los vectores de pruebas/vectores.tsv y la
-      # evaluación de pruebas/evaluacion.tsv). No necesitan el SDK de Anthropic ni red.
+      # El lector de EPUB necesita las extensiones zip y dom: se piden aquí en vez de confiar en las
+      # que traiga el runner (sus pruebas fallan, no se omiten, si faltan).
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: dom, mbstring, zip
+          coverage: none
+
+      # Las pruebas del núcleo (normalización, sinónimos, lectura del libro, EPUB, colecciones, índice,
+      # conversador, el Quijote, la API de la página web, el modo con IA con un cliente falso, los vectores
+      # de pruebas/vectores.tsv y la evaluación de pruebas/evaluacion.tsv). No necesitan el SDK de
+      # Anthropic ni red: los EPUB los arman las propias pruebas.
       - name: Pruebas
         working-directory: chat-con-libros
         run: php pruebas/ejecutar.php
