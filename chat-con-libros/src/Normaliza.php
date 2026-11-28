@@ -27,6 +27,8 @@ final class Normaliza
         'esto', 'estaba', 'estaban', 'fue', 'ha', 'habia', 'han', 'hay', 'la', 'las', 'le', 'les',
         'lo', 'los', 'mas', 'me', 'mi', 'muy', 'ni', 'no', 'o', 'para', 'pero', 'por', 'que', 'quien',
         'se', 'ser', 'si', 'sin', 'tenia', 'tiene', 'tienen', 'dice', 'decia', 'dijo', 'hacia',
+        // El molde de las preguntas («¿qué pasó con…?», «¿qué hizo…?»): no dicen de qué se pregunta.
+        'paso', 'pasa', 'pasan', 'sucedio', 'sucede', 'ocurrio', 'ocurre', 'hizo', 'hace', 'hacen',
         'sobre', 'son', 'su', 'sus', 'te', 'tu', 'u', 'un', 'una', 'unas', 'unos', 'y', 'ya',
         'and', 'an', 'as', 'at', 'be', 'by', 'for', 'in', 'is', 'it', 'of', 'on', 'the', 'this',
         'that', 'to', 'with',

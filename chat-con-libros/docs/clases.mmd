@@ -1,11 +1,36 @@
-%% Modelo de clases (PHP). Java tiene Normaliza, Sinonimos, Libro, Pasaje, Indice y Conversador.
+%% Modelo de clases (PHP). Java tiene Normaliza, Sinonimos, Libro, Pasaje, Indice y Conversador (sin EPUB, colecciones ni modo largo).
 classDiagram
     class Libro {
         +string titulo
         +string autor
         +list~Pasaje~ pasajes
+        +list~string~ obras
         +desdeTexto(texto) Libro
         +desdeArchivo(ruta) Libro
+        +coleccion(titulo, libros) Libro
+    }
+    class Epub {
+        +MAX_ENTRADA
+        +desdeArchivo(ruta) Libro
+        +resolver(carpeta, href) string?
+    }
+    class Biblioteca {
+        +ids() list~string~
+        +cargar(id) Libro
+        +cargarRuta(ruta) Libro
+        +sinonimosDeRuta(raiz, ruta) Sinonimos
+    }
+    class Ajustes {
+        +PASAJES_LIBRO_LARGO = 1000
+        +paraLibro(libro) Ajustes
+    }
+    class Ventanas {
+        +partir(pasajes, ventana, solape, corto) list
+    }
+    class Parafrasea {
+        +MODERNO
+        +ORIGINAL
+        +responder(terminos, pregunta, capitulo, pasaje, estilo) array
     }
     class Pasaje {
         +string capitulo
@@ -59,6 +84,11 @@ classDiagram
     }
 
     Libro "1" *-- "many" Pasaje
+    Libro ..> Epub : si es .epub
+    Biblioteca --> Libro : arma libros y colecciones
+    Conversador --> Ajustes : cómo se busca
+    Conversador ..> Ventanas : libro largo
+    Conversador ..> Parafrasea : libro largo
     Conversador --> Libro : lee
     Conversador --> Indice : consulta
     Conversador --> Sinonimos : amplía la pregunta
@@ -72,3 +102,4 @@ classDiagram
     GeneradorClaude ..> GeneradorError : lanza
     Dialogo ..> GeneradorError : atrapa
     Api --> Dialogo : arma uno por pedido
+    Api --> Biblioteca : lista y carga

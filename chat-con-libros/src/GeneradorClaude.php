@@ -99,11 +99,17 @@ final class GeneradorClaude implements Generador
         $mensajes[] = ['role' => 'user', 'content' => self::mensajeConPasajes($pregunta, $pasajes)];
 
         return [
-            'model' => $this->modelo ?? (getenv('ANTHROPIC_MODEL') ?: self::MODELO_POR_DEFECTO),
+            'model' => $this->modelo(),
             'maxTokens' => self::MAX_TOKENS,
             'system' => self::instrucciones($titulo, $autor),
             'messages' => $mensajes,
         ];
+    }
+
+    /** El modelo que se usa: el del constructor, ANTHROPIC_MODEL o MODELO_POR_DEFECTO. */
+    public function modelo(): string
+    {
+        return $this->modelo ?? (getenv('ANTHROPIC_MODEL') ?: self::MODELO_POR_DEFECTO);
     }
 
     public static function instrucciones(string $titulo, string $autor): string

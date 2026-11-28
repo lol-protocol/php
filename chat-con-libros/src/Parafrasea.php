@@ -247,13 +247,17 @@ final class Parafrasea
         return $intro;
     }
 
-    /** «Parte I, cap. VIII: Del buen suceso…» → «la primera parte, capítulo VIII». */
+    /**
+     * «Parte I, cap. VIII: Del buen suceso…» → «la primera parte, capítulo VIII». Cualquier otra
+     * etiqueta (la de un EPUB, la de una colección: «La balsa — Capítulo 2: El pescador») va entera
+     * entre comillas angulares, para que se lea como un nombre y no como parte de la frase.
+     */
     private static function lugar(string $capitulo): string
     {
         if (preg_match('/^Parte (I+), cap\. ([IVXLC]+)/', $capitulo, $m)) {
             return ($m[1] === 'I' ? 'la primera parte' : 'la segunda parte') . ", capítulo {$m[2]}";
         }
-        return $capitulo;
+        return "«{$capitulo}»";
     }
 
     // ---- garantía -------------------------------------------------------------------------

@@ -1,8 +1,9 @@
 # chat-con-libros
 
-Un chat personal para «hablar» con un libro o con la obra de un autor. Le das el texto (un
-`.txt`) y responde a tus preguntas **citando los pasajes del libro**, con su capítulo. Se usa
-en la terminal o en una página web local, y tiene dos modos:
+Un chat personal para «hablar» con un libro o con la obra de un autor. Le das el libro (un `.txt`
+o un `.epub`), o una carpeta con varios libros de un autor, y responde a tus preguntas **citando
+los pasajes**, con el libro y el capítulo de donde salen. Se usa en la terminal o en una página
+web local, y tiene dos modos:
 
 - **Sin IA (por defecto):** busca en el texto los párrafos más parecidos a tu pregunta
   (TF-IDF con similitud coseno, más sinónimos) y los muestra. No hay modelo de lenguaje ni
@@ -59,13 +60,48 @@ Los niños se burlaban de él…
 probar. Tus propios libros guárdalos en `mis-libros/`, que está en `.gitignore`: no los subas al
 repositorio, porque la mayoría tiene derechos de autor.
 
+### EPUB
+
+`php bin/chat.php mis-libros/mi.epub` (o elígelo en la web). `src/Epub.php` lee EPUB 2 y 3: el
+título y el autor salen de sus metadatos, los capítulos de su tabla de contenido (si no la tiene,
+del primer encabezado, y si no, «Sección N»), y cada párrafo es un pasaje; los muy cortos (un
+diálogo de frases de tres palabras) se unen con el siguiente para poder buscarlos. Necesita las
+extensiones `zip` y `dom` de PHP.
+
+Un EPUB es un zip de otra persona, así que se lee con cuidado: no se extrae nada a disco, las
+rutas internas no pueden salirse del archivo, hay topes de tamaño y no se cargan entidades
+externas ni se abre la red. Un EPUB **con DRM** (cifrado) no se puede leer y lo dice. Solo lee el
+texto: sin imágenes, notas al pie enlazadas ni fórmulas. PDF no está soportado.
+
+### Varios libros: la obra de un autor
+
+Una **carpeta con varios libros** (`.txt` o `.epub`) se consulta como un solo libro, y cada cita
+dice de cuál viene: `[La balsa — Capítulo 2: El pescador]`. Sirve para preguntarle a toda la obra
+de un autor o a una saga. Pon la carpeta en `mis-libros/` (el título de la colección es el nombre
+de la carpeta) y elígela en la web, o pásala a la terminal:
+
+```bash
+php bin/chat.php "ejemplos/Obra de Elena Varela"
+> ¿Cómo se llama?
+Esta colección se llama «Obra de Elena Varela» y reúne: «El jardín de la señora Ibarra» y «La balsa».
+> ¿Quién ayudó al pescador?
+Esto dice el libro: — [La balsa — Capítulo 2: El pescador] «…»
+```
+
+Los sinónimos de la colección van en un `sinonimos.tsv` dentro de su carpeta. Si en conjunto
+suma 1.000 pasajes o más, se busca como un libro largo (ver «Libros largos»).
+
+`ejemplos/Obra de Elena Varela/` trae dos cuentos inventados de la autora ficticia para probar.
+
 ## Uso en la terminal
 
 En PHP 8.1 o superior (probado con 8.3), desde esta carpeta:
 
 ```bash
 php bin/chat.php                       # usa ejemplos/muestra.txt
-php bin/chat.php mis-libros/mi.txt     # tu libro
+php bin/chat.php mis-libros/mi.txt     # tu libro (.txt)
+php bin/chat.php mis-libros/mi.epub    # un EPUB
+php bin/chat.php mis-libros/Un-autor   # una carpeta con varios libros
 php bin/chat.php --ia mis-libros/mi.txt  # además redacta con Claude (ver «Modo con IA»)
 ```
 
@@ -110,8 +146,13 @@ El SDK de Anthropic no es una dependencia del proyecto: se instala solo si quier
 ```bash
 composer require anthropic-ai/sdk guzzlehttp/guzzle   # Guzzle: el SDK necesita un cliente HTTP PSR-18
 export ANTHROPIC_API_KEY=...                          # tu clave de https://console.anthropic.com
+php bin/probar-ia.php                                 # una sola pregunta de prueba contra la API real
 php bin/chat.php --ia mis-libros/mi.txt               # o marca la casilla en la web
 ```
+
+`php bin/probar-ia.php` hace **una** llamada de pocos cientos de tokens (céntimos) sobre el cuento
+de ejemplo, muestra el modelo, el tiempo y la respuesta, y sale con 0 si la redactó el modelo o con
+1 (diciendo por qué) si no pudo. Córrelo antes de usar `--ia` con tus libros.
 
 - **Modelo.** Por defecto `claude-opus-5-5`. Para algo más rápido y barato:
   `export ANTHROPIC_MODEL=claude-haiku-5-5` (o `claude-sonnet-5-5`).
@@ -216,7 +257,8 @@ en `Parafrasea` y comprobados en las pruebas. En la web hay una casilla para ver
 1. **Normalizar** (`src/Normaliza.php`): minúsculas, sin acentos, sin palabras vacías
    («de», «la», «que»…) y con una raíz simple: quita el plural («relojeros» → «relojero») y
    terminaciones frecuentes («esperaban» → «esper», «claramente» → «clara»). No es un
-   lematizador: junta las formas comunes, no todas.
+   lematizador: junta las formas comunes, no todas. Tampoco cuentan los verbos del molde de las
+   preguntas («¿qué pasó con…?», «¿qué hizo…?»): «pasó» no dice de qué se pregunta.
 2. **Sinónimos** (`src/Sinonimos.php`, `datos/sinonimos.tsv`): grupos como «carta, mensaje,
    misiva». La pregunta se amplía con los demás miembros del grupo, así «¿qué decía el mensaje?»
    encuentra la carta aunque el libro nunca diga «mensaje». Para un libro concreto, pon un
@@ -228,6 +270,10 @@ en `Parafrasea` y comprobados en las pruebas. En la web hay una casilla para ver
    umbral de 0,10, se cita (hasta dos; con IA, hasta cuatro se le dan al modelo). Si ninguno lo
    pasa, se dice que el libro no habla de eso.
 6. **Redacción con IA** (`src/GeneradorClaude.php`): solo en el modo con IA.
+
+Antes de todo eso, `src/Biblioteca.php` decide qué libros hay (los `.txt` y `.epub` de `ejemplos/`
+y `mis-libros/`, y cada subcarpeta con libros como una colección) y `src/Epub.php` lee los EPUB.
+Las colecciones, los EPUB y la web son solo PHP: el port a Java lee `.txt` de a uno.
 
 ## Documentación de arquitectura
 
@@ -246,7 +292,7 @@ editores los dibujan, y `mmdc` (mermaid-cli) los convierte a SVG o PNG.
 ## Pruebas
 
 ```bash
-php pruebas/ejecutar.php              # 143 pruebas: el núcleo, el Quijote y su paráfrasis, la API web y el modo con IA (con un cliente falso)
+php pruebas/ejecutar.php              # 181 pruebas: el núcleo, el Quijote y su paráfrasis, los EPUB, las colecciones, la API web y el modo con IA (con un cliente falso)
 php bin/vectores.php --comprobar      # que pruebas/vectores.tsv esté al día
 ```
 
@@ -258,13 +304,19 @@ El port de Java lee el mismo archivo y debe dar lo mismo:
 
 ```bash
 javac -encoding UTF-8 -d /tmp/chat-libros $(find java -name '*.java')
-java -cp /tmp/chat-libros chatlibros.EjecutarPruebas   # 54 pruebas del port (la parte sin IA)
+java -cp /tmp/chat-libros chatlibros.EjecutarPruebas   # 55 pruebas del port (la parte sin IA)
 ```
 
 `pruebas/evaluacion.tsv` tiene preguntas de ejemplo con los pasajes que las responden. Las pruebas
 miden en cuántas acierta la búsqueda con y sin sinónimos (hoy 8 de 8 contra 4 de 8). Es una
 evaluación pequeña, sobre un solo texto inventado: sirve para notar si un cambio empeora la
 búsqueda, no como medida general de calidad. Para tus libros, escribe tus propias preguntas.
+
+Los EPUB se prueban con archivos que las propias pruebas arman al vuelo (EPUB 2 con NCX, EPUB 3 con
+`nav`, entidades de HTML, DRM, rutas hostiles, entradas enormes, archivos que no son zip): no hay
+ningún libro real en el repo, y necesitan `zip` y `dom`. Lo que **no** se probó es un EPUB real de
+una librería (Project Gutenberg no responde desde donde se escribió esto): con el tuyo, si algo sale
+raro, es un caso para agregar.
 
 Con el Quijote se comprueba, además, que el archivo tenga sus 126 capítulos y nada de Gutenberg,
 y que la búsqueda para libros largos acierte al menos 40 de 53 capítulos y supere por 8 a la de
@@ -277,15 +329,16 @@ El workflow `pruebas-chat-con-libros.yml` corre las dos y comprueba que `vectore
 ## Estructura
 
 ```text
-src/          núcleo en PHP: Normaliza, Sinonimos, Libro, Ventanas, Ajustes, Parafrasea, Indice, Conversador, Dialogo, Api,
-              Generador (interfaz), GeneradorClaude (modo con IA) y GeneradorError
-bin/          chat.php (la conversación en la terminal), vectores.php (genera vectores.tsv) y
-              preparar-quijote.php (arma ejemplos/quijote.txt desde Project Gutenberg)
+src/          núcleo en PHP: Normaliza, Sinonimos, Libro, Epub, Biblioteca, Ventanas, Ajustes, Parafrasea, Indice,
+              Conversador, Dialogo, Api, Generador (interfaz), GeneradorClaude (modo con IA) y GeneradorError
+bin/          chat.php (la conversación en la terminal), vectores.php (genera vectores.tsv), probar-ia.php
+              (una pregunta de prueba contra la API real) y preparar-quijote.php (arma ejemplos/quijote.txt)
 web/          la página (index.html, estilo.css, app.js) y api.php, la entrada de src/Api.php
 datos/        sinonimos.tsv y modernizar.json (las tablas del estilo moderno)
 java/src/     port a Java de la búsqueda, con Chat.java para la terminal
 java/pruebas/ pruebas del port a Java
 pruebas/      pruebas en PHP, consultas.txt, vectores.tsv, evaluacion.tsv y quijote.tsv
-ejemplos/     muestra.txt (un cuento inventado para probar) y quijote.txt, con sus sinónimos
+ejemplos/     muestra.txt (un cuento inventado para probar), quijote.txt (con sus sinónimos) y
+              Obra de Elena Varela/ (una colección de dos cuentos inventados)
 docs/         diagramas de arquitectura en Mermaid (.mmd)
 ```
