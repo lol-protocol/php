@@ -12,6 +12,7 @@
   const DATOS = window.ASTROS_DATOS;
   const AJUSTES = window.AstrosAjustes;
   const ORIENTACION = window.AstrosOrientacion;
+  const SOMBRAS = window.AstrosSombras;
 
   const canvas = document.getElementById('escena');
   const aviso = document.getElementById('aviso');
@@ -26,6 +27,9 @@
   const ALTO_TEXTURA = 512;
   const RADIO_HALO = 1.06;
   const RADIO_CORONA = 1.32;
+  const RADIO_NUBES = 1.012;     // la capa de nubes de la Tierra, apenas por encima de la superficie
+  // Dirección hacia la luz, fija en la escena (el astro gira, la luz no).
+  const LUZ = (function () { const v = [-0.6, 0.35, 0.75]; const n = Math.hypot(v[0], v[1], v[2]); return [v[0] / n, v[1] / n, v[2] / n]; })();
 
   // ---------- Matrices (columna mayor, como las espera WebGL) ----------
 
@@ -122,26 +126,94 @@ uniform mat4 uMVP;
 uniform mat4 uModelo;
 out vec2 vUv;
 out vec3 vNor;
+out vec3 vPos;
+out vec3 vObj;
 void main() {
   vUv = aUv;
+  vObj = aPos;
   vNor = mat3(uModelo) * aPos;
+  vPos = (uModelo * vec4(aPos, 1.0)).xyz;
   gl_Position = uMVP * vec4(aPos, 1.0);
 }`;
 
+  // Cuerpo: color de la textura, iluminado por la luz, con relieve (normal inclinada con el mapa de normales,
+  // calculado en la CPU) y con la sombra de sus anillos si los tiene.
   const FS_CUERPO = `#version 300 es
+precision highp float;
+in vec2 vUv;
+in vec3 vNor;
+in vec3 vPos;
+in vec3 vObj;
+uniform sampler2D uTex;
+uniform sampler2D uAnillo;
+uniform sampler2D uRelieve;
+uniform mat4 uModelo;
+uniform vec3 uLuz;
+uniform float uEmision;
+uniform float uRelieveActivo;
+uniform float uAnilloActivo;
+uniform vec3 uEjeAnillo;
+uniform float uAnilloInterior;
+uniform float uAnilloExterior;
+out vec4 salida;
+
+// Normal del relieve: el mapa guarda la inclinación en el plano tangente (x al este, y al norte, z hacia
+// fuera). El este y el norte salen de la posición, porque el eje de giro es Y y la textura es equirectangular.
+vec3 normalConRelieve(vec3 pObj, vec2 uv) {
+  vec3 nt = texture(uRelieve, uv).xyz * 2.0 - 1.0;
+  vec3 p = normalize(pObj);
+  vec3 este = cross(p, vec3(0.0, 1.0, 0.0));
+  if (length(este) < 0.0001) este = vec3(1.0, 0.0, 0.0);
+  este = normalize(este);
+  vec3 norte = cross(este, p);
+  vec3 nObj = normalize(este * nt.x + norte * nt.y + p * nt.z);
+  return normalize(mat3(uModelo) * nObj);
+}
+
+// Sombra de los anillos sobre el planeta: el rayo hacia la luz cruza el plano de los anillos a una
+// distancia r del centro; si cae entre sus radios, se oscurece según la opacidad del anillo ahí.
+// Es la misma cuenta que js/sombras.js (cruceConElPlanoDeAnillos), que es la versión probada.
+float sombraAnillos(vec3 p, vec3 l) {
+  if (uAnilloActivo < 0.5) return 1.0;
+  float lateral = dot(uEjeAnillo, l);
+  if (abs(lateral) < 0.000001) return 1.0;
+  float t = -dot(uEjeAnillo, p) / lateral;
+  if (t <= 0.0) return 1.0;
+  float r = length(p + t * l);
+  if (r < uAnilloInterior || r > uAnilloExterior) return 1.0;
+  float a = textureLod(uAnillo, vec2((r - uAnilloInterior) / (uAnilloExterior - uAnilloInterior), 0.5), 0.0).a;
+  return 1.0 - 0.9 * a;
+}
+
+void main() {
+  vec3 albedo = texture(uTex, vUv).rgb;
+  vec3 ng = normalize(vNor);
+  vec3 n = ng;
+  vec3 l = normalize(uLuz);
+  if (uRelieveActivo > 0.5) {
+    n = normalConRelieve(vObj, vUv);
+  }
+  float d = max(dot(n, l), 0.0);
+  // Con relieve, la normal inclinada podría iluminar un punto que la superficie da de espaldas a la luz.
+  if (uRelieveActivo > 0.5) d *= smoothstep(0.0, 0.08, dot(ng, l));
+  d *= sombraAnillos(normalize(vPos), l);
+  vec3 iluminado = albedo * (0.06 + 0.94 * d);
+  vec3 emitido = albedo * 0.92;
+  salida = vec4(mix(iluminado, emitido, uEmision), 1.0);
+}`;
+
+  // Capa de nubes (RGBA): se ilumina igual que el cuerpo y su opacidad sale del canal alfa de la textura.
+  const FS_NUBES = `#version 300 es
 precision highp float;
 in vec2 vUv;
 in vec3 vNor;
 uniform sampler2D uTex;
 uniform vec3 uLuz;
-uniform float uEmision;
 out vec4 salida;
 void main() {
-  vec3 albedo = texture(uTex, vUv).rgb;
+  vec4 t = texture(uTex, vUv);
   float d = max(dot(normalize(vNor), normalize(uLuz)), 0.0);
-  vec3 iluminado = albedo * (0.06 + 0.94 * d);
-  vec3 emitido = albedo * 0.92;
-  salida = vec4(mix(iluminado, emitido, uEmision), 1.0);
+  salida = vec4(t.rgb * (0.06 + 0.94 * d), t.a);
 }`;
 
   const VS_HALO = `#version 300 es
@@ -174,29 +246,46 @@ void main() {
 layout(location=0) in vec3 aPos;
 layout(location=1) in vec2 aUv;
 uniform mat4 uMVP;
+uniform mat4 uModelo;
 out vec2 vUv;
+out vec3 vPos;
 void main() {
   vUv = aUv;
+  vPos = (uModelo * vec4(aPos, 1.0)).xyz;
   gl_Position = uMVP * vec4(aPos, 1.0);
 }`;
 
+  // Anillo: su textura con su opacidad, y la sombra que el planeta le echa si queda entre el anillo y la luz
+  // (misma cuenta que enSombraDelPlaneta en js/sombras.js, con un borde suave para la penumbra).
   const FS_ANILLO = `#version 300 es
 precision highp float;
 in vec2 vUv;
+in vec3 vPos;
 uniform sampler2D uAnillo;
 uniform float uBrillo;
+uniform vec3 uLuz;
 out vec4 salida;
 void main() {
   vec4 t = texture(uAnillo, vec2(vUv.x, 0.5));
-  salida = vec4(t.rgb * uBrillo, t.a);
+  vec3 l = normalize(uLuz);
+  float tc = -dot(vPos, l);
+  float sombra = 1.0;
+  if (tc > 0.0) {
+    float dist = length(vPos + tc * l);
+    sombra = mix(0.15, 1.0, smoothstep(0.96, 1.04, dist));
+  }
+  salida = vec4(t.rgb * uBrillo * sombra, t.a);
 }`;
 
-  let progCuerpo, progHalo, progAnillo, esfera, geoHalo;
+  let progCuerpo, progHalo, progAnillo, progNubes, esfera, geoHalo, texVaciaRgba;
 
   function inicializarGL() {
     progCuerpo = programa(VS_CUERPO, FS_CUERPO);
     progHalo = programa(VS_HALO, FS_HALO);
     progAnillo = programa(VS_ANILLO, FS_ANILLO);
+    progNubes = programa(VS_CUERPO, FS_NUBES);
+    // Texturas de 1 píxel para los samplers que un astro no usa (sin anillos o sin relieve): nunca quedan sin asignar.
+    texVaciaRgba = subirTextura(new Uint8Array([0, 0, 0, 0]), 1, 1, false);
     esfera = crearEsfera(96, 192);
   }
 
@@ -297,6 +386,13 @@ void main() {
     entrada.tex = subirTextura(px, ANCHO_TEXTURA, ALTO_TEXTURA, true);
 
     const tx = a.textura;
+    const normales = T.generarNormales(a, ANCHO_TEXTURA, ALTO_TEXTURA);
+    if (normales) entrada.texRelieve = subirTextura(normales, ANCHO_TEXTURA, ALTO_TEXTURA, true);
+    const capaNubes = T.generarCapaNubes(a, ANCHO_TEXTURA, ALTO_TEXTURA);
+    if (capaNubes) {
+      entrada.texNubes = subirTextura(capaNubes, ANCHO_TEXTURA, ALTO_TEXTURA, true);
+      entrada.derivaNubes = tx.capa_nubes.deriva == null ? 1 : tx.capa_nubes.deriva;
+    }
     if (a.categoria === 'sol') {
       entrada.halo = (tx.color ? T.hexARgb(tx.color) : T.temperaturaARgb(a.temperatura_superficial_k)).map(c => c / 255);
       entrada.intensidadHalo = 0.55;
@@ -392,13 +488,46 @@ void main() {
     gl.useProgram(progCuerpo);
     gl.uniformMatrix4fv(gl.getUniformLocation(progCuerpo, 'uMVP'), false, mult(P, mult(V, M)));
     gl.uniformMatrix4fv(gl.getUniformLocation(progCuerpo, 'uModelo'), false, M);
-    gl.uniform3f(gl.getUniformLocation(progCuerpo, 'uLuz'), -0.6, 0.35, 0.75);
+    gl.uniform3f(gl.getUniformLocation(progCuerpo, 'uLuz'), LUZ[0], LUZ[1], LUZ[2]);
     gl.uniform1f(gl.getUniformLocation(progCuerpo, 'uEmision'), a.categoria === 'sol' ? 1 : 0);
+    gl.uniform1f(gl.getUniformLocation(progCuerpo, 'uRelieveActivo'), prep.texRelieve ? 1 : 0);
+    gl.uniform1f(gl.getUniformLocation(progCuerpo, 'uAnilloActivo'), prep.geoAnillo ? 1 : 0);
+    if (prep.geoAnillo) {
+      const eje = SOMBRAS.ejeDeAnillos(a.inclinacion_eje_grados);
+      gl.uniform3f(gl.getUniformLocation(progCuerpo, 'uEjeAnillo'), eje[0], eje[1], eje[2]);
+      gl.uniform1f(gl.getUniformLocation(progCuerpo, 'uAnilloInterior'), a.textura.anillos.interior);
+      gl.uniform1f(gl.getUniformLocation(progCuerpo, 'uAnilloExterior'), a.textura.anillos.exterior);
+    }
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, prep.tex);
     gl.uniform1i(gl.getUniformLocation(progCuerpo, 'uTex'), 0);
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, prep.texAnillo || texVaciaRgba);
+    gl.uniform1i(gl.getUniformLocation(progCuerpo, 'uAnillo'), 1);
+    gl.activeTexture(gl.TEXTURE2);
+    gl.bindTexture(gl.TEXTURE_2D, prep.texRelieve || texVaciaRgba);
+    gl.uniform1i(gl.getUniformLocation(progCuerpo, 'uRelieve'), 2);
     gl.bindVertexArray(esfera.vao);
     gl.drawElements(gl.TRIANGLES, esfera.cuenta, gl.UNSIGNED_INT, 0);
+
+    // Capa de nubes: una esfera apenas más grande, con su propia deriva (solo se nota si el giro está activo).
+    if (prep.texNubes) {
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.depthMask(false);
+      gl.useProgram(progNubes);
+      const Mn = mult(mult(rotX(inclinacion), rotY(estado.giro * sentido * prep.derivaNubes)), escalar(RADIO_NUBES));
+      gl.uniformMatrix4fv(gl.getUniformLocation(progNubes, 'uMVP'), false, mult(P, mult(V, Mn)));
+      gl.uniformMatrix4fv(gl.getUniformLocation(progNubes, 'uModelo'), false, Mn);
+      gl.uniform3f(gl.getUniformLocation(progNubes, 'uLuz'), LUZ[0], LUZ[1], LUZ[2]);
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, prep.texNubes);
+      gl.uniform1i(gl.getUniformLocation(progNubes, 'uTex'), 0);
+      gl.bindVertexArray(esfera.vao);
+      gl.drawElements(gl.TRIANGLES, esfera.cuenta, gl.UNSIGNED_INT, 0);
+      gl.depthMask(true);
+      gl.disable(gl.BLEND);
+    }
 
     // Anillos (sin cara trasera: se ven por las dos caras)
     if (prep.geoAnillo) {
@@ -407,6 +536,8 @@ void main() {
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.useProgram(progAnillo);
       gl.uniform1f(gl.getUniformLocation(progAnillo, 'uBrillo'), prep.brilloAnillo);
+      gl.uniform3f(gl.getUniformLocation(progAnillo, 'uLuz'), LUZ[0], LUZ[1], LUZ[2]);
+      gl.uniformMatrix4fv(gl.getUniformLocation(progAnillo, 'uModelo'), false, rotX(inclinacion));
       gl.activeTexture(gl.TEXTURE1);
       gl.bindTexture(gl.TEXTURE_2D, prep.texAnillo);
       gl.uniform1i(gl.getUniformLocation(progAnillo, 'uAnillo'), 1);

@@ -1,6 +1,6 @@
 // Generado por generar.js desde datos/astros.json: no lo edites a mano.
 window.ASTROS_DATOS = {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "nota": "Valores de referencia redondeados (NASA Planetary Fact Sheet y fichas de satélites; estrellas, valores aproximados de la literatura). El radio de cada estrella trae su incertidumbre (baja, media o alta). Las texturas son procedurales: colores aproximados, no fotografías ni mapas científicos.",
   "categorias": {
     "planeta": "Planetas y planetas enanos (Plutón, Ceres, Eris y Makemake)",
@@ -106,7 +106,11 @@ window.ASTROS_DATOS = {
         ],
         "hielo": "#f2f6fa",
         "nubes": "#ffffff",
-        "halo": "#6fb6ff"
+        "halo": "#6fb6ff",
+        "capa_nubes": {
+          "umbral": 0.52,
+          "deriva": 1.15
+        }
       },
       "gravedad_ms2": 9.819532032815959,
       "densidad_kg_m3": 5513.258738589094
