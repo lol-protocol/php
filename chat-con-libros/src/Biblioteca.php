@@ -81,7 +81,7 @@ final class Biblioteca
                 $libros[] = $libro;
             }
         }
-        return Libro::coleccion(self::nombreDeColeccion($ruta), $libros);
+        return Libro::coleccion(Libro::nombreLegible(basename(rtrim($ruta, '/')), 'Colección'), $libros);
     }
 
     /** Los sinónimos generales de $raiz/datos/ y los del libro o de la colección en $ruta. */
@@ -110,12 +110,5 @@ final class Biblioteca
     private static function esLibro(string $nombre): bool
     {
         return in_array(strtolower(pathinfo($nombre, PATHINFO_EXTENSION)), self::EXTENSIONES, true);
-    }
-
-    /** «obra-de-elena-varela» → «Obra de elena varela». */
-    private static function nombreDeColeccion(string $ruta): string
-    {
-        $nombre = trim(str_replace(['-', '_'], ' ', basename(rtrim($ruta, '/'))));
-        return $nombre === '' ? 'Colección' : mb_strtoupper(mb_substr($nombre, 0, 1)) . mb_substr($nombre, 1);
     }
 }

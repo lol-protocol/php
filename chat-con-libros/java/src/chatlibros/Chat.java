@@ -25,6 +25,10 @@ public final class Chat {
     public static void main(String[] args) throws IOException {
         System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8));
         Path ruta = Path.of(args.length > 0 ? args[0] : "ejemplos/muestra.txt");
+        if (Files.isDirectory(ruta) || ruta.toString().toLowerCase(Locale.ROOT).endsWith(".epub")) {
+            System.err.println("El port a Java lee un .txt a la vez: para un EPUB o una carpeta de libros usa php bin/chat.php.");
+            System.exit(1);
+        }
         if (!Files.isRegularFile(ruta)) {
             System.err.println("No encuentro el libro: " + ruta);
             System.exit(1);

@@ -10,8 +10,10 @@ require __DIR__ . '/../src/cargar.php';
 
 use ChatLibros\Api;
 use ChatLibros\Ajustes;
+use ChatLibros\Biblioteca;
 use ChatLibros\Conversador;
 use ChatLibros\Dialogo;
+use ChatLibros\Epub;
 use ChatLibros\Generador;
 use ChatLibros\GeneradorClaude;
 use ChatLibros\GeneradorError;
@@ -503,9 +505,6 @@ echo "  frase mostrada con la palabra clave: $frase de $n\n";
 comprobar('la respuesta principal trae la palabra clave en al menos 36 de 53', $frase >= 36, "$frase de $n");
 
 echo "EPUB (archivos de prueba armados al vuelo: no hay ningún libro real en el repo)\n";
-use ChatLibros\Biblioteca;
-use ChatLibros\Epub;
-use ChatLibros\Libro as LibroEpub;
 
 $tmp = sys_get_temp_dir() . '/chat-libros-pruebas-' . getmypid();
 mkdir($tmp, 0700, true);
@@ -602,7 +601,7 @@ if (!Epub::disponible()) {
         }
     }
     comprobar('un archivo que no es EPUB, uno sin paquete y uno inexistente dan error claro, no un aviso de PHP', $rechazados === 3);
-    comprobar('Libro::desdeArchivo manda los .epub al lector de EPUB', LibroEpub::desdeArchivo("$tmp/libro3.epub")->titulo === 'Las horas de Tomás (EPUB)');
+    comprobar('Libro::desdeArchivo manda los .epub al lector de EPUB', Libro::desdeArchivo("$tmp/libro3.epub")->titulo === 'Las horas de Tomás (EPUB)');
 }
 
 echo "Colecciones y Biblioteca\n";
@@ -689,6 +688,42 @@ if (str_starts_with($tmp, sys_get_temp_dir() . '/chat-libros-pruebas-')) {
     }
     rmdir($tmp);
 }
+
+echo "Consistencia: el código fuente y las tablas de PHP y Java\n";
+// PHP lee como parte del nombre de una variable cualquier byte no ASCII que le sigue: "$titulo»" es la variable «titulo»»,
+// vacía, con un aviso. Se escribe «{$titulo}». Ya pasó tres veces (dos mías y una en bin/preparar-quijote.php).
+$mal = [];
+if (!function_exists('token_get_all')) {
+    comprobar('la extensión tokenizer está (hace falta para revisar el código fuente)', false);
+} else {
+    $archivosPhp = array_merge(glob("$raiz/src/*.php") ?: [], glob("$raiz/bin/*.php") ?: [], glob("$raiz/web/*.php") ?: [], glob("$raiz/pruebas/*.php") ?: []);
+    foreach ($archivosPhp as $archivoPhp) {
+        foreach (token_get_all((string) file_get_contents($archivoPhp)) as $ficha) {
+            if (is_array($ficha) && $ficha[0] === T_VARIABLE && preg_match('/[\x80-\xff]/', $ficha[1])) {
+                $mal[] = basename($archivoPhp) . ':' . $ficha[2] . ' ' . $ficha[1];
+            }
+        }
+    }
+    comprobar('ninguna variable lleva una letra no ASCII pegada (el error de «$titulo»); se escribe «{$titulo}»', $mal === [] && count($archivosPhp) > 10, implode(', ', $mal));
+}
+
+$java = (string) file_get_contents("$raiz/java/src/chatlibros/Normaliza.java");
+$entreComillas = static function (string $patron, string $texto): array {
+    preg_match($patron, $texto, $m);
+    return preg_match_all('/"([^"]+)"/u', (string) preg_replace('#//[^\n]*#', '', $m[1] ?? ''), $palabras) ? $palabras[1] : [];
+};
+$constantes = (new \ReflectionClass(Normaliza::class))->getConstants();
+$vaciasJava = $entreComillas('/VACIAS = new HashSet<>\(List\.of\((.*?)\)\);/s', $java);
+comprobar('las palabras vacías de PHP y de Java son las mismas', $vaciasJava !== [] && count($constantes['VACIAS']) === count(array_unique($constantes['VACIAS']))
+    && array_diff($constantes['VACIAS'], $vaciasJava) === [] && array_diff($vaciasJava, $constantes['VACIAS']) === [],
+    'solo PHP: ' . implode(',', array_diff($constantes['VACIAS'], $vaciasJava)) . ' | solo Java: ' . implode(',', array_diff($vaciasJava, $constantes['VACIAS'])));
+comprobar('las terminaciones que quita la raíz de PHP y de Java son las mismas y están en el mismo orden', $entreComillas('/SUFIJOS = \{(.*?)\};/s', $java) === $constantes['SUFIJOS']);
+preg_match('/ORIGEN = "([^"]+)";/u', $java, $origen);
+preg_match('/DESTINO = "([^"]+)";/u', $java, $destino);
+comprobar('la tabla de acentos de PHP y de Java es la misma', ($origen[1] ?? '') === implode('', array_keys($constantes['ACENTOS'])) && ($destino[1] ?? '') === implode('', array_values($constantes['ACENTOS'])));
+preg_match('/double UMBRAL = ([0-9.]+);/', (string) file_get_contents("$raiz/java/src/chatlibros/Conversador.java"), $umbralJava);
+preg_match('/int MAX_CITAS = (\d+);/', (string) file_get_contents("$raiz/java/src/chatlibros/Conversador.java"), $citasJava);
+comprobar('el umbral y el máximo de citas de PHP y de Java son los mismos', (float) ($umbralJava[1] ?? -1) === Conversador::UMBRAL && (int) ($citasJava[1] ?? -1) === Conversador::MAX_CITAS);
 
 echo "\n$total pruebas, $fallos fallos\n";
 exit($fallos === 0 ? 0 : 1);

@@ -124,7 +124,7 @@ $resultado = rtrim((string) preg_replace("/\n{3,}/", "\n\n", implode("\n", $sali
 if ($comprobar) {
     $actual = is_file($salida) ? (string) file_get_contents($salida) : '';
     if ($actual !== $resultado) {
-        fwrite(STDERR, "$salida no coincide con lo que sale de $entrada: corre «php bin/preparar-quijote.php $entrada» y revisa el cambio.\n");
+        fwrite(STDERR, "$salida no coincide con lo que sale de $entrada: corre «php bin/preparar-quijote.php {$entrada}» y revisa el cambio.\n");
         exit(1);
     }
     echo "$salida al día (126 capítulos).\n";

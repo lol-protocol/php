@@ -6,9 +6,11 @@ namespace ChatLibros;
 /**
  * Responde preguntas sobre un libro citando sus pasajes.
  *
- * No genera texto nuevo: o saluda, o da el autor, el título o un resumen armado con las
- * palabras más repetidas (intencion), o busca en el libro los pasajes más parecidos a la
- * pregunta y los cita con su capítulo (pasajesPara). Si nada pasa el umbral, lo dice.
+ * No inventa nada: o saluda, o da el autor, el título o un resumen armado con las palabras más
+ * repetidas (intencion), o busca en el libro los pasajes más parecidos a la pregunta y los cita
+ * con su capítulo (pasajesPara). En un libro largo, en vez de citar el pasaje tal cual, lo dice
+ * con otras palabras con reglas y tablas (Parafrasea, que descarta lo que no salga del pasaje).
+ * Si nada pasa el umbral, lo dice.
  */
 final class Conversador
 {
@@ -318,7 +320,11 @@ final class Conversador
         return implode("\n\n", $lineas);
     }
 
-    /** «A», «A y B», «A, B y C», con cada título entre comillas angulares. @param list<string> $titulos */
+    /**
+     * «A», «A y B», «A, B y C», con cada título entre comillas angulares.
+     *
+     * @param list<string> $titulos
+     */
     private static function lista(array $titulos): string
     {
         $citados = array_map(static fn (string $t): string => "«{$t}»", $titulos);

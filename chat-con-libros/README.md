@@ -108,7 +108,7 @@ php bin/chat.php --ia mis-libros/mi.txt  # además redacta con Claude (ver «Mod
 Escribe una pregunta y Enter; `salir` termina. En la terminal, una pregunta corta como «¿y la
 hermana?» se completa con la anterior (solo con IA).
 
-En Java 17 o superior (solo la versión sin IA):
+En Java 17 o superior (solo la versión sin IA, y solo un `.txt` a la vez: ni EPUB ni carpetas):
 
 ```bash
 javac -encoding UTF-8 -d /tmp/chat-libros $(find java -name '*.java')
@@ -121,7 +121,8 @@ java -cp /tmp/chat-libros chatlibros.Chat mis-libros/mi.txt
 php -S 127.0.0.1:8080 -t web
 ```
 
-y abre <http://127.0.0.1:8080>. Elige el libro (los `.txt` de `ejemplos/` y `mis-libros/`),
+y abre <http://127.0.0.1:8080>. Elige el libro (los `.txt` y `.epub` de `ejemplos/` y `mis-libros/`, o una
+carpeta con varios libros, que se consulta como una colección),
 escribe tu pregunta y, si el modo con IA está disponible, marca la casilla. Cada respuesta dice
 cómo se obtuvo (reglas, pasajes del libro, o IA) y, con IA, deja ver los pasajes usados.
 
@@ -187,7 +188,7 @@ php bin/chat.php ejemplos/quijote.txt
 php bin/chat.php --estilo=original ejemplos/quijote.txt
 ```
 
-Con un libro de más de 1.000 pasajes (`Ajustes::PASAJES_LIBRO_LARGO`) la búsqueda cambia,
+Con un libro de 1.000 pasajes o más (`Ajustes::PASAJES_LIBRO_LARGO`) la búsqueda cambia,
 porque un párrafo del Quijote ocupa una página y un párrafo largo gana solo por tener muchas
 palabras:
 
@@ -285,7 +286,7 @@ editores los dibujan, y `mmdc` (mermaid-cli) los convierte a SVG o PNG.
 | [`docs/contexto.mmd`](docs/contexto.mmd) | El sistema visto desde fuera: quién lo usa y qué datos lee. |
 | [`docs/arquitectura.mmd`](docs/arquitectura.mmd) | Capas y componentes de PHP y de Java, y cómo `vectores.tsv` los mantiene iguales. |
 | [`docs/clases.mmd`](docs/clases.mmd) | Clases del núcleo y sus relaciones. |
-| [`docs/flujo-carga-e-indexado.mmd`](docs/flujo-carga-e-indexado.mmd) | Del `.txt` al índice TF-IDF al arrancar. |
+| [`docs/flujo-carga-e-indexado.mmd`](docs/flujo-carga-e-indexado.mmd) | Del libro (`.txt`, `.epub` o una carpeta) al índice TF-IDF al arrancar. |
 | [`docs/flujo-pregunta.mmd`](docs/flujo-pregunta.mmd) | Qué pasa desde que preguntas hasta que recibes la respuesta, con y sin IA. |
 | [`docs/pruebas-y-ci.mmd`](docs/pruebas-y-ci.mmd) | Las pruebas, la CI y la paridad entre PHP y Java. |
 
@@ -334,6 +335,7 @@ src/          núcleo en PHP: Normaliza, Sinonimos, Libro, Epub, Biblioteca, Ven
 bin/          chat.php (la conversación en la terminal), vectores.php (genera vectores.tsv), probar-ia.php
               (una pregunta de prueba contra la API real) y preparar-quijote.php (arma ejemplos/quijote.txt)
 web/          la página (index.html, estilo.css, app.js) y api.php, la entrada de src/Api.php
+composer.json  solo declara lo opcional (el SDK de Anthropic para el modo con IA; zip y dom para EPUB)
 datos/        sinonimos.tsv y modernizar.json (las tablas del estilo moderno)
 java/src/     port a Java de la búsqueda, con Chat.java para la terminal
 java/pruebas/ pruebas del port a Java

@@ -71,38 +71,51 @@ final class Libro
         $capitulo = 'Inicio';
         $parrafo = [];
 
-        // Por referencia: el párrafo se cierra con el capítulo vigente en ese momento.
-        $cerrarParrafo = static function () use (&$parrafo, &$pasajes, &$capitulo): void {
-            if ($parrafo !== []) {
-                $pasajes[] = ['capitulo' => $capitulo, 'texto' => implode(' ', $parrafo)];
-                $parrafo = [];
-            }
-        };
-
         foreach (preg_split('/\r\n|\n|\r/', $texto) ?: [] as $linea) {
             $l = trim($linea);
             $plano = Normaliza::texto($l);
 
             if ($l === '') {
-                $cerrarParrafo();
+                self::cerrarParrafo($parrafo, $pasajes, $capitulo);
             } elseif (str_starts_with($plano, 'titulo:')) {
                 $titulo = trim(substr($l, strpos($l, ':') + 1));
             } elseif (str_starts_with($plano, 'autor:')) {
                 $autor = trim(substr($l, strpos($l, ':') + 1));
             } elseif (str_starts_with($l, '#') || str_starts_with($plano, 'capitulo ')) {
-                $cerrarParrafo();
+                self::cerrarParrafo($parrafo, $pasajes, $capitulo);
                 $capitulo = trim(ltrim($l, '# '));
             } else {
                 $parrafo[] = $l;
             }
         }
-        $cerrarParrafo();
+        self::cerrarParrafo($parrafo, $pasajes, $capitulo);
 
         return new self(
             $titulo !== '' ? $titulo : self::TITULO_POR_DEFECTO,
             $autor !== '' ? $autor : self::AUTOR_POR_DEFECTO,
             $pasajes,
         );
+    }
+
+    /**
+     * Cierra el párrafo en curso como un pasaje del capítulo vigente, si hay algo.
+     *
+     * @param list<string> $parrafo
+     * @param list<array{capitulo:string, texto:string}> $pasajes
+     */
+    private static function cerrarParrafo(array &$parrafo, array &$pasajes, string $capitulo): void
+    {
+        if ($parrafo !== []) {
+            $pasajes[] = ['capitulo' => $capitulo, 'texto' => implode(' ', $parrafo)];
+            $parrafo = [];
+        }
+    }
+
+    /** «obra-de_elena» → «Obra de elena»: guiones y guiones bajos a espacios y mayúscula inicial. */
+    public static function nombreLegible(string $nombre, string $porDefecto): string
+    {
+        $nombre = trim(str_replace(['-', '_'], ' ', $nombre));
+        return $nombre === '' ? $porDefecto : mb_strtoupper(mb_substr($nombre, 0, 1)) . mb_substr($nombre, 1);
     }
 
     /** Un .epub se lee con Epub; todo lo demás, como texto plano. */

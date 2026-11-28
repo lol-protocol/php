@@ -1,6 +1,7 @@
 # Grupos de sinónimos para ampliar las preguntas. Una línea por grupo, palabras separadas por comas.
 # Las palabras pasan por la misma normalización que el texto (con o sin acento, singular o plural).
-# Para un libro concreto, pon un archivo «<nombre-del-libro>.sinonimos.tsv» junto al .txt: se suma a este.
+# Para un libro concreto, pon un archivo «<nombre-del-libro>.sinonimos.tsv» junto al .txt o .epub; para una
+# colección, un «sinonimos.tsv» dentro de su carpeta: se suma a este.
 carta, mensaje, misiva, epístola
 puerto, muelle, embarcadero, bahía
 lluvia, aguacero, chubasco, tormenta, llovizna

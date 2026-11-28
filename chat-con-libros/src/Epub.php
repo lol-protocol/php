@@ -101,7 +101,7 @@ final class Epub
         $titulo = self::limpiar((string) $opf->evaluate("string(//*[local-name()='metadata']/*[local-name()='title'][1])"));
         $autores = [];
         foreach ($opf->query("//*[local-name()='metadata']/*[local-name()='creator']") ?: [] as $nodo) {
-            $autor = self::limpiar($nodo->textContent);
+            $autor = self::limpiar((string) $nodo->nodeValue);
             if ($autor !== '' && !in_array($autor, $autores, true)) {
                 $autores[] = $autor;
             }
@@ -136,7 +136,7 @@ final class Epub
             array_push($pasajes, ...self::pasajesDeHtml($html, $titulos[$item['ruta']] ?? null, $n));
         }
 
-        $porDefecto = self::humanizar((string) preg_replace('/\.epub$/i', '', $nombreDeArchivo));
+        $porDefecto = Libro::nombreLegible((string) preg_replace('/\.epub$/i', '', $nombreDeArchivo), Libro::TITULO_POR_DEFECTO);
         return new Libro(
             $titulo !== '' ? $titulo : $porDefecto,
             $autores !== [] ? implode(', ', $autores) : Libro::AUTOR_POR_DEFECTO,
@@ -178,6 +178,9 @@ final class Epub
         if ($ncx !== null && $ncx['ruta'] !== null && $xp !== null) {
             $carpeta = dirname($ncx['ruta']) === '.' ? '' : dirname($ncx['ruta']);
             foreach ($xp->query("//*[local-name()='navPoint']") ?: [] as $punto) {
+                if (!$punto instanceof \DOMElement) {
+                    continue;
+                }
                 $texto = self::limpiar((string) $xp->evaluate("string(*[local-name()='navLabel']/*[local-name()='text'])", $punto));
                 $ruta = self::resolver($carpeta, (string) $xp->evaluate("string(*[local-name()='content']/@src)", $punto));
                 if ($ruta !== null && $texto !== '' && !isset($titulos[$ruta])) {
@@ -387,11 +390,5 @@ final class Epub
     private static function limpiar(string $texto): string
     {
         return trim((string) preg_replace('/\s+/u', ' ', $texto));
-    }
-
-    private static function humanizar(string $nombre): string
-    {
-        $nombre = trim(str_replace(['-', '_'], ' ', $nombre));
-        return $nombre === '' ? Libro::TITULO_POR_DEFECTO : mb_strtoupper(mb_substr($nombre, 0, 1)) . mb_substr($nombre, 1);
     }
 }
