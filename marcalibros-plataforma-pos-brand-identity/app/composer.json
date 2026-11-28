@@ -24,7 +24,7 @@
             "options": {
                 "symlink": true,
                 "versions": {
-                    "lol-protocol/defamatory-content-review": "5.0.0"
+                    "lol-protocol/defamatory-content-review": "6.0.0"
                 }
             }
         }
@@ -35,7 +35,7 @@
         "ext-gd": "*",
         "ext-mbstring": "*",
         "lol-protocol/marcalibros-propios": "^1.0",
-        "lol-protocol/defamatory-content-review": "^5.0"
+        "lol-protocol/defamatory-content-review": "^6.0"
     },
     "suggest": {
         "ext-exif": "Permite corregir la orientación de las fotos tomadas con el celular"
