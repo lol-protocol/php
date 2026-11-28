@@ -51,10 +51,14 @@ abstract class NordicInflection implements TopicInflection
     }
 
     /** @return array<int,string> */
-    private function adjective(string $word): array
+    protected function adjective(string $word): array
     {
+        if (str_ends_with($word, 'e')) { // «gule», «moderne»: no cambia (medido con UniMorph: 0 % de precisión si se les añade -e o -t)
+            return [$word];
+        }
+        $neuter = str_ends_with($word, 't') ? [] : [$word . 't']; // el neutro de «sött» es «sött»
         $doubled = preg_match('/[aeiouyåäøö][bdfgklmnprs]$/u', $word) === 1 ? [$word . mb_substr($word, -1) . $this->adjectiveEnding()] : [];
 
-        return [$word, $word . $this->adjectiveEnding(), ...$doubled, $word . 't'];
+        return [$word, $word . $this->adjectiveEnding(), ...$doubled, ...$neuter];
     }
 }

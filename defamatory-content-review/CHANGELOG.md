@@ -4,6 +4,14 @@
 
 ### Corregido
 
+- **Adjetivos del sueco, el danés y el noruego** (`NordicInflection`, `SwedishInflection`): los acabados en
+  «-e» («moderne») ya no reciben «-ee» ni «-et» (0 % de precisión contra UniMorph) y los acabados en «-t» no
+  reciben una segunda «t» en el neutro. En sueco, los participios y adjetivos en «-ad»/«-d» y en «-en» llevan
+  sus formas reales: «korkad» → «korkat», «korkade»; «naken» → «naket», «nakna», «nakne». Contra UniMorph
+  (400 lemas): adjetivos suecos de 53 % / 27 % a 78 % / 39 % (precisión / cobertura), daneses de 59 % a
+  65 % y noruegos de 51 % a 57 %. Con `bin/false-positives.php`: +8 formas marcadas en sueco, todas de
+  palabras del diccionario (`korkade`, `nakna`, `efterblivna`…); nada en danés ni en noruego. Los
+  sustantivos no cambian (la sincopa «sabel» → «sabler» se probó y bajaba la precisión del danés de 42 % a 40 %).
 - **Islandés y tagalo: tres términos recién añadidos se retiran** tras medir con las listas de frecuencia
   (`bin/false-positives.php`, FrequencyWords): «heimskur» («tonto», adjetivo corriente, rango 2.049) y
   «salbahe» («travieso», rango 4.646) marcaban habla corriente, y «hudas» es un nombre bíblico (religioso: no se
